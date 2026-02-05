@@ -104,13 +104,13 @@ else
     PAYLOAD="$COMBINED"
 fi
 
-RESPONSE=$(curl -s -X POST \
+# 5. Prüfe auf Erfolg (HTTP-Code)
+HTTP_POST_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
   -H "Content-Type: application/json" \
   --data-binary "$PAYLOAD" \
   "$NODE_RED_URL/flows")
 
-# 5. Prüfe auf Erfolg
-if echo "$RESPONSE" | grep -q '"rev"'; then
+if [[ "$HTTP_POST_CODE" == "204" || "$HTTP_POST_CODE" == "200" ]]; then
     echo "✅ ERFOLGREICH DEPLOYED!"
     echo ""
     echo "============================================================"
