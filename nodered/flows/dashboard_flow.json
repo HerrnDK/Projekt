@@ -70,7 +70,30 @@
     "order": 1,
     "disp": true,
     "width": 14,
-    "collapse": false
+    "collapse": false,
+    "className": "desktop-only"
+  },
+  {
+    "id": "ui_grp_wifi_main_mobile",
+    "type": "ui_group",
+    "name": "WLAN Anmeldung",
+    "tab": "ui_tab_pa_wifi_f",
+    "order": 2,
+    "disp": true,
+    "width": 14,
+    "collapse": false,
+    "className": "mobile-only"
+  },
+  {
+    "id": "ui_grp_info_main_mobile",
+    "type": "ui_group",
+    "name": "Status / Sensoren",
+    "tab": "ui_tab_pa_info_f",
+    "order": 2,
+    "disp": true,
+    "width": 14,
+    "collapse": false,
+    "className": "mobile-only"
   },
   {
     "id": "ui_grp_info_main",
@@ -80,7 +103,8 @@
     "order": 1,
     "disp": true,
     "width": 14,
-    "collapse": false
+    "collapse": false,
+    "className": "desktop-only"
   },
   {
     "id": "ui_grp_param_main",
@@ -91,7 +115,7 @@
     "disp": true,
     "width": 14,
     "collapse": false,
-    "className": "responsive-group-buttons desktop-only"
+    "className": "desktop-only"
   },
   {
     "id": "ui_grp_param_main_mobile",
@@ -215,7 +239,7 @@
     "order": -1,
     "width": 0,
     "height": 0,
-    "format": "<style>\n  /* Global */\n  * { box-sizing: border-box; }\n  html, body, md-content, .nr-dashboard-dashboard { overflow-x: hidden; }\n  .nr-dashboard-cardcontainer {\n    padding-left: 4px !important;\n    padding-right: 4px !important;\n    width: 100% !important;\n    max-width: 100% !important;\n  }\n  .nr-dashboard-card {\n    width: 100% !important;\n    max-width: 100% !important;\n  }\n  md-card {\n    max-width: calc(100% - 8px) !important;\n    width: 100% !important;\n  }\n\n  /* Visibility helpers */\n  .mobile-only { display: none !important; }\n  .desktop-only { display: block !important; }\n\n  /* Responsive Layout for Desktop & Mobile */\n  :root { --mobile: 0; }\n\n  /* Mobile (phone portrait) */\n  @media (max-width: 600px) {\n    :root { --mobile: 1; }\n\n    md-card { margin: 2px !important; }\n    .nr-dashboard-cardcontainer { padding-left: 2px !important; padding-right: 2px !important; }\n    .nr-dashboard-card { margin: 0 !important; }\n\n    .nr-dashboard-button {\n      min-height: 44px !important;\n      padding: 8px 10px !important;\n      font-size: 14px !important;\n    }\n\n    .nr-dashboard-text {\n      min-height: 40px !important;\n      padding: 8px !important;\n      font-size: 14px !important;\n    }\n\n    .widget {\n      min-height: 40px !important;\n      min-width: 0 !important;\n    }\n\n    .nr-dashboard-card { width: 100% !important; }\n    .nr-dashboard-widget { width: 100% !important; }\n\n    /* Force single column only for responsive groups */\n    md-card.responsive-group-buttons md-grid-list { display: block !important; }\n    md-card.responsive-group-buttons md-grid-tile,\n    md-card.responsive-group-buttons .nr-dashboard-grid md-grid-tile {\n      position: static !important;\n      left: 0 !important;\n      top: 0 !important;\n      width: 100% !important;\n      max-width: 100% !important;\n      min-width: 100% !important;\n      flex: 0 0 100% !important;\n      display: block !important;\n    }\n    md-card.responsive-group-buttons md-grid-tile > figure {\n      position: static !important;\n      left: 0 !important;\n      top: 0 !important;\n      width: 100% !important;\n      max-width: 100% !important;\n    }\n    md-card.responsive-group-buttons .nr-dashboard-widget,\n    md-card.responsive-group-buttons .nr-dashboard-button {\n      width: 100% !important;\n    }\n\n    /* Force single column on phones (covers tags + classes) */\n    md-grid-list, .md-grid-list {\n      height: auto !important;\n      display: block !important;\n    }\n    md-grid-tile, .md-grid-tile {\n      position: static !important;\n      left: 0 !important;\n      top: 0 !important;\n      transform: none !important;\n      width: 100% !important;\n      max-width: 100% !important;\n      min-width: 100% !important;\n      height: auto !important;\n      display: block !important;\n      margin-bottom: 6px !important;\n    }\n    md-grid-tile > figure, .md-grid-tile > figure {\n      position: static !important;\n      left: 0 !important;\n      top: 0 !important;\n      transform: none !important;\n      width: 100% !important;\n      max-width: 100% !important;\n      height: auto !important;\n    }\n  }\n\n\n  /* Pi Display 800x480 (optimized) */\n  @media (min-width: 760px) and (max-width: 840px) and (min-height: 440px) and (max-height: 520px) {\n    md-card { margin: 2px !important; }\n    .nr-dashboard-cardcontainer { padding-left: 2px !important; padding-right: 2px !important; }\n    .nr-dashboard-grid { width: 100% !important; }\n\n    .nr-dashboard-button {\n      min-height: 46px !important;\n      padding: 10px 12px !important;\n      font-size: 15px !important;\n    }\n\n    .nr-dashboard-text {\n      min-height: 42px !important;\n      padding: 8px 10px !important;\n      font-size: 15px !important;\n    }\n\n    .widget { min-height: 42px !important; }\n  }\n\n  /* Tablet (600px - 1024px) */\n  @media (min-width: 601px) and (max-width: 1024px) {\n    .nr-dashboard-button { min-height: 48px !important; }\n  }\n\n  /* Desktop/Large Display (> 1024px) */\n  @media (min-width: 1025px) {\n    .widget { min-height: 42px !important; }\n  }\n\n  /* Landscape */\n  @media (orientation: landscape) and (max-height: 500px) {\n    .nr-dashboard-button {\n      height: auto !important;\n      min-height: 40px !important;\n    }\n    md-card { margin: 2px !important; }\n  }\n\n  /* Portrait */\n  @media (orientation: portrait) and (max-width: 600px) {\n    md-card { margin: 2px !important; }\n    .nr-dashboard-cardcontainer { padding-left: 2px !important; padding-right: 2px !important; }\n    .nr-dashboard-card { margin: 0 !important; }\n  }\n\n</style>\n</style>",
+    "format": "<style>\n  /* Global */\n  * { box-sizing: border-box; }\n  html, body, md-content, .nr-dashboard-dashboard { overflow-x: hidden; }\n  .nr-dashboard-cardcontainer {\n    padding-left: 4px !important;\n    padding-right: 4px !important;\n    width: 100% !important;\n    max-width: 100% !important;\n  }\n  .nr-dashboard-card {\n    width: 100% !important;\n    max-width: 100% !important;\n  }\n  md-card {\n    max-width: calc(100% - 8px) !important;\n    width: 100% !important;\n  }\n\n  /* Visibility helpers */\n  .mobile-only { display: none !important; }\n  .desktop-only { display: block !important; }\n\n  /* Responsive Layout for Desktop & Mobile */\n  :root { --mobile: 0; }\n\n  /* Mobile (phone portrait) */\n  @media (max-width: 600px) {\n    :root { --mobile: 1; }\n\n    md-card { margin: 2px !important; }\n    .nr-dashboard-cardcontainer { padding-left: 2px !important; padding-right: 2px !important; }\n    .nr-dashboard-card { margin: 0 !important; }\n\n    .nr-dashboard-button {\n      min-height: 44px !important;\n      padding: 8px 10px !important;\n      font-size: 14px !important;\n    }\n\n    .nr-dashboard-text {\n      min-height: 40px !important;\n      padding: 8px !important;\n      font-size: 14px !important;\n    }\n\n    .widget {\n      min-height: 40px !important;\n      min-width: 0 !important;\n    }\n\n    .nr-dashboard-card { width: 100% !important; }\n    .nr-dashboard-widget { width: 100% !important; }\n\n    /* Mobile layout handled by separate mobile groups */\n    md-card.responsive-group-buttons md-grid-list { display: block !important; }\n    md-card.responsive-group-buttons md-grid-tile,\n    md-card.responsive-group-buttons .nr-dashboard-grid md-grid-tile {\n      position: static !important;\n      left: 0 !important;\n      top: 0 !important;\n      width: 100% !important;\n      max-width: 100% !important;\n      min-width: 100% !important;\n      flex: 0 0 100% !important;\n      display: block !important;\n    }\n    md-card.responsive-group-buttons md-grid-tile > figure {\n      position: static !important;\n      left: 0 !important;\n      top: 0 !important;\n      width: 100% !important;\n      max-width: 100% !important;\n    }\n    md-card.responsive-group-buttons .nr-dashboard-widget,\n    md-card.responsive-group-buttons .nr-dashboard-button {\n      width: 100% !important;\n    }\n\n    /* Force single column on phones (covers tags + classes) */\n    md-grid-list, .md-grid-list {\n      height: auto !important;\n      display: block !important;\n    }\n    md-grid-tile, .md-grid-tile {\n      position: static !important;\n      left: 0 !important;\n      top: 0 !important;\n      transform: none !important;\n      width: 100% !important;\n      max-width: 100% !important;\n      min-width: 100% !important;\n      height: auto !important;\n      display: block !important;\n      margin-bottom: 6px !important;\n    }\n    md-grid-tile > figure, .md-grid-tile > figure {\n      position: static !important;\n      left: 0 !important;\n      top: 0 !important;\n      transform: none !important;\n      width: 100% !important;\n      max-width: 100% !important;\n      height: auto !important;\n    }\n  }\n\n\n  /* Pi Display 800x480 (optimized) */\n  @media (min-width: 760px) and (max-width: 840px) and (min-height: 440px) and (max-height: 520px) {\n    md-card { margin: 2px !important; }\n    .nr-dashboard-cardcontainer { padding-left: 2px !important; padding-right: 2px !important; }\n    .nr-dashboard-grid { width: 100% !important; }\n\n    .nr-dashboard-button {\n      min-height: 46px !important;\n      padding: 10px 12px !important;\n      font-size: 15px !important;\n    }\n\n    .nr-dashboard-text {\n      min-height: 42px !important;\n      padding: 8px 10px !important;\n      font-size: 15px !important;\n    }\n\n    .widget { min-height: 42px !important; }\n  }\n\n  /* Tablet (600px - 1024px) */\n  @media (min-width: 601px) and (max-width: 1024px) {\n    .nr-dashboard-button { min-height: 48px !important; }\n  }\n\n  /* Desktop/Large Display (> 1024px) */\n  @media (min-width: 1025px) {\n    .widget { min-height: 42px !important; }\n  }\n\n  /* Landscape */\n  @media (orientation: landscape) and (max-height: 500px) {\n    .nr-dashboard-button {\n      height: auto !important;\n      min-height: 40px !important;\n    }\n    md-card { margin: 2px !important; }\n  }\n\n  /* Portrait */\n  @media (orientation: portrait) and (max-width: 600px) {\n    md-card { margin: 2px !important; }\n    .nr-dashboard-cardcontainer { padding-left: 2px !important; padding-right: 2px !important; }\n    .nr-dashboard-card { margin: 0 !important; }\n  }\n\n</style>\n</style>",
     "storeOutMessages": false,
     "fwdInMessages": true,
     "resendOnRefresh": true,
@@ -549,6 +573,174 @@
     ]
   },
   {
+    "id": "ui_dd_ssid_m",
+    "type": "ui_dropdown",
+    "z": "tab_pa_final",
+    "name": "SSID Auswahl (Mobile)",
+    "label": "WLAN Netzwerk",
+    "place": "WLAN auswählen",
+    "group": "ui_grp_wifi_main_mobile",
+    "order": 1,
+    "width": 14,
+    "height": 1,
+    "passthru": true,
+    "multiple": false,
+    "options": [],
+    "payload": "",
+    "topic": "ssid",
+    "topicType": "str",
+    "x": 1260,
+    "y": 240,
+    "wires": [
+      [
+        "fn_store_ssid"
+      ]
+    ]
+  },
+  {
+    "id": "ui_pw_m",
+    "type": "ui_text_input",
+    "z": "tab_pa_final",
+    "name": "WLAN Passwort (Mobile)",
+    "label": "Passwort",
+    "group": "ui_grp_wifi_main_mobile",
+    "order": 2,
+    "width": 14,
+    "height": 1,
+    "passthru": true,
+    "mode": "password",
+    "delay": "0",
+    "topic": "wifipw",
+    "topicType": "str",
+    "x": 120,
+    "y": 400,
+    "wires": [
+      [
+        "fn_store_pw"
+      ]
+    ]
+  },
+  {
+    "id": "ui_btn_scan_m",
+    "type": "ui_button",
+    "z": "tab_pa_final",
+    "name": "Netzwerke neu laden (Mobile)",
+    "group": "ui_grp_wifi_main_mobile",
+    "order": 3,
+    "width": 14,
+    "height": 1,
+    "passthru": false,
+    "label": "Netzwerke neu laden",
+    "icon": "refresh",
+    "payload": "scan",
+    "payloadType": "str",
+    "topic": "cmd",
+    "topicType": "str",
+    "x": 140,
+    "y": 260,
+    "wires": [
+      [
+        "exec_wifi_scan"
+      ]
+    ]
+  },
+  {
+    "id": "ui_btn_connect_m",
+    "type": "ui_button",
+    "z": "tab_pa_final",
+    "name": "Verbinden (Mobile)",
+    "group": "ui_grp_wifi_main_mobile",
+    "order": 4,
+    "width": 14,
+    "height": 1,
+    "passthru": false,
+    "label": "Verbinden",
+    "icon": "check",
+    "payload": "connect",
+    "payloadType": "str",
+    "topic": "cmd",
+    "topicType": "str",
+    "x": 100,
+    "y": 320,
+    "wires": [
+      [
+        "fn_build_connect_cmd"
+      ]
+    ]
+  },
+  {
+    "id": "ui_btn_read_sensors_m",
+    "type": "ui_button",
+    "z": "tab_pa_final",
+    "name": "Sensoren lesen (Mobile)",
+    "group": "ui_grp_info_main_mobile",
+    "order": 1,
+    "width": 14,
+    "height": 1,
+    "passthru": false,
+    "label": "Sensoren aktualisieren",
+    "tooltip": "READ Kommando senden",
+    "icon": "refresh",
+    "payload": "READ",
+    "payloadType": "str",
+    "topic": "",
+    "x": 380,
+    "y": 520,
+    "wires": [
+      [
+        "link_out_to_arduino"
+      ]
+    ]
+  },
+  {
+    "id": "ui_text_a0_m",
+    "type": "ui_text",
+    "z": "tab_pa_final",
+    "group": "ui_grp_info_main_mobile",
+    "order": 2,
+    "width": 14,
+    "height": 1,
+    "name": "A0 Display (Mobile)",
+    "label": "Sensor A0",
+    "format": "{{msg.payload.a0}}",
+    "layout": "row-spread",
+    "x": 600,
+    "y": 560,
+    "wires": []
+  },
+  {
+    "id": "ui_text_a1_m",
+    "type": "ui_text",
+    "z": "tab_pa_final",
+    "group": "ui_grp_info_main_mobile",
+    "order": 3,
+    "width": 14,
+    "height": 1,
+    "name": "A1 Display (Mobile)",
+    "label": "Sensor A1",
+    "format": "{{msg.payload.a1}}",
+    "layout": "row-spread",
+    "x": 600,
+    "y": 600,
+    "wires": []
+  },
+  {
+    "id": "ui_text_uptime_m",
+    "type": "ui_text",
+    "z": "tab_pa_final",
+    "group": "ui_grp_info_main_mobile",
+    "order": 4,
+    "width": 14,
+    "height": 1,
+    "name": "Uptime Display (Mobile)",
+    "label": "Uptime (ms)",
+    "format": "{{msg.payload.uptime_ms}}",
+    "layout": "row-spread",
+    "x": 610,
+    "y": 640,
+    "wires": []
+  },
+  {
     "id": "fn_build_connect_cmd",
     "type": "function",
     "z": "tab_pa_final",
@@ -832,7 +1024,10 @@
       [
         "ui_text_a0",
         "ui_text_a1",
-        "ui_text_uptime"
+        "ui_text_uptime",
+        "ui_text_a0_m",
+        "ui_text_a1_m",
+        "ui_text_uptime_m"
       ]
     ]
   },
