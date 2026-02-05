@@ -746,13 +746,13 @@
     "type": "function",
     "z": "4985bdfbcf200fe6",
     "name": "Connect Kommando (nmcli)",
-    "func": "const ssid = (flow.get(\"selectedSsid\") || \"\").toString();\nconst pw = (flow.get(\"wifiPassword\") || \"\").toString();\nif (!ssid) return [null, { payload: \"FEHLER: Bitte zuerst ein WLAN auswählen.\" }];\nif (!pw) return [null, { payload: \"FEHLER: Bitte ein WLAN Passwort eingeben.\" }];\nconst esc = (s) => s.replace(/[\"\\\\$`]/g, \"\\\\$&\");\nconst s = esc(ssid);\nconst p = esc(pw);\nconst cmd = `nmcli con down \"projekt-ap\" 2>/dev/null || true; ` +\n  `nmcli connection delete \"${s}\" 2>/dev/null || true; ` +\n  `nmcli connection add type wifi ifname wlan0 con-name \"${s}\" ssid \"${s}\"; ` +\n  `nmcli connection modify \"${s}\" wifi-sec.key-mgmt wpa-psk wifi-sec.psk \"${p}\"; ` +\n  `nmcli connection up \"${s}\" ifname wlan0`;\nreturn [ { payload: cmd }, null ];",
+    "func": "const ssid = (flow.get(\"selectedSsid\") || \"\").toString();\nconst pw = (flow.get(\"wifiPassword\") || \"\").toString();\nif (!ssid) return [null, { payload: \"FEHLER: Bitte zuerst ein WLAN auswählen.\" }];\nif (!pw) return [null, { payload: \"FEHLER: Bitte ein WLAN Passwort eingeben.\" }];\nconst esc = (s) => s.replace(/[\"\\\\$`]/g, \"\\\\$&\");\nconst s = esc(ssid);\nconst p = esc(pw);\nmsg.payload = `connection delete \"${s}\"`;\nmsg.connectCmd = `dev wifi connect \"${s}\" password \"${p}\" ifname wlan0`;\nreturn [ msg, null ];",
     "outputs": 2,
     "x": 620,
     "y": 280,
     "wires": [
       [
-        "982af834e8a01a70"
+        "dcc1a684b8ee9cfc"
       ],
       [
         "58697ef08e1da41e"
@@ -763,13 +763,13 @@
     "id": "982af834e8a01a70",
     "type": "exec",
     "z": "4985bdfbcf200fe6",
-    "command": "bash",
+    "command": "nmcli",
     "addpay": true,
-    "append": "-lc",
+    "append": "",
     "useSpawn": "false",
     "timer": "",
     "winHide": true,
-    "name": "Connect ausführen",
+    "name": "WLAN Verbinden",
     "x": 930,
     "y": 280,
     "wires": [
@@ -1329,6 +1329,44 @@
     "wires": [
       [
         "58697ef08e1da41e"
+      ]
+    ]
+  },
+  {
+    "id": "dcc1a684b8ee9cfc",
+    "type": "exec",
+    "z": "4985bdfbcf200fe6",
+    "command": "nmcli",
+    "addpay": true,
+    "append": "",
+    "useSpawn": "false",
+    "timer": "",
+    "winHide": true,
+    "name": "WLAN Profil löschen",
+    "x": 770,
+    "y": 320,
+    "wires": [
+      [
+        "1314fa9599b0730c"
+      ],
+      [
+        "1314fa9599b0730c"
+      ],
+      []
+    ]
+  },
+  {
+    "id": "1314fa9599b0730c",
+    "type": "function",
+    "z": "4985bdfbcf200fe6",
+    "name": "Connect cmd -> nmcli",
+    "func": "msg.payload = msg.connectCmd || \"\";\nreturn msg;",
+    "outputs": 1,
+    "x": 950,
+    "y": 320,
+    "wires": [
+      [
+        "982af834e8a01a70"
       ]
     ]
   }
