@@ -77,14 +77,36 @@ PYTHON_EOF
 )
 fi
 
-# 4. Zu Node-RED deployen
 echo "📤 Flows werden zu Node-RED gesendet..."
 echo "   Endpoint: POST $NODE_RED_URL/flows"
 echo ""
 
+# Hole aktuelle Flows, um Format/Rev zu erkennen
+CURRENT=$(curl -s "$NODE_RED_URL/flows")
+USE_REV=0
+CURRENT_REV=""
+
+if command -v jq &> /dev/null; then
+    if echo "$CURRENT" | jq -e 'type=="object" and has("rev") and has("flows")' >/dev/null 2>&1; then
+        USE_REV=1
+        CURRENT_REV=$(echo "$CURRENT" | jq -r '.rev')
+    fi
+else
+    if echo "$CURRENT" | grep -q '"rev"' && echo "$CURRENT" | grep -q '"flows"'; then
+        USE_REV=1
+        CURRENT_REV=$(echo "$CURRENT" | sed -n 's/.*"rev"[[:space:]]*:[[:space:]]*"\([^"]*\)".*/\1/p')
+    fi
+fi
+
+if [[ "$USE_REV" -eq 1 && -n "$CURRENT_REV" ]]; then
+    PAYLOAD="{\"flows\":$COMBINED,\"rev\":\"$CURRENT_REV\"}"
+else
+    PAYLOAD="$COMBINED"
+fi
+
 RESPONSE=$(curl -s -X POST \
   -H "Content-Type: application/json" \
-  -d "{\"flows\":$COMBINED,\"rev\":1}" \
+  --data-binary "$PAYLOAD" \
   "$NODE_RED_URL/flows")
 
 # 5. Prüfe auf Erfolg
