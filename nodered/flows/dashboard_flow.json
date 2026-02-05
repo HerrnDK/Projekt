@@ -458,7 +458,7 @@
     "height": 1,
     "passthru": true,
     "mode": "password",
-    "delay": "0",
+    "delay": "0.3",
     "topic": "wifipw",
     "topicType": "str",
     "x": 120,
@@ -474,7 +474,7 @@
     "type": "function",
     "z": "4985bdfbcf200fe6",
     "name": "Passwort merken",
-    "func": "flow.set(\"wifiPassword\", msg.payload);\nreturn null;",
+    "func": "const pw = (msg.payload || \"\").toString();\n// WPA2-PSK requires at least 8 characters; ignore empty/short updates\nif (pw && pw.length >= 8) {\n  flow.set(\"wifiPassword\", pw);\n}\nreturn null;",
     "outputs": 0,
     "x": 1430,
     "y": 400,
@@ -562,7 +562,7 @@
     "y": 280,
     "wires": [
       [
-        "bfb23c18fc3e1340"
+        "cf92ad487706a01f"
       ]
     ]
   },
@@ -603,7 +603,7 @@
     "height": 1,
     "passthru": true,
     "mode": "password",
-    "delay": "0",
+    "delay": "0.3",
     "topic": "wifipw",
     "topicType": "str",
     "x": 120,
@@ -658,7 +658,7 @@
     "y": 320,
     "wires": [
       [
-        "bfb23c18fc3e1340"
+        "cf92ad487706a01f"
       ]
     ]
   },
@@ -1507,6 +1507,30 @@
     "wires": [
       [
         "1314fa9599b0730c"
+      ]
+    ]
+  },
+  {
+    "id": "cf92ad487706a01f",
+    "type": "delay",
+    "z": "4985bdfbcf200fe6",
+    "name": "Warte Passwort-Update",
+    "pauseType": "delay",
+    "timeout": "0.4",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "allowrate": false,
+    "x": 260,
+    "y": 300,
+    "wires": [
+      [
+        "bfb23c18fc3e1340"
       ]
     ]
   }
