@@ -13,27 +13,31 @@ deploy: false
 
 ZWECK
 -----
-Ich arbeite hier strikt nach klaren, pruefbaren Regeln, damit Aenderungen sicher, nachvollziehbar und wiederholbar sind.
+Klare, pruefbare Regeln fuer sichere, nachvollziehbare Aenderungen.
 
-SCHNELLSTART
-------------
+GRUNDREGELN
+-----------
 - Deutsch schreiben.
 - Komponenten ueber `refer: <component_id>` ansprechen.
-- In Flows nur erlaubte Felder aendern.
-- Nach jeder Aenderung validieren: `jq`, `yaml-lint`.
-- Netzwerk-Logik liegt in `nodered/flows/Network.json` (separater Flow-Tab).
-- `Network.json` immer zusammen mit `dashboard_flow.json` + `data_exchange_flow.json` deployen.
+- Keine Geheimdaten hinzufuegen.
+- Vor jeder Aenderung: kurze Vorschau/Diff zeigen und explizit "Anwenden" oder "Abbrechen" erfragen.
 - Konsistente Formatierung.
-- Nicht aendern: `id`, `type`, `z`, `wires`, Geheimdaten.
-- Vor jeder Aenderung: zuerst eine kurze Vorschau/Diff der geplanten Aenderungen zeigen und explizit um "Anwenden" oder "Abbrechen" bitten.
 
-TEIL 1: FLOWS
--------------
+VALIDIERUNG
+-----------
+- Bei Aenderungen an `nodered/flows/*.json`: `jq . nodered/flows/<file>.json`
+- Bei Aenderungen an `components.yaml`: `yaml-lint components.yaml`
+- Entspricht den `formatChecks` im Header.
 
-Erlaubte Felder: `label`, `tooltip`, `payload`, `description`, `name`, `order`, `width`, `height`, `icon`, `className`.
-Verboten: `id`, `z`, `type`, `wires`.
-Alle CSS/Responsive-Aenderungen gelten global fuer alle Dashboard-Seiten, ausser es wird explizit anders gewuenscht.
-Nach jeder Aenderung an `nodered/flows/*.json`: `./deploy_flows.sh` ausfuehren und dabei Node-RED unter `http://192.168.0.250:1880` verwenden, um die Flows automatisch zu aktualisieren.
+FLOWS (nodered/flows/*.json)
+----------------------------
+
+- Erlaubte Felder: `label`, `tooltip`, `payload`, `description`, `name`, `order`, `width`, `height`, `icon`, `className`.
+- Verboten: `id`, `z`, `type`, `wires`.
+- CSS/Responsive-Aenderungen gelten global fuer alle Dashboard-Seiten, ausser explizit anders gewuenscht.
+- Netzwerk-Logik liegt in `nodered/flows/Network.json` (separater Flow-Tab).
+- Immer gemeinsam deployen: `dashboard_flow.json` + `Network.json` + `data_exchange_flow.json`.
+- Nach jeder Aenderung an `nodered/flows/*.json`: `./deploy_flows.sh` ausfuehren und Node-RED unter `http://192.168.0.250:1880` verwenden.
 
 Beispiele:
 ```
@@ -49,50 +53,53 @@ ersetze: nodered/flows/dashboard_flow.json
 - aendere tooltip zu "Sensor-Lesezyklus starten"
 ```
 
-Validierung:
-- `jq . nodered/flows/<file>.json`
-
-
-TEIL 1B: NETWORK.JSON
----------------------
-- `Network.json` ist ein separater Flow-Tab (Netzwerkverbindung).
-- Abhaengigkeiten: UI-Gruppen/Tabs liegen in `dashboard_flow.json`.
-- Immer gemeinsam deployen: `dashboard_flow.json` + `Network.json` + `data_exchange_flow.json`.
-
-TEIL 2: COMPONENTS.YAML
------------------------
+COMPONENTS.YAML
+---------------
 Nutze logische IDs, keine Node-IDs. Aenderungen in components.yaml dokumentieren.
 Bei UI/Logik-Change `version` erhoehen.
-Validierung:
-- `yaml-lint components.yaml`
 
-TEIL 3: MEGA.INO
-----------------
+ARDUINO (arduino/mega)
+----------------------
 Pins im Code muessen zu PINOUT.md passen.
-Nach Code-Aenderungen sicherstellen: kompiliert, PINOUT aktualisiert.
+Nach Code-Aenderungen: Build mit `scripts/arduino_build.sh` und PINOUT aktualisieren.
+Sketch-Aufteilung (Arduino Mega):
+- `arduino/mega/mega.ino`: Sketch-Wrapper (Root).
+- `arduino/mega/main.ino`: Wrapper fuer `setup()`/`loop()`.
+- `arduino/mega/data.ino`: Wrapper fuer Serial1-Protokoll.
+- `arduino/mega/funktion_<name>.ino`: Wrapper fuer jeweilige Module.
+Implementierungen liegen in `.cpp` Dateien im gleichen Ordner.
+Serielle Regeln:
+- `Serial` (RX0/TX0) bleibt fuer USB Debug/Programmierung.
+- `Serial1` (RX1/TX1) fuer Node-RED/Raspberry Pi UART.
+- Serial1 sendet nur JSON-Zeilen (newline-terminiert), damit `data_exchange_flow.json` stabil bleibt.
+Build-Regeln (Arduino CLI):
+- `scripts/arduino_build.sh` ist der Standard-Build.
+- Das Script prueft/installiert `arduino:avr` automatisch, falls noetig.
 
-TEIL 4: PINOUT.MD
------------------
+PINOUT.MD
+---------
 PINOUT.md ist Quelle der Wahrheit fuer alle Pins.
 Jede Pin-Aenderung muss hier dokumentiert werden.
 
 
-TEIL 5: DEPLOY_FLOWS.SH
------------------------
+DEPLOY_FLOWS.SH
+---------------
 - Script kombiniert alle Flow-Dateien.
 - Bei neuen Flow-Dateien: File-Checks und Combine-Logik anpassen.
 - Ziel-Endpoint bleibt: `POST /flows`.
 
 
-TEIL 6: DOKU
-------------
+DOKU
+----
 - Aenderungen an Flow-Struktur in `DEPLOYMENT_GUIDE.md` und `README.md` nachziehen.
+- Bei Hardware-/Komponenten-Aenderungen `Hardware.md` mitpflegen.
 
-ZUSAMMENFASSUNG
----------------
-Ich nutze klare Referenzen, halte Regeln ein und sorge fuer Konsistenz zwischen:
-- components.yaml
-- nodered/flows/*.json
-- arduino/mega/mega.ino
-- arduino/mega/PINOUT.md
+KONSISTENZ
+----------
+Ich halte diese Dateien konsistent:
+- `components.yaml`
+- `nodered/flows/*.json`
+- `arduino/mega/mega.ino`
+- `arduino/mega/PINOUT.md`
+- `Hardware.md`
 ```

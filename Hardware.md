@@ -1,0 +1,4 @@
+- Arduino Mega 2560 R3
+- Raspberry Pi (Node-RED, UART /dev/serial0)
+- 4x digitale Aktoren an Pins 22-25 (Typ offen)
+- 2x Analogsensoren an A0/A1 (Typ offen)

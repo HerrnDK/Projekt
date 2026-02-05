@@ -2,7 +2,7 @@
   {
     "id": "flow_data_exchange",
     "type": "tab",
-    "label": "Data Exchange - Arduino",
+    "label": "Data Exchange - Arduino (JSON)",
     "disabled": false,
     "info": "Serial communication and parsing"
   },
@@ -56,7 +56,7 @@
     "id": "dbg_raw",
     "type": "debug",
     "z": "flow_data_exchange",
-    "name": "Raw Serial",
+    "name": "Raw Serial (lines)",
     "active": true,
     "tosidebar": true,
     "console": false,
@@ -70,7 +70,7 @@
     "id": "dbg_parsed",
     "type": "debug",
     "z": "flow_data_exchange",
-    "name": "Parsed JSON",
+    "name": "Parsed JSON (type)",
     "active": true,
     "tosidebar": true,
     "console": false,
