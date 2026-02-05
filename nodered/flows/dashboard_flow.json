@@ -746,7 +746,7 @@
     "type": "function",
     "z": "4985bdfbcf200fe6",
     "name": "Connect Kommando (nmcli)",
-    "func": "const ssid = (flow.get(\"selectedSsid\") || \"\").toString();\nconst pw = (flow.get(\"wifiPassword\") || \"\").toString();\nif (!ssid) return { payload: \"FEHLER: Bitte zuerst ein WLAN auswählen.\" };\nconst esc = (s) => s.replace(/\"/g, \"\\\\\"\");\nif (pw) {\n  msg.payload = `nmcli dev wifi connect \"${esc(ssid)}\" password \"${esc(pw)}\" ifname wlan0`;\n} else {\n  msg.payload = `nmcli dev wifi connect \"${esc(ssid)}\" ifname wlan0`;\n}\nreturn msg;",
+    "func": "const ssid = (flow.get(\"selectedSsid\") || \"\").toString();\nconst pw = (flow.get(\"wifiPassword\") || \"\").toString();\nif (!ssid) return { payload: \"FEHLER: Bitte zuerst ein WLAN auswählen.\" };\nconst esc = (s) => s.replace(/\"/g, \"\\\\\"\");\nconst s = esc(ssid);\nconst p = esc(pw);\nconst cmd = `nmcli connection delete \"${s}\" 2>/dev/null || true; nmcli connection add type wifi ifname wlan0 con-name \"${s}\" ssid \"${s}\"; nmcli connection modify \"${s}\" wifi-sec.key-mgmt wpa-psk wifi-sec.psk \"${p}\"; nmcli connection up \"${s}\" ifname wlan0`;\nmsg.payload = cmd;\nreturn msg;",
     "outputs": 1,
     "x": 620,
     "y": 280,
