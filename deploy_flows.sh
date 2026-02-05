@@ -106,6 +106,7 @@ fi
 
 # 5. Prüfe auf Erfolg (HTTP-Code)
 HTTP_POST_CODE=$(curl -s -o /dev/null -w "%{http_code}" \
+  -X POST \
   -H "Content-Type: application/json" \
   --data-binary "$PAYLOAD" \
   "$NODE_RED_URL/flows")
