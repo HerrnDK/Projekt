@@ -474,11 +474,16 @@
     "type": "function",
     "z": "4985bdfbcf200fe6",
     "name": "Passwort merken",
-    "func": "flow.set(\"wifiPassword\", msg.payload);\nreturn null;",
-    "outputs": 0,
+    "func": "const incoming = (msg.payload || \"\").toString();\nif (incoming) {\n  flow.set(\"wifiPassword\", incoming);\n}\nconst stored = (flow.get(\"wifiPassword\") || \"\").toString();\nmsg.payload = stored ? `Passwort gesetzt (${stored.length} Zeichen)` : \"Passwort nicht gesetzt\";\nreturn msg;",
+    "outputs": 1,
     "x": 1430,
     "y": 400,
-    "wires": []
+    "wires": [
+      [
+        "721695ad2e0fe102",
+        "5e08d452cbfbd5d1"
+      ]
+    ]
   },
   {
     "id": "8dd601ce12051b76",
@@ -486,7 +491,7 @@
     "z": "4985bdfbcf200fe6",
     "name": "Netzwerke neu laden",
     "group": "6888e5abb8efb54d",
-    "order": 5,
+    "order": 6,
     "width": 7,
     "height": 1,
     "passthru": false,
@@ -532,7 +537,7 @@
     "type": "function",
     "z": "4985bdfbcf200fe6",
     "name": "SSID Liste -> Dropdown (Strings)",
-    "func": "const txt = (msg.payload || \"\").toString();\nconst lines = txt.split(/\\r?\\n/).map(l => l.trim()).filter(Boolean);\nlet ssids = [];\nlet seen = new Set();\nfor (const ssid of lines) { if (!ssid) continue; if (seen.has(ssid)) continue; seen.add(ssid); ssids.push(ssid); }\nssids.sort((a,b) => a.localeCompare(b, \"de\"));\nmsg.options = ssids; msg.payload = ssids.length ? ssids[0] : \"\"; if (msg.payload) flow.set(\"selectedSsid\", msg.payload); return msg;",
+    "func": "const txt = (msg.payload || \"\").toString();\nconst lines = txt.split(/\\r?\\n/).map(l => l.trim()).filter(Boolean);\nlet ssids = [];\nlet seen = new Set();\nfor (const ssid of lines) {\n  if (!ssid) continue;\n  if (ssid === \"--\") continue;\n  if (/^\\d+$/.test(ssid)) continue;\n  if (seen.has(ssid)) continue;\n  seen.add(ssid);\n  ssids.push(ssid);\n}\nssids.sort((a,b) => a.localeCompare(b, \"de\"));\nmsg.options = ssids;\nmsg.payload = ssids.length ? ssids[0] : \"\";\nif (msg.payload) flow.set(\"selectedSsid\", msg.payload);\nreturn msg;",
     "outputs": 1,
     "x": 980,
     "y": 200,
@@ -548,7 +553,7 @@
     "z": "4985bdfbcf200fe6",
     "name": "Verbinden",
     "group": "6888e5abb8efb54d",
-    "order": 6,
+    "order": 7,
     "width": 7,
     "height": 1,
     "passthru": false,
@@ -620,7 +625,7 @@
     "z": "4985bdfbcf200fe6",
     "name": "Netzwerke neu laden (Mobile)",
     "group": "18e42aa468913fd1",
-    "order": 5,
+    "order": 6,
     "width": 5,
     "height": 1,
     "passthru": false,
@@ -644,7 +649,7 @@
     "z": "4985bdfbcf200fe6",
     "name": "Verbinden (Mobile)",
     "group": "18e42aa468913fd1",
-    "order": 6,
+    "order": 7,
     "width": 5,
     "height": 1,
     "passthru": false,
@@ -1509,5 +1514,37 @@
         "1314fa9599b0730c"
       ]
     ]
+  },
+  {
+    "id": "721695ad2e0fe102",
+    "type": "ui_text",
+    "z": "4985bdfbcf200fe6",
+    "group": "6888e5abb8efb54d",
+    "order": 5,
+    "width": 14,
+    "height": 1,
+    "name": "Passwort Status",
+    "label": "Passwort Status",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "x": 420,
+    "y": 360,
+    "wires": []
+  },
+  {
+    "id": "5e08d452cbfbd5d1",
+    "type": "ui_text",
+    "z": "4985bdfbcf200fe6",
+    "group": "18e42aa468913fd1",
+    "order": 5,
+    "width": 10,
+    "height": 1,
+    "name": "Passwort Status (Mobile)",
+    "label": "Passwort Status",
+    "format": "{{msg.payload}}",
+    "layout": "row-spread",
+    "x": 420,
+    "y": 400,
+    "wires": []
   }
 ]
