@@ -28,7 +28,12 @@
     "serial": "serial-config",
     "x": 180,
     "y": 160,
-    "wires": [["json-parse","dbg_raw"]]
+    "wires": [
+      [
+        "json-parse",
+        "dbg_raw"
+      ]
+    ]
   },
   {
     "id": "json-parse",
@@ -40,7 +45,12 @@
     "pretty": false,
     "x": 400,
     "y": 160,
-    "wires": [["dbg_parsed","link_out_from_data"]]
+    "wires": [
+      [
+        "dbg_parsed",
+        "link_out_from_data"
+      ]
+    ]
   },
   {
     "id": "dbg_raw",
@@ -80,24 +90,30 @@
     "y": 320,
     "wires": []
   },
-
   {
     "id": "link_in_from_dashboard",
     "type": "link in",
     "z": "flow_data_exchange",
     "name": "from Dashboard",
-    "links": ["link_out_to_arduino"],
+    "links": [
+      "4ac1b66aca6f1626"
+    ],
     "x": 380,
     "y": 320,
-    "wires": [["serial-out"]]
+    "wires": [
+      [
+        "serial-out"
+      ]
+    ]
   },
-
   {
     "id": "link_out_from_data",
     "type": "link out",
     "z": "flow_data_exchange",
     "name": "to Dashboard (sensors)",
-    "links": ["link_in_from_arduino_dashboard"],
+    "links": [
+      "2a616d8b76b4fe2c"
+    ],
     "x": 760,
     "y": 160,
     "wires": []
@@ -106,6 +122,6 @@
     "id": "1d67149e10aac307",
     "type": "global-config",
     "env": [],
-    "modules": { }
+    "modules": {}
   }
 ]
