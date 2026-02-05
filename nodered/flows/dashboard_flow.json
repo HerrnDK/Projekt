@@ -374,7 +374,7 @@
     "command": "/usr/bin/qrencode",
     "addpay": false,
     "append": "-t SVG -o -",
-    "name": "QR erzeugen (qrencode SVG)",
+    "name": "QR erzeugen (Login)",
     "x": 970,
     "y": 140,
     "wires": [
@@ -382,7 +382,7 @@
         "8dab6698f54beec2"
       ],
       [
-        "9e41764418b6e58a"
+        "8dab6698f54beec2"
       ],
       []
     ],
@@ -1414,14 +1414,40 @@
     "type": "function",
     "z": "4985bdfbcf200fe6",
     "name": "QR Targets (AP + Login)",
-    "func": "const apSsid = 'projekt-ap';\nconst apPass = '1234568';\nconst apQr = `WIFI:T:WPA;S:${apSsid};P:${apPass};;`;\nconst loginUrl = 'http://10.42.0.1:1880/ui/#!/1';\nconst msgAp = { payload: apQr, topic: 'ap', qrHint: `WLAN: ${apSsid}` };\nconst msgLogin = { payload: loginUrl, topic: 'login', qrHint: 'Anmeldemaske' };\nreturn [[msgAp, msgLogin]];",
-    "outputs": 1,
+    "func": "const apSsid = 'projekt-ap';\nconst apPass = '1234568';\nconst apQr = `WIFI:T:WPA;S:${apSsid};P:${apPass};;`;\nconst loginUrl = 'http://10.42.0.1:1880/ui/#!/1';\nconst msgAp = { payload: apQr, topic: 'ap', qrHint: `WLAN: ${apSsid}` };\nconst msgLogin = { payload: loginUrl, topic: 'login', qrHint: 'Anmeldemaske' };\nreturn [msgAp, msgLogin];",
+    "outputs": 2,
     "x": 710,
     "y": 140,
     "wires": [
       [
+        "f247a2fd5fb6c30d"
+      ],
+      [
         "8520ceb726888ed7"
       ]
+    ]
+  },
+  {
+    "id": "f247a2fd5fb6c30d",
+    "type": "exec",
+    "z": "4985bdfbcf200fe6",
+    "command": "/usr/bin/qrencode",
+    "addpay": false,
+    "append": "-t SVG -o -",
+    "useSpawn": "true",
+    "timer": "",
+    "winHide": true,
+    "name": "QR erzeugen (AP)",
+    "x": 930,
+    "y": 100,
+    "wires": [
+      [
+        "8dab6698f54beec2"
+      ],
+      [
+        "8dab6698f54beec2"
+      ],
+      []
     ]
   }
 ]
