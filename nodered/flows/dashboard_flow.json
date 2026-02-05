@@ -739,7 +739,7 @@
     "type": "function",
     "z": "4985bdfbcf200fe6",
     "name": "Connect Kommando (nmcli)",
-    "func": "const ssid = (flow.get(\"selectedSsid\") || \"\").toString();\nconst pw = (flow.get(\"wifiPassword\") || \"\").toString();\nif (!ssid) return [null, { payload: \"FEHLER: Bitte zuerst ein WLAN auswählen.\" }];\nif (!pw) return [null, { payload: \"FEHLER: Bitte ein WLAN Passwort eingeben.\" }];\nconst esc = (s) => s.replace(/[\"\\\\$`]/g, \"\\\\$&\");\nconst s = esc(ssid);\nconst p = esc(pw);\nmsg.apDownCmd = `con down \"projekt-ap\"`;\nmsg.deleteCmd = `connection delete \"${s}\"`;\nmsg.connectCmd = `dev wifi connect \"${s}\" password \"${p}\" ifname wlan0`;\nmsg.payload = msg.apDownCmd;\nreturn [ msg, null ];",
+    "func": "const ssid = (flow.get(\"selectedSsid\") || \"\").toString();\nconst pw = (flow.get(\"wifiPassword\") || \"\").toString();\nif (!ssid) return [null, { payload: \"FEHLER: Bitte zuerst ein WLAN auswählen.\" }];\nif (!pw) return [null, { payload: \"FEHLER: Bitte ein WLAN Passwort eingeben.\" }];\nconst esc = (s) => s.replace(/[\"\\\\$`]/g, \"\\\\$&\");\nconst s = esc(ssid);\nconst p = esc(pw);\nmsg.apDownCmd = `con down \"projekt-ap\"`;\nmsg.deleteCmd = `connection delete \"${s}\"`;\nmsg.connectCmd = `-w 20 dev wifi connect \"${s}\" password \"${p}\" ifname wlan0`;\nmsg.payload = msg.apDownCmd;\nreturn [ msg, null ];",
     "outputs": 2,
     "x": 620,
     "y": 280,
@@ -1340,10 +1340,10 @@
     "y": 320,
     "wires": [
       [
-        "1314fa9599b0730c"
+        "c6e8bbf0ccfccdf3"
       ],
       [
-        "1314fa9599b0730c"
+        "c6e8bbf0ccfccdf3"
       ],
       []
     ]
@@ -1378,10 +1378,10 @@
     "y": 240,
     "wires": [
       [
-        "a27b14ebfa3642fd"
+        "f13d6a3f4b2f5cdc"
       ],
       [
-        "a27b14ebfa3642fd"
+        "f13d6a3f4b2f5cdc"
       ],
       []
     ]
@@ -1460,6 +1460,54 @@
     "y": 100,
     "wires": [
       []
+    ]
+  },
+  {
+    "id": "f13d6a3f4b2f5cdc",
+    "type": "delay",
+    "z": "4985bdfbcf200fe6",
+    "name": "Warte AP Stop",
+    "pauseType": "delay",
+    "timeout": "1.5",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "allowrate": false,
+    "x": 870,
+    "y": 200,
+    "wires": [
+      [
+        "a27b14ebfa3642fd"
+      ]
+    ]
+  },
+  {
+    "id": "c6e8bbf0ccfccdf3",
+    "type": "delay",
+    "z": "4985bdfbcf200fe6",
+    "name": "Warte Profil Löschen",
+    "pauseType": "delay",
+    "timeout": "1",
+    "timeoutUnits": "seconds",
+    "rate": "1",
+    "nbRateUnits": "1",
+    "rateUnits": "second",
+    "randomFirst": "1",
+    "randomLast": "5",
+    "randomUnits": "seconds",
+    "drop": false,
+    "allowrate": false,
+    "x": 890,
+    "y": 320,
+    "wires": [
+      [
+        "1314fa9599b0730c"
+      ]
     ]
   }
 ]
