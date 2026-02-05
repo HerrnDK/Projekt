@@ -139,17 +139,6 @@
     "collapse": false
   },
   {
-    "id": "91a4f531eb00cb95",
-    "type": "ui_group",
-    "name": "",
-    "tab": "0318f4604525f4f7",
-    "order": 99,
-    "disp": true,
-    "width": "1",
-    "collapse": false,
-    "className": ""
-  },
-  {
     "id": "3430d891af8fa1f6",
     "type": "ui_base",
     "theme": {
@@ -239,7 +228,7 @@
     "order": -1,
     "width": 0,
     "height": 0,
-    "format": "<style>\n  * { box-sizing: border-box; }\n  html, body, md-content, .nr-dashboard-dashboard { overflow-x: hidden; }\n  .nr-dashboard-cardcontainer { padding: 4px; }\n  md-card { width: 100%; max-width: calc(100% - 8px); }\n\n  .mobile-only { display: none !important; }\n  .desktop-only { display: block !important; }\n\n  @media (max-width: 600px) {\n    .desktop-only { display: none !important; }\n    .mobile-only { display: block !important; }\n    md-card { margin: 2px !important; }\n    .nr-dashboard-cardcontainer { padding: 2px !important; }\n  }\n</style>",
+    "format": "<style>\n  * { box-sizing: border-box; }\n  html, body, md-content, .nr-dashboard-dashboard { overflow-x: hidden; }\n  .nr-dashboard-cardcontainer { padding: 4px; }\n  md-card { width: 100%; max-width: calc(100% - 8px); }\n\n  .mobile-only { display: none !important; }\n  .desktop-only { display: block !important; }\n\n  @media (max-width: 600px) {\n    .desktop-only { display: none !important; }\n    .mobile-only { display: block !important; }\n    md-card { margin: 2px !important; }\n    .nr-dashboard-cardcontainer { padding: 2px !important; }\n  }\n\n  /* QR cards */\n  .qr-card {\n    background: #ffffff;\n    padding: 16px 18px;\n    border-radius: 12px;\n    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);\n    text-align: center;\n    width: 100%;\n  }\n  .qr-title {\n    font-weight: 700;\n    margin-bottom: 8px;\n    color: #111111;\n  }\n  .qr-card img {\n    width: 200px;\n    height: 200px;\n    display: block;\n    margin: 0 auto;\n  }\n  .qr-hint {\n    margin-top: 8px;\n    font-size: 13px;\n    color: #333333;\n  }\n  @media (max-width: 600px) {\n    .qr-card { padding: 12px 14px; }\n    .qr-card img { width: 170px; height: 170px; }\n    .qr-hint { font-size: 12px; }\n  }\n\n</style>",
     "storeOutMessages": false,
     "fwdInMessages": true,
     "resendOnRefresh": true,
@@ -254,12 +243,12 @@
     "id": "080faa24e0dac224",
     "type": "ui_template",
     "z": "4985bdfbcf200fe6",
-    "group": "91a4f531eb00cb95",
-    "name": "QR Overlay - Welcome",
-    "order": 1,
-    "width": 1,
-    "height": 1,
-    "format": "<style>\n  .qr-overlay {\n    position: fixed;\n    inset: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    pointer-events: none;\n    z-index: 9999;\n  }\n  .qr-grid {\n    display: flex;\n    gap: 24px;\n    flex-wrap: wrap;\n    justify-content: center;\n  }\n  .qr-card {\n    background: #ffffff;\n    padding: 16px 18px;\n    border-radius: 12px;\n    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);\n    text-align: center;\n    min-width: 220px;\n  }\n  .qr-title {\n    font-weight: 700;\n    margin-bottom: 8px;\n    color: #111111;\n  }\n  .qr-card img {\n    width: 200px;\n    height: 200px;\n    display: block;\n    margin: 0 auto;\n  }\n  .qr-hint {\n    margin-top: 8px;\n    font-size: 13px;\n    color: #333333;\n  }\n  @media (max-width: 600px) {\n    .qr-grid { gap: 12px; }\n    .qr-card { padding: 12px 14px; min-width: 180px; }\n    .qr-card img { width: 170px; height: 170px; }\n    .qr-hint { font-size: 12px; }\n  }\n</style>\n<div class=\"qr-overlay\" ng-if=\"msg.payload\">\n  <div class=\"qr-grid\">\n    <div class=\"qr-card\" ng-if=\"msg.payload.qrApDataUrl\">\n      <div class=\"qr-title\">AP verbinden</div>\n      <img ng-src=\"{{msg.payload.qrApDataUrl}}\" alt=\"AP QR\" />\n      <div class=\"qr-hint\">{{msg.payload.qrApHint}}</div>\n    </div>\n    <div class=\"qr-card\" ng-if=\"msg.payload.qrLoginDataUrl\">\n      <div class=\"qr-title\">Anmeldemaske</div>\n      <img ng-src=\"{{msg.payload.qrLoginDataUrl}}\" alt=\"Login QR\" />\n      <div class=\"qr-hint\">{{msg.payload.qrLoginHint}}</div>\n    </div>\n  </div>\n</div>",
+    "group": "1b4dd4e879ccb455",
+    "name": "QR Login - Welcome",
+    "order": 2,
+    "width": 7,
+    "height": 6,
+    "format": "<div class=\"qr-card\">\n  <div class=\"qr-title\">Anmeldemaske</div>\n  <img ng-src=\"{{msg.payload.qrDataUrl}}\" alt=\"Login QR\" />\n  <div class=\"qr-hint\">{{msg.payload.qrHint}}</div>\n</div>",
     "storeOutMessages": false,
     "fwdInMessages": true,
     "resendOnRefresh": true,
@@ -276,7 +265,7 @@
     "z": "4985bdfbcf200fe6",
     "group": "1b4dd4e879ccb455",
     "name": "Welcome Anzeige (zentriert)",
-    "order": 1,
+    "order": 3,
     "width": 14,
     "height": 7,
     "format": "<div></div>",
@@ -372,7 +361,7 @@
     "type": "exec",
     "z": "4985bdfbcf200fe6",
     "command": "/usr/bin/qrencode",
-    "addpay": false,
+    "addpay": true,
     "append": "-t SVG -o -",
     "name": "QR erzeugen (Login)",
     "x": 970,
@@ -393,11 +382,14 @@
     "type": "function",
     "z": "4985bdfbcf200fe6",
     "name": "SVG -> DataURL (msg.payload) + Broadcast",
-    "func": "const kind = (msg.topic || '').toString();\nconst hint = (msg.qrHint || '').toString();\nconst out = (msg.payload || '').toString();\nconst idx = out.indexOf('<svg');\nlet dataUrl = '';\nif (idx >= 0) {\n  const svg = out.slice(idx).trim();\n  const enc = encodeURIComponent(svg).replace(/'/g, '%27').replace(/\"/g, '%22');\n  dataUrl = `data:image/svg+xml;charset=utf-8,${enc}`;\n}\nif (kind === 'ap') {\n  flow.set('qrApDataUrl', dataUrl);\n  flow.set('qrApHint', hint || 'AP verbinden');\n} else {\n  flow.set('qrLoginDataUrl', dataUrl);\n  flow.set('qrLoginHint', hint || 'Anmeldemaske');\n}\nmsg.payload = {\n  qrApDataUrl: flow.get('qrApDataUrl') || '',\n  qrApHint: flow.get('qrApHint') || 'AP verbinden',\n  qrLoginDataUrl: flow.get('qrLoginDataUrl') || '',\n  qrLoginHint: flow.get('qrLoginHint') || 'Anmeldemaske'\n};\nreturn msg;",
-    "outputs": 1,
+    "func": "const hint = (msg.qrHint || '').toString();\nconst out = (msg.payload || '').toString();\nconst idx = out.indexOf('<svg');\nlet dataUrl = '';\nif (idx >= 0) {\n  const svg = out.slice(idx).trim();\n  const enc = encodeURIComponent(svg).replace(/'/g, '%27').replace(/\"/g, '%22');\n  dataUrl = `data:image/svg+xml;charset=utf-8,${enc}`;\n}\nmsg.payload = {\n  qrDataUrl: dataUrl,\n  qrHint: hint || (msg.topic === 'ap' ? 'AP verbinden' : 'Anmeldemaske')\n};\nif (msg.topic === 'ap') return [msg, null];\nreturn [null, msg];",
+    "outputs": 2,
     "x": 1350,
     "y": 120,
     "wires": [
+      [
+        "84995d6e205b39cf"
+      ],
       [
         "080faa24e0dac224"
       ]
@@ -1432,7 +1424,7 @@
     "type": "exec",
     "z": "4985bdfbcf200fe6",
     "command": "/usr/bin/qrencode",
-    "addpay": false,
+    "addpay": true,
     "append": "-t SVG -o -",
     "useSpawn": "true",
     "timer": "",
@@ -1447,6 +1439,26 @@
       [
         "8dab6698f54beec2"
       ],
+      []
+    ]
+  },
+  {
+    "id": "84995d6e205b39cf",
+    "type": "ui_template",
+    "z": "4985bdfbcf200fe6",
+    "group": "1b4dd4e879ccb455",
+    "name": "QR AP - Welcome",
+    "order": 1,
+    "width": 7,
+    "height": 6,
+    "format": "<div class=\"qr-card\">\n  <div class=\"qr-title\">AP verbinden</div>\n  <img ng-src=\"{{msg.payload.qrDataUrl}}\" alt=\"AP QR\" />\n  <div class=\"qr-hint\">{{msg.payload.qrHint}}</div>\n</div>",
+    "storeOutMessages": false,
+    "fwdInMessages": true,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "x": 1810,
+    "y": 100,
+    "wires": [
       []
     ]
   }
