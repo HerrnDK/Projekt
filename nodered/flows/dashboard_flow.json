@@ -1,0 +1,852 @@
+[
+  {
+    "id": "tab_pa_final",
+    "type": "tab",
+    "label": "Projekt Automatisierung - FINAL (800x480 + QR offline)",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "ui_tab_pa_welcome_f",
+    "type": "ui_tab",
+    "name": "Welcome",
+    "icon": "dashboard",
+    "order": 1,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "ui_tab_pa_wifi_f",
+    "type": "ui_tab",
+    "name": "WiFi",
+    "icon": "wifi",
+    "order": 2,
+    "disabled": false,
+    "hidden": true
+  },
+  {
+    "id": "ui_tab_pa_info_f",
+    "type": "ui_tab",
+    "name": "Projekt-info",
+    "icon": "info",
+    "order": 3,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "ui_tab_pa_param_f",
+    "type": "ui_tab",
+    "name": "Projekt-Parametrierung",
+    "icon": "tune",
+    "order": 4,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "ui_tab_pa_log_f",
+    "type": "ui_tab",
+    "name": "Projekt-Datenlog",
+    "icon": "list",
+    "order": 5,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "ui_grp_welcome_main",
+    "type": "ui_group",
+    "name": "Start",
+    "tab": "ui_tab_pa_welcome_f",
+    "order": 1,
+    "disp": true,
+    "width": "14",
+    "collapse": false,
+    "className": ""
+  },
+  {
+    "id": "ui_grp_wifi_main",
+    "type": "ui_group",
+    "name": "WLAN Anmeldung",
+    "tab": "ui_tab_pa_wifi_f",
+    "order": 1,
+    "disp": true,
+    "width": 14,
+    "collapse": false
+  },
+  {
+    "id": "ui_grp_info_main",
+    "type": "ui_group",
+    "name": "Status / Sensoren",
+    "tab": "ui_tab_pa_info_f",
+    "order": 1,
+    "disp": true,
+    "width": 14,
+    "collapse": false
+  },
+  {
+    "id": "ui_grp_param_main",
+    "type": "ui_group",
+    "name": "Parametrierung",
+    "tab": "ui_tab_pa_param_f",
+    "order": 1,
+    "disp": true,
+    "width": 14,
+    "collapse": false,
+    "className": "responsive-group-buttons"
+  },
+  {
+    "id": "ui_grp_log_main",
+    "type": "ui_group",
+    "name": "Datenlog",
+    "tab": "ui_tab_pa_log_f",
+    "order": 1,
+    "disp": true,
+    "width": 14,
+    "collapse": false
+  },
+  {
+    "id": "ui_grp_welcome_overlay",
+    "type": "ui_group",
+    "name": "",
+    "tab": "ui_tab_pa_welcome_f",
+    "order": 99,
+    "disp": true,
+    "width": "1",
+    "collapse": false,
+    "className": ""
+  },
+  {
+    "id": "c412071b713f4ecd",
+    "type": "ui_base",
+    "theme": {
+      "name": "theme-light",
+      "lightTheme": {
+        "default": "#0094CE",
+        "baseColor": "#0094CE",
+        "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+        "edited": true,
+        "reset": false
+      },
+      "darkTheme": {
+        "default": "#097479",
+        "baseColor": "#097479",
+        "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+        "edited": false
+      },
+      "themeState": {
+        "base-color": {
+          "default": "#0094CE",
+          "value": "#0094CE",
+          "edited": false
+        },
+        "page-titlebar-backgroundColor": {
+          "value": "#0094CE",
+          "edited": false
+        },
+        "page-backgroundColor": {
+          "value": "#fafafa",
+          "edited": false
+        },
+        "page-sidebar-backgroundColor": {
+          "value": "#ffffff",
+          "edited": false
+        },
+        "group-textColor": {
+          "value": "#1bbfff",
+          "edited": false
+        },
+        "group-borderColor": {
+          "value": "#ffffff",
+          "edited": false
+        },
+        "group-backgroundColor": {
+          "value": "#ffffff",
+          "edited": false
+        },
+        "widget-textColor": {
+          "value": "#111111",
+          "edited": false
+        },
+        "widget-backgroundColor": {
+          "value": "#0094ce",
+          "edited": false
+        },
+        "widget-borderColor": {
+          "value": "#ffffff",
+          "edited": false
+        }
+      }
+    },
+    "site": {
+      "name": "Node-RED Dashboard",
+      "hideToolbar": "false",
+      "allowSwipe": "false",
+      "lockMenu": "false",
+      "allowTempTheme": "true",
+      "dateFormat": "DD.MM.YYYY",
+      "sizes": {
+        "sx": 48,
+        "sy": 48,
+        "gx": 6,
+        "gy": 6,
+        "cx": 6,
+        "cy": 6,
+        "px": 0,
+        "py": 0
+      }
+    }
+  },
+  {
+    "id": "ui_tpl_responsive_css",
+    "type": "ui_template",
+    "z": "tab_pa_final",
+    "group": "ui_grp_welcome_main",
+    "name": "Responsive CSS Global",
+    "order": -1,
+    "width": 0,
+    "height": 0,
+    "format": "<style>\n  /* Global */\n  * { box-sizing: border-box; }\n  html, body, md-content, .nr-dashboard-dashboard { overflow-x: hidden; }\n  .nr-dashboard-cardcontainer { padding-left: 4px !important; padding-right: 4px !important; }\n  md-card { max-width: calc(100% - 8px) !important; }\n\n  /* Responsive Layout for Desktop & Mobile */\n  :root { --mobile: 0; }\n\n  /* Mobile (phone portrait) */\n  @media (max-width: 600px) {\n    :root { --mobile: 1; }\n\n    md-card { margin: 4px !important; }\n\n    .nr-dashboard-button {\n      min-height: 44px !important;\n      padding: 8px 10px !important;\n      font-size: 14px !important;\n    }\n\n    .nr-dashboard-text {\n      min-height: 40px !important;\n      padding: 8px !important;\n      font-size: 14px !important;\n    }\n\n    .widget {\n      min-height: 40px !important;\n      min-width: 0 !important;\n    }\n\n    .nr-dashboard-card { width: 100% !important; }\n  }\n\n  /* Pi Display 800x480 (optimized) */\n  @media (min-width: 760px) and (max-width: 840px) and (min-height: 440px) and (max-height: 520px) {\n    md-card { margin: 6px !important; }\n\n    .nr-dashboard-button {\n      min-height: 46px !important;\n      padding: 10px 12px !important;\n      font-size: 15px !important;\n    }\n\n    .nr-dashboard-text {\n      min-height: 42px !important;\n      padding: 8px 10px !important;\n      font-size: 15px !important;\n    }\n\n    .widget { min-height: 42px !important; }\n  }\n\n  /* Tablet (600px - 1024px) */\n  @media (min-width: 601px) and (max-width: 1024px) {\n    .nr-dashboard-button { min-height: 48px !important; }\n  }\n\n  /* Desktop/Large Display (> 1024px) */\n  @media (min-width: 1025px) {\n    .widget { min-height: 42px !important; }\n  }\n\n  /* Landscape */\n  @media (orientation: landscape) and (max-height: 500px) {\n    .nr-dashboard-button {\n      height: auto !important;\n      min-height: 40px !important;\n    }\n    md-card { margin: 2px !important; }\n  }\n\n  /* Portrait */\n  @media (orientation: portrait) and (max-width: 600px) {\n    md-card { margin: 4px !important; }\n  }\n</style>",
+    "storeOutMessages": false,
+    "fwdInMessages": true,
+    "resendOnRefresh": true,
+    "templateScope": "global",
+    "x": 140,
+    "y": 50,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "ui_tpl_qr_welcome",
+    "type": "ui_template",
+    "z": "tab_pa_final",
+    "group": "ui_grp_welcome_overlay",
+    "name": "QR Overlay - Welcome",
+    "order": 1,
+    "width": 1,
+    "height": 1,
+    "format": "<div></div>",
+    "storeOutMessages": false,
+    "fwdInMessages": true,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "x": 1810,
+    "y": 140,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "ui_tpl_welcome_center",
+    "type": "ui_template",
+    "z": "tab_pa_final",
+    "group": "ui_grp_welcome_main",
+    "name": "Welcome Anzeige (zentriert)",
+    "order": 1,
+    "width": 14,
+    "height": 7,
+    "format": "<div></div>",
+    "storeOutMessages": false,
+    "fwdInMessages": true,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "x": 1820,
+    "y": 100,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "ui_nav_ctrl",
+    "type": "ui_ui_control",
+    "z": "tab_pa_final",
+    "name": "UI Navigation",
+    "events": "none",
+    "x": 1780,
+    "y": 300,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "ui_toast",
+    "type": "ui_toast",
+    "z": "tab_pa_final",
+    "position": "top right",
+    "displayTime": "4",
+    "topic": "Hinweis",
+    "name": "Hinweis/Fehler",
+    "x": 1780,
+    "y": 220,
+    "wires": []
+  },
+  {
+    "id": "inj_poll_net",
+    "type": "inject",
+    "z": "tab_pa_final",
+    "name": "Netzstatus Poll (1s)",
+    "props": [],
+    "repeat": "1",
+    "once": true,
+    "onceDelay": "0.5",
+    "topic": "",
+    "x": 140,
+    "y": 100,
+    "wires": [
+      [
+        "exec_nmcli_dev"
+      ]
+    ]
+  },
+  {
+    "id": "exec_nmcli_dev",
+    "type": "exec",
+    "z": "tab_pa_final",
+    "command": "nmcli -t -f DEVICE,TYPE,STATE,CONNECTION device status",
+    "name": "nmcli device status",
+    "x": 350,
+    "y": 100,
+    "wires": [
+      [
+        "fn_eval_net"
+      ],
+      [],
+      []
+    ]
+  },
+  {
+    "id": "fn_eval_net",
+    "type": "function",
+    "z": "tab_pa_final",
+    "name": "Netzstatus auswerten + QR Ziel bestimmen",
+    "func": "const txt = (msg.payload || \"\").toString();\nconst lines = txt.split(/\\r?\\n/).filter(l => l.trim().length);\nlet wlanState = \"unknown\"; let wlanConn = \"\"; for (const l of lines) { const parts = l.split(\":\"); const dev = parts[0]; const state = parts[2]; const con = parts.slice(3).join(\":\"); if (dev === \"wlan0\") { wlanState = state; wlanConn = con; } } const apActive = (wlanState === \"connected\" && wlanConn === \"projekt-ap\"); const wifiConnected = (wlanState === \"connected\" && wlanConn && wlanConn !== \"projekt-ap\"); flow.set(\"apActive\", apActive); flow.set(\"wifiConnected\", wifiConnected); flow.set(\"wlanConn\", wlanConn); let statusText; if (wifiConnected) statusText = `WLAN verbunden (${wlanConn}). Projekt Dashboard aktiv.`; else if (apActive) statusText = \"Access Point aktiv (Projekt-Setup). Bitte WLAN einrichten. Passwort: 1234568\"; let qrUrl; let qrHint; if (apActive) { qrUrl = \"http://10.42.0.1:1880/ui/#!/1\"; qrHint = \"(Anmeldemaske)\"; } else { qrUrl = \"http://localhost:1880/ui/#!/1\"; qrHint = \"Projekt Dashboard öffnen\"; } flow.set(\"qrHint\", qrHint); return [ { payload: statusText }, { payload: qrUrl } ];",
+    "outputs": 2,
+    "x": 650,
+    "y": 100,
+    "wires": [
+      [
+        "ui_tpl_welcome_center"
+      ],
+      [
+        "exec_qrencode"
+      ]
+    ]
+  },
+  {
+    "id": "exec_qrencode",
+    "type": "exec",
+    "z": "tab_pa_final",
+    "command": "/usr/bin/qrencode",
+    "addpay": true,
+    "append": "-t SVG -o -",
+    "name": "QR erzeugen (qrencode SVG)",
+    "x": 970,
+    "y": 140,
+    "wires": [
+      [
+        "fn_svg_to_dataurl"
+      ],
+      [
+        "fn_qr_err"
+      ],
+      []
+    ]
+  },
+  {
+    "id": "fn_svg_to_dataurl",
+    "type": "function",
+    "z": "tab_pa_final",
+    "name": "SVG -> DataURL (msg.payload) + Broadcast",
+    "func": "const hint = flow.get(\"qrHint\") || \"\"; const out = (msg.payload || \"\").toString(); const idx = out.indexOf(\"<svg\"); let dataUrl = \"\"; if (idx >= 0) { const svg = out.slice(idx).trim(); const enc = encodeURIComponent(svg).replace(/'/g, \"%27\").replace(/\"/g, \"%22\"); dataUrl = `data:image/svg+xml;charset=utf-8,${enc}`; } msg.payload = { qrDataUrl: dataUrl, qrHint: hint }; return msg;",
+    "outputs": 1,
+    "x": 1350,
+    "y": 120,
+    "wires": [
+      [
+        "ui_tpl_qr_welcome"
+      ]
+    ]
+  },
+  {
+    "id": "fn_qr_err",
+    "type": "function",
+    "z": "tab_pa_final",
+    "name": "QR Fehler -> Toast",
+    "func": "return { payload: `FEHLER QR-Erzeugung: ${(msg.payload||\"\").toString()}` };",
+    "outputs": 1,
+    "x": 1430,
+    "y": 160,
+    "wires": [
+      [
+        "ui_toast"
+      ]
+    ]
+  },
+  {
+    "id": "ui_dd_ssid",
+    "type": "ui_dropdown",
+    "z": "tab_pa_final",
+    "name": "SSID Auswahl",
+    "label": "WLAN Netzwerk",
+    "place": "WLAN auswählen",
+    "group": "ui_grp_wifi_main",
+    "order": 1,
+    "width": 14,
+    "height": 1,
+    "passthru": true,
+    "multiple": false,
+    "options": [],
+    "payload": "",
+    "topic": "ssid",
+    "topicType": "str",
+    "x": 1260,
+    "y": 200,
+    "wires": [
+      [
+        "fn_store_ssid"
+      ]
+    ]
+  },
+  {
+    "id": "fn_store_ssid",
+    "type": "function",
+    "z": "tab_pa_final",
+    "name": "SSID merken",
+    "func": "flow.set(\"selectedSsid\", msg.payload);\nreturn null;",
+    "outputs": 0,
+    "x": 1450,
+    "y": 200,
+    "wires": []
+  },
+  {
+    "id": "ui_pw",
+    "type": "ui_text_input",
+    "z": "tab_pa_final",
+    "name": "WLAN Passwort",
+    "label": "Passwort",
+    "group": "ui_grp_wifi_main",
+    "order": 2,
+    "width": 14,
+    "height": 1,
+    "passthru": true,
+    "mode": "password",
+    "delay": "0",
+    "topic": "wifipw",
+    "topicType": "str",
+    "x": 120,
+    "y": 360,
+    "wires": [
+      [
+        "fn_store_pw"
+      ]
+    ]
+  },
+  {
+    "id": "fn_store_pw",
+    "type": "function",
+    "z": "tab_pa_final",
+    "name": "Passwort merken",
+    "func": "flow.set(\"wifiPassword\", msg.payload);\nreturn null;",
+    "outputs": 0,
+    "x": 1430,
+    "y": 400,
+    "wires": []
+  },
+  {
+    "id": "ui_btn_scan",
+    "type": "ui_button",
+    "z": "tab_pa_final",
+    "name": "Netzwerke neu laden",
+    "group": "ui_grp_wifi_main",
+    "order": 3,
+    "width": 7,
+    "height": 1,
+    "passthru": false,
+    "label": "Netzwerke neu laden",
+    "icon": "refresh",
+    "payload": "scan",
+    "payloadType": "str",
+    "topic": "cmd",
+    "topicType": "str",
+    "x": 140,
+    "y": 220,
+    "wires": [
+      [
+        "exec_wifi_scan"
+      ]
+    ]
+  },
+  {
+    "id": "exec_wifi_scan",
+    "type": "exec",
+    "z": "tab_pa_final",
+    "command": "nmcli -t -f SSID device wifi list ifname wlan0 --rescan yes",
+    "addpay": false,
+    "append": "",
+    "useSpawn": "false",
+    "timer": "",
+    "winHide": true,
+    "name": "WLAN Scan (SSID Liste)",
+    "x": 590,
+    "y": 220,
+    "wires": [
+      [
+        "fn_ssid_to_dropdown"
+      ],
+      [
+        "fn_scan_err"
+      ],
+      []
+    ]
+  },
+  {
+    "id": "fn_ssid_to_dropdown",
+    "type": "function",
+    "z": "tab_pa_final",
+    "name": "SSID Liste -> Dropdown (Strings)",
+    "func": "const txt = (msg.payload || \"\").toString();\nconst lines = txt.split(/\\r?\\n/).map(l => l.trim()).filter(Boolean);\nlet ssids = [];\nlet seen = new Set();\nfor (const ssid of lines) { if (!ssid) continue; if (seen.has(ssid)) continue; seen.add(ssid); ssids.push(ssid); }\nssids.sort((a,b) => a.localeCompare(b, \"de\"));\nmsg.options = ssids; msg.payload = ssids.length ? ssids[0] : \"\"; if (msg.payload) flow.set(\"selectedSsid\", msg.payload); return msg;",
+    "outputs": 1,
+    "x": 980,
+    "y": 200,
+    "wires": [
+      [
+        "ui_dd_ssid"
+      ]
+    ]
+  },
+  {
+    "id": "ui_btn_connect",
+    "type": "ui_button",
+    "z": "tab_pa_final",
+    "name": "Verbinden",
+    "group": "ui_grp_wifi_main",
+    "order": 4,
+    "width": 7,
+    "height": 1,
+    "passthru": false,
+    "label": "Verbinden",
+    "icon": "check",
+    "payload": "connect",
+    "payloadType": "str",
+    "topic": "cmd",
+    "topicType": "str",
+    "x": 100,
+    "y": 280,
+    "wires": [
+      [
+        "fn_build_connect_cmd"
+      ]
+    ]
+  },
+  {
+    "id": "fn_build_connect_cmd",
+    "type": "function",
+    "z": "tab_pa_final",
+    "name": "Connect Kommando (sudo Script)",
+    "func": "const ssid = (flow.get(\"selectedSsid\") || \"\").toString();\nconst pw = (flow.get(\"wifiPassword\") || \"\").toString();\nif (!ssid) return { payload: \"FEHLER: Bitte zuerst ein WLAN auswählen.\" };\nconst esc = (s) => s.replace(/\"/g, '\\\\\"');\nmsg.payload = `sudo /usr/local/bin/projekt-wifi-connect.sh \"${esc(ssid)}\" \"${esc(pw)}\"`;\nreturn msg;",
+    "outputs": 1,
+    "x": 620,
+    "y": 280,
+    "wires": [
+      [
+        "exec_connect"
+      ]
+    ]
+  },
+  {
+    "id": "exec_connect",
+    "type": "exec",
+    "z": "tab_pa_final",
+    "command": "bash",
+    "addpay": true,
+    "append": "-lc",
+    "useSpawn": "false",
+    "timer": "",
+    "winHide": true,
+    "name": "Connect ausführen",
+    "x": 930,
+    "y": 280,
+    "wires": [
+      [
+        "fn_connect_ok"
+      ],
+      [
+        "fn_connect_err"
+      ],
+      []
+    ]
+  },
+  {
+    "id": "fn_connect_ok",
+    "type": "function",
+    "z": "tab_pa_final",
+    "name": "Connect OK -> Toast + Nav",
+    "func": "return [ { payload: \"WLAN-Verbindung angestoßen.\" }, { payload: { tab: \"Projekt-info\" } } ];",
+    "outputs": 2,
+    "x": 1400,
+    "y": 280,
+    "wires": [
+      [
+        "ui_toast"
+      ],
+      [
+        "ui_nav_ctrl"
+      ]
+    ]
+  },
+  {
+    "id": "fn_connect_err",
+    "type": "function",
+    "z": "tab_pa_final",
+    "name": "Connect ERR -> Toast",
+    "func": "return { payload: `FEHLER bei WLAN-Verbindung: ${(msg.payload||\"\").toString()}` };",
+    "outputs": 1,
+    "x": 1420,
+    "y": 320,
+    "wires": [
+      [
+        "ui_toast"
+      ]
+    ]
+  },
+  {
+    "id": "fn_scan_err",
+    "type": "function",
+    "z": "tab_pa_final",
+    "name": "Scan ERR -> Toast",
+    "func": "return { payload: `FEHLER beim WLAN-Scan: ${(msg.payload||\"\").toString()}` };",
+    "outputs": 1,
+    "x": 1430,
+    "y": 240,
+    "wires": [
+      [
+        "ui_toast"
+      ]
+    ]
+  },
+  {
+    "id": "ui_text_a0",
+    "type": "ui_text",
+    "z": "tab_pa_final",
+    "group": "ui_grp_info_main",
+    "order": 2,
+    "width": 7,
+    "height": 1,
+    "name": "A0 Display",
+    "label": "Sensor A0",
+    "format": "{{msg.payload.a0}}",
+    "layout": "row-spread",
+    "x": 600,
+    "y": 560,
+    "wires": []
+  },
+  {
+    "id": "ui_text_a1",
+    "type": "ui_text",
+    "z": "tab_pa_final",
+    "group": "ui_grp_info_main",
+    "order": 3,
+    "width": 7,
+    "height": 1,
+    "name": "A1 Display",
+    "label": "Sensor A1",
+    "format": "{{msg.payload.a1}}",
+    "layout": "row-spread",
+    "x": 600,
+    "y": 600,
+    "wires": []
+  },
+  {
+    "id": "ui_text_uptime",
+    "type": "ui_text",
+    "z": "tab_pa_final",
+    "group": "ui_grp_info_main",
+    "order": 4,
+    "width": 7,
+    "height": 1,
+    "name": "Uptime Display",
+    "label": "Uptime (ms)",
+    "format": "{{msg.payload.uptime_ms}}",
+    "layout": "row-spread",
+    "x": 610,
+    "y": 640,
+    "wires": []
+  },
+  {
+    "id": "ui_btn_read_sensors",
+    "type": "ui_button",
+    "z": "tab_pa_final",
+    "name": "Sensoren lesen",
+    "group": "ui_grp_info_main",
+    "order": 1,
+    "width": 7,
+    "height": 1,
+    "passthru": false,
+    "label": "Sensoren aktualisieren",
+    "tooltip": "READ Kommando senden",
+    "icon": "refresh",
+    "payload": "READ",
+    "payloadType": "str",
+    "topic": "",
+    "x": 380,
+    "y": 540,
+    "wires": [
+      [
+        "link_out_to_arduino"
+      ]
+    ]
+  },
+  {
+    "id": "ui_btn_act22_on",
+    "type": "ui_button",
+    "z": "tab_pa_final",
+    "name": "Actuator 22 ON",
+    "group": "ui_grp_param_main",
+    "order": 2,
+    "width": 7,
+    "height": 1,
+    "passthru": false,
+    "label": "Pin 22 EIN",
+    "tooltip": "Actuator Pin 22 einschalten",
+    "bgcolor": "green",
+    "icon": "arrow-circle-o-up",
+    "payload": "ACT,22,1",
+    "payloadType": "str",
+    "topic": "",
+    "x": 140,
+    "y": 720,
+    "wires": [
+      [
+        "link_out_to_arduino"
+      ]
+    ]
+  },
+  {
+    "id": "ui_btn_act22_off",
+    "type": "ui_button",
+    "z": "tab_pa_final",
+    "name": "Actuator 22 OFF",
+    "group": "ui_grp_param_main",
+    "order": 3,
+    "width": 7,
+    "height": 1,
+    "passthru": false,
+    "label": "Pin 22 AUS",
+    "tooltip": "Actuator Pin 22 ausschalten",
+    "bgcolor": "red",
+    "icon": "arrow-circle-o-down",
+    "payload": "ACT,22,0",
+    "payloadType": "str",
+    "topic": "",
+    "x": 140,
+    "y": 760,
+    "wires": [
+      [
+        "link_out_to_arduino"
+      ]
+    ]
+  },
+  {
+    "id": "ui_btn_act23_on",
+    "type": "ui_button",
+    "z": "tab_pa_final",
+    "name": "Actuator 23 ON",
+    "group": "ui_grp_param_main",
+    "order": 4,
+    "width": 7,
+    "height": 1,
+    "passthru": false,
+    "label": "Pin 23 EIN",
+    "tooltip": "Actuator Pin 23 einschalten",
+    "bgcolor": "green",
+    "icon": "arrow-circle-o-up",
+    "payload": "ACT,23,1",
+    "payloadType": "str",
+    "topic": "",
+    "x": 140,
+    "y": 800,
+    "wires": [
+      [
+        "link_out_to_arduino"
+      ]
+    ]
+  },
+  {
+    "id": "ui_btn_act23_off",
+    "type": "ui_button",
+    "z": "tab_pa_final",
+    "name": "Actuator 23 OFF",
+    "group": "ui_grp_param_main",
+    "order": 5,
+    "width": 7,
+    "height": 1,
+    "passthru": false,
+    "label": "Pin 23 AUS",
+    "tooltip": "Actuator Pin 23 ausschalten",
+    "bgcolor": "red",
+    "icon": "arrow-circle-o-down",
+    "payload": "ACT,23,0",
+    "payloadType": "str",
+    "topic": "",
+    "x": 140,
+    "y": 840,
+    "wires": [
+      [
+        "link_out_to_arduino"
+      ]
+    ]
+  },
+  {
+    "id": "link_out_to_arduino",
+    "type": "link out",
+    "z": "tab_pa_final",
+    "name": "to Arduino (from Dashboard)",
+    "links": [
+      "link_in_from_dashboard"
+    ],
+    "x": 720,
+    "y": 560,
+    "wires": []
+  },
+  {
+    "id": "link_in_from_arduino_dashboard",
+    "type": "link in",
+    "z": "tab_pa_final",
+    "name": "sensors from Arduino",
+    "links": [
+      "link_out_from_data"
+    ],
+    "x": 460,
+    "y": 600,
+    "wires": [
+      [
+        "ui_text_a0",
+        "ui_text_a1",
+        "ui_text_uptime"
+      ]
+    ]
+  },
+  {
+    "id": "ui_info_label",
+    "type": "ui_text",
+    "z": "tab_pa_final",
+    "group": "ui_grp_param_main",
+    "order": 1,
+    "width": 14,
+    "height": 1,
+    "name": "Arduino Steuerung Info",
+    "label": "Arduino Steuerung",
+    "format": "Digitale Ausgänge (Actuators) abfeuern →",
+    "layout": "row-spread",
+    "x": 1820,
+    "y": 700,
+    "wires": []
+  },
+  {
+    "id": "1d67149e10aac307",
+    "type": "global-config",
+    "env": [],
+    "modules": {
+      "node-red-dashboard": "3.6.6"
+    }
+  }
+]

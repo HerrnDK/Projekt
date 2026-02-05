@@ -1,0 +1,111 @@
+[
+  {
+    "id": "flow_data_exchange",
+    "type": "tab",
+    "label": "Data Exchange - Arduino",
+    "disabled": false,
+    "info": "Serial communication and parsing"
+  },
+  {
+    "id": "serial-config",
+    "type": "serial-port",
+    "serialport": "/dev/serial0",
+    "serialbaud": "9600",
+    "databits": "8",
+    "parity": "none",
+    "stopbits": "1",
+    "newline": "\\n",
+    "bin": "false",
+    "out": "char",
+    "addchar": "\\n",
+    "responsetimeout": "1000"
+  },
+  {
+    "id": "serial-in",
+    "type": "serial in",
+    "z": "flow_data_exchange",
+    "name": "From Arduino Mega",
+    "serial": "serial-config",
+    "x": 180,
+    "y": 160,
+    "wires": [["json-parse","dbg_raw"]]
+  },
+  {
+    "id": "json-parse",
+    "type": "json",
+    "z": "flow_data_exchange",
+    "name": "Parse JSON",
+    "property": "payload",
+    "action": "",
+    "pretty": false,
+    "x": 400,
+    "y": 160,
+    "wires": [["dbg_parsed","link_out_from_data"]]
+  },
+  {
+    "id": "dbg_raw",
+    "type": "debug",
+    "z": "flow_data_exchange",
+    "name": "Raw Serial",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 400,
+    "y": 220,
+    "wires": []
+  },
+  {
+    "id": "dbg_parsed",
+    "type": "debug",
+    "z": "flow_data_exchange",
+    "name": "Parsed JSON",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "complete": "payload",
+    "targetType": "msg",
+    "x": 620,
+    "y": 160,
+    "wires": []
+  },
+  {
+    "id": "serial-out",
+    "type": "serial out",
+    "z": "flow_data_exchange",
+    "name": "To Arduino Mega",
+    "serial": "serial-config",
+    "x": 620,
+    "y": 320,
+    "wires": []
+  },
+
+  {
+    "id": "link_in_from_dashboard",
+    "type": "link in",
+    "z": "flow_data_exchange",
+    "name": "from Dashboard",
+    "links": ["link_out_to_arduino"],
+    "x": 380,
+    "y": 320,
+    "wires": [["serial-out"]]
+  },
+
+  {
+    "id": "link_out_from_data",
+    "type": "link out",
+    "z": "flow_data_exchange",
+    "name": "to Dashboard (sensors)",
+    "links": ["link_in_from_arduino_dashboard"],
+    "x": 760,
+    "y": 160,
+    "wires": []
+  },
+  {
+    "id": "1d67149e10aac307",
+    "type": "global-config",
+    "env": [],
+    "modules": { }
+  }
+]
