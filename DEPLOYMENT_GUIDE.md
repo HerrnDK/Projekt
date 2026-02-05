@@ -15,6 +15,9 @@ Es gibt zwei Methoden, um die Flows zur Raspberry Pi zu deployen:
 
 ---
 
+
+**Hinweis:** `Network.json` ist ein Flow-Fragment (ohne UI-Tab/Group-Definitionen) und muss **immer zusammen** mit `dashboard_flow.json` deployt werden.
+
 ## 🎯 Methode 1: Bash Deployment (Raspberry Pi)
 
 ### Schritt 1: Flows-Verzeichnis zur Pi kopieren (falls noch nicht da)
@@ -51,11 +54,12 @@ bash deploy_flows.sh
 
 📦 Flow-Dateien werden geladen...
 ✅ dashboard_flow.json geladen
+✅ Network.json geladen
 ✅ data_exchange_flow.json geladen
 
 🔧 Flows werden zusammengefasst...
 📤 Flows werden zu Node-RED gesendet...
-   Endpoint: POST http://localhost:1880/api/flows
+   Endpoint: POST http://localhost:1880/flows
 
 ✅ ERFOLGREICH DEPLOYED!
 
@@ -106,12 +110,15 @@ NODE_RED_IP=192.168.0.250 python3 deploy_flows.py
 
 Öffne http://192.168.0.250:1880 (oder http://localhost:1880 auf der Pi)
 
-Du solltest **5 neue Tabs** sehen:
+Du solltest **5 neue Tabs** im Dashboard sehen:
 - **Welcome** - Netzwerk-Status & QR-Code
 - **WiFi** - WLAN-Konfiguration
 - **Projekt-info** - Sensoren & Steuerung
 - **Projekt-Parametrierung** - Actuator-Buttons
 - **Projekt-Datenlog** - Datenlogger (placeholder)
+
+Zusätzlich siehst du im **Node-RED Editor** einen eigenen Flow-Tab:
+- **Netzwerkverbindung** - WLAN-Verbindung & Checks
 
 ### 2. Deploy Button
 
@@ -192,7 +199,8 @@ Das Dashboard passt sich automatisch an:
 |-------|-------------|
 | `deploy_flows.sh` | Bash-Script für Raspberry Pi (direkt dort ausführen) |
 | `deploy_flows.py` | Python-Script für Remote-Deployment |
-| `nodered/flows/dashboard_flow.json` | 678 Nodes, UI/UX Layer |
+| `nodered/flows/dashboard_flow.json` | UI/UX + Sensoren/Aktoren (ohne Netzwerk-Logik) |
+| `nodered/flows/Network.json` | WLAN-Verbindung, Status, QR-Codes |
 | `nodered/flows/data_exchange_flow.json` | Serial-I/O Layer zur Arduino |
 
 ---

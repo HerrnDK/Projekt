@@ -1,6 +1,6 @@
 ```instructions
 ---
-applyTo: 'nodered/flows/*.json, components.yaml'
+applyTo: 'nodered/flows/*.json, components.yaml, deploy_flows.sh, DEPLOYMENT_GUIDE.md, README.md'
 allowed: ["add_node","update_node","edit_file","create_file","replace_file"]
 forbidden: ["add_secrets","remote_execute","exfiltrate"]
 formatChecks:
@@ -21,6 +21,8 @@ SCHNELLSTART
 - Komponenten ueber `refer: <component_id>` ansprechen.
 - In Flows nur erlaubte Felder aendern.
 - Nach jeder Aenderung validieren: `jq`, `yaml-lint`.
+- Netzwerk-Logik liegt in `nodered/flows/Network.json` (separater Flow-Tab).
+- `Network.json` immer zusammen mit `dashboard_flow.json` + `data_exchange_flow.json` deployen.
 - Konsistente Formatierung.
 - Nicht aendern: `id`, `type`, `z`, `wires`, Geheimdaten.
 - Vor jeder Aenderung: zuerst eine kurze Vorschau/Diff der geplanten Aenderungen zeigen und explizit um "Anwenden" oder "Abbrechen" bitten.
@@ -50,6 +52,13 @@ ersetze: nodered/flows/dashboard_flow.json
 Validierung:
 - `jq . nodered/flows/<file>.json`
 
+
+TEIL 1B: NETWORK.JSON
+---------------------
+- `Network.json` ist ein separater Flow-Tab (Netzwerkverbindung).
+- Abhaengigkeiten: UI-Gruppen/Tabs liegen in `dashboard_flow.json`.
+- Immer gemeinsam deployen: `dashboard_flow.json` + `Network.json` + `data_exchange_flow.json`.
+
 TEIL 2: COMPONENTS.YAML
 -----------------------
 Nutze logische IDs, keine Node-IDs. Aenderungen in components.yaml dokumentieren.
@@ -66,6 +75,18 @@ TEIL 4: PINOUT.MD
 -----------------
 PINOUT.md ist Quelle der Wahrheit fuer alle Pins.
 Jede Pin-Aenderung muss hier dokumentiert werden.
+
+
+TEIL 5: DEPLOY_FLOWS.SH
+-----------------------
+- Script kombiniert alle Flow-Dateien.
+- Bei neuen Flow-Dateien: File-Checks und Combine-Logik anpassen.
+- Ziel-Endpoint bleibt: `POST /flows`.
+
+
+TEIL 6: DOKU
+------------
+- Aenderungen an Flow-Struktur in `DEPLOYMENT_GUIDE.md` und `README.md` nachziehen.
 
 ZUSAMMENFASSUNG
 ---------------

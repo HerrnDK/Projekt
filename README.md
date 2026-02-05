@@ -13,17 +13,21 @@ running Node-RED.
 > The USB port (Serial) stays free for programming and debugging.
 
 ## Arduino Sketch
-- Location: `arduino/mega_serial_control/mega_serial_control.ino`
+- Location: `arduino/mega/mega.ino`
 - Protocol (newline terminated):
   - `READ` -> Arduino returns JSON sensor snapshot
   - `ACT,<pin>,<state>` -> Control actuator pins (example: `ACT,22,1`)
 
-## Node-RED Flow
-- Location: `nodered/flows/mega_control_flow.json`
-- Imports a simple dashboard with:
-  - **Read Sensors** button
-  - **A0, A1, Uptime** text fields
-  - **Actuator 22 ON/OFF** buttons
+## Node-RED Flows
+- Location:
+  - `nodered/flows/dashboard_flow.json` (UI + Sensoren/Aktoren)
+  - `nodered/flows/Network.json` (WLAN-Verbindung + QR-Codes)
+  - `nodered/flows/data_exchange_flow.json` (Serial-I/O Arduino)
+- Dashboard enthält:
+  - **Welcome** (Netzwerk-Status + QR)
+  - **WiFi** (WLAN-Setup)
+  - **Projekt-info** (Sensoren)
+  - **Projekt-Parametrierung** (Actuator-Buttons)
 
 ## Next Steps (when sensors/actuators are known)
 - Replace the placeholder analog reads (A0, A1) with your real sensors.

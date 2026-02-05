@@ -40,12 +40,18 @@ if [[ ! -f "$FLOWS_DIR/dashboard_flow.json" ]]; then
     exit 1
 fi
 
+if [[ ! -f "$FLOWS_DIR/Network.json" ]]; then
+    echo "❌ FEHLER: Network.json nicht gefunden in $FLOWS_DIR"
+    exit 1
+fi
+
 if [[ ! -f "$FLOWS_DIR/data_exchange_flow.json" ]]; then
     echo "❌ FEHLER: data_exchange_flow.json nicht gefunden in $FLOWS_DIR"
     exit 1
 fi
 
 echo "✅ dashboard_flow.json geladen"
+echo "✅ Network.json geladen"
 echo "✅ data_exchange_flow.json geladen"
 echo ""
 
@@ -54,7 +60,7 @@ echo "🔧 Flows werden zusammengefasst..."
 
 if command -v jq &> /dev/null; then
     # Verwende jq
-    COMBINED=$(jq -s 'add' "$FLOWS_DIR/dashboard_flow.json" "$FLOWS_DIR/data_exchange_flow.json")
+    COMBINED=$(jq -s 'add' "$FLOWS_DIR/dashboard_flow.json" "$FLOWS_DIR/Network.json" "$FLOWS_DIR/data_exchange_flow.json")
 else
     # Fallback: Python
     COMBINED=$(python3 << 'PYTHON_EOF'
@@ -66,9 +72,11 @@ try:
     p = Path('nodered/flows')
     with open(p / 'dashboard_flow.json') as f:
         dashboard = json.load(f)
+    with open(p / 'Network.json') as f:
+        network = json.load(f)
     with open(p / 'data_exchange_flow.json') as f:
         data_exchange = json.load(f)
-    combined = dashboard + data_exchange
+    combined = dashboard + network + data_exchange
     print(json.dumps(combined, ensure_ascii=False))
 except Exception as e:
     print(f"Error: {e}", file=sys.stderr)
