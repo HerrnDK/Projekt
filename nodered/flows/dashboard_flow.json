@@ -296,7 +296,7 @@
     "type": "ui_toast",
     "z": "4985bdfbcf200fe6",
     "position": "top right",
-    "displayTime": "4",
+    "displayTime": "12",
     "topic": "Hinweis",
     "name": "Hinweis/Fehler",
     "x": 1780,
