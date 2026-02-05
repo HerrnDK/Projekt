@@ -54,7 +54,7 @@
   {
     "id": "ui_grp_welcome_main",
     "type": "ui_group",
-    "name": "Stop xD",
+    "name": "Start",
     "tab": "ui_tab_pa_welcome_f",
     "order": 1,
     "disp": true,
