@@ -372,7 +372,7 @@
     "type": "exec",
     "z": "4985bdfbcf200fe6",
     "command": "/usr/bin/qrencode",
-    "addpay": true,
+    "addpay": false,
     "append": "-t SVG -o -",
     "name": "QR erzeugen (qrencode SVG)",
     "x": 970,
@@ -385,7 +385,8 @@
         "9e41764418b6e58a"
       ],
       []
-    ]
+    ],
+    "useSpawn": "true"
   },
   {
     "id": "8dab6698f54beec2",
