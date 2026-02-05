@@ -20,9 +20,9 @@
     "type": "ui_tab",
     "name": "WiFi",
     "icon": "wifi",
-    "order": 2,
+    "order": 6,
     "disabled": false,
-    "hidden": true
+    "hidden": false
   },
   {
     "id": "b482803534c81cb7",
@@ -259,7 +259,7 @@
     "order": 1,
     "width": 1,
     "height": 1,
-    "format": "<style>\n  .qr-overlay {\n    position: fixed;\n    inset: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    pointer-events: none;\n    z-index: 9999;\n  }\n  .qr-card {\n    background: #ffffff;\n    padding: 16px 18px;\n    border-radius: 12px;\n    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);\n    text-align: center;\n  }\n  .qr-card img {\n    width: 220px;\n    height: 220px;\n    display: block;\n  }\n  .qr-hint {\n    margin-top: 8px;\n    font-size: 14px;\n    color: #333333;\n  }\n  @media (max-width: 600px) {\n    .qr-card {\n      padding: 12px 14px;\n    }\n    .qr-card img {\n      width: 180px;\n      height: 180px;\n    }\n    .qr-hint {\n      font-size: 13px;\n    }\n  }\n</style>\n<div class=\"qr-overlay\" ng-if=\"msg.payload && msg.payload.qrDataUrl\">\n  <div class=\"qr-card\">\n    <img ng-src=\"{{msg.payload.qrDataUrl}}\" alt=\"QR Code\" />\n    <div class=\"qr-hint\">{{msg.payload.qrHint}}</div>\n  </div>\n</div>",
+    "format": "<style>\n  .qr-overlay {\n    position: fixed;\n    inset: 0;\n    display: flex;\n    align-items: center;\n    justify-content: center;\n    pointer-events: none;\n    z-index: 9999;\n  }\n  .qr-grid {\n    display: flex;\n    gap: 24px;\n    flex-wrap: wrap;\n    justify-content: center;\n  }\n  .qr-card {\n    background: #ffffff;\n    padding: 16px 18px;\n    border-radius: 12px;\n    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);\n    text-align: center;\n    min-width: 220px;\n  }\n  .qr-title {\n    font-weight: 700;\n    margin-bottom: 8px;\n    color: #111111;\n  }\n  .qr-card img {\n    width: 200px;\n    height: 200px;\n    display: block;\n    margin: 0 auto;\n  }\n  .qr-hint {\n    margin-top: 8px;\n    font-size: 13px;\n    color: #333333;\n  }\n  @media (max-width: 600px) {\n    .qr-grid { gap: 12px; }\n    .qr-card { padding: 12px 14px; min-width: 180px; }\n    .qr-card img { width: 170px; height: 170px; }\n    .qr-hint { font-size: 12px; }\n  }\n</style>\n<div class=\"qr-overlay\" ng-if=\"msg.payload\">\n  <div class=\"qr-grid\">\n    <div class=\"qr-card\" ng-if=\"msg.payload.qrApDataUrl\">\n      <div class=\"qr-title\">AP verbinden</div>\n      <img ng-src=\"{{msg.payload.qrApDataUrl}}\" alt=\"AP QR\" />\n      <div class=\"qr-hint\">{{msg.payload.qrApHint}}</div>\n    </div>\n    <div class=\"qr-card\" ng-if=\"msg.payload.qrLoginDataUrl\">\n      <div class=\"qr-title\">Anmeldemaske</div>\n      <img ng-src=\"{{msg.payload.qrLoginDataUrl}}\" alt=\"Login QR\" />\n      <div class=\"qr-hint\">{{msg.payload.qrLoginHint}}</div>\n    </div>\n  </div>\n</div>",
     "storeOutMessages": false,
     "fwdInMessages": true,
     "resendOnRefresh": true,
@@ -363,7 +363,7 @@
         "f3e0d2d5b9e3fe7e"
       ],
       [
-        "8520ceb726888ed7"
+        "76498935c821c2c8"
       ]
     ]
   },
@@ -392,7 +392,7 @@
     "type": "function",
     "z": "4985bdfbcf200fe6",
     "name": "SVG -> DataURL (msg.payload) + Broadcast",
-    "func": "const hint = flow.get(\"qrHint\") || \"\"; const out = (msg.payload || \"\").toString(); const idx = out.indexOf(\"<svg\"); let dataUrl = \"\"; if (idx >= 0) { const svg = out.slice(idx).trim(); const enc = encodeURIComponent(svg).replace(/'/g, \"%27\").replace(/\"/g, \"%22\"); dataUrl = `data:image/svg+xml;charset=utf-8,${enc}`; } msg.payload = { qrDataUrl: dataUrl, qrHint: hint }; return msg;",
+    "func": "const kind = (msg.topic || '').toString();\nconst hint = (msg.qrHint || '').toString();\nconst out = (msg.payload || '').toString();\nconst idx = out.indexOf('<svg');\nlet dataUrl = '';\nif (idx >= 0) {\n  const svg = out.slice(idx).trim();\n  const enc = encodeURIComponent(svg).replace(/'/g, '%27').replace(/\"/g, '%22');\n  dataUrl = `data:image/svg+xml;charset=utf-8,${enc}`;\n}\nif (kind === 'ap') {\n  flow.set('qrApDataUrl', dataUrl);\n  flow.set('qrApHint', hint || 'AP verbinden');\n} else {\n  flow.set('qrLoginDataUrl', dataUrl);\n  flow.set('qrLoginHint', hint || 'Anmeldemaske');\n}\nmsg.payload = {\n  qrApDataUrl: flow.get('qrApDataUrl') || '',\n  qrApHint: flow.get('qrApHint') || 'AP verbinden',\n  qrLoginDataUrl: flow.get('qrLoginDataUrl') || '',\n  qrLoginHint: flow.get('qrLoginHint') || 'Anmeldemaske'\n};\nreturn msg;",
     "outputs": 1,
     "x": 1350,
     "y": 120,
@@ -1405,6 +1405,21 @@
     "wires": [
       [
         "dcc1a684b8ee9cfc"
+      ]
+    ]
+  },
+  {
+    "id": "76498935c821c2c8",
+    "type": "function",
+    "z": "4985bdfbcf200fe6",
+    "name": "QR Targets (AP + Login)",
+    "func": "const apSsid = 'projekt-ap';\nconst apPass = '1234568';\nconst apQr = `WIFI:T:WPA;S:${apSsid};P:${apPass};;`;\nconst loginUrl = 'http://10.42.0.1:1880/ui/#!/1';\nconst msgAp = { payload: apQr, topic: 'ap', qrHint: `WLAN: ${apSsid}` };\nconst msgLogin = { payload: loginUrl, topic: 'login', qrHint: 'Anmeldemaske' };\nreturn [[msgAp, msgLogin]];",
+    "outputs": 1,
+    "x": 710,
+    "y": 140,
+    "wires": [
+      [
+        "8520ceb726888ed7"
       ]
     ]
   }
