@@ -104,7 +104,7 @@ Gehe zu: http://192.168.0.250:1880/ui
 - SSID + Passwort eingeben
 - "Verbinden" klicken
 - Zeigt zusaetzlich die aktuellen URLs:
-  - Debug/Editor: `http://<pi-ip>:1880`
+  - Debug/Editor (LAN/eth0): `http://<lan-ip>:1880/ui/#!/1`
   - WiFi/Dashboard: `http://<pi-ip>:1880/ui/#!/1`
 
 **Projekt-info Tab:**

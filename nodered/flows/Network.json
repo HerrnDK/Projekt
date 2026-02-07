@@ -100,7 +100,8 @@
       ],
       [
         "76498935c821c2c8",
-        "a4d7f6e3c8b91234"
+        "a4d7f6e3c8b91234",
+        "e1f2a3b4c5d60718"
       ]
     ]
   },
@@ -486,7 +487,7 @@
     "type": "function",
     "z": "1b074246b0334c05",
     "name": "WLAN Status -> UI",
-    "func": "const connected = flow.get(\"wifiConnected\") === true;\nconst ssid = (flow.get(\"wlanConn\") || \"\").toString();\nconst host = (flow.get(\"dashboardHost\") || \"10.42.0.1\").toString().trim() || \"10.42.0.1\";\nconst debugUrl = `http://${host}:1880/ui/#!/1`;\nconst wifiUrl = `http://${host}:1880/ui/#!/1`;\nmsg.payload = {\n  connected,\n  text: connected ? \"Verbunden\" : \"Verbindung getrennt\",\n  ssid: connected ? ssid : \"\",\n  host,\n  debugUrl,\n  wifiUrl\n};\nreturn msg;",
+    "func": "const connected = flow.get(\"wifiConnected\") === true;\nconst ssid = (flow.get(\"wlanConn\") || \"\").toString();\nconst dashboardHost = (flow.get(\"dashboardHost\") || \"10.42.0.1\").toString().trim() || \"10.42.0.1\";\nconst debugHost = (flow.get(\"debugHost\") || dashboardHost).toString().trim() || dashboardHost;\nconst debugUrl = `http://${debugHost}:1880/ui/#!/1`;\nconst wifiUrl = `http://${dashboardHost}:1880/ui/#!/1`;\nmsg.payload = {\n  connected,\n  text: connected ? \"Verbunden\" : \"Verbindung getrennt\",\n  ssid: connected ? ssid : \"\",\n  host: dashboardHost,\n  debugHost,\n  debugUrl,\n  wifiUrl\n};\nreturn msg;",
     "outputs": 1,
     "x": 820,
     "y": 80,
@@ -922,5 +923,37 @@
     "wires": [
       []
     ]
+  },
+  {
+    "id": "e1f2a3b4c5d60718",
+    "type": "exec",
+    "z": "1b074246b0334c05",
+    "command": "nmcli -t -f IP4.ADDRESS device show eth0",
+    "addpay": false,
+    "append": "",
+    "useSpawn": "false",
+    "timer": "",
+    "winHide": true,
+    "name": "nmcli eth0 ip",
+    "x": 330,
+    "y": 160,
+    "wires": [
+      [
+        "f1e2d3c4b5a60718"
+      ],
+      [],
+      []
+    ]
+  },
+  {
+    "id": "f1e2d3c4b5a60718",
+    "type": "function",
+    "z": "1b074246b0334c05",
+    "name": "eth0 IP merken",
+    "func": "const txt = (msg.payload || '').toString();\nconst m = txt.match(/(\\d{1,3}(?:\\.\\d{1,3}){3})/);\nconst ip = (m && m[1]) ? m[1] : '10.42.0.1';\nflow.set('debugHost', ip);\nreturn null;",
+    "outputs": 0,
+    "x": 560,
+    "y": 160,
+    "wires": []
   }
 ]

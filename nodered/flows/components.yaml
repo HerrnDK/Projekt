@@ -132,3 +132,11 @@ components:
     description: "Liest die aktuelle WLAN-IP von wlan0 und speichert sie fuer QR/URL-Anzeigen"
     tags: [wifi, ip, nmcli, network]
     version: 1
+  lan_ip_resolver:
+    id: lan_ip_resolver
+    type: exec
+    flow: nodered/flows/Network.json
+    node_label: "nmcli eth0 ip"
+    description: "Liest die kabelgebundene LAN-IP (eth0) fuer die Debug-URL"
+    tags: [lan, eth0, ip, nmcli, network]
+    version: 1
