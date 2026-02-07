@@ -2,9 +2,10 @@
 
 Dieses Logbuch dokumentiert Fortschritte seit dem letzten Eintrag.
 Regelungen für Einträge:
-- Jeder Eintrag hat einen Zeitstempel als Überschrift (z. B. `YYYY-MM-DD` oder `YYYY-MM-DD HH:MM TZ`).
+- Jeder Eintrag hat einen Zeitstempel als Überschrift (z. B. `YYYY-MM-DD HH:MM TZ`).
 - Jeder Eintrag enthält die Abschnitte `Erreicht`, `Nächstes Ziel` und `Bestehende Probleme`.
 - Inhalte sind kurz, konkret und bezogen auf Änderungen seit dem letzten Eintrag.
+- Jeder neue Eintrag übernimmt die letzten Ziele und Probleme die nicht beseitigt wurden.
 
 ## 2026-01-31
 
@@ -60,4 +61,35 @@ Nächstes Ziel:
 
 Bestehende Probleme:
 - Node-RED von der Entwicklungsumgebung aus nicht erreichbar (Deploy hier nicht moeglich).
+- On-Screen-Tastatur im Kioskmodus weiterhin nicht verfuegbar.
+
+## 2026-02-07
+
+Erreicht:
+- Dokumentation zur UART-Pegelwandlung ergänzt (`README.md`, `Hardware.md`, `arduino/mega/PINOUT.md`, `nodered/flows/DEPLOYMENT_GUIDE.md`).
+- Architektur-/Ablaufplan für "ein Flow pro Funktion" als `nodered/flows/FLOW_ARCHITEKTUR_PLAN.md` angelegt.
+- Neue Funktionslogik `nodered/flows/fn_startup_test_flow.json` umgesetzt (Startup-Sensortest, Anlagenstatus bereit/stoerung, Boot-Initialstatus, zyklische Prüfung).
+- Deploy-Skript `nodered/flows/deploy_flows.sh` erweitert:
+  - robustere Pfadbehandlung (kein doppeltes `nodered/flows`),
+  - Einbindung von `fn_startup_test_flow.json` in Checks und Flow-Kombination.
+- Netzwerk-/Welcome-Flow erweitert:
+  - dynamische QR-Anzeige (Setup: AP+Login, bei WLAN-Verbindung: zentraler Dashboard-QR),
+  - WiFi-Tab zeigt URLs für Debug und Dashboard.
+- LAN-Debug-URL auf kabelgebundene Schnittstelle umgestellt (`end0`), inkl. Resolver-Node in `Network.json`.
+- Reihenfolge im WiFi-Tab angepasst:
+  - SSID,
+  - Passwort direkt darunter,
+  - danach Buttons in Reihenfolge Verbinden -> Trennen -> Neu laden (Desktop und Mobile).
+- `nodered/flows/components.yaml` konsistent mit neuen Netzwerk-/Startup-Komponenten erweitert.
+
+Nächstes Ziel:
+- Pinout-Dokumentation konkretisieren (Sensoren/Aktoren, I2C/SPI-Adressen, analoge Eingänge befuellen).
+- Git Pull auf der Pi ausfuehren und Flows mit `./nodered/flows/deploy_flows.sh` deployen.
+- Serial1-Kommunikation am echten Aufbau testen (READ/ACT, JSON im Dashboard).
+- Nächsten Funktionsflow nach gleichem Muster aus dem Architekturplan anlegen (z. B. Aktor-Funktion separat).
+- Optionale Bereinigung alter Legacy-QR-Nodes in `Network.json` (falls nach Stabilisierung nicht mehr benötigt).
+
+Bestehende Probleme:
+- Node-RED von der Entwicklungsumgebung aus nicht erreichbar (Deploy hier nicht moeglich).
+- `yaml-lint` ist in der aktuellen Umgebung nicht installiert (YAML-Formatcheck nur eingeschränkt möglich).
 - On-Screen-Tastatur im Kioskmodus weiterhin nicht verfuegbar.
