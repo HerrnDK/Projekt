@@ -136,7 +136,7 @@ components:
     id: lan_ip_resolver
     type: exec
     flow: nodered/flows/Network.json
-    node_label: "nmcli eth0 ip"
-    description: "Liest die kabelgebundene LAN-IP (eth0) fuer die Debug-URL"
+    node_label: "LAN IP Resolver (eth/en)"
+    description: "Ermittelt die kabelgebundene LAN-IP (eth0/end0/en*) fuer die Debug-URL"
     tags: [lan, eth0, ip, nmcli, network]
     version: 1
