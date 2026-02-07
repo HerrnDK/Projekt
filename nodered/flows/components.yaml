@@ -42,12 +42,20 @@ components:
     id: startup_test_boot_trigger
     type: inject
     flow: nodered/flows/fn_startup_test_flow.json
-    node_label: "Startup Test ausloesen (Boot)"
-    description: "Sendet beim Start automatisch READ fuer den Startup-Test"
+    node_label: "Startup Test ausloesen (Boot + zyklisch)"
+    description: "Sendet READ beim Start und danach zyklisch alle 20s"
     example_msg:
       topic: ""
       payload: "READ"
     tags: [startup, test, sensor, read]
+    version: 2
+  startup_status_default_init:
+    id: startup_status_default_init
+    type: function
+    flow: nodered/flows/fn_startup_test_flow.json
+    node_label: "Initialstatus setzen (Stoerung)"
+    description: "Setzt beim Start den Defaultstatus auf Anlage stoerung bis gueltige Sensordaten vorliegen"
+    tags: [startup, status, fallback]
     version: 1
   startup_status_indicator_desktop:
     id: startup_status_indicator_desktop

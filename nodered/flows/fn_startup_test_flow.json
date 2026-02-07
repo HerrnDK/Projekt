@@ -10,16 +10,16 @@
     "id": "inject_startup_test_once",
     "type": "inject",
     "z": "flow_fn_startup_test",
-    "name": "Startup Test ausloesen (Boot)",
+    "name": "Startup Test ausloesen (Boot + zyklisch)",
     "props": [
       {
         "p": "payload"
       }
     ],
-    "repeat": "",
+    "repeat": "20",
     "crontab": "",
     "once": true,
-    "onceDelay": "2",
+    "onceDelay": "5",
     "topic": "",
     "payload": "READ",
     "payloadType": "str",
@@ -28,6 +28,52 @@
     "wires": [
       [
         "link_out_startup_to_data"
+      ]
+    ]
+  },
+  {
+    "id": "inject_startup_default_once",
+    "type": "inject",
+    "z": "flow_fn_startup_test",
+    "name": "Initialstatus setzen (Boot)",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": true,
+    "onceDelay": "0.5",
+    "topic": "",
+    "payload": "INIT_STARTUP_STATUS",
+    "payloadType": "str",
+    "x": 250,
+    "y": 60,
+    "wires": [
+      [
+        "fn_startup_default_fault"
+      ]
+    ]
+  },
+  {
+    "id": "fn_startup_default_fault",
+    "type": "function",
+    "z": "flow_fn_startup_test",
+    "name": "Initialstatus setzen (Stoerung)",
+    "func": "msg.startup_test = {\n  ok: false,\n  reason: \"Noch keine gueltige Sensorantwort\",\n  checked_at_iso: new Date().toISOString()\n};\nmsg.status_text = \"Anlage stoerung\";\nmsg.status_color = \"#C62828\";\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 540,
+    "y": 60,
+    "wires": [
+      [
+        "ui_text_startup_status_desktop",
+        "ui_text_startup_status_mobile",
+        "debug_startup_test_result"
       ]
     ]
   },
@@ -90,7 +136,7 @@
     "type": "function",
     "z": "flow_fn_startup_test",
     "name": "Startup-Test validieren",
-    "func": "const p = msg.payload || {};\nconst toNum = (v) => Number(v);\nconst a0 = toNum(p.a0);\nconst a1 = toNum(p.a1);\nconst uptime = toNum(p.uptime_ms);\nconst numeric = Number.isFinite(a0) && Number.isFinite(a1) && Number.isFinite(uptime);\nconst inRange = numeric && a0 >= 0 && a0 <= 1023 && a1 >= 0 && a1 <= 1023 && uptime >= 0;\nconst ok = inRange;\nmsg.startup_test = {\n  ok,\n  checked_at_iso: new Date().toISOString(),\n  sensors: { a0, a1, uptime_ms: uptime }\n};\nmsg.status_text = ok ? \"Anlage bereit\" : \"Anlage stoerung\";\nmsg.status_color = ok ? \"#1B8E3E\" : \"#C62828\";\nreturn msg;",
+    "func": "const p = msg.payload || {};\nconst toNum = (v) => Number(v);\nconst a0 = toNum(p.a0);\nconst a1 = toNum(p.a1);\nconst uptime = toNum(p.uptime_ms);\nconst numeric = Number.isFinite(a0) && Number.isFinite(a1) && Number.isFinite(uptime);\nconst inRange = numeric && a0 >= 0 && a0 <= 1023 && a1 >= 0 && a1 <= 1023 && uptime >= 0;\nconst ok = inRange;\nconst reason = ok ? \"Sensorwerte gueltig\" : \"Sensorwerte ungueltig\";\nmsg.startup_test = {\n  ok,\n  reason,\n  checked_at_iso: new Date().toISOString(),\n  sensors: { a0, a1, uptime_ms: uptime }\n};\nmsg.status_text = ok ? \"Anlage bereit\" : \"Anlage stoerung\";\nmsg.status_color = ok ? \"#1B8E3E\" : \"#C62828\";\nreturn msg;",
     "outputs": 1,
     "noerr": 0,
     "initialize": "",
