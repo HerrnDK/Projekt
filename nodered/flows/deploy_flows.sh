@@ -8,7 +8,8 @@
 set -e
 
 NODE_RED_URL="${NODE_RED_URL:-${1:-http://192.168.0.250:1880}}"
-FLOWS_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)/nodered/flows"
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+FLOWS_DIR="$SCRIPT_DIR"
 
 echo "============================================================"
 echo "  Node-RED Flow Deployment (Projekt Automatisierung)"
@@ -69,13 +70,14 @@ if command -v jq &> /dev/null; then
     COMBINED=$(jq -s 'add' "$FLOWS_DIR/dashboard_flow.json" "$FLOWS_DIR/Network.json" "$FLOWS_DIR/data_exchange_flow.json" "$FLOWS_DIR/fn_startup_test_flow.json")
 else
     # Fallback: Python
-    COMBINED=$(python3 << 'PYTHON_EOF'
+    COMBINED=$(FLOWS_DIR="$FLOWS_DIR" python3 << 'PYTHON_EOF'
 import json
+import os
 import sys
 from pathlib import Path
 
 try:
-    p = Path('nodered/flows')
+    p = Path(os.environ['FLOWS_DIR'])
     with open(p / 'dashboard_flow.json') as f:
         dashboard = json.load(f)
     with open(p / 'Network.json') as f:
