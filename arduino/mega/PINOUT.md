@@ -10,8 +10,8 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen für Sensoren und Akt
 | Pin | Funktion | Verbindung | Baud-Rate |
 |-----|----------|-----------|-----------|
 | USB | Serial (Debug/Programmierung) | Computer | 115200 |
-| TX1 (18) | Serial1 TX | Raspberry Pi UART | 9600 |
-| RX1 (19) | Serial1 RX | Raspberry Pi UART | 9600 |
+| TX1 (18) | Serial1 TX (5V) | Pegelwandler 5V->3.3V -> Raspberry Pi RXD | 9600 |
+| RX1 (19) | Serial1 RX | Raspberry Pi TXD (3.3V, direkt moeglich) | 9600 |
 
 ---
 
@@ -91,8 +91,8 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen für Sensoren und Akt
 
 ```
 RPi GPIO    ↔    Arduino Mega
-(TXD)       ↔    RX1 (Pin 19)
-(RXD)       ↔    TX1 (Pin 18)
+(TXD, 3.3V) ↔    RX1 (Pin 19)
+(RXD, 3.3V) ↔    TX1 (Pin 18) ueber Pegelwandler 5V->3.3V
 (GND)       ↔    GND
 ```
 
@@ -111,5 +111,5 @@ RPi GPIO    ↔    Arduino Mega
 ## Notizen
 - Alle Spannungen standardmäßig 5V (außer anders angegeben)
 - GND muss zwischen Mega und Raspberry Pi verbunden sein
+- Raspberry Pi RXD ist nicht 5V-tolerant: Mega TX1 immer ueber Pegelwandler/Spannungsteiler anschliessen
 - Sensoren/Aktoren mit Motorentreibern verwenden für höhere Ströme
-

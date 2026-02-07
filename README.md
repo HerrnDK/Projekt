@@ -5,9 +5,13 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 
 ## Wiring (Serial1)
 - **Arduino Mega 2560** Serial1:
-  - TX1 (Pin 18) -> Raspberry Pi RX
-  - RX1 (Pin 19) -> Raspberry Pi TX
+  - TX1 (Pin 18, 5V) -> Pegelwandler 5V->3.3V -> Raspberry Pi RX
+  - RX1 (Pin 19) <- Raspberry Pi TX (3.3V)
   - GND -> GND
+
+> WICHTIG: Zwischen Mega TX1 (5V) und Raspberry Pi RX muss ein Pegelwandler
+> (oder mindestens ein geeigneter Spannungsteiler) verwendet werden.
+> Raspberry Pi GPIO ist nicht 5V-tolerant.
 
 > Der USB-Port (Serial RX0/TX0) bleibt fuer Programmierung und Debug frei.
 

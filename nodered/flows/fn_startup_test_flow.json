@@ -1,0 +1,157 @@
+[
+  {
+    "id": "flow_fn_startup_test",
+    "type": "tab",
+    "label": "Funktion - Startup Test",
+    "disabled": false,
+    "info": "Startup-Test fuer Sensorvalidierung und Anlagenstatus"
+  },
+  {
+    "id": "inject_startup_test_once",
+    "type": "inject",
+    "z": "flow_fn_startup_test",
+    "name": "Startup Test ausloesen (Boot)",
+    "props": [
+      {
+        "p": "payload"
+      }
+    ],
+    "repeat": "",
+    "crontab": "",
+    "once": true,
+    "onceDelay": "2",
+    "topic": "",
+    "payload": "READ",
+    "payloadType": "str",
+    "x": 240,
+    "y": 120,
+    "wires": [
+      [
+        "link_out_startup_to_data"
+      ]
+    ]
+  },
+  {
+    "id": "link_out_startup_to_data",
+    "type": "link out",
+    "z": "flow_fn_startup_test",
+    "name": "to data exchange (startup)",
+    "mode": "link",
+    "links": [
+      "link_in_from_dashboard"
+    ],
+    "x": 540,
+    "y": 120,
+    "wires": []
+  },
+  {
+    "id": "link_in_from_data_startup",
+    "type": "link in",
+    "z": "flow_fn_startup_test",
+    "name": "from data exchange (startup)",
+    "links": [
+      "link_out_from_data"
+    ],
+    "x": 230,
+    "y": 220,
+    "wires": [
+      [
+        "switch_startup_sensor_only"
+      ]
+    ]
+  },
+  {
+    "id": "switch_startup_sensor_only",
+    "type": "switch",
+    "z": "flow_fn_startup_test",
+    "name": "Nur Sensor-Antworten",
+    "property": "payload.type",
+    "propertyType": "msg",
+    "rules": [
+      {
+        "t": "eq",
+        "v": "sensor",
+        "vt": "str"
+      }
+    ],
+    "checkall": "true",
+    "repair": false,
+    "outputs": 1,
+    "x": 500,
+    "y": 220,
+    "wires": [
+      [
+        "fn_startup_validate"
+      ]
+    ]
+  },
+  {
+    "id": "fn_startup_validate",
+    "type": "function",
+    "z": "flow_fn_startup_test",
+    "name": "Startup-Test validieren",
+    "func": "const p = msg.payload || {};\nconst toNum = (v) => Number(v);\nconst a0 = toNum(p.a0);\nconst a1 = toNum(p.a1);\nconst uptime = toNum(p.uptime_ms);\nconst numeric = Number.isFinite(a0) && Number.isFinite(a1) && Number.isFinite(uptime);\nconst inRange = numeric && a0 >= 0 && a0 <= 1023 && a1 >= 0 && a1 <= 1023 && uptime >= 0;\nconst ok = inRange;\nmsg.startup_test = {\n  ok,\n  checked_at_iso: new Date().toISOString(),\n  sensors: { a0, a1, uptime_ms: uptime }\n};\nmsg.status_text = ok ? \"Anlage bereit\" : \"Anlage stoerung\";\nmsg.status_color = ok ? \"#1B8E3E\" : \"#C62828\";\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 770,
+    "y": 220,
+    "wires": [
+      [
+        "ui_text_startup_status_desktop",
+        "ui_text_startup_status_mobile",
+        "debug_startup_test_result"
+      ]
+    ]
+  },
+  {
+    "id": "ui_text_startup_status_desktop",
+    "type": "ui_text",
+    "z": "flow_fn_startup_test",
+    "group": "3584a9c30b6db556",
+    "order": 5,
+    "width": 7,
+    "height": 1,
+    "name": "Startup Status (Desktop)",
+    "label": "Anlagenstatus",
+    "format": "<span style=\"font-weight:700;color:{{msg.status_color}}\">{{msg.status_text}}</span>",
+    "layout": "row-spread",
+    "className": "",
+    "x": 1080,
+    "y": 180,
+    "wires": []
+  },
+  {
+    "id": "ui_text_startup_status_mobile",
+    "type": "ui_text",
+    "z": "flow_fn_startup_test",
+    "group": "939aa8523e70cefb",
+    "order": 5,
+    "width": 10,
+    "height": 1,
+    "name": "Startup Status (Mobile)",
+    "label": "Anlagenstatus",
+    "format": "<span style=\"font-weight:700;color:{{msg.status_color}}\">{{msg.status_text}}</span>",
+    "layout": "row-spread",
+    "className": "",
+    "x": 1070,
+    "y": 240,
+    "wires": []
+  },
+  {
+    "id": "debug_startup_test_result",
+    "type": "debug",
+    "z": "flow_fn_startup_test",
+    "name": "Startup-Test Ergebnis",
+    "active": true,
+    "tosidebar": true,
+    "console": false,
+    "complete": "startup_test",
+    "targetType": "msg",
+    "x": 1080,
+    "y": 300,
+    "wires": []
+  }
+]

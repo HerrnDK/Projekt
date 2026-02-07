@@ -96,7 +96,8 @@
     "z": "flow_data_exchange",
     "name": "from Dashboard",
     "links": [
-      "4ac1b66aca6f1626"
+      "4ac1b66aca6f1626",
+      "link_out_startup_to_data"
     ],
     "x": 380,
     "y": 320,
@@ -112,7 +113,8 @@
     "z": "flow_data_exchange",
     "name": "to Dashboard (sensors)",
     "links": [
-      "2a616d8b76b4fe2c"
+      "2a616d8b76b4fe2c",
+      "link_in_from_data_startup"
     ],
     "x": 760,
     "y": 160,

@@ -38,3 +38,54 @@ components:
       payload: "23.4"
     tags: [ui, sensor, display]
     version: 1
+  startup_test_boot_trigger:
+    id: startup_test_boot_trigger
+    type: inject
+    flow: nodered/flows/fn_startup_test_flow.json
+    node_label: "Startup Test ausloesen (Boot)"
+    description: "Sendet beim Start automatisch READ fuer den Startup-Test"
+    example_msg:
+      topic: ""
+      payload: "READ"
+    tags: [startup, test, sensor, read]
+    version: 1
+  startup_status_indicator_desktop:
+    id: startup_status_indicator_desktop
+    type: ui_text
+    flow: nodered/flows/fn_startup_test_flow.json
+    node_label: "Startup Status (Desktop)"
+    group: ui_grp_info_main
+    description: "Statusanzeige fuer Anlagenbereitschaft (Desktop)"
+    example_msg:
+      topic: ""
+      payload: "Anlage bereit"
+    tags: [startup, status, ui, desktop]
+    version: 1
+  startup_status_indicator_mobile:
+    id: startup_status_indicator_mobile
+    type: ui_text
+    flow: nodered/flows/fn_startup_test_flow.json
+    node_label: "Startup Status (Mobile)"
+    group: ui_grp_info_mobile
+    description: "Statusanzeige fuer Anlagenbereitschaft (Mobile)"
+    example_msg:
+      topic: ""
+      payload: "Anlage stoerung"
+    tags: [startup, status, ui, mobile]
+    version: 1
+  startup_link_to_data:
+    id: startup_link_to_data
+    type: link_out
+    flow: nodered/flows/fn_startup_test_flow.json
+    node_label: "to data exchange (startup)"
+    description: "Uebergibt Startup-Befehle an die Kommunikationsschicht"
+    tags: [startup, link, serial]
+    version: 1
+  startup_link_from_data:
+    id: startup_link_from_data
+    type: link_in
+    flow: nodered/flows/fn_startup_test_flow.json
+    node_label: "from data exchange (startup)"
+    description: "Empfaengt Antworten aus der Kommunikationsschicht"
+    tags: [startup, link, serial]
+    version: 1

@@ -1,4 +1,5 @@
 - Arduino Mega 2560 R3
 - Raspberry Pi (Node-RED, UART /dev/serial0)
+- Pegelwandler 5V->3.3V (Pflicht fuer Mega TX1 -> Raspberry Pi RXD)
 - 4x digitale Aktoren an Pins 22-25 (Typ offen)
 - 2x Analogsensoren an A0/A1 (Typ offen)

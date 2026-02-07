@@ -9,6 +9,11 @@ Die Flows werden **direkt auf der Raspberry Pi** aktualisiert:
 **Hinweis:** `Network.json` ist ein separater Flow-Tab und muss immer zusammen mit
 `dashboard_flow.json` und `data_exchange_flow.json` deployt werden (das Script erledigt das).
 
+**Hardware-Hinweis (UART-Pegel):**
+- Mega TX1 (5V) -> **Pegelwandler 5V->3.3V** -> Raspberry Pi RXD (Pflicht)
+- Raspberry Pi TXD (3.3V) -> Mega RX1 (direkt moeglich)
+- GND zwischen Raspberry Pi und Mega gemeinsam verbinden
+
 ---
 
 ## 🎯 Deployment (Raspberry Pi)
@@ -75,6 +80,7 @@ Du solltest Tabs sehen:
 - **WiFi** - WLAN-Konfiguration
 - **Projekt-info** - Sensoren & Steuerung
 - **Projekt-Parametrierung** - Actuator-Buttons
+- **Funktion - Startup Test** - Starttest der Sensorwerte und Anlagenstatus
 
 Zusätzlich gibt es im **Node-RED Editor** einen eigenen Flow-Tab:
 - **Netzwerkverbindung** - WLAN-Verbindung & Checks
@@ -148,3 +154,5 @@ Node-RED hat `adminAuth` aktiviert. In diesem Fall:
 | `nodered/flows/dashboard_flow.json` | UI/UX + Sensoren/Aktoren (ohne Netzwerk-Logik) |
 | `nodered/flows/Network.json` | WLAN-Verbindung, Status, QR-Codes |
 | `nodered/flows/data_exchange_flow.json` | Serial-I/O Layer zur Arduino |
+| `nodered/flows/FLOW_ARCHITEKTUR_PLAN.md` | Ablaufplan und Zielarchitektur fuer "ein Flow pro Funktion" |
+| `nodered/flows/fn_startup_test_flow.json` | Startup-Test (READ + Sensorvalidierung + Statusanzeige) |

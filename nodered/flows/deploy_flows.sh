@@ -50,9 +50,15 @@ if [[ ! -f "$FLOWS_DIR/data_exchange_flow.json" ]]; then
     exit 1
 fi
 
+if [[ ! -f "$FLOWS_DIR/fn_startup_test_flow.json" ]]; then
+    echo "❌ FEHLER: fn_startup_test_flow.json nicht gefunden in $FLOWS_DIR"
+    exit 1
+fi
+
 echo "✅ dashboard_flow.json geladen"
 echo "✅ Network.json geladen"
 echo "✅ data_exchange_flow.json geladen"
+echo "✅ fn_startup_test_flow.json geladen"
 echo ""
 
 # 3. Flows zusammenfassen mit jq oder Python
@@ -60,7 +66,7 @@ echo "🔧 Flows werden zusammengefasst..."
 
 if command -v jq &> /dev/null; then
     # Verwende jq
-    COMBINED=$(jq -s 'add' "$FLOWS_DIR/dashboard_flow.json" "$FLOWS_DIR/Network.json" "$FLOWS_DIR/data_exchange_flow.json")
+    COMBINED=$(jq -s 'add' "$FLOWS_DIR/dashboard_flow.json" "$FLOWS_DIR/Network.json" "$FLOWS_DIR/data_exchange_flow.json" "$FLOWS_DIR/fn_startup_test_flow.json")
 else
     # Fallback: Python
     COMBINED=$(python3 << 'PYTHON_EOF'
@@ -76,7 +82,9 @@ try:
         network = json.load(f)
     with open(p / 'data_exchange_flow.json') as f:
         data_exchange = json.load(f)
-    combined = dashboard + network + data_exchange
+    with open(p / 'fn_startup_test_flow.json') as f:
+        startup_test = json.load(f)
+    combined = dashboard + network + data_exchange + startup_test
     print(json.dumps(combined, ensure_ascii=False))
 except Exception as e:
     print(f"Error: {e}", file=sys.stderr)
