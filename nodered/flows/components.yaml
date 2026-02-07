@@ -97,3 +97,38 @@ components:
     description: "Empfaengt Antworten aus der Kommunikationsschicht"
     tags: [startup, link, serial]
     version: 1
+  qr_welcome_dynamic:
+    id: qr_welcome_dynamic
+    type: ui_template
+    flow: nodered/flows/Network.json
+    node_label: "QR Welcome (dynamisch)"
+    group: ui_grp_welcome_main
+    description: "Welcome-QR Anzeige: Setup (AP+Login) oder zentraler Dashboard-QR bei WLAN-Verbindung"
+    tags: [qr, welcome, network, ui]
+    version: 1
+  wifi_urls_display_desktop:
+    id: wifi_urls_display_desktop
+    type: ui_template
+    flow: nodered/flows/Network.json
+    node_label: "WLAN Status Anzeige"
+    group: ui_grp_wifi_desktop
+    description: "Zeigt WLAN-Status sowie Debug- und Dashboard-URL (Desktop)"
+    tags: [wifi, url, debug, dashboard, ui]
+    version: 1
+  wifi_urls_display_mobile:
+    id: wifi_urls_display_mobile
+    type: ui_template
+    flow: nodered/flows/Network.json
+    node_label: "WLAN Status Anzeige (Mobile)"
+    group: ui_grp_wifi_mobile
+    description: "Zeigt WLAN-Status sowie Debug- und Dashboard-URL (Mobile)"
+    tags: [wifi, url, debug, dashboard, ui]
+    version: 1
+  wlan_ip_resolver:
+    id: wlan_ip_resolver
+    type: exec
+    flow: nodered/flows/Network.json
+    node_label: "nmcli wlan0 ip"
+    description: "Liest die aktuelle WLAN-IP von wlan0 und speichert sie fuer QR/URL-Anzeigen"
+    tags: [wifi, ip, nmcli, network]
+    version: 1

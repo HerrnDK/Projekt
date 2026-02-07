@@ -96,12 +96,16 @@ Gehe zu: http://192.168.0.250:1880/ui
 
 **Welcome Tab:**
 - Zeigt Netzwerk-Status (WLAN verbunden / AP aktiv)
-- QR-Code zum schnellen Zugriff
+- Im Setup-Modus: zwei QR-Codes (AP verbinden + Anmeldemaske)
+- Bei WLAN-Verbindung: ein zentraler QR-Code mit aktueller Dashboard-Adresse des Pi
 
 **WiFi Tab:**
 - WLAN-Scan durchfuehren
 - SSID + Passwort eingeben
 - "Verbinden" klicken
+- Zeigt zusaetzlich die aktuellen URLs:
+  - Debug/Editor: `http://<pi-ip>:1880`
+  - WiFi/Dashboard: `http://<pi-ip>:1880/ui/#!/1`
 
 **Projekt-info Tab:**
 - "Sensoren aktualisieren" Klick → Arduino wird abgefragt

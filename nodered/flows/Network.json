@@ -11,11 +11,11 @@
     "type": "ui_template",
     "z": "1b074246b0334c05",
     "group": "1b4dd4e879ccb455",
-    "name": "QR Login - Welcome",
+    "name": "QR Login - Legacy (hidden)",
     "order": 2,
-    "width": 7,
-    "height": 6,
-    "format": "<div class=\"qr-card\">\n  <div class=\"qr-title\">Anmeldemaske</div>\n  <img ng-src=\"{{msg.payload.qrDataUrl}}\" alt=\"Login QR\" />\n  <div class=\"qr-hint\">{{msg.payload.qrHint}}</div>\n</div>",
+    "width": 0,
+    "height": 0,
+    "format": "<div></div>",
     "storeOutMessages": false,
     "fwdInMessages": true,
     "resendOnRefresh": true,
@@ -99,7 +99,8 @@
         "f3e0d2d5b9e3fe7e"
       ],
       [
-        "76498935c821c2c8"
+        "76498935c821c2c8",
+        "a4d7f6e3c8b91234"
       ]
     ]
   },
@@ -128,17 +129,14 @@
     "id": "8dab6698f54beec2",
     "type": "function",
     "z": "1b074246b0334c05",
-    "name": "SVG -> DataURL (msg.payload) + Broadcast",
-    "func": "const hint = (msg.qrHint || '').toString();\nconst out = (msg.payload || '').toString();\nconst idx = out.indexOf('<svg');\nlet dataUrl = '';\nif (idx >= 0) {\n  const svg = out.slice(idx).trim();\n  const enc = encodeURIComponent(svg).replace(/'/g, '%27').replace(/\"/g, '%22');\n  dataUrl = `data:image/svg+xml;charset=utf-8,${enc}`;\n}\nmsg.payload = {\n  qrDataUrl: dataUrl,\n  qrHint: hint || (msg.topic === 'ap' ? 'AP verbinden' : 'Anmeldemaske')\n};\nif (msg.topic === 'ap') return [msg, null];\nreturn [null, msg];",
-    "outputs": 2,
+    "name": "SVG -> DataURL + Welcome ViewModel",
+    "func": "const topic = (msg.topic || '').toString();\nconst hint = (msg.qrHint || '').toString();\nconst out = (msg.payload || '').toString();\nconst idx = out.indexOf('<svg');\nlet dataUrl = '';\nif (idx >= 0) {\n  const svg = out.slice(idx).trim();\n  const enc = encodeURIComponent(svg).replace(/'/g, '%27').replace(/\\\"/g, '%22');\n  dataUrl = `data:image/svg+xml;charset=utf-8,${enc}`;\n}\nconst store = flow.get('qrStore') || {};\nif (topic) {\n  store[topic] = { qrDataUrl: dataUrl, qrHint: hint };\n  flow.set('qrStore', store);\n}\nconst host = (flow.get('dashboardHost') || '10.42.0.1').toString().trim() || '10.42.0.1';\nconst dashboardUrl = `http://${host}:1880/ui/#!/1`;\nconst wifiConnected = flow.get('wifiConnected') === true;\nif (wifiConnected) {\n  const dash = store.dashboard || { qrDataUrl: dataUrl, qrHint: `Dashboard: ${dashboardUrl}` };\n  msg.payload = {\n    mode: 'dashboard',\n    cards: [\n      {\n        title: 'Dashboard Zugriff',\n        qrDataUrl: dash.qrDataUrl,\n        qrHint: dash.qrHint || `Dashboard: ${dashboardUrl}`\n      }\n    ]\n  };\n  return msg;\n}\nconst ap = store.ap || { qrDataUrl: '', qrHint: 'WLAN: projekt-ap' };\nconst login = store.login || { qrDataUrl: '', qrHint: 'Anmeldemaske' };\nmsg.payload = {\n  mode: 'setup',\n  cards: [\n    { title: 'AP verbinden', qrDataUrl: ap.qrDataUrl, qrHint: ap.qrHint || 'WLAN: projekt-ap' },\n    { title: 'Anmeldemaske', qrDataUrl: login.qrDataUrl, qrHint: login.qrHint || 'Anmeldemaske' }\n  ]\n};\nreturn msg;",
+    "outputs": 1,
     "x": 1050,
     "y": 175,
     "wires": [
       [
-        "84995d6e205b39cf"
-      ],
-      [
-        "080faa24e0dac224"
+        "d7e8f9a0b1c2d3e4"
       ]
     ]
   },
@@ -488,7 +486,7 @@
     "type": "function",
     "z": "1b074246b0334c05",
     "name": "WLAN Status -> UI",
-    "func": "const connected = flow.get(\"wifiConnected\") === true;\nconst ssid = (flow.get(\"wlanConn\") || \"\").toString();\nmsg.payload = {\n  connected,\n  text: connected ? \"Verbunden\" : \"Verbindung getrennt\",\n  ssid: connected ? ssid : \"\"\n};\nreturn msg;",
+    "func": "const connected = flow.get(\"wifiConnected\") === true;\nconst ssid = (flow.get(\"wlanConn\") || \"\").toString();\nconst host = (flow.get(\"dashboardHost\") || \"10.42.0.1\").toString().trim() || \"10.42.0.1\";\nconst debugUrl = `http://${host}:1880`;\nconst wifiUrl = `http://${host}:1880/ui/#!/1`;\nmsg.payload = {\n  connected,\n  text: connected ? \"Verbunden\" : \"Verbindung getrennt\",\n  ssid: connected ? ssid : \"\",\n  host,\n  debugUrl,\n  wifiUrl\n};\nreturn msg;",
     "outputs": 1,
     "x": 820,
     "y": 80,
@@ -508,7 +506,7 @@
     "order": 1,
     "width": 7,
     "height": 1,
-    "format": "<style>\n  .wifi-status { display: flex; align-items: center; gap: 8px; }\n  .wifi-dot { width: 12px; height: 12px; border-radius: 50%; background: #e74c3c; }\n  .wifi-dot.wifi-on { background: #2ecc71; }\n  .wifi-dot.wifi-off { background: #e74c3c; }\n  .wifi-text { font-weight: 600; }\n  .wifi-ssid { font-size: 12px; color: #666666; }\n</style>\n<div class=\"wifi-status\">\n  <span class=\"wifi-dot\" ng-class=\"(msg.payload && msg.payload.connected) ? 'wifi-on' : 'wifi-off'\"></span>\n  <span class=\"wifi-text\">{{msg.payload && msg.payload.text ? msg.payload.text : ''}}</span>\n  <span class=\"wifi-ssid\" ng-if=\"msg.payload && msg.payload.ssid\">({{msg.payload.ssid}})</span>\n</div>",
+    "format": "<style>\n  .wifi-status { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }\n  .wifi-dot { width: 12px; height: 12px; border-radius: 50%; background: #e74c3c; }\n  .wifi-dot.wifi-on { background: #2ecc71; }\n  .wifi-dot.wifi-off { background: #e74c3c; }\n  .wifi-text { font-weight: 600; }\n  .wifi-ssid { font-size: 12px; color: #666666; }\n  .wifi-links { width: 100%; margin-top: 6px; font-size: 12px; line-height: 1.45; }\n  .wifi-link-line { margin-top: 2px; }\n  .wifi-link-label { font-weight: 600; margin-right: 6px; color: #555555; }\n  .wifi-link-line a { color: #1565c0; text-decoration: none; word-break: break-all; }\n  .wifi-link-line a:hover { text-decoration: underline; }\n</style>\n<div class=\"wifi-status\">\n  <span class=\"wifi-dot\" ng-class=\"(msg.payload && msg.payload.connected) ? 'wifi-on' : 'wifi-off'\"></span>\n  <span class=\"wifi-text\">{{msg.payload && msg.payload.text ? msg.payload.text : ''}}</span>\n  <span class=\"wifi-ssid\" ng-if=\"msg.payload && msg.payload.ssid\">({{msg.payload.ssid}})</span>\n  <div class=\"wifi-links\" ng-if=\"msg.payload\">\n    <div class=\"wifi-link-line\"><span class=\"wifi-link-label\">Debug:</span><a ng-href=\"{{msg.payload.debugUrl}}\" target=\"_blank\">{{msg.payload.debugUrl}}</a></div>\n    <div class=\"wifi-link-line\"><span class=\"wifi-link-label\">WiFi:</span><a ng-href=\"{{msg.payload.wifiUrl}}\" target=\"_blank\">{{msg.payload.wifiUrl}}</a></div>\n  </div>\n</div>",
     "storeOutMessages": false,
     "fwdInMessages": true,
     "resendOnRefresh": true,
@@ -528,7 +526,7 @@
     "order": 1,
     "width": 5,
     "height": 1,
-    "format": "<style>\n  .wifi-status { display: flex; align-items: center; gap: 8px; }\n  .wifi-dot { width: 12px; height: 12px; border-radius: 50%; background: #e74c3c; }\n  .wifi-dot.wifi-on { background: #2ecc71; }\n  .wifi-dot.wifi-off { background: #e74c3c; }\n  .wifi-text { font-weight: 600; }\n  .wifi-ssid { font-size: 12px; color: #666666; }\n</style>\n<div class=\"wifi-status\">\n  <span class=\"wifi-dot\" ng-class=\"(msg.payload && msg.payload.connected) ? 'wifi-on' : 'wifi-off'\"></span>\n  <span class=\"wifi-text\">{{msg.payload && msg.payload.text ? msg.payload.text : ''}}</span>\n  <span class=\"wifi-ssid\" ng-if=\"msg.payload && msg.payload.ssid\">({{msg.payload.ssid}})</span>\n</div>",
+    "format": "<style>\n  .wifi-status { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }\n  .wifi-dot { width: 12px; height: 12px; border-radius: 50%; background: #e74c3c; }\n  .wifi-dot.wifi-on { background: #2ecc71; }\n  .wifi-dot.wifi-off { background: #e74c3c; }\n  .wifi-text { font-weight: 600; }\n  .wifi-ssid { font-size: 12px; color: #666666; }\n  .wifi-links { width: 100%; margin-top: 6px; font-size: 12px; line-height: 1.45; }\n  .wifi-link-line { margin-top: 2px; }\n  .wifi-link-label { font-weight: 600; margin-right: 6px; color: #555555; }\n  .wifi-link-line a { color: #1565c0; text-decoration: none; word-break: break-all; }\n  .wifi-link-line a:hover { text-decoration: underline; }\n</style>\n<div class=\"wifi-status\">\n  <span class=\"wifi-dot\" ng-class=\"(msg.payload && msg.payload.connected) ? 'wifi-on' : 'wifi-off'\"></span>\n  <span class=\"wifi-text\">{{msg.payload && msg.payload.text ? msg.payload.text : ''}}</span>\n  <span class=\"wifi-ssid\" ng-if=\"msg.payload && msg.payload.ssid\">({{msg.payload.ssid}})</span>\n  <div class=\"wifi-links\" ng-if=\"msg.payload\">\n    <div class=\"wifi-link-line\"><span class=\"wifi-link-label\">Debug:</span><a ng-href=\"{{msg.payload.debugUrl}}\" target=\"_blank\">{{msg.payload.debugUrl}}</a></div>\n    <div class=\"wifi-link-line\"><span class=\"wifi-link-label\">WiFi:</span><a ng-href=\"{{msg.payload.wifiUrl}}\" target=\"_blank\">{{msg.payload.wifiUrl}}</a></div>\n  </div>\n</div>",
     "storeOutMessages": false,
     "fwdInMessages": true,
     "resendOnRefresh": true,
@@ -720,9 +718,9 @@
     "id": "76498935c821c2c8",
     "type": "function",
     "z": "1b074246b0334c05",
-    "name": "QR Targets (AP + Login)",
-    "func": "const apSsid = 'projekt-ap';\nconst apPass = '1234568';\nconst apQr = `WIFI:T:WPA;S:${apSsid};P:${apPass};;`;\nconst loginUrl = 'http://10.42.0.1:1880/ui/#!/1';\nconst msgAp = { payload: apQr, topic: 'ap', qrHint: `WLAN: ${apSsid}` };\nconst msgLogin = { payload: loginUrl, topic: 'login', qrHint: 'Anmeldemaske' };\nreturn [msgAp, msgLogin];",
-    "outputs": 2,
+    "name": "QR Targets (Setup + Dashboard)",
+    "func": "const apSsid = 'projekt-ap';\nconst apPass = '1234568';\nconst apQr = `WIFI:T:WPA;S:${apSsid};P:${apPass};;`;\nconst wifiConnected = flow.get('wifiConnected') === true;\nconst host = (flow.get('dashboardHost') || '10.42.0.1').toString().trim() || '10.42.0.1';\nconst dashboardUrl = `http://${host}:1880/ui/#!/1`;\nconst msgAp = { payload: apQr, topic: 'ap', qrHint: `WLAN: ${apSsid}` };\nconst msgLogin = { payload: dashboardUrl, topic: 'login', qrHint: 'Anmeldemaske' };\nconst msgDashboard = { payload: dashboardUrl, topic: 'dashboard', qrHint: `Dashboard: ${dashboardUrl}` };\nif (wifiConnected) return [null, null, msgDashboard];\nreturn [msgAp, msgLogin, null];",
+    "outputs": 3,
     "x": 580,
     "y": 160,
     "wires": [
@@ -731,6 +729,9 @@
       ],
       [
         "8520ceb726888ed7"
+      ],
+      [
+        "c6d7e8f9a0b1c2d3"
       ]
     ]
   },
@@ -762,11 +763,11 @@
     "type": "ui_template",
     "z": "1b074246b0334c05",
     "group": "1b4dd4e879ccb455",
-    "name": "QR AP - Welcome",
+    "name": "QR AP - Legacy (hidden)",
     "order": 1,
-    "width": 7,
-    "height": 6,
-    "format": "<div class=\"qr-card\">\n  <div class=\"qr-title\">AP verbinden</div>\n  <img ng-src=\"{{msg.payload.qrDataUrl}}\" alt=\"AP QR\" />\n  <div class=\"qr-hint\">{{msg.payload.qrHint}}</div>\n</div>",
+    "width": 0,
+    "height": 0,
+    "format": "<div></div>",
     "storeOutMessages": false,
     "fwdInMessages": true,
     "resendOnRefresh": true,
@@ -847,6 +848,79 @@
       [
         "bfb23c18fc3e1340"
       ]
+    ]
+  },
+  {
+    "id": "a4d7f6e3c8b91234",
+    "type": "exec",
+    "z": "1b074246b0334c05",
+    "command": "nmcli -t -f IP4.ADDRESS device show wlan0",
+    "addpay": false,
+    "append": "",
+    "useSpawn": "false",
+    "timer": "",
+    "winHide": true,
+    "name": "nmcli wlan0 ip",
+    "x": 330,
+    "y": 120,
+    "wires": [
+      [
+        "b5c8d9e1f2a30456"
+      ],
+      [],
+      []
+    ]
+  },
+  {
+    "id": "b5c8d9e1f2a30456",
+    "type": "function",
+    "z": "1b074246b0334c05",
+    "name": "wlan0 IP merken",
+    "func": "const txt = (msg.payload || '').toString();\nconst m = txt.match(/(\\d{1,3}(?:\\.\\d{1,3}){3})/);\nconst ip = (m && m[1]) ? m[1] : '10.42.0.1';\nflow.set('dashboardHost', ip);\nreturn null;",
+    "outputs": 0,
+    "x": 560,
+    "y": 120,
+    "wires": []
+  },
+  {
+    "id": "c6d7e8f9a0b1c2d3",
+    "type": "exec",
+    "z": "1b074246b0334c05",
+    "command": "/usr/bin/qrencode",
+    "addpay": true,
+    "append": "-t SVG -o -",
+    "name": "QR erzeugen (Dashboard)",
+    "x": 840,
+    "y": 250,
+    "wires": [
+      [
+        "8dab6698f54beec2"
+      ],
+      [
+        "8dab6698f54beec2"
+      ],
+      []
+    ],
+    "useSpawn": "true"
+  },
+  {
+    "id": "d7e8f9a0b1c2d3e4",
+    "type": "ui_template",
+    "z": "1b074246b0334c05",
+    "group": "1b4dd4e879ccb455",
+    "name": "QR Welcome (dynamisch)",
+    "order": 1,
+    "width": 14,
+    "height": 6,
+    "format": "<style>\n  .welcome-qr-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }\n  .welcome-qr-grid.single { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; }\n</style>\n<div class=\"welcome-qr-grid\" ng-class=\"(msg.payload && msg.payload.mode === 'dashboard') ? 'single' : ''\">\n  <div class=\"qr-card\" ng-repeat=\"card in (msg.payload && msg.payload.cards ? msg.payload.cards : []) track by $index\">\n    <div class=\"qr-title\">{{card.title}}</div>\n    <img ng-src=\"{{card.qrDataUrl}}\" alt=\"QR Code\" />\n    <div class=\"qr-hint\">{{card.qrHint}}</div>\n  </div>\n</div>",
+    "storeOutMessages": false,
+    "fwdInMessages": true,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "x": 1320,
+    "y": 180,
+    "wires": [
+      []
     ]
   }
 ]
