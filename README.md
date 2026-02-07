@@ -3,6 +3,7 @@
 Dieses Repository enthaelt das Grundgeruest fuer die serielle Kommunikation
 zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 
+
 ## Wiring (Serial1)
 - **Arduino Mega 2560** Serial1:
   - TX1 (Pin 18, 5V) -> Pegelwandler 5V->3.3V -> Raspberry Pi RX
