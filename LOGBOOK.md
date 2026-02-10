@@ -93,3 +93,27 @@ Bestehende Probleme:
 - Node-RED von der Entwicklungsumgebung aus nicht erreichbar (Deploy hier nicht moeglich).
 - `yaml-lint` ist in der aktuellen Umgebung nicht installiert (YAML-Formatcheck nur eingeschränkt möglich).
 - On-Screen-Tastatur im Kioskmodus weiterhin nicht verfuegbar.
+
+## 2026-02-10 18:09 UTC
+
+Erreicht:
+- Arduino-Mega-Struktur auf einen klaren Sketch-Einstieg vereinfacht (`arduino/mega/mega.ino` mit `setup()`/`loop()`).
+- Ueberfluessige Wrapper-/Altdateien entfernt (`arduino/mega/main.ino`, `arduino/mega/main.cpp`, `arduino/mega/data.ino`, `arduino/mega/funktion_*.ino`).
+- Moduldateien einheitlich benannt (`arduino/mega/actuators.cpp`, `arduino/mega/sensors.cpp` statt `funktion_*`).
+- Dokumentation auf neue Arduino-Struktur aktualisiert (`README.md`, `.github/instructions/Anweisungen.instructions.md`).
+- `AGENTS.md` im Repo-Root angelegt und eine klare Regel-Hierarchie zu `.github/instructions/Anweisungen.instructions.md` definiert.
+- Upload-Workflow um `scripts/arduino_watch_upload.sh` erweitert und in der Doku ergaenzt.
+- Dashboard-Flow weiter angepasst (`nodered/flows/dashboard_flow.json`).
+
+Nächstes Ziel:
+- Pinout-Dokumentation konkretisieren (Sensoren/Aktoren, I2C/SPI-Adressen, analoge Eingänge befuellen).
+- Git Pull auf der Pi ausfuehren und Flows mit `./nodered/flows/deploy_flows.sh` deployen.
+- Serial1-Kommunikation am echten Aufbau testen (READ/ACT, JSON im Dashboard).
+- Nächsten Funktionsflow nach gleichem Muster aus dem Architekturplan anlegen (z. B. Aktor-Funktion separat).
+- Optionale Bereinigung alter Legacy-QR-Nodes in `Network.json` (falls nach Stabilisierung nicht mehr benötigt).
+- Arduino-Watch-Upload im Zielsystem im Realbetrieb pruefen (Änderung -> Auto-Compile -> Auto-Upload).
+
+Bestehende Probleme:
+- Node-RED von der Entwicklungsumgebung aus nicht erreichbar (Deploy hier nicht moeglich).
+- `yaml-lint` ist in der aktuellen Umgebung nicht installiert (YAML-Formatcheck nur eingeschränkt möglich).
+- On-Screen-Tastatur im Kioskmodus weiterhin nicht verfuegbar.
