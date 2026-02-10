@@ -58,6 +58,19 @@ JSON-Formate (Beispiele):
   - `bin/arduino-cli compile --fqbn arduino:avr:mega arduino/mega`
   - oder: `./scripts/arduino_build.sh` (installiert den Core automatisch, falls noetig)
 
+## Auto-Upload bei Dateiaenderung (Pi -> USB)
+- Fuer "Speichern -> direkt flashen" nutze:
+  - `./scripts/arduino_watch_upload.sh`
+- Optional mit festem Port:
+  - `ARDUINO_PORT=/dev/ttyACM0 ./scripts/arduino_watch_upload.sh`
+- Nur einmal bauen + flashen (ohne Watch):
+  - `./scripts/arduino_watch_upload.sh --once`
+
+Hinweise:
+- Das Script beobachtet `arduino/mega` auf `*.ino`, `*.cpp`, `*.c`, `*.h`, `*.hpp`.
+- Bei jeder Aenderung: Compile via `scripts/arduino_build.sh`, danach Upload via `arduino-cli upload`.
+- Mit `inotifywait` reagiert es sofort, sonst nutzt es Polling als Fallback.
+
 ## Deployment (Node-RED auf dem Pi)
 - Flows werden direkt auf dem Raspberry Pi aktualisiert:
   1. `git pull` im Repo auf dem Pi
