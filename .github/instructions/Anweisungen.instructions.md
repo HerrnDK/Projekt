@@ -99,7 +99,7 @@ KONSISTENZ
 Ich halte diese Dateien konsistent:
 - `components.yaml`
 - `nodered/flows/*.json`
-- `arduino/mega/mega.ino`
+- `arduino/mega/*.ino`
 - `arduino/mega/PINOUT.md`
 - `Hardware.md`
 ```
