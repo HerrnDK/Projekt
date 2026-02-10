@@ -63,11 +63,9 @@ ARDUINO (arduino/mega)
 Pins im Code muessen zu PINOUT.md passen.
 Nach Code-Aenderungen: Build mit `scripts/arduino_build.sh` und PINOUT aktualisieren.
 Sketch-Aufteilung (Arduino Mega):
-- `arduino/mega/mega.ino`: Sketch-Wrapper (Root).
-- `arduino/mega/main.ino`: Wrapper fuer `setup()`/`loop()`.
-- `arduino/mega/data.ino`: Wrapper fuer Serial1-Protokoll.
-- `arduino/mega/funktion_<name>.ino`: Wrapper fuer jeweilige Module.
-Implementierungen liegen in `.cpp` Dateien im gleichen Ordner.
+- `arduino/mega/mega.ino`: Sketch-Root mit `setup()`/`loop()`.
+- Modul-Implementierungen liegen in `.cpp` Dateien im gleichen Ordner
+  (z. B. `data.cpp`, `actuators.cpp`, `sensors.cpp`).
 Serielle Regeln:
 - `Serial` (RX0/TX0) bleibt fuer USB Debug/Programmierung.
 - `Serial1` (RX1/TX1) fuer Node-RED/Raspberry Pi UART.

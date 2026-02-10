@@ -1,7 +1,7 @@
 #include "mega_shared.h"
 
 /*
-  funktion_sensors.cpp
+  sensors.cpp
   - Sensor-Handling (Platzhalter)
 */
 

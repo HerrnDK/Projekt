@@ -26,17 +26,12 @@ JSON-Formate (Beispiele):
 
 ## Repo-Struktur (wichtige Dateien)
 - `arduino/mega/`
-  - `mega.ino` Wrapper (Sketch-Root)
-  - `main.ino` Wrapper fuer `setup()`/`loop()`
-  - `data.ino` Wrapper fuer Serial1-Protokoll
-  - `funktion_actuators.ino` Wrapper fuer Aktoren
-  - `funktion_sensors.ino` Wrapper fuer Sensoren
+  - `mega.ino` Sketch-Root mit `setup()`/`loop()`
   - `mega_shared.h` gemeinsame Typen/Prototypen
   - `mega_shared.cpp` gemeinsame Definitionen
-  - `main.cpp` Implementierung `setup()`/`loop()`
   - `data.cpp` Implementierung Serial1-Protokoll
-  - `funktion_actuators.cpp` Implementierung Aktoren
-  - `funktion_sensors.cpp` Implementierung Sensoren
+  - `actuators.cpp` Implementierung Aktoren
+  - `sensors.cpp` Implementierung Sensoren
   - `PINOUT.md` Quelle der Wahrheit fuer Pins
 - `nodered/flows/`
   - `dashboard_flow.json` UI + Sensoren/Aktoren
