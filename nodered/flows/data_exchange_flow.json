@@ -48,6 +48,25 @@
     "wires": [
       [
         "dbg_parsed",
+        "fn_format_uptime_hms"
+      ]
+    ]
+  },
+  {
+    "id": "fn_format_uptime_hms",
+    "type": "function",
+    "z": "flow_data_exchange",
+    "name": "Format uptime HH:MM:SS",
+    "func": "const p = msg.payload || {};\nconst ms = Number(p.uptime_ms);\nif (!Number.isFinite(ms) || ms < 0) {\n  p.uptime_hms = \"--:--:--\";\n} else {\n  const totalSec = Math.floor(ms / 1000);\n  const hh = String(Math.floor(totalSec / 3600)).padStart(2, \"0\");\n  const mm = String(Math.floor((totalSec % 3600) / 60)).padStart(2, \"0\");\n  const ss = String(totalSec % 60).padStart(2, \"0\");\n  p.uptime_hms = `${hh}:${mm}:${ss}`;\n}\nmsg.payload = p;\nreturn msg;",
+    "outputs": 1,
+    "noerr": 0,
+    "initialize": "",
+    "finalize": "",
+    "libs": [],
+    "x": 620,
+    "y": 120,
+    "wires": [
+      [
         "link_out_from_data"
       ]
     ]
