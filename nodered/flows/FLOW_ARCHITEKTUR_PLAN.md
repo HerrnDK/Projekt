@@ -21,7 +21,7 @@ flowchart TB
   LevelShift --> Mega[Arduino Mega 2560 Serial1\nTX1=18 RX1=19]
 
   subgraph Arduino[Arduino Sketch arduino/mega]
-    Mega --> MainCpp[main.cpp\nsetup() / loop()]
+    Mega --> MainCpp[mega.ino\nsetup() / loop()]
     MainCpp --> DataCpp[data.cpp\nREAD / ACT Protokoll]
     MainCpp --> SensorsCpp[funktion_sensors.cpp]
     MainCpp --> ActCpp[funktion_actuators.cpp]
@@ -30,7 +30,7 @@ flowchart TB
     ActCpp --> Shared
   end
 
-  SensorsCpp --> Inputs[Sensoren A0/A1 + spaeter weitere]
+  SensorsCpp --> Inputs[Sensoren A0/A1 + HC-SR04 + spaeter weitere]
   ActCpp --> Outputs[Aktoren Pins 22-25 + spaeter weitere]
 ```
 
@@ -91,7 +91,7 @@ sequenceDiagram
   participant D as Dashboard
   participant X as data_exchange_flow
   participant A as Arduino data.cpp
-  participant S as Sensors
+  participant S as Sensors (A0/A1 + HC-SR04)
   participant C as Actuators
 
   U->>D: Klick "Sensoren aktualisieren"
@@ -99,9 +99,9 @@ sequenceDiagram
   X->>A: Serial1: READ
   A->>S: Sensors_readSnapshot()
   S-->>A: SensorSnapshot
-  A-->>X: {"type":"sensor",...}
+  A-->>X: {"type":"sensor","hcsr04_status":"ok",...}
   X-->>D: msg.payload (JSON)
-  D-->>U: Anzeige A0/A1/Uptime
+  D-->>U: Anzeige A0/A1/Uptime/HC-SR04
 
   U->>D: Klick "Pin 22 EIN"
   D->>X: payload "ACT,22,1"
@@ -110,7 +110,7 @@ sequenceDiagram
   C-->>A: ok=true
   A-->>X: {"type":"act","ok":1,...}
   X-->>D: msg.payload (ACK)
-  D-->>U: Rueckmeldung/Status
+  D-->>U: Rueckmeldung/Status inkl. Sensorzustand
 ```
 
 ## 4) Ablaufdiagramm (Entwicklung bis Betrieb)
@@ -133,9 +133,11 @@ flowchart TD
 - Arduino: `funktion_<name>.cpp` + optional `funktion_<name>.ino` Wrapper.
 - Node-RED: `fn_<name>_flow.json` mit Link In/Out zur `data_exchange_flow.json`.
 - Protokoll: Kommandos nach Serial1, Antworten immer als JSON mit `type`.
+- Fehlerzustand HC-SR04 (`hcsr04_status != ok`) muss im Anlagenstatus sichtbar sein.
 
 ## Definition of Done je neue Funktion
 - Arduino-Modul implementiert und Build erfolgreich.
 - Node-RED Funktions-Flow angelegt und ueber Link-Nodes angebunden.
 - Dashboard-Interaktion vorhanden (Button/Anzeige).
 - End-to-End Test (Kommando -> Hardware -> JSON -> UI) erfolgreich.
+- End-to-End Test fuer HC-SR04 Fehlerfall (`error_timeout` oder `error_range`) zeigt Anlagenstoerung.

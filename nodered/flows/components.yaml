@@ -1,4 +1,4 @@
-version: 1
+version: 2
 registry: components
 conventions:
   id_style: "snake_case, stable logical id (not Node-RED node id)"
@@ -17,6 +17,58 @@ components:
       topic: ""
       payload: "READ"
     tags: [ui, sensor, manual, read]
+    version: 2
+  ui_text_hcsr04_distance_desktop:
+    id: ui_text_hcsr04_distance_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "HC-SR04 Distanz Display"
+    group: ui_grp_info_main
+    description: "Anzeige der gemessenen HC-SR04 Distanz in cm (Desktop)"
+    example_msg:
+      topic: ""
+      payload:
+        hcsr04_distance_cm: 42
+    tags: [ui, sensor, hcsr04, distance, desktop]
+    version: 1
+  ui_text_hcsr04_distance_mobile:
+    id: ui_text_hcsr04_distance_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "HC-SR04 Distanz Display (Mobile)"
+    group: ui_grp_info_mobile
+    description: "Anzeige der gemessenen HC-SR04 Distanz in cm (Mobile)"
+    example_msg:
+      topic: ""
+      payload:
+        hcsr04_distance_cm: 42
+    tags: [ui, sensor, hcsr04, distance, mobile]
+    version: 1
+  ui_text_hcsr04_status_desktop:
+    id: ui_text_hcsr04_status_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "HC-SR04 Status Display"
+    group: ui_grp_info_main
+    description: "Anzeige des HC-SR04 Status (ok/error_timeout/error_range) auf Desktop"
+    example_msg:
+      topic: ""
+      payload:
+        hcsr04_status: "ok"
+    tags: [ui, sensor, hcsr04, status, desktop]
+    version: 1
+  ui_text_hcsr04_status_mobile:
+    id: ui_text_hcsr04_status_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "HC-SR04 Status Display (Mobile)"
+    group: ui_grp_info_mobile
+    description: "Anzeige des HC-SR04 Status (ok/error_timeout/error_range) auf Mobile"
+    example_msg:
+      topic: ""
+      payload:
+        hcsr04_status: "ok"
+    tags: [ui, sensor, hcsr04, status, mobile]
     version: 1
   serial_out_arduino:
     id: serial_out_arduino
@@ -57,6 +109,14 @@ components:
     description: "Setzt beim Start den Defaultstatus auf Anlage stoerung bis gueltige Sensordaten vorliegen"
     tags: [startup, status, fallback]
     version: 1
+  startup_test_validator:
+    id: startup_test_validator
+    type: function
+    flow: nodered/flows/fn_startup_test_flow.json
+    node_label: "Startup-Test validieren"
+    description: "Validiert Basis-Sensoren und HC-SR04 Status; setzt Anlagenstatus inkl. Fehlertext"
+    tags: [startup, status, validation, hcsr04]
+    version: 2
   startup_status_indicator_desktop:
     id: startup_status_indicator_desktop
     type: ui_text

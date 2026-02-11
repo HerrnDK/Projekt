@@ -17,8 +17,14 @@ extern const uint8_t ACTUATOR_COUNT;
 struct SensorSnapshot {
   int a0;
   int a1;
+  long hcsr04_distance_cm;
+  const char *hcsr04_status;
   unsigned long uptime_ms;
 };
+
+// HC-SR04 Ultraschallsensor (erste Sensorintegration)
+constexpr uint8_t HC_SR04_TRIG_PIN = 26;
+constexpr uint8_t HC_SR04_ECHO_PIN = 27;
 
 // Modul-APIs
 void Actuators_begin();

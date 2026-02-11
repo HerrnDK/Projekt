@@ -332,6 +332,38 @@
     "wires": []
   },
   {
+    "id": "f2c4a6e1bd3e4a70",
+    "type": "ui_text",
+    "z": "4985bdfbcf200fe6",
+    "group": "939aa8523e70cefb",
+    "order": 6,
+    "width": 10,
+    "height": 1,
+    "name": "HC-SR04 Distanz Display (Mobile)",
+    "label": "HC-SR04 Distanz (cm)",
+    "format": "{{msg.payload.hcsr04_distance_cm}}",
+    "layout": "row-spread",
+    "x": 670,
+    "y": 680,
+    "wires": []
+  },
+  {
+    "id": "d0fcb2a91e984e6a",
+    "type": "ui_text",
+    "z": "4985bdfbcf200fe6",
+    "group": "939aa8523e70cefb",
+    "order": 7,
+    "width": 10,
+    "height": 1,
+    "name": "HC-SR04 Status Display (Mobile)",
+    "label": "HC-SR04 Status",
+    "format": "{{msg.payload.hcsr04_status}}",
+    "layout": "row-spread",
+    "x": 670,
+    "y": 720,
+    "wires": []
+  },
+  {
     "id": "9176738c8c89f470",
     "type": "ui_text",
     "z": "4985bdfbcf200fe6",
@@ -377,6 +409,38 @@
     "layout": "row-spread",
     "x": 610,
     "y": 640,
+    "wires": []
+  },
+  {
+    "id": "8a9df2e34f274275",
+    "type": "ui_text",
+    "z": "4985bdfbcf200fe6",
+    "group": "3584a9c30b6db556",
+    "order": 6,
+    "width": 7,
+    "height": 1,
+    "name": "HC-SR04 Distanz Display",
+    "label": "HC-SR04 Distanz (cm)",
+    "format": "{{msg.payload.hcsr04_distance_cm}}",
+    "layout": "row-spread",
+    "x": 680,
+    "y": 680,
+    "wires": []
+  },
+  {
+    "id": "4bc78086c6c84e1e",
+    "type": "ui_text",
+    "z": "4985bdfbcf200fe6",
+    "group": "3584a9c30b6db556",
+    "order": 7,
+    "width": 7,
+    "height": 1,
+    "name": "HC-SR04 Status Display",
+    "label": "HC-SR04 Status",
+    "format": "{{msg.payload.hcsr04_status}}",
+    "layout": "row-spread",
+    "x": 670,
+    "y": 720,
     "wires": []
   },
   {
@@ -530,9 +594,13 @@
         "9176738c8c89f470",
         "9c0ab803433d6479",
         "92797bc31e9565c2",
+        "8a9df2e34f274275",
+        "4bc78086c6c84e1e",
         "0d8e4bd65b6f369b",
         "58c629f7381e64a0",
-        "9baf027087ee53a2"
+        "9baf027087ee53a2",
+        "f2c4a6e1bd3e4a70",
+        "d0fcb2a91e984e6a"
       ]
     ]
   },

@@ -23,6 +23,7 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen für Sensoren und Akt
 | 23 | Aktor 2 | | | |
 | 24 | Aktor 3 | | | |
 | 25 | Aktor 4 | | | |
+| 26 | HC-SR04 TRIG | Ultraschall-Sensor | aktiv | Trigger-Ausgang (10us Pulse) |
 
 ---
 
@@ -30,7 +31,7 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen für Sensoren und Akt
 
 | Pin | Funktion | Sensortyp | I2C/SPI/Analog | Notizen |
 |-----|----------|-----------|---|---------|
-| | | | | |
+| 27 | HC-SR04 ECHO | Ultraschall-Sensor | Digital | Echo-Eingang (5V TTL) |
 | | | | | |
 | | | | | |
 
@@ -94,6 +95,16 @@ RPi GPIO    ↔    Arduino Mega
 (TXD, 3.3V) ↔    RX1 (Pin 19)
 (RXD, 3.3V) ↔    TX1 (Pin 18) ueber Pegelwandler 5V->3.3V
 (GND)       ↔    GND
+```
+
+### HC-SR04 ↔ Arduino Verbindung
+
+```
+HC-SR04      ↔    Arduino Mega
+VCC (5V)     ↔    5V
+GND          ↔    GND
+TRIG         ↔    D26
+ECHO         ↔    D27
 ```
 
 ---

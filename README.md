@@ -15,14 +15,25 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 
 > Der USB-Port (Serial RX0/TX0) bleibt fuer Programmierung und Debug frei.
 
+## Wiring (HC-SR04)
+- HC-SR04 VCC -> 5V
+- HC-SR04 GND -> GND
+- HC-SR04 TRIG -> D26
+- HC-SR04 ECHO -> D27
+
 ## Protokoll (Serial1, newline-terminiert)
 - `READ` -> Arduino sendet JSON Sensor-Snapshot
 - `ACT,<pin>,<state>` -> Aktor schalten, JSON-ACK
 
 JSON-Formate (Beispiele):
-- Sensor: `{"type":"sensor","a0":123,"a1":456,"uptime_ms":7890}`
-- Act: `{"type":"act","ok":1,"pin":22,"state":1,"a0":123,"a1":456,"uptime_ms":7890}`
-- Error: `{"type":"error","code":"unknown_command","a0":123,"a1":456,"uptime_ms":7890}`
+- Sensor: `{"type":"sensor","a0":123,"a1":456,"hcsr04_distance_cm":42,"hcsr04_status":"ok","uptime_ms":7890}`
+- Act: `{"type":"act","ok":1,"pin":22,"state":1,"a0":123,"a1":456,"hcsr04_distance_cm":42,"hcsr04_status":"ok","uptime_ms":7890}`
+- Error: `{"type":"error","code":"unknown_command","a0":123,"a1":456,"hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","uptime_ms":7890}`
+
+HC-SR04 Statuswerte:
+- `ok` gemessene Distanz ist gueltig
+- `error_timeout` kein Echo innerhalb Timeout
+- `error_range` gemessene Distanz ausserhalb 2..400 cm
 
 ## Repo-Struktur (wichtige Dateien)
 - `arduino/mega/`
