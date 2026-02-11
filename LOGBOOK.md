@@ -117,3 +117,37 @@ Bestehende Probleme:
 - Node-RED von der Entwicklungsumgebung aus nicht erreichbar (Deploy hier nicht moeglich).
 - `yaml-lint` ist in der aktuellen Umgebung nicht installiert (YAML-Formatcheck nur eingeschränkt möglich).
 - On-Screen-Tastatur im Kioskmodus weiterhin nicht verfuegbar.
+
+## 2026-02-11 23:10 UTC
+
+Erreicht:
+- Dashboard-Uptime auf `HH:MM:SS` umgestellt (aus `uptime_ms` wird `uptime_hms` erzeugt und angezeigt).
+- Update-Zyklus fuer Sensorabfrage auf 2 Sekunden gesetzt (`fn_startup_test_flow.json`, Inject-Repeat von `20` auf `2`).
+- Parameter-Dashboard aufgeraeumt und strukturiert:
+  - Beispiel-Ansteuerungen (Pin 22/23 Buttons Desktop + Mobile) entfernt.
+  - HC-SR04-Parameter als Slider (`-5 .. +5 cm`) fuer Desktop und Mobile eingebaut.
+  - Offset-Anzeige (`HC-SR04 Korrektur (cm)`) fuer Desktop und Mobile hinzugefuegt.
+- Neuen separaten Funktionsflow `nodered/flows/fn_parameters_flow.json` eingefuehrt:
+  - Boot-Initialisierung des Offsets,
+  - Speichern/Validieren von Slider-Werten in `global.hcsr04_offset_cm`,
+  - Berechnung `hcsr04_distance_display_cm` fuer die Anzeige.
+- Datenrouting der Flows umgestellt:
+  - `data_exchange_flow.json` verteilt Sensor-JSON jetzt an mehrere Funktionsflows (Startup + Parameter).
+  - Dashboard empfängt Sensordaten fuer die Anzeige ueber den Parameter-Flow (korrigierte Distanzwerte).
+- Deployment und Doku aktualisiert:
+  - `deploy_flows.sh` um `fn_parameters_flow.json` erweitert (Checks + Combine).
+  - `README.md`, `DEPLOYMENT_GUIDE.md`, `FLOW_ARCHITEKTUR_PLAN.md`, `components.yaml` und `.github/instructions/Anweisungen.instructions.md` auf die neue Struktur angepasst.
+- Validierung ausgefuehrt:
+  - JSON-Check erfolgreich (`jq . nodered/flows/*.json`).
+  - Link-Referenzen der kombinierten Flows geprueft (`link-check: ok`).
+
+Nächstes Ziel:
+- Pinout-Dokumentation konkretisieren (Sensoren/Aktoren, I2C/SPI-Adressen, analoge Eingänge befuellen).
+- Naechsten Funktionsflow nach gleichem Muster aus dem Architekturplan anlegen (z. B. weitere Sensor-/Aktor-Logik).
+- Optionale Bereinigung alter Legacy-QR-Nodes in `Network.json` (falls nach Stabilisierung nicht mehr benoetigt).
+- Arduino-Watch-Upload im Zielsystem im Realbetrieb pruefen (Aenderung -> Auto-Compile -> Auto-Upload).
+
+Bestehende Probleme:
+- Node-RED von der Entwicklungsumgebung aus nicht erreichbar (Deploy hier nicht moeglich).
+- `yaml-lint` ist in der aktuellen Umgebung nicht installiert (YAML-Formatcheck nur eingeschränkt moeglich).
+- On-Screen-Tastatur im Kioskmodus weiterhin nicht verfuegbar.
