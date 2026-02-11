@@ -130,10 +130,10 @@
     "id": "link_out_from_data",
     "type": "link out",
     "z": "flow_data_exchange",
-    "name": "to Dashboard (sensors)",
+    "name": "to function flows (sensors)",
     "links": [
-      "2a616d8b76b4fe2c",
-      "link_in_from_data_startup"
+      "link_in_from_data_startup",
+      "link_in_from_data_parameters"
     ],
     "x": 760,
     "y": 160,

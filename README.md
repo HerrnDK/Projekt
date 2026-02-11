@@ -45,9 +45,10 @@ HC-SR04 Statuswerte:
   - `sensors.cpp` Implementierung Sensoren
   - `PINOUT.md` Quelle der Wahrheit fuer Pins
 - `nodered/flows/`
-  - `dashboard_flow.json` UI + Sensoren/Aktoren
+  - `dashboard_flow.json` UI + Sensoranzeigen + Parametrierung
   - `Network.json` Netzwerk-Tab
   - `data_exchange_flow.json` Serial-I/O Arduino
+  - `fn_parameters_flow.json` Parameter-Logik (HC-SR04 Korrektur-Offset)
   - `components.yaml` logische Komponentenreferenzen
   - `deploy_flows.sh` Flow-Deploy Script (POST /flows)
   - `DEPLOYMENT_GUIDE.md` Deployment-Doku
@@ -82,6 +83,11 @@ Hinweise:
 - Flows werden direkt auf dem Raspberry Pi aktualisiert:
   1. `cd ~/.node-red` (falls das dein Repo-Root ist), dann `git pull`
   2. `./nodered/flows/deploy_flows.sh`
+
+## Parametrierung (Dashboard)
+- Im Tab `Projekt-Parametrierung` gibt es einen Slider `HC-SR04 Korrektur (cm)` mit Bereich `-5 .. +5`.
+- Der Offset wird in `fn_parameters_flow.json` gespeichert (`global.hcsr04_offset_cm`).
+- Die Distanzanzeige nutzt den korrigierten Wert `hcsr04_distance_display_cm`.
 
 ## Next Steps (wenn Sensoren/Aktoren bekannt sind)
 - Weitere Sensoren nach gleichem Muster in `sensors.cpp` ergaenzen.

@@ -308,8 +308,8 @@
     "width": 10,
     "height": 1,
     "name": "HC-SR04 Distanz Display (Mobile)",
-    "label": "HC-SR04 Distanz (cm)",
-    "format": "{{msg.payload.hcsr04_distance_cm}}",
+    "label": "HC-SR04 Distanz korrigiert (cm)",
+    "format": "{{msg.payload.hcsr04_distance_display_cm}}",
     "layout": "row-spread",
     "x": 670,
     "y": 680,
@@ -356,8 +356,8 @@
     "width": 7,
     "height": 1,
     "name": "HC-SR04 Distanz Display",
-    "label": "HC-SR04 Distanz (cm)",
-    "format": "{{msg.payload.hcsr04_distance_cm}}",
+    "label": "HC-SR04 Distanz korrigiert (cm)",
+    "format": "{{msg.payload.hcsr04_distance_display_cm}}",
     "layout": "row-spread",
     "x": 680,
     "y": 680,
@@ -404,106 +404,6 @@
     ]
   },
   {
-    "id": "c0f8c18ec0927681",
-    "type": "ui_button",
-    "z": "4985bdfbcf200fe6",
-    "name": "Actuator 22 ON",
-    "group": "0ef8bd821a032b93",
-    "order": 2,
-    "width": 7,
-    "height": 1,
-    "passthru": false,
-    "label": "Pin 22 EIN",
-    "tooltip": "Actuator Pin 22 einschalten",
-    "bgcolor": "green",
-    "icon": "arrow-circle-o-up",
-    "payload": "ACT,22,1",
-    "payloadType": "str",
-    "topic": "",
-    "x": 140,
-    "y": 720,
-    "wires": [
-      [
-        "4ac1b66aca6f1626"
-      ]
-    ]
-  },
-  {
-    "id": "aa83e3ae7868acd9",
-    "type": "ui_button",
-    "z": "4985bdfbcf200fe6",
-    "name": "Actuator 22 OFF",
-    "group": "0ef8bd821a032b93",
-    "order": 3,
-    "width": 7,
-    "height": 1,
-    "passthru": false,
-    "label": "Pin 22 AUS",
-    "tooltip": "Actuator Pin 22 ausschalten",
-    "bgcolor": "red",
-    "icon": "arrow-circle-o-down",
-    "payload": "ACT,22,0",
-    "payloadType": "str",
-    "topic": "",
-    "x": 140,
-    "y": 760,
-    "wires": [
-      [
-        "4ac1b66aca6f1626"
-      ]
-    ]
-  },
-  {
-    "id": "86910374b7f6e4bf",
-    "type": "ui_button",
-    "z": "4985bdfbcf200fe6",
-    "name": "Actuator 23 ON",
-    "group": "0ef8bd821a032b93",
-    "order": 4,
-    "width": 7,
-    "height": 1,
-    "passthru": false,
-    "label": "Pin 23 EIN",
-    "tooltip": "Actuator Pin 23 einschalten",
-    "bgcolor": "green",
-    "icon": "arrow-circle-o-up",
-    "payload": "ACT,23,1",
-    "payloadType": "str",
-    "topic": "",
-    "x": 140,
-    "y": 800,
-    "wires": [
-      [
-        "4ac1b66aca6f1626"
-      ]
-    ]
-  },
-  {
-    "id": "ea97655e96f4df31",
-    "type": "ui_button",
-    "z": "4985bdfbcf200fe6",
-    "name": "Actuator 23 OFF",
-    "group": "0ef8bd821a032b93",
-    "order": 5,
-    "width": 7,
-    "height": 1,
-    "passthru": false,
-    "label": "Pin 23 AUS",
-    "tooltip": "Actuator Pin 23 ausschalten",
-    "bgcolor": "red",
-    "icon": "arrow-circle-o-down",
-    "payload": "ACT,23,0",
-    "payloadType": "str",
-    "topic": "",
-    "x": 140,
-    "y": 840,
-    "wires": [
-      [
-        "4ac1b66aca6f1626"
-      ]
-    ]
-  },
-  {
     "id": "4ac1b66aca6f1626",
     "type": "link out",
     "z": "4985bdfbcf200fe6",
@@ -519,9 +419,9 @@
     "id": "2a616d8b76b4fe2c",
     "type": "link in",
     "z": "4985bdfbcf200fe6",
-    "name": "sensors from Arduino",
+    "name": "sensors from parameters flow",
     "links": [
-      "link_out_from_data"
+      "link_out_parameters_to_dashboard"
     ],
     "x": 460,
     "y": 600,
@@ -537,143 +437,122 @@
     ]
   },
   {
-    "id": "ac37d9126f690713",
-    "type": "ui_text",
-    "z": "4985bdfbcf200fe6",
-    "group": "0ef8bd821a032b93",
-    "order": 1,
-    "width": 14,
-    "height": 1,
-    "name": "Arduino Steuerung Info",
-    "label": "Arduino Steuerung",
-    "format": "Digitale Ausg\u00e4nge (Actuators) abfeuern \u2192",
-    "layout": "row-spread",
-    "x": 1820,
-    "y": 700,
-    "wires": []
-  },
-  {
-    "id": "a17a1a6c2b160f33",
-    "type": "ui_text",
-    "z": "4985bdfbcf200fe6",
-    "group": "cd3e28787d1292e1",
-    "order": 1,
-    "width": 10,
-    "height": 1,
-    "name": "Arduino Steuerung Info (Mobile)",
-    "label": "Arduino Steuerung",
-    "format": "Digitale Ausg\u00e4nge (Actuators) abfeuern \u2192",
-    "layout": "row-spread",
-    "x": 1820,
-    "y": 710,
-    "wires": []
-  },
-  {
-    "id": "c9b06de3c020cf3e",
-    "type": "ui_button",
-    "z": "4985bdfbcf200fe6",
-    "name": "Actuator 22 ON (Mobile)",
-    "group": "cd3e28787d1292e1",
-    "order": 2,
-    "width": 5,
-    "height": 1,
-    "passthru": false,
-    "label": "Pin 22 EIN",
-    "tooltip": "Actuator Pin 22 einschalten",
-    "bgcolor": "green",
-    "icon": "arrow-circle-o-up",
-    "payload": "ACT,22,1",
-    "payloadType": "str",
-    "topic": "",
-    "x": 180,
-    "y": 760,
-    "wires": [
-      [
-        "4ac1b66aca6f1626"
-      ]
-    ]
-  },
-  {
-    "id": "751fea17d2b1b531",
-    "type": "ui_button",
-    "z": "4985bdfbcf200fe6",
-    "name": "Actuator 22 OFF (Mobile)",
-    "group": "cd3e28787d1292e1",
-    "order": 3,
-    "width": 5,
-    "height": 1,
-    "passthru": false,
-    "label": "Pin 22 AUS",
-    "tooltip": "Actuator Pin 22 ausschalten",
-    "bgcolor": "red",
-    "icon": "arrow-circle-o-down",
-    "payload": "ACT,22,0",
-    "payloadType": "str",
-    "topic": "",
-    "x": 180,
-    "y": 800,
-    "wires": [
-      [
-        "4ac1b66aca6f1626"
-      ]
-    ]
-  },
-  {
-    "id": "8da6a75eaa79d3a4",
-    "type": "ui_button",
-    "z": "4985bdfbcf200fe6",
-    "name": "Actuator 23 ON (Mobile)",
-    "group": "cd3e28787d1292e1",
-    "order": 4,
-    "width": 5,
-    "height": 1,
-    "passthru": false,
-    "label": "Pin 23 EIN",
-    "tooltip": "Actuator Pin 23 einschalten",
-    "bgcolor": "green",
-    "icon": "arrow-circle-o-up",
-    "payload": "ACT,23,1",
-    "payloadType": "str",
-    "topic": "",
-    "x": 180,
-    "y": 840,
-    "wires": [
-      [
-        "4ac1b66aca6f1626"
-      ]
-    ]
-  },
-  {
-    "id": "9e5a1dc0c5928f70",
-    "type": "ui_button",
-    "z": "4985bdfbcf200fe6",
-    "name": "Actuator 23 OFF (Mobile)",
-    "group": "cd3e28787d1292e1",
-    "order": 5,
-    "width": 5,
-    "height": 1,
-    "passthru": false,
-    "label": "Pin 23 AUS",
-    "tooltip": "Actuator Pin 23 ausschalten",
-    "bgcolor": "red",
-    "icon": "arrow-circle-o-down",
-    "payload": "ACT,23,0",
-    "payloadType": "str",
-    "topic": "",
-    "x": 180,
-    "y": 880,
-    "wires": [
-      [
-        "4ac1b66aca6f1626"
-      ]
-    ]
-  },
-  {
     "id": "152d67ddd441a63e",
     "type": "global-config",
     "env": [],
     "modules": {
       "node-red-dashboard": "3.6.6"
     }
+  },
+  {
+    "id": "b8c0e9d3f4a15412",
+    "type": "link out",
+    "z": "4985bdfbcf200fe6",
+    "name": "to parameters flow",
+    "links": [
+      "link_in_from_dashboard_parameters"
+    ],
+    "x": 520,
+    "y": 860,
+    "wires": []
+  },
+  {
+    "id": "8f6abcf84d0f4e29",
+    "type": "link in",
+    "z": "4985bdfbcf200fe6",
+    "name": "parameters state from fn flow",
+    "links": [
+      "link_out_parameters_state"
+    ],
+    "x": 220,
+    "y": 900,
+    "wires": [
+      [
+        "991894f4120470bc",
+        "0c15c9bcd2a45e71"
+      ]
+    ]
+  },
+  {
+    "id": "991894f4120470bc",
+    "type": "ui_text",
+    "z": "4985bdfbcf200fe6",
+    "group": "0ef8bd821a032b93",
+    "order": 1,
+    "width": 14,
+    "height": 1,
+    "name": "HC-SR04 Korrektur Display",
+    "label": "HC-SR04 Korrektur (cm)",
+    "format": "{{msg.payload.hcsr04_offset_cm}}",
+    "layout": "row-spread",
+    "x": 860,
+    "y": 860,
+    "wires": []
+  },
+  {
+    "id": "b1cb83e0c4557d80",
+    "type": "ui_slider",
+    "z": "4985bdfbcf200fe6",
+    "name": "HC-SR04 Korrektur Slider",
+    "label": "Korrektur einstellen",
+    "tooltip": "Offset fuer Distanzanzeige in cm (-5 bis +5)",
+    "group": "0ef8bd821a032b93",
+    "order": 2,
+    "width": 14,
+    "height": 1,
+    "passthru": false,
+    "outs": "end",
+    "topic": "",
+    "min": -5,
+    "max": 5,
+    "step": 1,
+    "x": 240,
+    "y": 860,
+    "wires": [
+      [
+        "b8c0e9d3f4a15412"
+      ]
+    ]
+  },
+  {
+    "id": "0c15c9bcd2a45e71",
+    "type": "ui_text",
+    "z": "4985bdfbcf200fe6",
+    "group": "cd3e28787d1292e1",
+    "order": 1,
+    "width": 10,
+    "height": 1,
+    "name": "HC-SR04 Korrektur Display (Mobile)",
+    "label": "HC-SR04 Korrektur (cm)",
+    "format": "{{msg.payload.hcsr04_offset_cm}}",
+    "layout": "row-spread",
+    "x": 870,
+    "y": 900,
+    "wires": []
+  },
+  {
+    "id": "e2a62b330b7ec71f",
+    "type": "ui_slider",
+    "z": "4985bdfbcf200fe6",
+    "name": "HC-SR04 Korrektur Slider (Mobile)",
+    "label": "Korrektur einstellen",
+    "tooltip": "Offset fuer Distanzanzeige in cm (-5 bis +5)",
+    "group": "cd3e28787d1292e1",
+    "order": 2,
+    "width": 10,
+    "height": 1,
+    "passthru": false,
+    "outs": "end",
+    "topic": "",
+    "min": -5,
+    "max": 5,
+    "step": 1,
+    "x": 240,
+    "y": 900,
+    "wires": [
+      [
+        "b8c0e9d3f4a15412"
+      ]
+    ]
   }
 ]

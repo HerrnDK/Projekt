@@ -56,10 +56,16 @@ if [[ ! -f "$FLOWS_DIR/fn_startup_test_flow.json" ]]; then
     exit 1
 fi
 
+if [[ ! -f "$FLOWS_DIR/fn_parameters_flow.json" ]]; then
+    echo "❌ FEHLER: fn_parameters_flow.json nicht gefunden in $FLOWS_DIR"
+    exit 1
+fi
+
 echo "✅ dashboard_flow.json geladen"
 echo "✅ Network.json geladen"
 echo "✅ data_exchange_flow.json geladen"
 echo "✅ fn_startup_test_flow.json geladen"
+echo "✅ fn_parameters_flow.json geladen"
 echo ""
 
 # 3. Flows zusammenfassen mit jq oder Python
@@ -67,7 +73,7 @@ echo "🔧 Flows werden zusammengefasst..."
 
 if command -v jq &> /dev/null; then
     # Verwende jq
-    COMBINED=$(jq -s 'add' "$FLOWS_DIR/dashboard_flow.json" "$FLOWS_DIR/Network.json" "$FLOWS_DIR/data_exchange_flow.json" "$FLOWS_DIR/fn_startup_test_flow.json")
+    COMBINED=$(jq -s 'add' "$FLOWS_DIR/dashboard_flow.json" "$FLOWS_DIR/Network.json" "$FLOWS_DIR/data_exchange_flow.json" "$FLOWS_DIR/fn_startup_test_flow.json" "$FLOWS_DIR/fn_parameters_flow.json")
 else
     # Fallback: Python
     COMBINED=$(FLOWS_DIR="$FLOWS_DIR" python3 << 'PYTHON_EOF'
@@ -86,7 +92,9 @@ try:
         data_exchange = json.load(f)
     with open(p / 'fn_startup_test_flow.json') as f:
         startup_test = json.load(f)
-    combined = dashboard + network + data_exchange + startup_test
+    with open(p / 'fn_parameters_flow.json') as f:
+        parameters = json.load(f)
+    combined = dashboard + network + data_exchange + startup_test + parameters
     print(json.dumps(combined, ensure_ascii=False))
 except Exception as e:
     print(f"Error: {e}", file=sys.stderr)
@@ -145,7 +153,7 @@ if [[ "$HTTP_POST_CODE" == "204" || "$HTTP_POST_CODE" == "200" ]]; then
     echo "      - Welcome (Netzwerk-Status & QR-Code)"
     echo "      - WiFi (WLAN-Einrichtung)"
     echo "      - Projekt-info (Sensoren & Steuerung)"
-    echo "      - Projekt-Parametrierung (Actuator-Buttons)"
+    echo "      - Projekt-Parametrierung (HC-SR04 Korrektur)"
     echo "   3. Top-rechts auf 'Deploy' klicken (falls gefordert)"
     echo "   4. Arduino Mega an /dev/serial0 anschließen"
     echo "   5. 'Sensoren aktualisieren' klicken"

@@ -7,7 +7,8 @@ Die Flows werden **direkt auf der Raspberry Pi** aktualisiert:
 2. `./nodered/flows/deploy_flows.sh`
 
 **Hinweis:** `Network.json` ist ein separater Flow-Tab und muss immer zusammen mit
-`dashboard_flow.json` und `data_exchange_flow.json` deployt werden (das Script erledigt das).
+`dashboard_flow.json`, `data_exchange_flow.json`, `fn_startup_test_flow.json` und
+`fn_parameters_flow.json` deployt werden (das Script erledigt das).
 
 **Hardware-Hinweis (UART-Pegel):**
 - Mega TX1 (5V) -> **Pegelwandler 5V->3.3V** -> Raspberry Pi RXD (Pflicht)
@@ -53,6 +54,8 @@ git pull
 ✅ dashboard_flow.json geladen
 ✅ Network.json geladen
 ✅ data_exchange_flow.json geladen
+✅ fn_startup_test_flow.json geladen
+✅ fn_parameters_flow.json geladen
 
 🔧 Flows werden zusammengefasst...
 📤 Flows werden zu Node-RED gesendet...
@@ -80,8 +83,9 @@ Du solltest Tabs sehen:
 - **Welcome** - Netzwerk-Status & QR-Code
 - **WiFi** - WLAN-Konfiguration
 - **Projekt-info** - Sensoren & Steuerung
-- **Projekt-Parametrierung** - Actuator-Buttons
+- **Projekt-Parametrierung** - HC-SR04 Korrektur-Offset
 - **Funktion - Startup Test** - Starttest der Sensorwerte und Anlagenstatus
+- **Funktion - Parameter** - Parameterverwaltung und Wertaufbereitung
 
 Zusätzlich gibt es im **Node-RED Editor** einen eigenen Flow-Tab:
 - **Netzwerkverbindung** - WLAN-Verbindung & Checks
@@ -110,11 +114,11 @@ Gehe zu: http://192.168.0.250:1880/ui
 
 **Projekt-info Tab:**
 - "Sensoren aktualisieren" Klick → Arduino wird abgefragt
-- Zeigt A0, A1, Uptime wenn Arduino verbunden
+- Zeigt HC-SR04 Distanz, HC-SR04 Status und Uptime
 
 **Projekt-Parametrierung Tab:**
-- Buttons für Pin 22 und Pin 23 (EIN/AUS)
-- Reagiert auf Arduino-Befehle
+- Slider für `HC-SR04 Korrektur (cm)` im Bereich `-5 .. +5`
+- Die Distanzanzeige nutzt den korrigierten Wert (`hcsr04_distance_display_cm`)
 
 ---
 
@@ -139,6 +143,8 @@ Dies deutet meist auf einen JSON-Parse-Fehler hin:
 ```bash
 jq . nodered/flows/dashboard_flow.json > /dev/null
 jq . nodered/flows/data_exchange_flow.json > /dev/null
+jq . nodered/flows/fn_startup_test_flow.json > /dev/null
+jq . nodered/flows/fn_parameters_flow.json > /dev/null
 ```
 
 ### Problem: "Authentifizierung erforderlich"
@@ -159,5 +165,6 @@ Node-RED hat `adminAuth` aktiviert. In diesem Fall:
 | `nodered/flows/dashboard_flow.json` | UI/UX + Sensoren/Aktoren (ohne Netzwerk-Logik) |
 | `nodered/flows/Network.json` | WLAN-Verbindung, Status, QR-Codes |
 | `nodered/flows/data_exchange_flow.json` | Serial-I/O Layer zur Arduino |
+| `nodered/flows/fn_parameters_flow.json` | Parameterverwaltung und HC-SR04 Korrektur-Offset |
 | `nodered/flows/FLOW_ARCHITEKTUR_PLAN.md` | Ablaufplan und Zielarchitektur fuer "ein Flow pro Funktion" |
 | `nodered/flows/fn_startup_test_flow.json` | Startup-Test (READ + Sensorvalidierung + Statusanzeige) |

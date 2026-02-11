@@ -13,7 +13,8 @@ flowchart TB
   subgraph RPi[Raspberry Pi]
     Dashboard --> DataFlow[data_exchange_flow.json\nSerial In/Out + JSON Parse]
     Dashboard --> NetFlow[Network.json\nWLAN / Status / QR]
-    Dashboard --> FnFlow[fn_startup_test_flow.json\n+ weitere fn_*_flow.json]
+    Dashboard --> StartupFlow[fn_startup_test_flow.json\nStartup-Status]
+    Dashboard --> ParamFlow[fn_parameters_flow.json\nParameter + Offset]
   end
 
   DataFlow --> SerialPort[/dev/serial0 UART]
@@ -90,6 +91,7 @@ sequenceDiagram
   participant U as User
   participant D as Dashboard
   participant X as data_exchange_flow
+  participant P as fn_parameters_flow
   participant A as Arduino data.cpp
   participant S as Sensors (HC-SR04)
   participant C as Actuators
@@ -100,8 +102,9 @@ sequenceDiagram
   A->>S: Sensors_readSnapshot()
   S-->>A: SensorSnapshot
   A-->>X: {"type":"sensor","hcsr04_status":"ok",...}
-  X-->>D: msg.payload (JSON)
-  D-->>U: Anzeige Uptime/HC-SR04
+  X-->>P: msg.payload (JSON)
+  P-->>D: msg.payload + hcsr04_distance_display_cm
+  D-->>U: Anzeige Uptime/HC-SR04 (korrigiert)
 
   U->>D: Klick "Pin 22 EIN"
   D->>X: payload "ACT,22,1"
