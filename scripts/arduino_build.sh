@@ -5,6 +5,27 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 CLI=""
 
+retry() {
+  local max_attempts="$1"
+  local sleep_seconds="$2"
+  shift 2
+
+  local attempt=1
+  while true; do
+    if "$@"; then
+      return 0
+    fi
+
+    if (( attempt >= max_attempts )); then
+      return 1
+    fi
+
+    echo "WARN: Versuch ${attempt}/${max_attempts} fehlgeschlagen. Neuer Versuch in ${sleep_seconds}s ..."
+    sleep "$sleep_seconds"
+    attempt=$((attempt + 1))
+  done
+}
+
 resolve_cli() {
   if [[ -n "${ARDUINO_CLI:-}" && -x "${ARDUINO_CLI}" ]]; then
     CLI="${ARDUINO_CLI}"
@@ -42,8 +63,8 @@ resolve_cli
 "$CLI" version >/dev/null 2>&1
 
 if ! "$CLI" core list | grep -q "^arduino:avr"; then
-  "$CLI" core update-index
-  "$CLI" core install arduino:avr
+  retry 3 4 "$CLI" core update-index
+  retry 5 6 "$CLI" core install arduino:avr
 fi
 
 "$CLI" compile --fqbn arduino:avr:mega "$REPO_ROOT/arduino/mega"
