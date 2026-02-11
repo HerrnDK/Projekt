@@ -27,7 +27,8 @@ ssh pi@192.168.0.250
 ### Schritt 2: Repository aktualisieren
 
 ```bash
-cd ~/Projekt
+cd ~/.node-red
+# alternativ: cd /pfad/zum/repo
 
 git pull
 ```

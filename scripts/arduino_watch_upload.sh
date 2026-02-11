@@ -52,7 +52,24 @@ resolve_cli() {
     return 0
   fi
 
-  log "FEHLER: arduino-cli nicht gefunden. Entweder ./bin/arduino-cli bereitstellen oder global installieren."
+  if ! command -v curl >/dev/null 2>&1; then
+    log "FEHLER: arduino-cli nicht gefunden und curl ist nicht installiert."
+    log "Installiere curl oder setze ARDUINO_CLI explizit."
+    exit 1
+  fi
+
+  log "arduino-cli nicht gefunden. Installiere lokal nach $REPO_ROOT/bin ..."
+  if ! (cd "$REPO_ROOT" && curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh); then
+    log "FEHLER: arduino-cli Installation fehlgeschlagen."
+    exit 1
+  fi
+
+  if [[ -x "$REPO_ROOT/bin/arduino-cli" ]]; then
+    ARDUINO_CLI_BIN="$REPO_ROOT/bin/arduino-cli"
+    return 0
+  fi
+
+  log "FEHLER: arduino-cli weiterhin nicht verfuegbar."
   exit 1
 }
 

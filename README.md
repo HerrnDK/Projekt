@@ -75,11 +75,12 @@ HC-SR04 Statuswerte:
 Hinweise:
 - Das Script beobachtet `arduino/mega` auf `*.ino`, `*.cpp`, `*.c`, `*.h`, `*.hpp`.
 - Bei jeder Aenderung: Compile via `scripts/arduino_build.sh`, danach Upload via `arduino-cli upload`.
+- Falls `arduino-cli` fehlt, wird es automatisch lokal nach `./bin/arduino-cli` installiert.
 - Mit `inotifywait` reagiert es sofort, sonst nutzt es Polling als Fallback.
 
 ## Deployment (Node-RED auf dem Pi)
 - Flows werden direkt auf dem Raspberry Pi aktualisiert:
-  1. `git pull` im Repo auf dem Pi
+  1. `cd ~/.node-red` (falls das dein Repo-Root ist), dann `git pull`
   2. `./nodered/flows/deploy_flows.sh`
 
 ## Next Steps (wenn Sensoren/Aktoren bekannt sind)
