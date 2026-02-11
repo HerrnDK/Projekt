@@ -1,0 +1,103 @@
+```instructions
+---
+applyTo: 'nodered/flows/*.json, components.yaml, deploy_flows.sh, DEPLOYMENT_GUIDE.md, README.md'
+allowed: ["add_node","update_node","edit_file","create_file","replace_file"]
+forbidden: ["add_secrets","remote_execute","exfiltrate"]
+formatChecks:
+  - command: "jq . nodered/flows/*.json"
+    onError: "abort"
+  - command: "yaml-lint components.yaml"
+    onError: "warning"
+deploy: false
+---
+
+ZWECK
+-----
+Klare, pruefbare Regeln fuer sichere, nachvollziehbare Aenderungen.
+
+GRUNDREGELN
+-----------
+- Deutsch schreiben.
+- Komponenten ueber `refer: <component_id>` ansprechen.
+- Keine Geheimdaten hinzufuegen.
+- Vor jeder Aenderung: kurze Vorschau/Diff zeigen und explizit "Anwenden" oder "Abbrechen" erfragen.
+- Konsistente Formatierung.
+
+VALIDIERUNG
+-----------
+- Bei Aenderungen an `nodered/flows/*.json`: `jq . nodered/flows/<file>.json`
+- Bei Aenderungen an `components.yaml`: `yaml-lint components.yaml`
+- Entspricht den `formatChecks` im Header.
+
+FLOWS (nodered/flows/*.json)
+----------------------------
+
+- Erlaubte Felder: `label`, `tooltip`, `payload`, `description`, `name`, `order`, `width`, `height`, `icon`, `className`.
+- Verboten: `id`, `z`, `type`, `wires`.
+- CSS/Responsive-Aenderungen gelten global fuer alle Dashboard-Seiten, ausser explizit anders gewuenscht.
+- Netzwerk-Logik liegt in `nodered/flows/Network.json` (separater Flow-Tab).
+- Immer gemeinsam deployen: `dashboard_flow.json` + `Network.json` + `data_exchange_flow.json` + `fn_startup_test_flow.json` + `fn_parameters_flow.json`.
+- Nach jeder Aenderung an `nodered/flows/*.json`: `./deploy_flows.sh` ausfuehren und Node-RED unter `http://192.168.0.250:1880` verwenden.
+
+Beispiele:
+```
+ersetze: refer: button_update_sensors
+- aendere label zu "Sensoren neu laden"
+- aendere tooltip zu "Aktuelles Lesen aller Sensordaten"
+- aendere payload zu "READ_ASYNC"
+```
+
+```
+ersetze: nodered/flows/dashboard_flow.json
+- finde Node mit label="Sensoren aktualisieren"
+- aendere tooltip zu "Sensor-Lesezyklus starten"
+```
+
+COMPONENTS.YAML
+---------------
+Nutze logische IDs, keine Node-IDs. Aenderungen in components.yaml dokumentieren.
+Bei UI/Logik-Change `version` erhoehen.
+
+ARDUINO (arduino/mega)
+----------------------
+Pins im Code muessen zu PINOUT.md passen.
+Nach Code-Aenderungen: Build mit `scripts/arduino_build.sh` und PINOUT aktualisieren.
+Sketch-Aufteilung (Arduino Mega):
+- `arduino/mega/mega.ino`: Sketch-Root mit `setup()`/`loop()`.
+- Modul-Implementierungen liegen in `.cpp` Dateien im gleichen Ordner
+  (z. B. `data.cpp`, `actuators.cpp`, `sensors.cpp`).
+Serielle Regeln:
+- `Serial` (RX0/TX0) bleibt fuer USB Debug/Programmierung.
+- `Serial1` (RX1/TX1) fuer Node-RED/Raspberry Pi UART.
+- Serial1 sendet nur JSON-Zeilen (newline-terminiert), damit `data_exchange_flow.json` stabil bleibt.
+Build-Regeln (Arduino CLI):
+- `scripts/arduino_build.sh` ist der Standard-Build.
+- Das Script prueft/installiert `arduino:avr` automatisch, falls noetig.
+
+PINOUT.MD
+---------
+PINOUT.md ist Quelle der Wahrheit fuer alle Pins.
+Jede Pin-Aenderung muss hier dokumentiert werden.
+
+
+DEPLOY_FLOWS.SH
+---------------
+- Script kombiniert alle Flow-Dateien.
+- Bei neuen Flow-Dateien: File-Checks und Combine-Logik anpassen.
+- Ziel-Endpoint bleibt: `POST /flows`.
+
+
+DOKU
+----
+- Aenderungen an Flow-Struktur in `DEPLOYMENT_GUIDE.md` und `README.md` nachziehen.
+- Bei Hardware-/Komponenten-Aenderungen `Hardware.md` mitpflegen.
+
+KONSISTENZ
+----------
+Ich halte diese Dateien konsistent:
+- `components.yaml`
+- `nodered/flows/*.json`
+- `arduino/mega/*.ino`
+- `arduino/mega/PINOUT.md`
+- `Hardware.md`
+```

@@ -1,0 +1,558 @@
+[
+  {
+    "id": "4985bdfbcf200fe6",
+    "type": "tab",
+    "label": "Projekt Automatisierung - FINAL (800x480 + QR offline)",
+    "disabled": false,
+    "info": ""
+  },
+  {
+    "id": "0318f4604525f4f7",
+    "type": "ui_tab",
+    "name": "Welcome",
+    "icon": "dashboard",
+    "order": 1,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "1a87758382986ddf",
+    "type": "ui_tab",
+    "name": "WiFi",
+    "icon": "wifi",
+    "order": 6,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "b482803534c81cb7",
+    "type": "ui_tab",
+    "name": "Projekt-info",
+    "icon": "info",
+    "order": 3,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "9db2c967c1a488ee",
+    "type": "ui_tab",
+    "name": "Projekt-Parametrierung",
+    "icon": "tune",
+    "order": 4,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "3fe8602f3f429631",
+    "type": "ui_tab",
+    "name": "Projekt-Datenlog",
+    "icon": "list",
+    "order": 5,
+    "disabled": false,
+    "hidden": false
+  },
+  {
+    "id": "1b4dd4e879ccb455",
+    "type": "ui_group",
+    "name": "Willkommen auf dem Projekt-Dashboard",
+    "tab": "0318f4604525f4f7",
+    "order": 1,
+    "disp": true,
+    "width": "14",
+    "collapse": false,
+    "className": ""
+  },
+  {
+    "id": "6888e5abb8efb54d",
+    "type": "ui_group",
+    "name": "WLAN Anmeldung",
+    "tab": "1a87758382986ddf",
+    "order": 1,
+    "disp": true,
+    "width": 14,
+    "collapse": false,
+    "className": "desktop-only"
+  },
+  {
+    "id": "18e42aa468913fd1",
+    "type": "ui_group",
+    "name": "WLAN Anmeldung",
+    "tab": "1a87758382986ddf",
+    "order": 2,
+    "disp": true,
+    "width": 10,
+    "collapse": false,
+    "className": "mobile-only"
+  },
+  {
+    "id": "939aa8523e70cefb",
+    "type": "ui_group",
+    "name": "Status / Sensoren",
+    "tab": "b482803534c81cb7",
+    "order": 2,
+    "disp": true,
+    "width": 10,
+    "collapse": false,
+    "className": "mobile-only"
+  },
+  {
+    "id": "3584a9c30b6db556",
+    "type": "ui_group",
+    "name": "Status / Sensoren",
+    "tab": "b482803534c81cb7",
+    "order": 1,
+    "disp": true,
+    "width": 14,
+    "collapse": false,
+    "className": "desktop-only"
+  },
+  {
+    "id": "0ef8bd821a032b93",
+    "type": "ui_group",
+    "name": "Parametrierung",
+    "tab": "9db2c967c1a488ee",
+    "order": 1,
+    "disp": true,
+    "width": 14,
+    "collapse": false,
+    "className": "desktop-only"
+  },
+  {
+    "id": "cd3e28787d1292e1",
+    "type": "ui_group",
+    "name": "Parametrierung",
+    "tab": "9db2c967c1a488ee",
+    "order": 2,
+    "disp": true,
+    "width": 10,
+    "collapse": false,
+    "className": "mobile-only"
+  },
+  {
+    "id": "bdc119e647f71c57",
+    "type": "ui_group",
+    "name": "Datenlog",
+    "tab": "3fe8602f3f429631",
+    "order": 1,
+    "disp": true,
+    "width": 14,
+    "collapse": false
+  },
+  {
+    "id": "3430d891af8fa1f6",
+    "type": "ui_base",
+    "theme": {
+      "name": "theme-light",
+      "lightTheme": {
+        "default": "#0094CE",
+        "baseColor": "#0094CE",
+        "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+        "edited": true,
+        "reset": false
+      },
+      "darkTheme": {
+        "default": "#097479",
+        "baseColor": "#097479",
+        "baseFont": "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+        "edited": false
+      },
+      "themeState": {
+        "base-color": {
+          "default": "#0094CE",
+          "value": "#0094CE",
+          "edited": false
+        },
+        "page-titlebar-backgroundColor": {
+          "value": "#0094CE",
+          "edited": false
+        },
+        "page-backgroundColor": {
+          "value": "#fafafa",
+          "edited": false
+        },
+        "page-sidebar-backgroundColor": {
+          "value": "#ffffff",
+          "edited": false
+        },
+        "group-textColor": {
+          "value": "#1bbfff",
+          "edited": false
+        },
+        "group-borderColor": {
+          "value": "#ffffff",
+          "edited": false
+        },
+        "group-backgroundColor": {
+          "value": "#ffffff",
+          "edited": false
+        },
+        "widget-textColor": {
+          "value": "#111111",
+          "edited": false
+        },
+        "widget-backgroundColor": {
+          "value": "#0094ce",
+          "edited": false
+        },
+        "widget-borderColor": {
+          "value": "#ffffff",
+          "edited": false
+        }
+      }
+    },
+    "site": {
+      "name": "Node-RED Dashboard",
+      "hideToolbar": "false",
+      "allowSwipe": "false",
+      "lockMenu": "false",
+      "allowTempTheme": "true",
+      "dateFormat": "DD.MM.YYYY",
+      "sizes": {
+        "sx": 48,
+        "sy": 48,
+        "gx": 6,
+        "gy": 6,
+        "cx": 6,
+        "cy": 6,
+        "px": 0,
+        "py": 0
+      }
+    }
+  },
+  {
+    "id": "4e62a4011a9a2d00",
+    "type": "ui_template",
+    "z": "4985bdfbcf200fe6",
+    "group": "1b4dd4e879ccb455",
+    "name": "Responsive CSS Global",
+    "order": -1,
+    "width": 0,
+    "height": 0,
+    "format": "<style>\n  * { box-sizing: border-box; }\n  html, body, md-content, .nr-dashboard-dashboard { overflow-x: hidden; }\n  .nr-dashboard-cardcontainer { padding: 4px; }\n  md-card { width: 100%; max-width: calc(100% - 8px); }\n\n  .mobile-only { display: none !important; }\n  .desktop-only { display: block !important; }\n\n  @media (max-width: 600px) {\n    .desktop-only { display: none !important; }\n    .mobile-only { display: block !important; }\n    md-card { margin: 2px !important; }\n    .nr-dashboard-cardcontainer { padding: 2px !important; }\n  }\n\n  /* QR cards */\n  .qr-card {\n    background: #ffffff;\n    padding: 16px 18px;\n    border-radius: 12px;\n    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);\n    text-align: center;\n    width: 100%;\n  }\n  .qr-title {\n    font-weight: 700;\n    margin-bottom: 8px;\n    color: #111111;\n  }\n  .qr-card img {\n    width: 200px;\n    height: 200px;\n    display: block;\n    margin: 0 auto;\n  }\n  .qr-hint {\n    margin-top: 8px;\n    font-size: 13px;\n    color: #333333;\n  }\n  @media (max-width: 600px) {\n    .qr-card { padding: 12px 14px; }\n    .qr-card img { width: 170px; height: 170px; }\n    .qr-hint { font-size: 12px; }\n  }\n\n</style>",
+    "storeOutMessages": false,
+    "fwdInMessages": true,
+    "resendOnRefresh": true,
+    "templateScope": "global",
+    "x": 140,
+    "y": 50,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "7e3a8a709a4fb946",
+    "type": "ui_template",
+    "z": "4985bdfbcf200fe6",
+    "group": "1b4dd4e879ccb455",
+    "name": "Welcome Anzeige (zentriert)",
+    "order": 3,
+    "width": 14,
+    "height": 7,
+    "format": "<div></div>",
+    "storeOutMessages": false,
+    "fwdInMessages": true,
+    "resendOnRefresh": true,
+    "templateScope": "local",
+    "x": 1820,
+    "y": 100,
+    "wires": [
+      []
+    ]
+  },
+  {
+    "id": "5fedbca111dace7e",
+    "type": "ui_button",
+    "z": "4985bdfbcf200fe6",
+    "name": "Sensoren lesen (Mobile)",
+    "group": "939aa8523e70cefb",
+    "order": 1,
+    "width": 10,
+    "height": 1,
+    "passthru": false,
+    "label": "Sensoren aktualisieren",
+    "tooltip": "READ Kommando senden",
+    "icon": "refresh",
+    "payload": "READ",
+    "payloadType": "str",
+    "topic": "",
+    "x": 380,
+    "y": 520,
+    "wires": [
+      [
+        "4ac1b66aca6f1626"
+      ]
+    ]
+  },
+  {
+    "id": "9baf027087ee53a2",
+    "type": "ui_text",
+    "z": "4985bdfbcf200fe6",
+    "group": "939aa8523e70cefb",
+    "order": 4,
+    "width": 10,
+    "height": 1,
+    "name": "Uptime Display (Mobile)",
+    "label": "Uptime (HH:MM:SS)",
+    "format": "{{msg.payload.uptime_hms}}",
+    "layout": "row-spread",
+    "x": 610,
+    "y": 640,
+    "wires": []
+  },
+  {
+    "id": "f2c4a6e1bd3e4a70",
+    "type": "ui_text",
+    "z": "4985bdfbcf200fe6",
+    "group": "939aa8523e70cefb",
+    "order": 6,
+    "width": 10,
+    "height": 1,
+    "name": "HC-SR04 Distanz Display (Mobile)",
+    "label": "HC-SR04 Distanz korrigiert (cm)",
+    "format": "{{msg.payload.hcsr04_distance_display_cm}}",
+    "layout": "row-spread",
+    "x": 670,
+    "y": 680,
+    "wires": []
+  },
+  {
+    "id": "d0fcb2a91e984e6a",
+    "type": "ui_text",
+    "z": "4985bdfbcf200fe6",
+    "group": "939aa8523e70cefb",
+    "order": 7,
+    "width": 10,
+    "height": 1,
+    "name": "HC-SR04 Status Display (Mobile)",
+    "label": "HC-SR04 Status",
+    "format": "{{msg.payload.hcsr04_status}}",
+    "layout": "row-spread",
+    "x": 670,
+    "y": 720,
+    "wires": []
+  },
+  {
+    "id": "92797bc31e9565c2",
+    "type": "ui_text",
+    "z": "4985bdfbcf200fe6",
+    "group": "3584a9c30b6db556",
+    "order": 4,
+    "width": 7,
+    "height": 1,
+    "name": "Uptime Display",
+    "label": "Uptime (HH:MM:SS)",
+    "format": "{{msg.payload.uptime_hms}}",
+    "layout": "row-spread",
+    "x": 610,
+    "y": 640,
+    "wires": []
+  },
+  {
+    "id": "8a9df2e34f274275",
+    "type": "ui_text",
+    "z": "4985bdfbcf200fe6",
+    "group": "3584a9c30b6db556",
+    "order": 6,
+    "width": 7,
+    "height": 1,
+    "name": "HC-SR04 Distanz Display",
+    "label": "HC-SR04 Distanz korrigiert (cm)",
+    "format": "{{msg.payload.hcsr04_distance_display_cm}}",
+    "layout": "row-spread",
+    "x": 680,
+    "y": 680,
+    "wires": []
+  },
+  {
+    "id": "4bc78086c6c84e1e",
+    "type": "ui_text",
+    "z": "4985bdfbcf200fe6",
+    "group": "3584a9c30b6db556",
+    "order": 7,
+    "width": 7,
+    "height": 1,
+    "name": "HC-SR04 Status Display",
+    "label": "HC-SR04 Status",
+    "format": "{{msg.payload.hcsr04_status}}",
+    "layout": "row-spread",
+    "x": 670,
+    "y": 720,
+    "wires": []
+  },
+  {
+    "id": "f5c0bddf87cbb257",
+    "type": "ui_button",
+    "z": "4985bdfbcf200fe6",
+    "name": "Sensoren lesen",
+    "group": "3584a9c30b6db556",
+    "order": 1,
+    "width": 7,
+    "height": 1,
+    "passthru": false,
+    "label": "Sensoren aktualisieren",
+    "tooltip": "READ Kommando senden",
+    "icon": "refresh",
+    "payload": "READ",
+    "payloadType": "str",
+    "topic": "",
+    "x": 380,
+    "y": 540,
+    "wires": [
+      [
+        "4ac1b66aca6f1626"
+      ]
+    ]
+  },
+  {
+    "id": "4ac1b66aca6f1626",
+    "type": "link out",
+    "z": "4985bdfbcf200fe6",
+    "name": "to Arduino (from Dashboard)",
+    "links": [
+      "link_in_from_dashboard"
+    ],
+    "x": 720,
+    "y": 560,
+    "wires": []
+  },
+  {
+    "id": "2a616d8b76b4fe2c",
+    "type": "link in",
+    "z": "4985bdfbcf200fe6",
+    "name": "sensors from parameters flow",
+    "links": [
+      "link_out_parameters_to_dashboard"
+    ],
+    "x": 460,
+    "y": 600,
+    "wires": [
+      [
+        "92797bc31e9565c2",
+        "8a9df2e34f274275",
+        "4bc78086c6c84e1e",
+        "9baf027087ee53a2",
+        "f2c4a6e1bd3e4a70",
+        "d0fcb2a91e984e6a"
+      ]
+    ]
+  },
+  {
+    "id": "152d67ddd441a63e",
+    "type": "global-config",
+    "env": [],
+    "modules": {
+      "node-red-dashboard": "3.6.6"
+    }
+  },
+  {
+    "id": "b8c0e9d3f4a15412",
+    "type": "link out",
+    "z": "4985bdfbcf200fe6",
+    "name": "to parameters flow",
+    "links": [
+      "link_in_from_dashboard_parameters"
+    ],
+    "x": 520,
+    "y": 860,
+    "wires": []
+  },
+  {
+    "id": "8f6abcf84d0f4e29",
+    "type": "link in",
+    "z": "4985bdfbcf200fe6",
+    "name": "parameters state from fn flow",
+    "links": [
+      "link_out_parameters_state"
+    ],
+    "x": 220,
+    "y": 900,
+    "wires": [
+      [
+        "991894f4120470bc",
+        "0c15c9bcd2a45e71"
+      ]
+    ]
+  },
+  {
+    "id": "991894f4120470bc",
+    "type": "ui_text",
+    "z": "4985bdfbcf200fe6",
+    "group": "0ef8bd821a032b93",
+    "order": 1,
+    "width": 14,
+    "height": 1,
+    "name": "HC-SR04 Korrektur Display",
+    "label": "HC-SR04 Korrektur (cm)",
+    "format": "{{msg.payload.hcsr04_offset_cm}}",
+    "layout": "row-spread",
+    "x": 860,
+    "y": 860,
+    "wires": []
+  },
+  {
+    "id": "b1cb83e0c4557d80",
+    "type": "ui_slider",
+    "z": "4985bdfbcf200fe6",
+    "name": "HC-SR04 Korrektur Slider",
+    "label": "Korrektur einstellen",
+    "tooltip": "Offset fuer Distanzanzeige in cm (-5 bis +5)",
+    "group": "0ef8bd821a032b93",
+    "order": 2,
+    "width": 14,
+    "height": 1,
+    "passthru": false,
+    "outs": "end",
+    "topic": "",
+    "min": -5,
+    "max": 5,
+    "step": 1,
+    "x": 240,
+    "y": 860,
+    "wires": [
+      [
+        "b8c0e9d3f4a15412"
+      ]
+    ]
+  },
+  {
+    "id": "0c15c9bcd2a45e71",
+    "type": "ui_text",
+    "z": "4985bdfbcf200fe6",
+    "group": "cd3e28787d1292e1",
+    "order": 1,
+    "width": 10,
+    "height": 1,
+    "name": "HC-SR04 Korrektur Display (Mobile)",
+    "label": "HC-SR04 Korrektur (cm)",
+    "format": "{{msg.payload.hcsr04_offset_cm}}",
+    "layout": "row-spread",
+    "x": 870,
+    "y": 900,
+    "wires": []
+  },
+  {
+    "id": "e2a62b330b7ec71f",
+    "type": "ui_slider",
+    "z": "4985bdfbcf200fe6",
+    "name": "HC-SR04 Korrektur Slider (Mobile)",
+    "label": "Korrektur einstellen",
+    "tooltip": "Offset fuer Distanzanzeige in cm (-5 bis +5)",
+    "group": "cd3e28787d1292e1",
+    "order": 2,
+    "width": 10,
+    "height": 1,
+    "passthru": false,
+    "outs": "end",
+    "topic": "",
+    "min": -5,
+    "max": 5,
+    "step": 1,
+    "x": 240,
+    "y": 900,
+    "wires": [
+      [
+        "b8c0e9d3f4a15412"
+      ]
+    ]
+  }
+]
