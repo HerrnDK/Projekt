@@ -1,68 +1,141 @@
-# Node-RED Ablaufplan: Ein Flow pro Funktion
+# Projekt UML und Ablaufdiagramme
 
 ## Ziel
-- Pro Fachfunktion ein eigener Node-RED-Flow (eigener Tab).
-- Gemeinsame Kommunikationsschicht bleibt zentral in `data_exchange_flow.json`.
-- Funktionsflows senden/empfangen nur ueber Link-Nodes zur Kommunikationsschicht.
+- Komplettsicht auf Architektur und Laufzeit fuer Arduino, Raspberry Pi und Node-RED.
+- Einheitliche Grundlage fuer weitere Funktions-Module (`funktion_<name>` / `fn_<name>_flow.json`).
 
-## Aktuelle Basis (Stand im Repo)
-- Kommunikationsschicht: `nodered/flows/data_exchange_flow.json`
-- UI/Fachlogik (gemischt): `nodered/flows/dashboard_flow.json`
-- Netzwerklogik: `nodered/flows/Network.json`
-
-## Zielarchitektur (Soll)
-- `nodered/flows/data_exchange_flow.json` (Transport, JSON-Parse, Routing)
-- `nodered/flows/fn_sensoren_flow.json` (READ ausloesen, Sensorwerte nutzen)
-- `nodered/flows/fn_aktoren_flow.json` (ACT-Kommandos aufbauen, Ack auswerten)
-- `nodered/flows/fn_<weitere_funktion>.json` (je Funktion ein Tab)
-- `nodered/flows/Network.json` (separat, unveraendert als Netzwerk-Flow)
-
-## Graph 1: Laufzeit-Kommunikation
+## 1) Systemarchitektur (Komponentenblick)
 ```mermaid
-flowchart LR
-  UI[Dashboard UI] --> FN[Funktionsflow]
-  FN --> LOUT[Link Out: to data_exchange]
-  LOUT --> TX[Serial Out /dev/serial0]
-  TX --> ARD[Arduino Serial1]
-  ARD --> RX[Serial In /dev/serial0]
-  RX --> JP[JSON Parse]
-  JP --> ROUTE[Response Router]
-  ROUTE --> LIN[Link In: from data_exchange]
-  LIN --> FN
-  FN --> UI
+flowchart TB
+  User[User] --> Browser[Touch Browser]
+  Browser --> Dashboard[Node-RED Dashboard\nnodered/flows/dashboard_flow.json]
+
+  subgraph RPi[Raspberry Pi]
+    Dashboard --> DataFlow[data_exchange_flow.json\nSerial In/Out + JSON Parse]
+    Dashboard --> NetFlow[Network.json\nWLAN / Status / QR]
+    Dashboard --> FnFlow[fn_startup_test_flow.json\n+ weitere fn_*_flow.json]
+  end
+
+  DataFlow --> SerialPort[/dev/serial0 UART]
+  SerialPort --> LevelShift[Pegelwandler 5V -> 3.3V]
+  LevelShift --> Mega[Arduino Mega 2560 Serial1\nTX1=18 RX1=19]
+
+  subgraph Arduino[Arduino Sketch arduino/mega]
+    Mega --> MainCpp[main.cpp\nsetup() / loop()]
+    MainCpp --> DataCpp[data.cpp\nREAD / ACT Protokoll]
+    MainCpp --> SensorsCpp[funktion_sensors.cpp]
+    MainCpp --> ActCpp[funktion_actuators.cpp]
+    DataCpp --> Shared[mega_shared.h/.cpp]
+    SensorsCpp --> Shared
+    ActCpp --> Shared
+  end
+
+  SensorsCpp --> Inputs[Sensoren A0/A1 + spaeter weitere]
+  ActCpp --> Outputs[Aktoren Pins 22-25 + spaeter weitere]
 ```
 
-## Graph 2: Umsetzungsfahrplan
+## 2) UML Klassendiagramm (Arduino-Software)
 ```mermaid
-graph TD
-  S1[1. Funktionskatalog festlegen] --> S2[2. Pro Funktion eigenen Flow-Tab anlegen]
-  S2 --> S3[3. Link-Nodes zur Kommunikationsschicht setzen]
-  S3 --> S4[4. Response-Routing in data_exchange ergaenzen]
-  S4 --> S5[5. Komponentenregister in components.yaml pflegen]
-  S5 --> S6[6. JSON-Checks und Deploy]
-  S6 --> S7[7. End-to-End Test je Funktion]
+classDiagram
+  class SensorSnapshot {
+    +int a0
+    +int a1
+    +unsigned long uptime_ms
+  }
+
+  class MainModule {
+    +setup()
+    +loop()
+  }
+
+  class DataModule {
+    +Data_begin()
+    +Data_tick()
+    +Data_sendSensorSnapshot()
+  }
+
+  class SensorsModule {
+    +Sensors_begin()
+    +Sensors_readSnapshot(SensorSnapshot& out)
+  }
+
+  class ActuatorsModule {
+    +Actuators_begin()
+    +Actuators_set(uint8_t pin, bool state) bool
+  }
+
+  class SharedConfig {
+    +DEBUG_BAUD
+    +DATA_BAUD
+    +ACTUATOR_PINS[]
+    +ACTUATOR_COUNT
+    +DEBUG_PORT
+    +DATA_PORT
+  }
+
+  MainModule --> DataModule : ruft auf
+  MainModule --> SensorsModule : initialisiert
+  MainModule --> ActuatorsModule : initialisiert
+  DataModule --> SensorsModule : liest Snapshot
+  DataModule --> ActuatorsModule : setzt Pins
+  DataModule --> SensorSnapshot : serialisiert JSON
+  DataModule --> SharedConfig
+  SensorsModule --> SharedConfig
+  ActuatorsModule --> SharedConfig
 ```
 
-## Template pro Funktion (Copy-Paste fuer neue Funktionen)
-- Eingangs-Link: `link in` von `data_exchange_flow.json`
-- Ausgangs-Link: `link out` nach `data_exchange_flow.json`
-- Command-Builder: erzeugt `msg.payload` als Serial-Kommando (`READ`, `ACT,<pin>,<state>`, ...)
-- Response-Filter: verarbeitet nur passende Antworten (`payload.type`, optional `payload.pin`)
-- UI/Logik-Nodes: Anzeige/Steuerung fuer genau eine Funktion
+## 3) Sequenzdiagramm (READ und ACT)
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant D as Dashboard
+  participant X as data_exchange_flow
+  participant A as Arduino data.cpp
+  participant S as Sensors
+  participant C as Actuators
 
-## Reihenfolge fuer die naechsten Sprints
-1. `fn_sensoren_flow.json` aus `READ`-Pfad herausloesen
-2. `fn_aktoren_flow.json` aus `ACT`-Pfad herausloesen
-3. Weitere Funktionen nach gleichem Muster (`fn_<name>_flow.json`)
-4. `dashboard_flow.json` auf reine UI-Orchestrierung reduzieren
+  U->>D: Klick "Sensoren aktualisieren"
+  D->>X: payload "READ"
+  X->>A: Serial1: READ
+  A->>S: Sensors_readSnapshot()
+  S-->>A: SensorSnapshot
+  A-->>X: {"type":"sensor",...}
+  X-->>D: msg.payload (JSON)
+  D-->>U: Anzeige A0/A1/Uptime
 
-## Referenzen auf bestehende Komponenten
-- `refer: button_update_sensors`
-- `refer: serial_out_arduino`
+  U->>D: Klick "Pin 22 EIN"
+  D->>X: payload "ACT,22,1"
+  X->>A: Serial1: ACT,22,1
+  A->>C: Actuators_set(22,true)
+  C-->>A: ok=true
+  A-->>X: {"type":"act","ok":1,...}
+  X-->>D: msg.payload (ACK)
+  D-->>U: Rueckmeldung/Status
+```
 
-## Definition of Done je Funktion
-- Eigener Flow-Tab vorhanden
-- Link zur Kommunikationsschicht vorhanden (hin und zurueck)
-- End-to-End Test erfolgreich
-- In `components.yaml` dokumentiert (inkl. `version`-Pflege)
-- Deploy ueber `./nodered/flows/deploy_flows.sh` erfolgreich
+## 4) Ablaufdiagramm (Entwicklung bis Betrieb)
+```mermaid
+flowchart TD
+  Start[Code Aenderung im Repo] --> Build[./scripts/arduino_build.sh]
+  Build -->|ok| Upload[Arduino IDE Upload oder arduino-cli upload]
+  Build -->|fehler| Fix[Code korrigieren]
+  Fix --> Build
+
+  Upload --> FlowEdit[Node-RED Flows anpassen]
+  FlowEdit --> Pull[git pull auf Raspberry Pi]
+  Pull --> Deploy[./nodered/flows/deploy_flows.sh]
+  Deploy --> E2E[End-to-End Test READ/ACT]
+  E2E -->|ok| Run[Betrieb]
+  E2E -->|fehler| Fix
+```
+
+## Struktur je Funktion (Standardmuster)
+- Arduino: `funktion_<name>.cpp` + optional `funktion_<name>.ino` Wrapper.
+- Node-RED: `fn_<name>_flow.json` mit Link In/Out zur `data_exchange_flow.json`.
+- Protokoll: Kommandos nach Serial1, Antworten immer als JSON mit `type`.
+
+## Definition of Done je neue Funktion
+- Arduino-Modul implementiert und Build erfolgreich.
+- Node-RED Funktions-Flow angelegt und ueber Link-Nodes angebunden.
+- Dashboard-Interaktion vorhanden (Button/Anzeige).
+- End-to-End Test (Kommando -> Hardware -> JSON -> UI) erfolgreich.
