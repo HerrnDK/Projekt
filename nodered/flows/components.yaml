@@ -114,7 +114,7 @@ components:
     type: function
     flow: nodered/flows/fn_startup_test_flow.json
     node_label: "Startup-Test validieren"
-    description: "Validiert Basis-Sensoren und HC-SR04 Status; setzt Anlagenstatus inkl. Fehlertext"
+    description: "Validiert HC-SR04 Status und Uptime; setzt Anlagenstatus inkl. Fehlertext"
     tags: [startup, status, validation, hcsr04]
     version: 2
   startup_status_indicator_desktop:

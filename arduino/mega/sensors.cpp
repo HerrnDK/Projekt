@@ -40,20 +40,12 @@ namespace {
 }
 
 void Sensors_begin() {
-  // Analoge Pins sind standardmaessig Input, explizit setzen fuer Klarheit
-  pinMode(A0, INPUT);
-  pinMode(A1, INPUT);
-
   pinMode(HC_SR04_TRIG_PIN, OUTPUT);
   pinMode(HC_SR04_ECHO_PIN, INPUT);
   digitalWrite(HC_SR04_TRIG_PIN, LOW);
 }
 
 void Sensors_readSnapshot(SensorSnapshot &out) {
-  // Platzhalterwerte fuer A0/A1 bleiben aktiv
-  out.a0 = analogRead(A0);
-  out.a1 = analogRead(A1);
-
   bool hcsr04Ok = false;
   const char *hcsr04Status = "error_unknown";
   out.hcsr04_distance_cm = readHcsr04DistanceCm(hcsr04Ok, hcsr04Status);

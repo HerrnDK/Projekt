@@ -26,9 +26,9 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 - `ACT,<pin>,<state>` -> Aktor schalten, JSON-ACK
 
 JSON-Formate (Beispiele):
-- Sensor: `{"type":"sensor","a0":123,"a1":456,"hcsr04_distance_cm":42,"hcsr04_status":"ok","uptime_ms":7890}`
-- Act: `{"type":"act","ok":1,"pin":22,"state":1,"a0":123,"a1":456,"hcsr04_distance_cm":42,"hcsr04_status":"ok","uptime_ms":7890}`
-- Error: `{"type":"error","code":"unknown_command","a0":123,"a1":456,"hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","uptime_ms":7890}`
+- Sensor: `{"type":"sensor","hcsr04_distance_cm":42,"hcsr04_status":"ok","uptime_ms":7890}`
+- Act: `{"type":"act","ok":1,"pin":22,"state":1,"hcsr04_distance_cm":42,"hcsr04_status":"ok","uptime_ms":7890}`
+- Error: `{"type":"error","code":"unknown_command","hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","uptime_ms":7890}`
 
 HC-SR04 Statuswerte:
 - `ok` gemessene Distanz ist gueltig
@@ -84,6 +84,6 @@ Hinweise:
   2. `./nodered/flows/deploy_flows.sh`
 
 ## Next Steps (wenn Sensoren/Aktoren bekannt sind)
-- Platzhalterwerte (A0/A1) durch echte Sensoren ersetzen.
-- `ACTUATOR_PINS` und UI-Buttons erweitern.
+- Weitere Sensoren nach gleichem Muster in `sensors.cpp` ergaenzen.
+- `ACTUATOR_PINS` und UI-Buttons bei Bedarf erweitern.
 - Baudrate ggf. anpassen.

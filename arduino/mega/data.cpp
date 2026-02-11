@@ -16,7 +16,7 @@ namespace {
   char inputBuffer[DATA_CMD_MAX];
   uint8_t inputLen = 0;
 
-  SensorSnapshot lastSnapshot = {0, 0, -1, "error_init", 0};
+  SensorSnapshot lastSnapshot = {-1, "error_init", 0};
 
   void Data_handleCommand(const char *cmd);
   bool Data_parseAct(const char *cmd, uint8_t &pin, uint8_t &state);
@@ -56,11 +56,7 @@ void Data_sendSensorSnapshot() {
   lastSnapshot = snapshot;
 
   // JSON-Zeile fuer Node-RED (data_exchange_flow.json erwartet JSON)
-  DATA_PORT.print("{\"type\":\"sensor\",\"a0\":");
-  DATA_PORT.print(snapshot.a0);
-  DATA_PORT.print(",\"a1\":");
-  DATA_PORT.print(snapshot.a1);
-  DATA_PORT.print(",\"hcsr04_distance_cm\":");
+  DATA_PORT.print("{\"type\":\"sensor\",\"hcsr04_distance_cm\":");
   DATA_PORT.print(snapshot.hcsr04_distance_cm);
   DATA_PORT.print(",\"hcsr04_status\":\"");
   DATA_PORT.print(snapshot.hcsr04_status);
@@ -134,10 +130,6 @@ namespace {
     DATA_PORT.print(pin);
     DATA_PORT.print(",\"state\":");
     DATA_PORT.print(state ? 1 : 0);
-    DATA_PORT.print(",\"a0\":");
-    DATA_PORT.print(lastSnapshot.a0);
-    DATA_PORT.print(",\"a1\":");
-    DATA_PORT.print(lastSnapshot.a1);
     DATA_PORT.print(",\"hcsr04_distance_cm\":");
     DATA_PORT.print(lastSnapshot.hcsr04_distance_cm);
     DATA_PORT.print(",\"hcsr04_status\":\"");
@@ -151,11 +143,7 @@ namespace {
   void Data_sendError(const char *code) {
     DATA_PORT.print("{\"type\":\"error\",\"code\":\"");
     DATA_PORT.print(code);
-    DATA_PORT.print("\",\"a0\":");
-    DATA_PORT.print(lastSnapshot.a0);
-    DATA_PORT.print(",\"a1\":");
-    DATA_PORT.print(lastSnapshot.a1);
-    DATA_PORT.print(",\"hcsr04_distance_cm\":");
+    DATA_PORT.print("\",\"hcsr04_distance_cm\":");
     DATA_PORT.print(lastSnapshot.hcsr04_distance_cm);
     DATA_PORT.print(",\"hcsr04_status\":\"");
     DATA_PORT.print(lastSnapshot.hcsr04_status);

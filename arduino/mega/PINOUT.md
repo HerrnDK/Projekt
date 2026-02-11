@@ -32,8 +32,6 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen für Sensoren und Akt
 | Pin | Funktion | Sensortyp | I2C/SPI/Analog | Notizen |
 |-----|----------|-----------|---|---------|
 | 27 | HC-SR04 ECHO | Ultraschall-Sensor | Digital | Echo-Eingang (5V TTL) |
-| | | | | |
-| | | | | |
 
 ---
 
@@ -41,12 +39,12 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen für Sensoren und Akt
 
 | Pin | Adc-Nummer | Sensor | Spannung | Kalibrierung | Notizen |
 |-----|-----------|--------|----------|-------------|---------|
-| A0 | ADC0 | | 0-5V | | |
-| A1 | ADC1 | | 0-5V | | |
-| A2 | ADC2 | | 0-5V | | |
-| A3 | ADC3 | | 0-5V | | |
-| A4 | ADC4 | | 0-5V | | |
-| A5 | ADC5 | | 0-5V | | |
+| A0 | ADC0 | derzeit nicht genutzt | 0-5V | | |
+| A1 | ADC1 | derzeit nicht genutzt | 0-5V | | |
+| A2 | ADC2 | derzeit nicht genutzt | 0-5V | | |
+| A3 | ADC3 | derzeit nicht genutzt | 0-5V | | |
+| A4 | ADC4 | derzeit nicht genutzt | 0-5V | | |
+| A5 | ADC5 | derzeit nicht genutzt | 0-5V | | |
 
 ---
 

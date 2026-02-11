@@ -15,8 +15,6 @@ extern const uint8_t ACTUATOR_COUNT;
 
 // Struktur fuer Sensordaten
 struct SensorSnapshot {
-  int a0;
-  int a1;
   long hcsr04_distance_cm;
   const char *hcsr04_status;
   unsigned long uptime_ms;

@@ -23,14 +23,14 @@ flowchart TB
   subgraph Arduino[Arduino Sketch arduino/mega]
     Mega --> MainCpp[mega.ino\nsetup() / loop()]
     MainCpp --> DataCpp[data.cpp\nREAD / ACT Protokoll]
-    MainCpp --> SensorsCpp[funktion_sensors.cpp]
-    MainCpp --> ActCpp[funktion_actuators.cpp]
+    MainCpp --> SensorsCpp[sensors.cpp]
+    MainCpp --> ActCpp[actuators.cpp]
     DataCpp --> Shared[mega_shared.h/.cpp]
     SensorsCpp --> Shared
     ActCpp --> Shared
   end
 
-  SensorsCpp --> Inputs[Sensoren A0/A1 + HC-SR04 + spaeter weitere]
+  SensorsCpp --> Inputs[Sensoren HC-SR04 + spaeter weitere]
   ActCpp --> Outputs[Aktoren Pins 22-25 + spaeter weitere]
 ```
 
@@ -38,8 +38,8 @@ flowchart TB
 ```mermaid
 classDiagram
   class SensorSnapshot {
-    +int a0
-    +int a1
+    +long hcsr04_distance_cm
+    +const char* hcsr04_status
     +unsigned long uptime_ms
   }
 
@@ -91,7 +91,7 @@ sequenceDiagram
   participant D as Dashboard
   participant X as data_exchange_flow
   participant A as Arduino data.cpp
-  participant S as Sensors (A0/A1 + HC-SR04)
+  participant S as Sensors (HC-SR04)
   participant C as Actuators
 
   U->>D: Klick "Sensoren aktualisieren"
@@ -101,7 +101,7 @@ sequenceDiagram
   S-->>A: SensorSnapshot
   A-->>X: {"type":"sensor","hcsr04_status":"ok",...}
   X-->>D: msg.payload (JSON)
-  D-->>U: Anzeige A0/A1/Uptime/HC-SR04
+  D-->>U: Anzeige Uptime/HC-SR04
 
   U->>D: Klick "Pin 22 EIN"
   D->>X: payload "ACT,22,1"

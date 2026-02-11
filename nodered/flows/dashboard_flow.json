@@ -284,38 +284,6 @@
     ]
   },
   {
-    "id": "0d8e4bd65b6f369b",
-    "type": "ui_text",
-    "z": "4985bdfbcf200fe6",
-    "group": "939aa8523e70cefb",
-    "order": 2,
-    "width": 10,
-    "height": 1,
-    "name": "A0 Display (Mobile)",
-    "label": "Sensor A0",
-    "format": "{{msg.payload.a0}}",
-    "layout": "row-spread",
-    "x": 600,
-    "y": 560,
-    "wires": []
-  },
-  {
-    "id": "58c629f7381e64a0",
-    "type": "ui_text",
-    "z": "4985bdfbcf200fe6",
-    "group": "939aa8523e70cefb",
-    "order": 3,
-    "width": 10,
-    "height": 1,
-    "name": "A1 Display (Mobile)",
-    "label": "Sensor A1",
-    "format": "{{msg.payload.a1}}",
-    "layout": "row-spread",
-    "x": 600,
-    "y": 600,
-    "wires": []
-  },
-  {
     "id": "9baf027087ee53a2",
     "type": "ui_text",
     "z": "4985bdfbcf200fe6",
@@ -361,38 +329,6 @@
     "layout": "row-spread",
     "x": 670,
     "y": 720,
-    "wires": []
-  },
-  {
-    "id": "9176738c8c89f470",
-    "type": "ui_text",
-    "z": "4985bdfbcf200fe6",
-    "group": "3584a9c30b6db556",
-    "order": 2,
-    "width": 7,
-    "height": 1,
-    "name": "A0 Display",
-    "label": "Sensor A0",
-    "format": "{{msg.payload.a0}}",
-    "layout": "row-spread",
-    "x": 600,
-    "y": 560,
-    "wires": []
-  },
-  {
-    "id": "9c0ab803433d6479",
-    "type": "ui_text",
-    "z": "4985bdfbcf200fe6",
-    "group": "3584a9c30b6db556",
-    "order": 3,
-    "width": 7,
-    "height": 1,
-    "name": "A1 Display",
-    "label": "Sensor A1",
-    "format": "{{msg.payload.a1}}",
-    "layout": "row-spread",
-    "x": 600,
-    "y": 600,
     "wires": []
   },
   {
@@ -591,13 +527,9 @@
     "y": 600,
     "wires": [
       [
-        "9176738c8c89f470",
-        "9c0ab803433d6479",
         "92797bc31e9565c2",
         "8a9df2e34f274275",
         "4bc78086c6c84e1e",
-        "0d8e4bd65b6f369b",
-        "58c629f7381e64a0",
         "9baf027087ee53a2",
         "f2c4a6e1bd3e4a70",
         "d0fcb2a91e984e6a"
