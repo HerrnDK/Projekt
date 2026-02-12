@@ -72,6 +72,8 @@ void Data_sendRfidSnapshot() {
   const char *rfidStatus = "error_init";
   Sensors_readRfid(uid, sizeof(uid), rfidStatus);
   const char *rfidHwStatus = Sensors_getRfidHardwareStatus();
+  const char *rfidProbeStatus = Sensors_getRfidProbeStatus();
+  const uint8_t rfidVersionReg = Sensors_getRfidVersionReg();
 
   DATA_PORT.print("{\"type\":\"rfid\",\"rfid_uid\":\"");
   DATA_PORT.print(uid);
@@ -79,6 +81,13 @@ void Data_sendRfidSnapshot() {
   DATA_PORT.print(rfidStatus);
   DATA_PORT.print("\",\"rfid_hw_status\":\"");
   DATA_PORT.print(rfidHwStatus);
+  DATA_PORT.print("\",\"rfid_probe_status\":\"");
+  DATA_PORT.print(rfidProbeStatus);
+  DATA_PORT.print("\",\"rfid_version_reg\":\"0x");
+  if (rfidVersionReg < 0x10) {
+    DATA_PORT.print('0');
+  }
+  DATA_PORT.print(rfidVersionReg, HEX);
   DATA_PORT.print("\",\"uptime_ms\":");
   DATA_PORT.print(millis());
   DATA_PORT.println("}");

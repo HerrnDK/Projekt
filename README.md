@@ -41,7 +41,7 @@ JSON-Formate (Beispiele):
 - Sensor: `{"type":"sensor","hcsr04_distance_cm":42,"hcsr04_status":"ok","uptime_ms":7890}`
 - Act: `{"type":"act","ok":1,"pin":22,"state":1,"hcsr04_distance_cm":42,"hcsr04_status":"ok","uptime_ms":7890}`
 - Error: `{"type":"error","code":"unknown_command","hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","uptime_ms":7890}`
-- RFID: `{"type":"rfid","rfid_uid":"DE:AD:BE:EF","rfid_status":"ok","rfid_hw_status":"ok","uptime_ms":7890}`
+- RFID: `{"type":"rfid","rfid_uid":"DE:AD:BE:EF","rfid_status":"ok","rfid_hw_status":"ok","rfid_probe_status":"STATUS_OK","rfid_version_reg":"0x92","uptime_ms":7890}`
 
 HC-SR04 Statuswerte:
 - `ok` gemessene Distanz ist gueltig
@@ -58,6 +58,10 @@ RFID Hardwarestatus (`rfid_hw_status`):
 - `ok` RC522 Modul antwortet
 - `error_not_detected` RC522 Modul nicht erkannt
 - `error_not_initialized` RC522 noch nicht initialisiert
+
+RFID Diagnose:
+- `rfid_probe_status` letzte REQA/WUPA Probe (`STATUS_OK`, `STATUS_TIMEOUT`, ...)
+- `rfid_version_reg` Inhalt von `VersionReg` (typisch `0x91` oder `0x92`)
 
 ## Repo-Struktur (wichtige Dateien)
 - `arduino/mega/`

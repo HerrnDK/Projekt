@@ -37,6 +37,8 @@ void Sensors_begin();
 void Sensors_readSnapshot(SensorSnapshot &out);
 void Sensors_readRfid(char *uidOut, size_t uidOutLen, const char *&statusOut);
 const char *Sensors_getRfidHardwareStatus();
+const char *Sensors_getRfidProbeStatus();
+uint8_t Sensors_getRfidVersionReg();
 
 void Data_begin();
 void Data_tick();

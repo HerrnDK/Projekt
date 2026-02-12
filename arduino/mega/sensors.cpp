@@ -20,6 +20,8 @@ namespace {
   MFRC522 rfidReader(RC522_SS_PIN, RC522_RST_PIN);
   const char *rfidHardwareStatus = "error_not_initialized";
   bool rfidReaderConfigured = false;
+  byte rfidVersionReg = 0x00;
+  MFRC522::StatusCode rfidProbeStatus = MFRC522::STATUS_TIMEOUT;
 
   void configureRfidReader() {
     // Improve detection stability for weak tags/modules.
@@ -30,6 +32,7 @@ namespace {
 
   bool isCardPresentOrWakeup() {
     if (rfidReader.PICC_IsNewCardPresent()) {
+      rfidProbeStatus = MFRC522::STATUS_OK;
       return true;
     }
 
@@ -37,12 +40,13 @@ namespace {
     byte atqa[2] = {0, 0};
     byte atqaSize = sizeof(atqa);
     MFRC522::StatusCode wakeStatus = rfidReader.PICC_WakeupA(atqa, &atqaSize);
+    rfidProbeStatus = wakeStatus;
     return wakeStatus == MFRC522::STATUS_OK || wakeStatus == MFRC522::STATUS_COLLISION;
   }
 
   bool isRfidReaderDetected() {
-    const byte version = rfidReader.PCD_ReadRegister(MFRC522::VersionReg);
-    return version != 0x00 && version != 0xFF;
+    rfidVersionReg = rfidReader.PCD_ReadRegister(MFRC522::VersionReg);
+    return rfidVersionReg != 0x00 && rfidVersionReg != 0xFF;
   }
 
   void refreshRfidHardwareStatus() {
@@ -127,6 +131,7 @@ void Sensors_readRfid(char *uidOut, size_t uidOutLen, const char *&statusOut) {
   refreshRfidHardwareStatus();
 
   if (strcmp(rfidHardwareStatus, "ok") != 0) {
+    rfidProbeStatus = MFRC522::STATUS_ERROR;
     statusOut = rfidHardwareStatus;
     return;
   }
@@ -138,6 +143,7 @@ void Sensors_readRfid(char *uidOut, size_t uidOutLen, const char *&statusOut) {
   if (!rfidReader.PICC_ReadCardSerial()) {
     delay(2);
     if (!rfidReader.PICC_ReadCardSerial()) {
+      rfidProbeStatus = MFRC522::STATUS_ERROR;
       statusOut = "read_error";
       return;
     }
@@ -184,4 +190,12 @@ void Sensors_readRfid(char *uidOut, size_t uidOutLen, const char *&statusOut) {
 
 const char *Sensors_getRfidHardwareStatus() {
   return rfidHardwareStatus;
+}
+
+const char *Sensors_getRfidProbeStatus() {
+  return MFRC522::GetStatusCodeName(rfidProbeStatus);
+}
+
+uint8_t Sensors_getRfidVersionReg() {
+  return rfidVersionReg;
 }
