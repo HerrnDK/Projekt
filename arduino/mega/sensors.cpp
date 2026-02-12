@@ -19,6 +19,26 @@ namespace {
 
   MFRC522 rfidReader(RC522_SS_PIN, RC522_RST_PIN);
   const char *rfidHardwareStatus = "error_not_initialized";
+  bool rfidReaderConfigured = false;
+
+  void configureRfidReader() {
+    // Improve detection stability for weak tags/modules.
+    rfidReader.PCD_AntennaOn();
+    rfidReader.PCD_SetAntennaGain(MFRC522::RxGain_max);
+    rfidReaderConfigured = true;
+  }
+
+  bool isCardPresentOrWakeup() {
+    if (rfidReader.PICC_IsNewCardPresent()) {
+      return true;
+    }
+
+    // Also detect cards that are already in field / halted.
+    byte atqa[2] = {0, 0};
+    byte atqaSize = sizeof(atqa);
+    MFRC522::StatusCode wakeStatus = rfidReader.PICC_WakeupA(atqa, &atqaSize);
+    return wakeStatus == MFRC522::STATUS_OK || wakeStatus == MFRC522::STATUS_COLLISION;
+  }
 
   bool isRfidReaderDetected() {
     const byte version = rfidReader.PCD_ReadRegister(MFRC522::VersionReg);
@@ -28,14 +48,23 @@ namespace {
   void refreshRfidHardwareStatus() {
     // Reader kann waehrend Laufzeit ab-/angesteckt werden.
     if (isRfidReaderDetected()) {
+      if (!rfidReaderConfigured) {
+        configureRfidReader();
+      }
       rfidHardwareStatus = "ok";
       return;
     }
 
     // Ein Re-Init-Versuch erlaubt Wiedererkennung nach Reconnect.
     rfidReader.PCD_Init();
+    rfidReaderConfigured = false;
     delay(2);
-    rfidHardwareStatus = isRfidReaderDetected() ? "ok" : "error_not_detected";
+    if (isRfidReaderDetected()) {
+      configureRfidReader();
+      rfidHardwareStatus = "ok";
+    } else {
+      rfidHardwareStatus = "error_not_detected";
+    }
   }
 
   long readHcsr04DistanceCm(bool &ok, const char *&status) {
@@ -102,13 +131,16 @@ void Sensors_readRfid(char *uidOut, size_t uidOutLen, const char *&statusOut) {
     return;
   }
 
-  if (!rfidReader.PICC_IsNewCardPresent()) {
+  if (!isCardPresentOrWakeup()) {
     return;
   }
 
   if (!rfidReader.PICC_ReadCardSerial()) {
-    statusOut = "read_error";
-    return;
+    delay(2);
+    if (!rfidReader.PICC_ReadCardSerial()) {
+      statusOut = "read_error";
+      return;
+    }
   }
 
   bool truncated = false;
