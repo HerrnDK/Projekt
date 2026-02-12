@@ -1,29 +1,54 @@
-version: 6
+version: 7
 registry: components
 conventions:
   id_style: "snake_case, stable logical id (not Node-RED node id)"
   refer_by: "Use 'refer: <component_id>' or in instructions 'refer: <component_id>'"
   allowed_fields: [type, flow, node_label, group, description, example_msg, tags, version]
 components:
-  profile_train_button:
-    id: profile_train_button
+  profile_read_button:
+    id: profile_read_button
     type: ui_button
     flow: nodered/flows/dashboard_flow.json
-    node_label: "RFID Anlernen / Lesen"
+    node_label: "RFID Lesen"
     group: ui_grp_profile_main
-    description: "Ein-Knopf Bedienung fuer Anlernen und Lesen von bis zu 2 RFID Chips (Profil 1/2)"
+    description: "Liest den aktuell aufgelegten RFID Chip und aktiviert ggf. Profil 1 oder 2."
     example_msg:
       topic: ""
-      payload: "RFID_TRAIN"
-    tags: [ui, rfid, profile, train, single_button]
-    version: 1  button_update_sensors:
+      payload: "RFID_READ"
+    tags: [ui, rfid, profile, read]
+    version: 1
+  profile_learn_profile1_button:
+    id: profile_learn_profile1_button
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Profil 1 anlernen"
+    group: ui_grp_profile_main
+    description: "Lernt die aufgelegte UID fest auf Profil 1 an."
+    example_msg:
+      topic: ""
+      payload: "RFID_LEARN_P1"
+    tags: [ui, rfid, profile, learn, profile1]
+    version: 1
+  profile_learn_profile2_button:
+    id: profile_learn_profile2_button
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Profil 2 anlernen"
+    group: ui_grp_profile_main
+    description: "Lernt die aufgelegte UID fest auf Profil 2 an."
+    example_msg:
+      topic: ""
+      payload: "RFID_LEARN_P2"
+    tags: [ui, rfid, profile, learn, profile2]
+    version: 1
+  button_update_sensors:
     id: button_update_sensors
     type: ui_button
     flow: nodered/flows/dashboard_flow.json
     node_label: "Sensoren aktualisieren"
     group: ui_grp_info_main
     node_id: "ui_btn_read_sensors"
-    description: "Trigger für Sensor-Lesezyklus (READ)"
+    description: "Trigger fuer Sensor-Lesezyklus (READ)"
     example_msg:
       topic: ""
       payload: "READ"
@@ -95,7 +120,7 @@ components:
     flow: nodered/flows/dashboard_flow.json
     node_label: "Temp Luft"
     group: ui_grp_welcome_main
-    description: "Anzeige für Lufttemperatur"
+    description: "Anzeige fuer Lufttemperatur"
     example_msg:
       topic: "sensor/temperature"
       payload: "23.4"
@@ -277,12 +302,38 @@ components:
         rfid_hw_status_text: "ok"
     tags: [ui, rfid, profile, hardware, status]
     version: 1
+  status_rfid_display_desktop:
+    id: status_rfid_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "RFID RC522 Status"
+    group: ui_grp_info_main
+    description: "RFID Hardwarestatus im Status/Sensoren-Tab (Desktop)."
+    example_msg:
+      topic: ""
+      payload:
+        rfid_hw_status_text: "ok"
+    tags: [ui, rfid, status, desktop]
+    version: 1
+  status_rfid_display_mobile:
+    id: status_rfid_display_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "RFID RC522 Status"
+    group: ui_grp_info_mobile
+    description: "RFID Hardwarestatus im Status/Sensoren-Tab (Mobile)."
+    example_msg:
+      topic: ""
+      payload:
+        rfid_hw_status_text: "stoerung (error_not_detected)"
+    tags: [ui, rfid, status, mobile]
+    version: 1
   profile_controller_logic:
     id: profile_controller_logic
     type: function
     flow: nodered/flows/fn_profiles_flow.json
     node_label: "RFID Profile Controller"
-    description: "Verwaltet Lernmodus, Chip-UIDs und Profilzuordnungen"
+    description: "Verwaltet RFID_READ, RFID_LEARN_P1, RFID_LEARN_P2 sowie die Zuordnung von 2 Chips auf 2 Profile."
     tags: [function, rfid, profile, mapping]
     version: 1
 

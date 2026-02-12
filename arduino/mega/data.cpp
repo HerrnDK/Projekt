@@ -70,8 +70,8 @@ void Data_sendSensorSnapshot() {
 void Data_sendRfidSnapshot() {
   char uid[RFID_UID_MAX_LEN];
   const char *rfidStatus = "error_init";
-  const char *rfidHwStatus = Sensors_getRfidHardwareStatus();
   Sensors_readRfid(uid, sizeof(uid), rfidStatus);
+  const char *rfidHwStatus = Sensors_getRfidHardwareStatus();
 
   DATA_PORT.print("{\"type\":\"rfid\",\"rfid_uid\":\"");
   DATA_PORT.print(uid);

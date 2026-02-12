@@ -634,70 +634,78 @@
         "z":  "4985bdfbcf200fe6",
         "x":  220,
         "wires":  [
-                      "ui_txt_profile_status_d",
-                      "ui_txt_profile_learning_d",
-                      "ui_txt_profile_chip1_uid_d",
-                      "ui_txt_profile_chip1_profile_d",
-                      "ui_txt_profile_chip2_uid_d",
-                      "ui_txt_profile_chip2_profile_d",
-                      "ui_txt_profile_last_uid_d",
-                      "ui_txt_profile_active_d",
-                      "ui_txt_profile_hw_status_d",
-                      "ui_txt_profile_status_m",
-                      "ui_txt_profile_learning_m",
-                      "ui_txt_profile_chip1_uid_m",
-                      "ui_txt_profile_chip1_profile_m",
-                      "ui_txt_profile_chip2_uid_m",
-                      "ui_txt_profile_chip2_profile_m",
-                      "ui_txt_profile_last_uid_m",
-                      "ui_txt_profile_active_m",
-                      "ui_txt_profile_hw_status_m"
+                      [
+                          "ui_txt_profile_status_d",
+                          "ui_txt_profile_learning_d",
+                          "ui_txt_profile_chip1_uid_d",
+                          "ui_txt_profile_chip1_profile_d",
+                          "ui_txt_profile_chip2_uid_d",
+                          "ui_txt_profile_chip2_profile_d",
+                          "ui_txt_profile_last_uid_d",
+                          "ui_txt_profile_active_d",
+                          "ui_txt_profile_hw_status_d",
+                          "ui_txt_profile_status_m",
+                          "ui_txt_profile_learning_m",
+                          "ui_txt_profile_chip1_uid_m",
+                          "ui_txt_profile_chip1_profile_m",
+                          "ui_txt_profile_chip2_uid_m",
+                          "ui_txt_profile_chip2_profile_m",
+                          "ui_txt_profile_last_uid_m",
+                          "ui_txt_profile_active_m",
+                          "ui_txt_profile_hw_status_m",
+                          "ui_txt_rfid_status_d",
+                          "ui_txt_rfid_status_m"
+                      ]
                   ],
         "links":  [
                       "link_out_profiles_to_dashboard"
                   ]
     },
     {
-        "tooltip":  "Lernt neue Chips an und liest bekannte Chips aus",
+        "tooltip":  "RFID lesen",
         "id":  "ui_btn_profile_read_d",
         "payloadType":  "str",
         "type":  "ui_button",
         "passthru":  false,
-        "label":  "RFID Anlernen / Lesen",
+        "label":  "Lesen",
         "height":  1,
-        "x":  300,
+        "x":  290,
         "wires":  [
-                      "link_out_dashboard_to_profiles"
+                      [
+                          "link_out_dashboard_to_profiles"
+                      ]
                   ],
         "group":  "ui_grp_profile_main",
         "topic":  "",
         "order":  1,
-        "payload":  "RFID_TRAIN",
+        "payload":  "RFID_READ",
         "icon":  "visibility",
-        "y":  1000,
-        "name":  "RFID Anlernen / Lesen",
+        "y":  980,
+        "name":  "RFID Lesen",
         "z":  "4985bdfbcf200fe6",
-        "width":  7
+        "width":  4
     },
     {
-        "tooltip":  "Lernt neue Chips an und liest bekannte Chips aus",
+        "tooltip":  "RFID lesen",
         "id":  "ui_btn_profile_read_m",
         "payloadType":  "str",
         "type":  "ui_button",
         "passthru":  false,
-        "label":  "RFID Anlernen / Lesen",
+        "label":  "Lesen",
         "height":  1,
         "x":  300,
         "wires":  [
-                      "link_out_dashboard_to_profiles"
+                      [
+                          "link_out_dashboard_to_profiles"
+                      ]
                   ],
         "group":  "ui_grp_profile_mobile",
         "topic":  "",
         "order":  1,
-        "payload":  "RFID_TRAIN",
+        "payload":  "RFID_READ",
         "icon":  "visibility",
-        "y":  1300,
-        "name":  "RFID Anlernen / Lesen",
+        "y":  1240,
+        "name":  "RFID Lesen (Mobile)",
         "z":  "4985bdfbcf200fe6",
         "width":  10
     },
@@ -1021,6 +1029,138 @@
         "layout":  "row-spread",
         "x":  960,
         "y":  1620,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "tooltip":  "Aktuellen Chip fuer Profil 1 anlernen",
+        "id":  "ui_btn_profile_learn_p1_d",
+        "payloadType":  "str",
+        "type":  "ui_button",
+        "passthru":  false,
+        "label":  "Profil 1 anlernen",
+        "height":  1,
+        "x":  310,
+        "wires":  [
+                      [
+                          "link_out_dashboard_to_profiles"
+                      ]
+                  ],
+        "group":  "ui_grp_profile_main",
+        "topic":  "",
+        "order":  2,
+        "payload":  "RFID_LEARN_P1",
+        "icon":  "school",
+        "y":  1020,
+        "name":  "Profil 1 anlernen",
+        "z":  "4985bdfbcf200fe6",
+        "width":  4
+    },
+    {
+        "tooltip":  "Aktuellen Chip fuer Profil 2 anlernen",
+        "id":  "ui_btn_profile_learn_p2_d",
+        "payloadType":  "str",
+        "type":  "ui_button",
+        "passthru":  false,
+        "label":  "Profil 2 anlernen",
+        "height":  1,
+        "x":  310,
+        "wires":  [
+                      [
+                          "link_out_dashboard_to_profiles"
+                      ]
+                  ],
+        "group":  "ui_grp_profile_main",
+        "topic":  "",
+        "order":  3,
+        "payload":  "RFID_LEARN_P2",
+        "icon":  "school",
+        "y":  1060,
+        "name":  "Profil 2 anlernen",
+        "z":  "4985bdfbcf200fe6",
+        "width":  4
+    },
+    {
+        "tooltip":  "Aktuellen Chip fuer Profil 1 anlernen",
+        "id":  "ui_btn_profile_learn_p1_m",
+        "payloadType":  "str",
+        "type":  "ui_button",
+        "passthru":  false,
+        "label":  "Profil 1 anlernen",
+        "height":  1,
+        "x":  320,
+        "wires":  [
+                      [
+                          "link_out_dashboard_to_profiles"
+                      ]
+                  ],
+        "group":  "ui_grp_profile_mobile",
+        "topic":  "",
+        "order":  2,
+        "payload":  "RFID_LEARN_P1",
+        "icon":  "school",
+        "y":  1280,
+        "name":  "Profil 1 anlernen (Mobile)",
+        "z":  "4985bdfbcf200fe6",
+        "width":  10
+    },
+    {
+        "tooltip":  "Aktuellen Chip fuer Profil 2 anlernen",
+        "id":  "ui_btn_profile_learn_p2_m",
+        "payloadType":  "str",
+        "type":  "ui_button",
+        "passthru":  false,
+        "label":  "Profil 2 anlernen",
+        "height":  1,
+        "x":  320,
+        "wires":  [
+                      [
+                          "link_out_dashboard_to_profiles"
+                      ]
+                  ],
+        "group":  "ui_grp_profile_mobile",
+        "topic":  "",
+        "order":  3,
+        "payload":  "RFID_LEARN_P2",
+        "icon":  "school",
+        "y":  1320,
+        "name":  "Profil 2 anlernen (Mobile)",
+        "z":  "4985bdfbcf200fe6",
+        "width":  10
+    },
+    {
+        "id":  "ui_txt_rfid_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  8,
+        "width":  7,
+        "height":  1,
+        "name":  "RFID Status Display",
+        "label":  "RFID RC522 Status",
+        "format":  "{{msg.payload.rfid_hw_status_text}}",
+        "layout":  "row-spread",
+        "x":  680,
+        "y":  760,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_rfid_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  8,
+        "width":  10,
+        "height":  1,
+        "name":  "RFID Status Display (Mobile)",
+        "label":  "RFID RC522 Status",
+        "format":  "{{msg.payload.rfid_hw_status_text}}",
+        "layout":  "row-spread",
+        "x":  690,
+        "y":  760,
         "wires":  [
 
                   ]

@@ -118,12 +118,16 @@ Hinweise:
 - Die Distanzanzeige nutzt den korrigierten Wert `hcsr04_distance_display_cm`.
 
 ## Profile (Dashboard)
-- Im Tab `Profile` gibt es eine Schaltflaeche `RFID Anlernen / Lesen`.
-- Beim Anlernen werden maximal zwei Chips gespeichert:
-  - erster neuer Chip -> `Profil 1`
-  - zweiter neuer Chip -> `Profil 2`
+- Im Tab `Profile` gibt es drei Schaltflaechen:
+  - `Lesen` (sendet `RFID_READ`)
+  - `Profil 1 anlernen` (sendet `RFID_LEARN_P1`)
+  - `Profil 2 anlernen` (sendet `RFID_LEARN_P2`)
+- Es werden genau zwei UID-Slots gepflegt:
+  - UID in Slot 1 -> `Profil 1`
+  - UID in Slot 2 -> `Profil 2`
 - Bereits bekannte Chips aktivieren direkt ihr hinterlegtes Profil.
 - Die erkannte UID, das aktive Profil und der RFID Modulstatus werden live angezeigt.
+- Im Tab `Projekt-info` unter `Status / Sensoren` wird zusaetzlich `RFID RC522 Status` angezeigt.
 
 ## Next Steps (wenn Sensoren/Aktoren bekannt sind)
 - Weitere Sensoren nach gleichem Muster in `sensors.cpp` ergaenzen.

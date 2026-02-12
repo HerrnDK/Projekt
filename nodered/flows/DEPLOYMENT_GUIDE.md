@@ -59,10 +59,12 @@ Du solltest Tabs sehen:
 Gehe zu: `http://192.168.0.250:1880/ui`
 
 Profile Tab:
-- Button `Chip 1 anlernen`
-- Button `Chip 2 anlernen`
-- Je Chip Zuordnung zu `Profil 1` oder `Profil 2`
+- Button `Lesen`
+- Button `Profil 1 anlernen`
+- Button `Profil 2 anlernen`
+- Es gibt genau 2 UID-Slots: Slot 1 -> `Profil 1`, Slot 2 -> `Profil 2`
 - Anzeigen fuer UID, Lernstatus und aktives Profil
+- Im Tab `Projekt-info` unter `Status / Sensoren` wird `RFID RC522 Status` angezeigt
 
 ## Fehlerbehandlung
 
