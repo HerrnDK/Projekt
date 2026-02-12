@@ -96,6 +96,165 @@ stateDiagram-v2
   LearnP2 --> LearnP2: no_card/probe_error
 ```
 
+## 3) UML HC-SR04-Funktionsablauf (READ, Offset, Status)
+```mermaid
+sequenceDiagram
+  participant U as User
+  participant D as Dashboard(Projekt-info)
+  participant ST as fn_startup_test_flow
+  participant X as data_exchange_flow
+  participant A as Arduino data.cpp
+  participant S as sensors.cpp HC-SR04
+  participant P as fn_parameters_flow
+
+  alt Manuell
+    U->>D: Klick "Sensoren aktualisieren"
+    D->>X: payload READ
+  else Startup/zyklisch
+    ST->>X: payload READ
+  end
+
+  X->>A: Serial1 "READ"
+  A->>S: Sensors_readSnapshot()
+  S-->>A: hcsr04_distance_cm + hcsr04_status + uptime_ms
+  A-->>X: JSON {type:"sensor", ...}
+  X->>P: msg.payload (sensor)
+  P->>P: Offset anwenden (hcsr04_offset_cm)
+  P-->>D: hcsr04_distance_display_cm + hcsr04_status + uptime_hms
+  P-->>ST: Sensorpayload fuer Startup-Validierung
+  ST-->>D: Anlagenstatus (bereit/stoerung)
+```
+
+### 3.1 UML Zustandsmodell (HC-SR04/Anlagenstatus)
+```mermaid
+stateDiagram-v2
+  [*] --> Startup
+  Startup --> Stoerung: Default beim Boot
+
+  Stoerung --> Bereit: hcsr04_status == ok && uptime gueltig
+  Stoerung --> Stoerung: hcsr04_status != ok
+
+  Bereit --> Bereit: hcsr04_status == ok
+  Bereit --> Stoerung: error_timeout/error_range/ungueltige Daten
+```
+
+## 4) UML data_exchange_flow (Serial Gateway)
+```mermaid
+sequenceDiagram
+  participant Src as Dashboard/fn_flows
+  participant X as data_exchange_flow
+  participant A as Arduino Serial1
+  participant Fn as fn_startup/fn_parameters/fn_profiles
+
+  Src->>X: Link-In (READ/RFID/ACT,...)
+  X->>A: serial out "/dev/serial0" + "\\n"
+  A-->>X: serial in JSON line
+  X->>X: Parse JSON
+  X->>X: Format uptime_hms
+  X-->>Fn: Link-Out (msg.payload mit type)
+```
+
+### 4.1 UML Aktivitaet (data_exchange_flow)
+```mermaid
+flowchart LR
+  A[Link-In von Dashboard/Funktionen] --> B[serial out -> Arduino]
+  B --> C[serial in vom Arduino]
+  C --> D[JSON Parse]
+  D --> E[Function: uptime_hms berechnen]
+  E --> F[Link-Out zu fn_startup/fn_parameters/fn_profiles]
+  C --> G[Debug Raw]
+  D --> H[Debug Parsed]
+```
+
+## 5) UML fn_startup_test_flow (Startup-Validierung)
+```mermaid
+sequenceDiagram
+  participant Boot as Boot Inject
+  participant ST as fn_startup_test_flow
+  participant X as data_exchange_flow
+  participant A as Arduino
+  participant D as Dashboard Status
+
+  Boot->>ST: INIT_STARTUP_STATUS
+  ST-->>D: "Anlage stoerung" (Default)
+
+  loop alle 2s (ab Boot +5s)
+    ST->>X: payload READ
+    X->>A: Serial1 READ
+    A-->>X: {type:"sensor", ...}
+    X-->>ST: sensor payload
+    ST->>ST: switch: nur type=="sensor"
+    ST->>ST: validate uptime + hcsr04_status/range
+    ST-->>D: "Anlage bereit" oder "Anlage stoerung"
+  end
+```
+
+## 6) UML fn_parameters_flow (Offset + Anzeigewerte)
+```mermaid
+sequenceDiagram
+  participant Boot as Boot Inject
+  participant UI as Dashboard Slider
+  participant PF as fn_parameters_flow
+  participant X as data_exchange_flow
+  participant D as Dashboard
+
+  Boot->>PF: INIT_OFFSET
+  PF->>PF: Default-Offset clamp(-5..5)
+  PF-->>D: parameter state (hcsr04_offset_cm)
+
+  UI->>PF: Slider-Wert
+  PF->>PF: Offset speichern clamp(-5..5)
+  PF-->>D: parameter state (hcsr04_offset_cm)
+
+  X-->>PF: sensor payload
+  PF->>PF: Offset auf Distanz anwenden
+  PF-->>D: hcsr04_distance_display_cm + hcsr04_status + uptime_hms
+```
+
+### 6.1 UML Zustandsmodell (Offset)
+```mermaid
+stateDiagram-v2
+  [*] --> OffsetInit
+  OffsetInit --> OffsetReady: INIT_OFFSET
+  OffsetReady --> OffsetReady: Slider update (-5..+5)
+  OffsetReady --> OffsetReady: Sensorpayload -> display distance
+```
+
+## 7) UML Network.json (WLAN + QR + UI)
+```mermaid
+sequenceDiagram
+  participant Poll as 1s Poll
+  participant Net as Network.json
+  participant OS as nmcli/ip
+  participant D as Dashboard WiFi/Welcome
+
+  loop jede 1s
+    Poll->>Net: trigger
+    Net->>OS: nmcli device status
+    OS-->>Net: wlan0 state/connection
+    Net->>OS: nmcli wlan0 ip + ip end0
+    OS-->>Net: WLAN/LAN IP
+    Net->>Net: Status auswerten + QR targets
+    Net->>OS: qrencode (AP/Login/Dashboard)
+    OS-->>Net: SVG
+    Net-->>D: WLAN Status + Debug/WiFi URL + Welcome QR Cards
+  end
+```
+
+### 7.1 UML WLAN-Connect Ablauf
+```mermaid
+flowchart LR
+  A[SSID Auswahl + Passwort] --> B[Connect Button]
+  B --> C[Function: Connect Kommando bauen]
+  C --> D[nmcli con down projekt-ap]
+  D --> E[Delay]
+  E --> F[nmcli connection delete <SSID>]
+  F --> G[Delay]
+  G --> H[nmcli dev wifi connect <SSID> password <PW>]
+  H --> I[Toast OK + Navigate Projekt-info]
+  H --> J[Toast Fehler]
+```
+
 ## Struktur je Funktion (Standardmuster)
 - Arduino: Erweiterung bestehender Module oder neues `funktion_<name>.cpp`.
 - Node-RED: `fn_<name>_flow.json` mit Link In/Out zur `data_exchange_flow.json`.
