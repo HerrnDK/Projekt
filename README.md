@@ -21,19 +21,38 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 - HC-SR04 TRIG -> D26
 - HC-SR04 ECHO -> D27
 
+## Wiring (RFID RC522)
+- RC522 SDA/SS -> D53 (SS)
+- RC522 SCK -> D52
+- RC522 MOSI -> D51
+- RC522 MISO -> D50
+- RC522 RST -> D49
+- RC522 3.3V -> 3.3V
+- RC522 GND -> GND
+
+> Hinweis: RC522 muss mit 3.3V betrieben werden.
+
 ## Protokoll (Serial1, newline-terminiert)
 - `READ` -> Arduino sendet JSON Sensor-Snapshot
 - `ACT,<pin>,<state>` -> Aktor schalten, JSON-ACK
+- `RFID` -> RFID Snapshot lesen (UID + Status)
 
 JSON-Formate (Beispiele):
 - Sensor: `{"type":"sensor","hcsr04_distance_cm":42,"hcsr04_status":"ok","uptime_ms":7890}`
 - Act: `{"type":"act","ok":1,"pin":22,"state":1,"hcsr04_distance_cm":42,"hcsr04_status":"ok","uptime_ms":7890}`
 - Error: `{"type":"error","code":"unknown_command","hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","uptime_ms":7890}`
+- RFID: `{"type":"rfid","rfid_uid":"DE:AD:BE:EF","rfid_status":"ok","uptime_ms":7890}`
 
 HC-SR04 Statuswerte:
 - `ok` gemessene Distanz ist gueltig
 - `error_timeout` kein Echo innerhalb Timeout
 - `error_range` gemessene Distanz ausserhalb 2..400 cm
+
+RFID Statuswerte:
+- `ok` gueltige UID gelesen
+- `no_card` kein RFID Chip praesent
+- `read_error` Lesen fehlgeschlagen
+- `uid_truncated` UID zu lang fuer Payload-Buffer
 
 ## Repo-Struktur (wichtige Dateien)
 - `arduino/mega/`
@@ -49,6 +68,7 @@ HC-SR04 Statuswerte:
   - `Network.json` Netzwerk-Tab
   - `data_exchange_flow.json` Serial-I/O Arduino
   - `fn_parameters_flow.json` Parameter-Logik (HC-SR04 Korrektur-Offset)
+  - `fn_profiles_flow.json` RFID Profile-Logik (Anlernen + Profilzuweisung)
   - `components.yaml` logische Komponentenreferenzen
   - `deploy_flows.sh` Flow-Deploy Script (POST /flows)
   - `DEPLOYMENT_GUIDE.md` Deployment-Doku
@@ -59,6 +79,9 @@ HC-SR04 Statuswerte:
 ## Arduino IDE
 - Oeffne `arduino/mega/mega.ino`.
 - Die `.cpp/.h` Dateien werden automatisch mitgebaut.
+
+## Arduino Libraries
+- Fuer RFID RC522 wird die Bibliothek `MFRC522` benoetigt (Library Manager oder Arduino CLI).
 
 ## Build (Arduino CLI)
 - Compile (Mega 2560):
@@ -89,7 +112,14 @@ Hinweise:
 - Der Offset wird in `fn_parameters_flow.json` gespeichert (`global.hcsr04_offset_cm`).
 - Die Distanzanzeige nutzt den korrigierten Wert `hcsr04_distance_display_cm`.
 
+## Profile (Dashboard)
+- Im Tab `Profile` koennen zwei RFID Chips per Button angelernt werden.
+- Jeder Chip kann per Button einem von zwei Profilen (`Profil 1` / `Profil 2`) zugewiesen werden.
+- Die erkannte UID und das aktive Profil werden live angezeigt.
+
 ## Next Steps (wenn Sensoren/Aktoren bekannt sind)
 - Weitere Sensoren nach gleichem Muster in `sensors.cpp` ergaenzen.
 - `ACTUATOR_PINS` und UI-Buttons bei Bedarf erweitern.
 - Baudrate ggf. anpassen.
+
+

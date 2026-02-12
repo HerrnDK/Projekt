@@ -1,4 +1,4 @@
-version: 3
+version: 4
 registry: components
 conventions:
   id_style: "snake_case, stable logical id (not Node-RED node id)"
@@ -239,4 +239,49 @@ components:
     node_label: "LAN IP Resolver (eth/en)"
     description: "Ermittelt die kabelgebundene LAN-IP (end0) fuer die Debug-URL"
     tags: [lan, eth0, ip, nmcli, network]
+    version: 1
+  profile_learn_chip1_button:
+    id: profile_learn_chip1_button
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Chip 1 anlernen"
+    group: ui_grp_profile_main
+    description: "Startet den Anlernmodus fuer RFID Chip 1"
+    example_msg:
+      topic: ""
+      payload: "LEARN_CHIP1"
+    tags: [ui, rfid, profile, learn]
+    version: 1
+  profile_learn_chip2_button:
+    id: profile_learn_chip2_button
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Chip 2 anlernen"
+    group: ui_grp_profile_main
+    description: "Startet den Anlernmodus fuer RFID Chip 2"
+    example_msg:
+      topic: ""
+      payload: "LEARN_CHIP2"
+    tags: [ui, rfid, profile, learn]
+    version: 1
+  profile_status_display_desktop:
+    id: profile_status_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Profile Status"
+    group: ui_grp_profile_main
+    description: "Zeigt Status und Lernzustand der RFID Profilzuordnung"
+    example_msg:
+      topic: ""
+      payload:
+        profile_status_text: "Profile bereit"
+    tags: [ui, rfid, profile, status]
+    version: 1
+  profile_controller_logic:
+    id: profile_controller_logic
+    type: function
+    flow: nodered/flows/fn_profiles_flow.json
+    node_label: "RFID Profile Controller"
+    description: "Verwaltet Lernmodus, Chip-UIDs und Profilzuordnungen"
+    tags: [function, rfid, profile, mapping]
     version: 1

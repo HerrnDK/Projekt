@@ -36,7 +36,7 @@ FLOWS (nodered/flows/*.json)
 - Verboten: `id`, `z`, `type`, `wires`.
 - CSS/Responsive-Aenderungen gelten global fuer alle Dashboard-Seiten, ausser explizit anders gewuenscht.
 - Netzwerk-Logik liegt in `nodered/flows/Network.json` (separater Flow-Tab).
-- Immer gemeinsam deployen: `dashboard_flow.json` + `Network.json` + `data_exchange_flow.json` + `fn_startup_test_flow.json` + `fn_parameters_flow.json`.
+- Immer gemeinsam deployen: `dashboard_flow.json` + `Network.json` + `data_exchange_flow.json` + `fn_startup_test_flow.json` + `fn_parameters_flow.json` + `fn_profiles_flow.json`.
 - Nach jeder Aenderung an `nodered/flows/*.json`: `./deploy_flows.sh` ausfuehren und Node-RED unter `http://192.168.0.250:1880` verwenden.
 
 Beispiele:
@@ -101,3 +101,4 @@ Ich halte diese Dateien konsistent:
 - `arduino/mega/PINOUT.md`
 - `Hardware.md`
 ```
+

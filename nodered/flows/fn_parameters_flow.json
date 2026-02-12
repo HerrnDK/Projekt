@@ -1,149 +1,159 @@
 [
-  {
-    "id": "flow_fn_parameters",
-    "type": "tab",
-    "label": "Funktion - Parameter",
-    "disabled": false,
-    "info": "Verwaltet Dashboard-Parameter und berechnet abgeleitete Sensorwerte"
-  },
-  {
-    "id": "inject_param_offset_init",
-    "type": "inject",
-    "z": "flow_fn_parameters",
-    "name": "Offset initialisieren (Boot)",
-    "props": [
-      {
-        "p": "payload"
-      }
-    ],
-    "repeat": "",
-    "crontab": "",
-    "once": true,
-    "onceDelay": "1",
-    "topic": "",
-    "payload": "INIT_OFFSET",
-    "payloadType": "str",
-    "x": 220,
-    "y": 80,
-    "wires": [
-      [
-        "fn_param_default_offset"
-      ]
-    ]
-  },
-  {
-    "id": "fn_param_default_offset",
-    "type": "function",
-    "z": "flow_fn_parameters",
-    "name": "Default-Offset setzen",
-    "func": "const current = Number(global.get(\"hcsr04_offset_cm\"));\nlet offset = Number.isFinite(current) ? current : 0;\noffset = Math.max(-5, Math.min(5, Math.round(offset)));\nglobal.set(\"hcsr04_offset_cm\", offset);\nmsg.payload = { hcsr04_offset_cm: offset };\nreturn msg;",
-    "outputs": 1,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "libs": [],
-    "x": 480,
-    "y": 80,
-    "wires": [
-      [
-        "link_out_parameters_state"
-      ]
-    ]
-  },
-  {
-    "id": "link_in_from_dashboard_parameters",
-    "type": "link in",
-    "z": "flow_fn_parameters",
-    "name": "from dashboard (parameters)",
-    "links": [
-      "b8c0e9d3f4a15412"
-    ],
-    "x": 220,
-    "y": 160,
-    "wires": [
-      [
-        "fn_parameters_set_offset"
-      ]
-    ]
-  },
-  {
-    "id": "fn_parameters_set_offset",
-    "type": "function",
-    "z": "flow_fn_parameters",
-    "name": "Offset speichern",
-    "func": "let offset = Number(msg.payload);\nif (!Number.isFinite(offset)) {\n  return null;\n}\noffset = Math.max(-5, Math.min(5, Math.round(offset)));\nglobal.set(\"hcsr04_offset_cm\", offset);\nmsg.payload = { hcsr04_offset_cm: offset };\nreturn msg;",
-    "outputs": 1,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "libs": [],
-    "x": 470,
-    "y": 160,
-    "wires": [
-      [
-        "link_out_parameters_state"
-      ]
-    ]
-  },
-  {
-    "id": "link_out_parameters_state",
-    "type": "link out",
-    "z": "flow_fn_parameters",
-    "name": "to dashboard (parameter state)",
-    "mode": "link",
-    "links": [
-      "8f6abcf84d0f4e29"
-    ],
-    "x": 740,
-    "y": 120,
-    "wires": []
-  },
-  {
-    "id": "link_in_from_data_parameters",
-    "type": "link in",
-    "z": "flow_fn_parameters",
-    "name": "from data exchange (sensors)",
-    "links": [
-      "link_out_from_data"
-    ],
-    "x": 220,
-    "y": 260,
-    "wires": [
-      [
-        "fn_parameters_apply_offset"
-      ]
-    ]
-  },
-  {
-    "id": "fn_parameters_apply_offset",
-    "type": "function",
-    "z": "flow_fn_parameters",
-    "name": "Offset auf Distanz anwenden",
-    "func": "const p = msg.payload || {};\nlet offset = Number(global.get(\"hcsr04_offset_cm\"));\nif (!Number.isFinite(offset)) {\n  offset = 0;\n}\noffset = Math.max(-5, Math.min(5, Math.round(offset)));\np.hcsr04_offset_cm = offset;\n\nconst raw = Number(p.hcsr04_distance_cm);\nif (Number.isFinite(raw)) {\n  p.hcsr04_distance_display_cm = raw + offset;\n} else {\n  p.hcsr04_distance_display_cm = p.hcsr04_distance_cm;\n}\n\nmsg.payload = p;\nreturn msg;",
-    "outputs": 1,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "libs": [],
-    "x": 500,
-    "y": 260,
-    "wires": [
-      [
-        "link_out_parameters_to_dashboard"
-      ]
-    ]
-  },
-  {
-    "id": "link_out_parameters_to_dashboard",
-    "type": "link out",
-    "z": "flow_fn_parameters",
-    "name": "to dashboard (sensor values)",
-    "mode": "link",
-    "links": [
-      "2a616d8b76b4fe2c"
-    ],
-    "x": 760,
-    "y": 260,
-    "wires": []
-  }
+    {
+        "id":  "flow_fn_parameters",
+        "type":  "tab",
+        "label":  "Funktion - Parameter",
+        "disabled":  false,
+        "info":  "Verwaltet Dashboard-Parameter und berechnet abgeleitete Sensorwerte"
+    },
+    {
+        "id":  "inject_param_offset_init",
+        "type":  "inject",
+        "z":  "flow_fn_parameters",
+        "name":  "Offset initialisieren (Boot)",
+        "props":  [
+                      {
+                          "p":  "payload"
+                      }
+                  ],
+        "repeat":  "",
+        "crontab":  "",
+        "once":  true,
+        "onceDelay":  "1",
+        "topic":  "",
+        "payload":  "INIT_OFFSET",
+        "payloadType":  "str",
+        "x":  220,
+        "y":  80,
+        "wires":  [
+                      [
+                          "fn_param_default_offset"
+                      ]
+                  ]
+    },
+    {
+        "id":  "fn_param_default_offset",
+        "type":  "function",
+        "z":  "flow_fn_parameters",
+        "name":  "Default-Offset setzen",
+        "func":  "const current = Number(global.get(\"hcsr04_offset_cm\"));\nlet offset = Number.isFinite(current) ? current : 0;\noffset = Math.max(-5, Math.min(5, Math.round(offset)));\nglobal.set(\"hcsr04_offset_cm\", offset);\nmsg.payload = { hcsr04_offset_cm: offset };\nreturn msg;",
+        "outputs":  1,
+        "noerr":  0,
+        "initialize":  "",
+        "finalize":  "",
+        "libs":  [
+
+                 ],
+        "x":  480,
+        "y":  80,
+        "wires":  [
+                      [
+                          "link_out_parameters_state"
+                      ]
+                  ]
+    },
+    {
+        "id":  "link_in_from_dashboard_parameters",
+        "type":  "link in",
+        "z":  "flow_fn_parameters",
+        "name":  "from dashboard (parameters)",
+        "links":  [
+                      "b8c0e9d3f4a15412"
+                  ],
+        "x":  220,
+        "y":  160,
+        "wires":  [
+                      [
+                          "fn_parameters_set_offset"
+                      ]
+                  ]
+    },
+    {
+        "id":  "fn_parameters_set_offset",
+        "type":  "function",
+        "z":  "flow_fn_parameters",
+        "name":  "Offset speichern",
+        "func":  "let offset = Number(msg.payload);\nif (!Number.isFinite(offset)) {\n  return null;\n}\noffset = Math.max(-5, Math.min(5, Math.round(offset)));\nglobal.set(\"hcsr04_offset_cm\", offset);\nmsg.payload = { hcsr04_offset_cm: offset };\nreturn msg;",
+        "outputs":  1,
+        "noerr":  0,
+        "initialize":  "",
+        "finalize":  "",
+        "libs":  [
+
+                 ],
+        "x":  470,
+        "y":  160,
+        "wires":  [
+                      [
+                          "link_out_parameters_state"
+                      ]
+                  ]
+    },
+    {
+        "id":  "link_out_parameters_state",
+        "type":  "link out",
+        "z":  "flow_fn_parameters",
+        "name":  "to dashboard (parameter state)",
+        "mode":  "link",
+        "links":  [
+                      "8f6abcf84d0f4e29"
+                  ],
+        "x":  740,
+        "y":  120,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "link_in_from_data_parameters",
+        "type":  "link in",
+        "z":  "flow_fn_parameters",
+        "name":  "from data exchange (sensors)",
+        "links":  [
+                      "link_out_from_data"
+                  ],
+        "x":  220,
+        "y":  260,
+        "wires":  [
+                      [
+                          "fn_parameters_apply_offset"
+                      ]
+                  ]
+    },
+    {
+        "id":  "fn_parameters_apply_offset",
+        "type":  "function",
+        "z":  "flow_fn_parameters",
+        "name":  "Offset auf Distanz anwenden",
+        "func":  "const p = msg.payload || {};\nif (String(p.type || \"\") !== \"sensor\") {\n  return null;\n}\n\nlet offset = Number(global.get(\"hcsr04_offset_cm\"));\nif (!Number.isFinite(offset)) {\n  offset = 0;\n}\noffset = Math.max(-5, Math.min(5, Math.round(offset)));\np.hcsr04_offset_cm = offset;\n\nconst raw = Number(p.hcsr04_distance_cm);\nif (Number.isFinite(raw)) {\n  p.hcsr04_distance_display_cm = raw + offset;\n} else {\n  p.hcsr04_distance_display_cm = p.hcsr04_distance_cm;\n}\n\nmsg.payload = p;\nreturn msg;",
+        "outputs":  1,
+        "noerr":  0,
+        "initialize":  "",
+        "finalize":  "",
+        "libs":  [
+
+                 ],
+        "x":  500,
+        "y":  260,
+        "wires":  [
+                      [
+                          "link_out_parameters_to_dashboard"
+                      ]
+                  ]
+    },
+    {
+        "id":  "link_out_parameters_to_dashboard",
+        "type":  "link out",
+        "z":  "flow_fn_parameters",
+        "name":  "to dashboard (sensor values)",
+        "mode":  "link",
+        "links":  [
+                      "2a616d8b76b4fe2c"
+                  ],
+        "x":  760,
+        "y":  260,
+        "wires":  [
+
+                  ]
+    }
 ]

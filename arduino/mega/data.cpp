@@ -9,6 +9,7 @@
   - Erwartet ASCII-Kommandos (newline-terminiert):
     READ\n              -> sendet JSON-Snapshot (type=sensor)
     ACT,<pin>,<state>\n -> schaltet Aktor + JSON-ACK (type=act)
+    RFID\n             -> sendet RFID-Snapshot (type=rfid)
 */
 
 namespace {
@@ -66,10 +67,29 @@ void Data_sendSensorSnapshot() {
   DATA_PORT.println("}");
 }
 
+void Data_sendRfidSnapshot() {
+  char uid[RFID_UID_MAX_LEN];
+  const char *rfidStatus = "error_init";
+  Sensors_readRfid(uid, sizeof(uid), rfidStatus);
+
+  DATA_PORT.print("{\"type\":\"rfid\",\"rfid_uid\":\"");
+  DATA_PORT.print(uid);
+  DATA_PORT.print("\",\"rfid_status\":\"");
+  DATA_PORT.print(rfidStatus);
+  DATA_PORT.print("\",\"uptime_ms\":");
+  DATA_PORT.print(millis());
+  DATA_PORT.println("}");
+}
+
 namespace {
   void Data_handleCommand(const char *cmd) {
     if (strcmp(cmd, "READ") == 0) {
       Data_sendSensorSnapshot();
+      return;
+    }
+
+    if (strcmp(cmd, "RFID") == 0) {
+      Data_sendRfidSnapshot();
       return;
     }
 

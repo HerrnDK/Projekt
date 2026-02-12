@@ -1,7 +1,7 @@
 # Arduino Mega 2560 - Kontaktanschlussplan (Pinout)
 
-## Übersicht
-Dokumentation aller digitalen und analogen Pin-Zuweisungen für Sensoren und Aktoren.
+## Uebersicht
+Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Aktoren.
 
 ---
 
@@ -15,7 +15,7 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen für Sensoren und Akt
 
 ---
 
-## Digitale Ausgänge (Aktoren)
+## Digitale Ausgaenge (Aktoren)
 
 | Pin | Funktion | Komponente | Status | Notizen |
 |-----|----------|-----------|--------|---------|
@@ -24,18 +24,21 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen für Sensoren und Akt
 | 24 | Aktor 3 | | | |
 | 25 | Aktor 4 | | | |
 | 26 | HC-SR04 TRIG | Ultraschall-Sensor | aktiv | Trigger-Ausgang (10us Pulse) |
+| 49 | RC522 RST | RFID-RC522 | aktiv | Reset-Leitung |
+| 53 | RC522 SS/SDA | RFID-RC522 | aktiv | SPI Chip Select |
 
 ---
 
-## Digitale Eingänge (Sensoren)
+## Digitale Eingaenge (Sensoren)
 
-| Pin | Funktion | Sensortyp | I2C/SPI/Analog | Notizen |
-|-----|----------|-----------|---|---------|
+| Pin | Funktion | Sensortyp | Bus | Notizen |
+|-----|----------|-----------|-----|---------|
 | 27 | HC-SR04 ECHO | Ultraschall-Sensor | Digital | Echo-Eingang (5V TTL) |
+| 50 | RC522 MISO | RFID-RC522 | SPI | Master In Slave Out |
 
 ---
 
-## Analoge Eingänge (A0-A15)
+## Analoge Eingaenge (A0-A15)
 
 | Pin | Adc-Nummer | Sensor | Spannung | Kalibrierung | Notizen |
 |-----|-----------|--------|----------|-------------|---------|
@@ -52,24 +55,27 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen für Sensoren und Akt
 
 ### I2C (Mega: SDA=20, SCL=21)
 
-| Adresse | Gerät | Funktion | Notizen |
-|---------|-------|----------|---------|
-| | | | |
+| Adresse | Geraet | Funktion | Notizen |
+|---------|--------|----------|---------|
 | | | | |
 
 ### SPI (Mega: MOSI=51, MISO=50, SCK=52, CS=53)
 
-| Pin | CS | Gerät | Funktion |
-|-----|----|----|----------|
-| 53 | | | |
+| Pin | Signal | Geraet | Funktion |
+|-----|--------|--------|----------|
+| 50 | MISO | RC522 | Daten zum Mega |
+| 51 | MOSI | RC522 | Daten zum RC522 |
+| 52 | SCK | RC522 | SPI Takt |
+| 53 | CS/SS | RC522 | Chip Select |
 
 ---
 
 ## Stromversorgung
 
 | Quelle | GND | 5V | 3.3V | Komponenten |
-|--------|-----|----|----|-------------|
-| Mega 5V | | | | Power Board |
+|--------|-----|----|------|-------------|
+| Mega 5V | x | x | | HC-SR04, Power Board |
+| Mega 3.3V | x | | x | RC522 |
 | Extern | | | | |
 
 ---
@@ -79,46 +85,48 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen für Sensoren und Akt
 ```
 [Arduino Mega 2560]
          |
-    +----+----+
-    |         |
-  [USB]    [Serial1 UART]
-              |
-        [Raspberry Pi 4]
+    +----+-----------------------+
+    |                            |
+  [USB]                     [Serial1 UART]
+                               |
+                         [Raspberry Pi 4]
 ```
 
-### Raspberry Pi ↔ Arduino Verbindung
+### Raspberry Pi <-> Arduino Verbindung
 
 ```
-RPi GPIO    ↔    Arduino Mega
-(TXD, 3.3V) ↔    RX1 (Pin 19)
-(RXD, 3.3V) ↔    TX1 (Pin 18) ueber Pegelwandler 5V->3.3V
-(GND)       ↔    GND
+RPi GPIO    <->    Arduino Mega
+(TXD, 3.3V) <->    RX1 (Pin 19)
+(RXD, 3.3V) <->    TX1 (Pin 18) ueber Pegelwandler 5V->3.3V
+(GND)       <->    GND
 ```
 
-### HC-SR04 ↔ Arduino Verbindung
+### HC-SR04 <-> Arduino Verbindung
 
 ```
-HC-SR04      ↔    Arduino Mega
-VCC (5V)     ↔    5V
-GND          ↔    GND
-TRIG         ↔    D26
-ECHO         ↔    D27
+HC-SR04      <->    Arduino Mega
+VCC (5V)     <->    5V
+GND          <->    GND
+TRIG         <->    D26
+ECHO         <->    D27
 ```
 
----
+### RC522 <-> Arduino Verbindung
 
-## Schnellreferenz: Arduino Mega 2560 Pins
-
-- **Digital Pins:** 0-53 (bevorzugt: 22-53 für Projekte, 0-1 für Serial, 2-3 für Interrupts)
-- **PWM Pins:** 2-13, 44-46
-- **Analog Pins:** A0-A15 (entspricht Pins 54-69)
-- **I2C:** SDA (Pin 20), SCL (Pin 21)
-- **SPI:** MOSI (51), MISO (50), SCK (52), CS (53)
+```
+RC522        <->    Arduino Mega
+SDA/SS       <->    D53
+SCK          <->    D52
+MOSI         <->    D51
+MISO         <->    D50
+RST          <->    D49
+3.3V         <->    3.3V
+GND          <->    GND
+```
 
 ---
 
 ## Notizen
-- Alle Spannungen standardmäßig 5V (außer anders angegeben)
-- GND muss zwischen Mega und Raspberry Pi verbunden sein
-- Raspberry Pi RXD ist nicht 5V-tolerant: Mega TX1 immer ueber Pegelwandler/Spannungsteiler anschliessen
-- Sensoren/Aktoren mit Motorentreibern verwenden für höhere Ströme
+- Raspberry Pi RXD ist nicht 5V-tolerant: Mega TX1 immer ueber Pegelwandler/Spannungsteiler anschliessen.
+- RC522 nur mit 3.3V betreiben.
+- GND muss zwischen Mega, Raspberry Pi und Sensoren gemeinsam verbunden sein.

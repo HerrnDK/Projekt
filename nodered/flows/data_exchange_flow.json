@@ -1,148 +1,164 @@
 [
-  {
-    "id": "flow_data_exchange",
-    "type": "tab",
-    "label": "Data Exchange - Arduino (JSON)",
-    "disabled": false,
-    "info": "Serial communication and parsing"
-  },
-  {
-    "id": "serial-config",
-    "type": "serial-port",
-    "serialport": "/dev/serial0",
-    "serialbaud": "9600",
-    "databits": "8",
-    "parity": "none",
-    "stopbits": "1",
-    "newline": "\\n",
-    "bin": "false",
-    "out": "char",
-    "addchar": "\\n",
-    "responsetimeout": "1000"
-  },
-  {
-    "id": "serial-in",
-    "type": "serial in",
-    "z": "flow_data_exchange",
-    "name": "From Arduino Mega",
-    "serial": "serial-config",
-    "x": 180,
-    "y": 160,
-    "wires": [
-      [
-        "json-parse",
-        "dbg_raw"
-      ]
-    ]
-  },
-  {
-    "id": "json-parse",
-    "type": "json",
-    "z": "flow_data_exchange",
-    "name": "Parse JSON",
-    "property": "payload",
-    "action": "",
-    "pretty": false,
-    "x": 400,
-    "y": 160,
-    "wires": [
-      [
-        "dbg_parsed",
-        "fn_format_uptime_hms"
-      ]
-    ]
-  },
-  {
-    "id": "fn_format_uptime_hms",
-    "type": "function",
-    "z": "flow_data_exchange",
-    "name": "Format uptime HH:MM:SS",
-    "func": "const p = msg.payload || {};\nconst ms = Number(p.uptime_ms);\nif (!Number.isFinite(ms) || ms < 0) {\n  p.uptime_hms = \"--:--:--\";\n} else {\n  const totalSec = Math.floor(ms / 1000);\n  const hh = String(Math.floor(totalSec / 3600)).padStart(2, \"0\");\n  const mm = String(Math.floor((totalSec % 3600) / 60)).padStart(2, \"0\");\n  const ss = String(totalSec % 60).padStart(2, \"0\");\n  p.uptime_hms = `${hh}:${mm}:${ss}`;\n}\nmsg.payload = p;\nreturn msg;",
-    "outputs": 1,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "libs": [],
-    "x": 620,
-    "y": 120,
-    "wires": [
-      [
-        "link_out_from_data"
-      ]
-    ]
-  },
-  {
-    "id": "dbg_raw",
-    "type": "debug",
-    "z": "flow_data_exchange",
-    "name": "Raw Serial (lines)",
-    "active": true,
-    "tosidebar": true,
-    "console": false,
-    "complete": "payload",
-    "targetType": "msg",
-    "x": 400,
-    "y": 220,
-    "wires": []
-  },
-  {
-    "id": "dbg_parsed",
-    "type": "debug",
-    "z": "flow_data_exchange",
-    "name": "Parsed JSON (type)",
-    "active": true,
-    "tosidebar": true,
-    "console": false,
-    "complete": "payload",
-    "targetType": "msg",
-    "x": 620,
-    "y": 160,
-    "wires": []
-  },
-  {
-    "id": "serial-out",
-    "type": "serial out",
-    "z": "flow_data_exchange",
-    "name": "To Arduino Mega",
-    "serial": "serial-config",
-    "x": 620,
-    "y": 320,
-    "wires": []
-  },
-  {
-    "id": "link_in_from_dashboard",
-    "type": "link in",
-    "z": "flow_data_exchange",
-    "name": "from Dashboard",
-    "links": [
-      "4ac1b66aca6f1626",
-      "link_out_startup_to_data"
-    ],
-    "x": 380,
-    "y": 320,
-    "wires": [
-      [
-        "serial-out"
-      ]
-    ]
-  },
-  {
-    "id": "link_out_from_data",
-    "type": "link out",
-    "z": "flow_data_exchange",
-    "name": "to function flows (sensors)",
-    "links": [
-      "link_in_from_data_startup",
-      "link_in_from_data_parameters"
-    ],
-    "x": 760,
-    "y": 160,
-    "wires": []
-  },
-  {
-    "id": "1d67149e10aac307",
-    "type": "global-config",
-    "env": [],
-    "modules": {}
-  }
+    {
+        "id":  "flow_data_exchange",
+        "type":  "tab",
+        "label":  "Data Exchange - Arduino (JSON)",
+        "disabled":  false,
+        "info":  "Serial communication and parsing"
+    },
+    {
+        "id":  "serial-config",
+        "type":  "serial-port",
+        "serialport":  "/dev/serial0",
+        "serialbaud":  "9600",
+        "databits":  "8",
+        "parity":  "none",
+        "stopbits":  "1",
+        "newline":  "\\n",
+        "bin":  "false",
+        "out":  "char",
+        "addchar":  "\\n",
+        "responsetimeout":  "1000"
+    },
+    {
+        "id":  "serial-in",
+        "type":  "serial in",
+        "z":  "flow_data_exchange",
+        "name":  "From Arduino Mega",
+        "serial":  "serial-config",
+        "x":  180,
+        "y":  160,
+        "wires":  [
+                      [
+                          "json-parse",
+                          "dbg_raw"
+                      ]
+                  ]
+    },
+    {
+        "id":  "json-parse",
+        "type":  "json",
+        "z":  "flow_data_exchange",
+        "name":  "Parse JSON",
+        "property":  "payload",
+        "action":  "",
+        "pretty":  false,
+        "x":  400,
+        "y":  160,
+        "wires":  [
+                      [
+                          "dbg_parsed",
+                          "fn_format_uptime_hms"
+                      ]
+                  ]
+    },
+    {
+        "id":  "fn_format_uptime_hms",
+        "type":  "function",
+        "z":  "flow_data_exchange",
+        "name":  "Format uptime HH:MM:SS",
+        "func":  "const p = msg.payload || {};\nconst ms = Number(p.uptime_ms);\nif (!Number.isFinite(ms) || ms \u003c 0) {\n  p.uptime_hms = \"--:--:--\";\n} else {\n  const totalSec = Math.floor(ms / 1000);\n  const hh = String(Math.floor(totalSec / 3600)).padStart(2, \"0\");\n  const mm = String(Math.floor((totalSec % 3600) / 60)).padStart(2, \"0\");\n  const ss = String(totalSec % 60).padStart(2, \"0\");\n  p.uptime_hms = `${hh}:${mm}:${ss}`;\n}\nmsg.payload = p;\nreturn msg;",
+        "outputs":  1,
+        "noerr":  0,
+        "initialize":  "",
+        "finalize":  "",
+        "libs":  [
+
+                 ],
+        "x":  620,
+        "y":  120,
+        "wires":  [
+                      [
+                          "link_out_from_data"
+                      ]
+                  ]
+    },
+    {
+        "id":  "dbg_raw",
+        "type":  "debug",
+        "z":  "flow_data_exchange",
+        "name":  "Raw Serial (lines)",
+        "active":  true,
+        "tosidebar":  true,
+        "console":  false,
+        "complete":  "payload",
+        "targetType":  "msg",
+        "x":  400,
+        "y":  220,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "dbg_parsed",
+        "type":  "debug",
+        "z":  "flow_data_exchange",
+        "name":  "Parsed JSON (type)",
+        "active":  true,
+        "tosidebar":  true,
+        "console":  false,
+        "complete":  "payload",
+        "targetType":  "msg",
+        "x":  620,
+        "y":  160,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "serial-out",
+        "type":  "serial out",
+        "z":  "flow_data_exchange",
+        "name":  "To Arduino Mega",
+        "serial":  "serial-config",
+        "x":  620,
+        "y":  320,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "link_in_from_dashboard",
+        "type":  "link in",
+        "z":  "flow_data_exchange",
+        "name":  "from Dashboard",
+        "links":  [
+                      "4ac1b66aca6f1626",
+                      "link_out_startup_to_data",
+                      "link_out_profiles_to_data"
+                  ],
+        "x":  380,
+        "y":  320,
+        "wires":  [
+                      [
+                          "serial-out"
+                      ]
+                  ]
+    },
+    {
+        "id":  "link_out_from_data",
+        "type":  "link out",
+        "z":  "flow_data_exchange",
+        "name":  "to function flows (sensors)",
+        "links":  [
+                      "link_in_from_data_startup",
+                      "link_in_from_data_parameters",
+                      "link_in_from_data_profiles"
+                  ],
+        "x":  760,
+        "y":  160,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "1d67149e10aac307",
+        "type":  "global-config",
+        "env":  [
+
+                ],
+        "modules":  {
+
+                    }
+    }
 ]
