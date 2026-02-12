@@ -23,6 +23,21 @@ namespace {
   byte rfidVersionReg = 0x00;
   MFRC522::StatusCode rfidProbeStatus = MFRC522::STATUS_TIMEOUT;
 
+  const char *rfidStatusCodeToText(MFRC522::StatusCode code) {
+    switch (code) {
+      case MFRC522::STATUS_OK: return "STATUS_OK";
+      case MFRC522::STATUS_ERROR: return "STATUS_ERROR";
+      case MFRC522::STATUS_COLLISION: return "STATUS_COLLISION";
+      case MFRC522::STATUS_TIMEOUT: return "STATUS_TIMEOUT";
+      case MFRC522::STATUS_NO_ROOM: return "STATUS_NO_ROOM";
+      case MFRC522::STATUS_INTERNAL_ERROR: return "STATUS_INTERNAL_ERROR";
+      case MFRC522::STATUS_INVALID: return "STATUS_INVALID";
+      case MFRC522::STATUS_CRC_WRONG: return "STATUS_CRC_WRONG";
+      case MFRC522::STATUS_MIFARE_NACK: return "STATUS_MIFARE_NACK";
+      default: return "STATUS_UNKNOWN";
+    }
+  }
+
   void configureRfidReader() {
     // Improve detection stability for weak tags/modules.
     rfidReader.PCD_AntennaOn();
@@ -193,7 +208,7 @@ const char *Sensors_getRfidHardwareStatus() {
 }
 
 const char *Sensors_getRfidProbeStatus() {
-  return MFRC522::GetStatusCodeName(rfidProbeStatus);
+  return rfidStatusCodeToText(rfidProbeStatus);
 }
 
 uint8_t Sensors_getRfidVersionReg() {
