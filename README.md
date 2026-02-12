@@ -51,6 +51,7 @@ HC-SR04 Statuswerte:
 RFID Statuswerte:
 - `ok` gueltige UID gelesen
 - `no_card` kein RFID Chip praesent
+- `probe_error` Reader-Probe fehlgeschlagen (z. B. Signal-/SPI-Problem)
 - `read_error` Lesen fehlgeschlagen
 - `uid_truncated` UID zu lang fuer Payload-Buffer
 

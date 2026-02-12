@@ -1,6 +1,9 @@
 #include "mega_shared.h"
 
 #include <SPI.h>
+#ifndef MFRC522_SPICLOCK
+#define MFRC522_SPICLOCK (1000000u)
+#endif
 #include <MFRC522.h>
 #include <stdio.h>
 #include <string.h>
@@ -152,6 +155,9 @@ void Sensors_readRfid(char *uidOut, size_t uidOutLen, const char *&statusOut) {
   }
 
   if (!isCardPresentOrWakeup()) {
+    if (rfidProbeStatus != MFRC522::STATUS_TIMEOUT) {
+      statusOut = "probe_error";
+    }
     return;
   }
 
