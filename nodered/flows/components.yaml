@@ -1,4 +1,4 @@
-version: 9
+version: 10
 registry: components
 conventions:
   id_style: "snake_case, stable logical id (not Node-RED node id)"
@@ -241,6 +241,102 @@ components:
       payload: -30
     tags: [ui, parameter, droplet, offset, mobile]
     version: 1
+  parameter_relay1_button_desktop:
+    id: parameter_relay1_button_desktop
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Relais 1 (Pumpe) schalten"
+    group: ui_grp_parameter_main
+    description: "Toggle fuer Relais 1 (Pumpe) auf Pin D22."
+    example_msg:
+      topic: "relay_toggle"
+      payload: "22"
+    tags: [ui, parameter, relay, pump, desktop]
+    version: 1
+  parameter_relay2_button_desktop:
+    id: parameter_relay2_button_desktop
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Relais 2 schalten"
+    group: ui_grp_parameter_main
+    description: "Toggle fuer Relais 2 (Reserve) auf Pin D23."
+    example_msg:
+      topic: "relay_toggle"
+      payload: "23"
+    tags: [ui, parameter, relay, reserve, desktop]
+    version: 1
+  parameter_relay3_button_desktop:
+    id: parameter_relay3_button_desktop
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Relais 3 schalten"
+    group: ui_grp_parameter_main
+    description: "Toggle fuer Relais 3 (Reserve) auf Pin D24."
+    example_msg:
+      topic: "relay_toggle"
+      payload: "24"
+    tags: [ui, parameter, relay, reserve, desktop]
+    version: 1
+  parameter_relay4_button_desktop:
+    id: parameter_relay4_button_desktop
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Relais 4 schalten"
+    group: ui_grp_parameter_main
+    description: "Toggle fuer Relais 4 (Reserve) auf Pin D25."
+    example_msg:
+      topic: "relay_toggle"
+      payload: "25"
+    tags: [ui, parameter, relay, reserve, desktop]
+    version: 1
+  parameter_relay1_button_mobile:
+    id: parameter_relay1_button_mobile
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Relais 1 (Pumpe) schalten (Mobile)"
+    group: ui_grp_parameter_mobile
+    description: "Toggle fuer Relais 1 (Pumpe) auf Pin D22 (Mobile)."
+    example_msg:
+      topic: "relay_toggle"
+      payload: "22"
+    tags: [ui, parameter, relay, pump, mobile]
+    version: 1
+  parameter_relay2_button_mobile:
+    id: parameter_relay2_button_mobile
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Relais 2 schalten (Mobile)"
+    group: ui_grp_parameter_mobile
+    description: "Toggle fuer Relais 2 (Reserve) auf Pin D23 (Mobile)."
+    example_msg:
+      topic: "relay_toggle"
+      payload: "23"
+    tags: [ui, parameter, relay, reserve, mobile]
+    version: 1
+  parameter_relay3_button_mobile:
+    id: parameter_relay3_button_mobile
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Relais 3 schalten (Mobile)"
+    group: ui_grp_parameter_mobile
+    description: "Toggle fuer Relais 3 (Reserve) auf Pin D24 (Mobile)."
+    example_msg:
+      topic: "relay_toggle"
+      payload: "24"
+    tags: [ui, parameter, relay, reserve, mobile]
+    version: 1
+  parameter_relay4_button_mobile:
+    id: parameter_relay4_button_mobile
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Relais 4 schalten (Mobile)"
+    group: ui_grp_parameter_mobile
+    description: "Toggle fuer Relais 4 (Reserve) auf Pin D25 (Mobile)."
+    example_msg:
+      topic: "relay_toggle"
+      payload: "25"
+    tags: [ui, parameter, relay, reserve, mobile]
+    version: 1
   parameter_offset_store:
     id: parameter_offset_store
     type: function
@@ -257,6 +353,14 @@ components:
     description: "Erweitert Sensorpayload um hcsr04_distance_display_cm, droplet_display_raw und beide Offsets"
     tags: [parameter, function, sensor, hcsr04, droplet, offset]
     version: 2
+  parameter_relay_controller:
+    id: parameter_relay_controller
+    type: function
+    flow: nodered/flows/fn_parameters_flow.json
+    node_label: "Relais Controller"
+    description: "Verarbeitet relay_toggle und ACT-ACKs, sendet ACT-Befehle und publiziert ON/OFF-Zustaende fuer Relais 1..4."
+    tags: [parameter, function, relay, actuator, act]
+    version: 1
   qr_welcome_dynamic:
     id: qr_welcome_dynamic
     type: ui_template
@@ -403,6 +507,110 @@ components:
       payload:
         droplet_status: "ok"
     tags: [ui, droplet, status, mobile]
+    version: 1
+  status_relay1_display_desktop:
+    id: status_relay1_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Relais 1 Status Display"
+    group: ui_grp_info_main
+    description: "ON/OFF Anzeige fuer Relais 1 (Pumpe) im Status/Sensoren-Tab (Desktop)."
+    example_msg:
+      topic: ""
+      payload:
+        relay1_state_text: "ON"
+    tags: [ui, relay, status, desktop]
+    version: 1
+  status_relay2_display_desktop:
+    id: status_relay2_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Relais 2 Status Display"
+    group: ui_grp_info_main
+    description: "ON/OFF Anzeige fuer Relais 2 (Reserve) im Status/Sensoren-Tab (Desktop)."
+    example_msg:
+      topic: ""
+      payload:
+        relay2_state_text: "OFF"
+    tags: [ui, relay, status, desktop]
+    version: 1
+  status_relay3_display_desktop:
+    id: status_relay3_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Relais 3 Status Display"
+    group: ui_grp_info_main
+    description: "ON/OFF Anzeige fuer Relais 3 (Reserve) im Status/Sensoren-Tab (Desktop)."
+    example_msg:
+      topic: ""
+      payload:
+        relay3_state_text: "OFF"
+    tags: [ui, relay, status, desktop]
+    version: 1
+  status_relay4_display_desktop:
+    id: status_relay4_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Relais 4 Status Display"
+    group: ui_grp_info_main
+    description: "ON/OFF Anzeige fuer Relais 4 (Reserve) im Status/Sensoren-Tab (Desktop)."
+    example_msg:
+      topic: ""
+      payload:
+        relay4_state_text: "OFF"
+    tags: [ui, relay, status, desktop]
+    version: 1
+  status_relay1_display_mobile:
+    id: status_relay1_display_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Relais 1 Status Display (Mobile)"
+    group: ui_grp_info_mobile
+    description: "ON/OFF Anzeige fuer Relais 1 (Pumpe) im Status/Sensoren-Tab (Mobile)."
+    example_msg:
+      topic: ""
+      payload:
+        relay1_state_text: "ON"
+    tags: [ui, relay, status, mobile]
+    version: 1
+  status_relay2_display_mobile:
+    id: status_relay2_display_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Relais 2 Status Display (Mobile)"
+    group: ui_grp_info_mobile
+    description: "ON/OFF Anzeige fuer Relais 2 (Reserve) im Status/Sensoren-Tab (Mobile)."
+    example_msg:
+      topic: ""
+      payload:
+        relay2_state_text: "OFF"
+    tags: [ui, relay, status, mobile]
+    version: 1
+  status_relay3_display_mobile:
+    id: status_relay3_display_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Relais 3 Status Display (Mobile)"
+    group: ui_grp_info_mobile
+    description: "ON/OFF Anzeige fuer Relais 3 (Reserve) im Status/Sensoren-Tab (Mobile)."
+    example_msg:
+      topic: ""
+      payload:
+        relay3_state_text: "OFF"
+    tags: [ui, relay, status, mobile]
+    version: 1
+  status_relay4_display_mobile:
+    id: status_relay4_display_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Relais 4 Status Display (Mobile)"
+    group: ui_grp_info_mobile
+    description: "ON/OFF Anzeige fuer Relais 4 (Reserve) im Status/Sensoren-Tab (Mobile)."
+    example_msg:
+      topic: ""
+      payload:
+        relay4_state_text: "OFF"
+    tags: [ui, relay, status, mobile]
     version: 1
   profile_controller_logic:
     id: profile_controller_logic

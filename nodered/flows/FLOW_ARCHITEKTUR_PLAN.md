@@ -14,7 +14,7 @@ flowchart TB
     Dashboard --> DataFlow[data_exchange_flow.json\nSerial In/Out + JSON Parse]
     Dashboard --> NetFlow[Network.json\nWLAN / Status / QR]
     Dashboard --> StartupFlow[fn_startup_test_flow.json\nStartup-Status]
-    Dashboard --> ParamFlow[fn_parameters_flow.json\nParameter + Offsets]
+    Dashboard --> ParamFlow[fn_parameters_flow.json\nParameter + Offsets + Relais]
     Dashboard --> ProfileFlow[fn_profiles_flow.json\nRFID Profile]
   end
 
@@ -189,11 +189,11 @@ sequenceDiagram
   end
 ```
 
-## 6) UML fn_parameters_flow (Offsets + Anzeigewerte)
+## 6) UML fn_parameters_flow (Offsets + Relais + Anzeigewerte)
 ```mermaid
 sequenceDiagram
   participant Boot as Boot Inject
-  participant UI as Dashboard Slider
+  participant UI as Dashboard Slider/Relais-Buttons
   participant PF as fn_parameters_flow
   participant X as data_exchange_flow
   participant D as Dashboard
@@ -205,6 +205,11 @@ sequenceDiagram
   UI->>PF: Slider-Wert
   PF->>PF: Offset speichern (abh. von msg.topic)
   PF-->>D: parameter state (hcsr04_offset_cm + droplet_offset_raw)
+
+  UI->>PF: Relais-Button (topic=relay_toggle)
+  PF-->>X: ACT,<pin>,<state>
+  X-->>PF: act ACK (ok/pin/state)
+  PF-->>D: relay1..relay4 = ON/OFF
 
   X-->>PF: sensor payload
   PF->>PF: Offsets auf Distanz/Rohwert anwenden
@@ -218,6 +223,21 @@ stateDiagram-v2
   OffsetInit --> OffsetReady: INIT_OFFSET
   OffsetReady --> OffsetReady: Slider update (HC-SR04 -5..+5 / Tropfen -300..+300)
   OffsetReady --> OffsetReady: Sensorpayload -> display distance/raw
+```
+
+### 6.2 UML Zustandsmodell (Relais 1..4)
+```mermaid
+stateDiagram-v2
+  [*] --> AlleOFF
+  AlleOFF --> Gemischt: erster Toggle
+  Gemischt --> Gemischt: weitere Toggles
+  Gemischt --> AlleOFF: alle Relais auf OFF
+
+  note right of Gemischt
+    Jeder Button sendet relay_toggle.
+    fn_parameters_flow erzeugt ACT,<pin>,<state>
+    und aktualisiert Status erst nach ACT-ACK.
+  end note
 ```
 
 ## 7) UML Network.json (WLAN + QR + UI)

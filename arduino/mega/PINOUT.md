@@ -33,10 +33,10 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Akt
 
 | Pin | Funktion | Komponente | Status | Notizen |
 |-----|----------|-----------|--------|---------|
-| 22 | Aktor 1 | | | |
-| 23 | Aktor 2 | | | |
-| 24 | Aktor 3 | | | |
-| 25 | Aktor 4 | | | |
+| 22 | Relais IN1 | 4-Kanal Relaismodul | aktiv | Relais 1: Wasserpumpe |
+| 23 | Relais IN2 | 4-Kanal Relaismodul | aktiv | Relais 2: Reserve |
+| 24 | Relais IN3 | 4-Kanal Relaismodul | aktiv | Relais 3: Reserve |
+| 25 | Relais IN4 | 4-Kanal Relaismodul | aktiv | Relais 4: Reserve |
 | 26 | HC-SR04 TRIG | Ultraschall-Sensor | aktiv | Trigger-Ausgang (10us Pulse) |
 | 49 | RC522 RST | RFID-RC522 | aktiv | Reset-Leitung |
 | 53 | RC522 SS/SDA | RFID-RC522 | aktiv | SPI Chip Select |
@@ -145,6 +145,18 @@ Funduino Tropfensensor   <->    Arduino Mega
 +5V                      <->    5V
 -GND                     <->    GND
 S (Analog Out)           <->    A0
+```
+
+### 4-Kanal Relaismodul <-> Arduino Verbindung
+
+```
+Relaismodul              <->    Arduino Mega
+VCC (5V)                 <->    5V
+GND                      <->    GND
+IN1                      <->    D22
+IN2                      <->    D23
+IN3                      <->    D24
+IN4                      <->    D25
 ```
 
 ---

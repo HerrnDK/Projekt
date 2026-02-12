@@ -58,6 +58,12 @@ Du solltest Tabs sehen:
 
 Gehe zu: `http://192.168.0.250:1880/ui`
 
+Projekt-Parametrierung:
+- 4 Relais-Buttons (`Relais 1 (Pumpe)`, `Relais 2-4 (Reserve)`) zum Umschalten ON/OFF
+
+Projekt-info / Status-Sensoren:
+- Relais 1..4 Statusanzeige als `ON` / `OFF`
+
 Profile Tab:
 - Button `Lesen`
 - Button `Profil 1 anlernen/loeschen`
@@ -96,6 +102,6 @@ jq . nodered/flows/fn_profiles_flow.json > /dev/null
 | `nodered/flows/Network.json` | WLAN-Verbindung, Status, QR-Codes |
 | `nodered/flows/data_exchange_flow.json` | Serial-I/O Layer zur Arduino |
 | `nodered/flows/fn_startup_test_flow.json` | Startup-Test und Anlagenstatus |
-| `nodered/flows/fn_parameters_flow.json` | Parameterverwaltung HC-SR04 + Tropfensensor |
+| `nodered/flows/fn_parameters_flow.json` | Parameterverwaltung HC-SR04 + Tropfensensor + Relaissteuerung |
 | `nodered/flows/fn_profiles_flow.json` | RFID Profile (Anlernen + Zuordnung) |
 | `nodered/flows/FLOW_ARCHITEKTUR_PLAN.md` | Ablaufplan und Zielarchitektur |

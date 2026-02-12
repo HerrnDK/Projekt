@@ -746,6 +746,381 @@
                   ]
     },
     {
+        "id":  "ui_btn_relay1_d",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 1 (Pumpe) schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  5,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 1 (Pumpe)",
+        "tooltip":  "Relais 1 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "22",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  260,
+        "y":  1040,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_relay2_d",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 2 schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  6,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 2 (Reserve)",
+        "tooltip":  "Relais 2 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "23",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  260,
+        "y":  1080,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_relay3_d",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 3 schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  7,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 3 (Reserve)",
+        "tooltip":  "Relais 3 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "24",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  260,
+        "y":  1120,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_relay4_d",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 4 schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  8,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 4 (Reserve)",
+        "tooltip":  "Relais 4 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "25",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  260,
+        "y":  1160,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_relay1_m",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 1 (Pumpe) schalten (Mobile)",
+        "group":  "cd3e28787d1292e1",
+        "order":  5,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 1 (Pumpe)",
+        "tooltip":  "Relais 1 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "22",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  290,
+        "y":  1200,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_relay2_m",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 2 schalten (Mobile)",
+        "group":  "cd3e28787d1292e1",
+        "order":  6,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 2 (Reserve)",
+        "tooltip":  "Relais 2 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "23",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  290,
+        "y":  1240,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_relay3_m",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 3 schalten (Mobile)",
+        "group":  "cd3e28787d1292e1",
+        "order":  7,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 3 (Reserve)",
+        "tooltip":  "Relais 3 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "24",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  290,
+        "y":  1280,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_relay4_m",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 4 schalten (Mobile)",
+        "group":  "cd3e28787d1292e1",
+        "order":  8,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 4 (Reserve)",
+        "tooltip":  "Relais 4 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "25",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  290,
+        "y":  1320,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "link_in_relays_from_parameters",
+        "type":  "link in",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "relay states from parameters flow",
+        "links":  [
+                      "link_out_relays_to_dashboard"
+                  ],
+        "x":  230,
+        "y":  760,
+        "wires":  [
+                      [
+                          "ui_txt_relay1_status_d",
+                          "ui_txt_relay2_status_d",
+                          "ui_txt_relay3_status_d",
+                          "ui_txt_relay4_status_d",
+                          "ui_txt_relay1_status_m",
+                          "ui_txt_relay2_status_m",
+                          "ui_txt_relay3_status_m",
+                          "ui_txt_relay4_status_m"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay1_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  11,
+        "width":  7,
+        "height":  1,
+        "name":  "Relais 1 Status Display",
+        "label":  "Relais 1 (Pumpe)",
+        "format":  "{{msg.payload.relay1_state_text}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  900,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay2_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  12,
+        "width":  7,
+        "height":  1,
+        "name":  "Relais 2 Status Display",
+        "label":  "Relais 2 (Reserve)",
+        "format":  "{{msg.payload.relay2_state_text}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  940,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay3_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  13,
+        "width":  7,
+        "height":  1,
+        "name":  "Relais 3 Status Display",
+        "label":  "Relais 3 (Reserve)",
+        "format":  "{{msg.payload.relay3_state_text}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  980,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay4_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  14,
+        "width":  7,
+        "height":  1,
+        "name":  "Relais 4 Status Display",
+        "label":  "Relais 4 (Reserve)",
+        "format":  "{{msg.payload.relay4_state_text}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  1020,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay1_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  11,
+        "width":  10,
+        "height":  1,
+        "name":  "Relais 1 Status Display (Mobile)",
+        "label":  "Relais 1 (Pumpe)",
+        "format":  "{{msg.payload.relay1_state_text}}",
+        "layout":  "row-spread",
+        "x":  720,
+        "y":  1060,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay2_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  12,
+        "width":  10,
+        "height":  1,
+        "name":  "Relais 2 Status Display (Mobile)",
+        "label":  "Relais 2 (Reserve)",
+        "format":  "{{msg.payload.relay2_state_text}}",
+        "layout":  "row-spread",
+        "x":  720,
+        "y":  1100,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay3_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  13,
+        "width":  10,
+        "height":  1,
+        "name":  "Relais 3 Status Display (Mobile)",
+        "label":  "Relais 3 (Reserve)",
+        "format":  "{{msg.payload.relay3_state_text}}",
+        "layout":  "row-spread",
+        "x":  720,
+        "y":  1140,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay4_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  14,
+        "width":  10,
+        "height":  1,
+        "name":  "Relais 4 Status Display (Mobile)",
+        "label":  "Relais 4 (Reserve)",
+        "format":  "{{msg.payload.relay4_state_text}}",
+        "layout":  "row-spread",
+        "x":  720,
+        "y":  1180,
+        "wires":  [
+
+                  ]
+    },
+    {
         "id":  "ui_tab_profile",
         "name":  "Profile",
         "icon":  "badge",

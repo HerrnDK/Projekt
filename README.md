@@ -37,6 +37,14 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 - Tropfensensor -GND -> GND
 - Tropfensensor S (Analog) -> A0
 
+## Wiring (4-Kanal Relaismodul)
+- Relaismodul VCC -> 5V
+- Relaismodul GND -> GND
+- Relaismodul IN1 -> D22 (Relais 1: Wasserpumpe)
+- Relaismodul IN2 -> D23 (Relais 2: Reserve)
+- Relaismodul IN3 -> D24 (Relais 3: Reserve)
+- Relaismodul IN4 -> D25 (Relais 4: Reserve)
+
 ## Protokoll (Serial1, newline-terminiert)
 - `READ` -> Arduino sendet JSON Sensor-Snapshot
 - `ACT,<pin>,<state>` -> Aktor schalten, JSON-ACK
@@ -87,7 +95,7 @@ RFID Diagnose:
   - `dashboard_flow.json` UI + Sensoranzeigen + Parametrierung
   - `Network.json` Netzwerk-Tab
   - `data_exchange_flow.json` Serial-I/O Arduino
-  - `fn_parameters_flow.json` Parameter-Logik (HC-SR04 + Tropfensensor Offset)
+  - `fn_parameters_flow.json` Parameter-Logik (HC-SR04 + Tropfensensor Offset + Relaissteuerung)
   - `fn_profiles_flow.json` RFID Profile-Logik (Anlernen + Profilzuweisung)
   - `components.yaml` logische Komponentenreferenzen
   - `deploy_flows.sh` Flow-Deploy Script (POST /flows)
@@ -130,6 +138,11 @@ Hinweise:
 ## Parametrierung (Dashboard)
 - Im Tab `Projekt-Parametrierung` gibt es einen Slider `HC-SR04 Korrektur (cm)` mit Bereich `-5 .. +5`.
 - Es gibt zusaetzlich einen Slider `Tropfensensor Offset (raw)` mit Bereich `-300 .. +300`.
+- Im Tab `Projekt-Parametrierung` gibt es zusaetzlich 4 Relais-Buttons:
+  - `Relais 1 (Pumpe)` schaltet D22
+  - `Relais 2 (Reserve)` schaltet D23
+  - `Relais 3 (Reserve)` schaltet D24
+  - `Relais 4 (Reserve)` schaltet D25
 - Die Offsets werden in `fn_parameters_flow.json` gespeichert (`global.hcsr04_offset_cm`, `global.droplet_offset_raw`).
 - Die Anzeigen nutzen die korrigierten Werte `hcsr04_distance_display_cm` und `droplet_display_raw`.
 
@@ -144,7 +157,7 @@ Hinweise:
 - Wenn ein Profil bereits belegt ist, loescht der jeweilige Profil-Button die Bindung.
 - Bereits bekannte Chips aktivieren direkt ihr hinterlegtes Profil.
 - Die erkannte UID, das aktive Profil und der RFID Modulstatus werden live angezeigt.
-- Im Tab `Projekt-info` unter `Status / Sensoren` werden zusaetzlich `RFID RC522 Status` und `Tropfensensor Status` angezeigt.
+- Im Tab `Projekt-info` unter `Status / Sensoren` werden zusaetzlich `RFID RC522 Status`, `Tropfensensor Status` und die 4 Relais-Zustaende (`ON`/`OFF`) angezeigt.
 
 ## Next Steps (wenn Sensoren/Aktoren bekannt sind)
 - Weitere Sensoren nach gleichem Muster in `sensors.cpp` ergaenzen.
