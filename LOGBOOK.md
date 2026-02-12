@@ -151,3 +151,35 @@ Bestehende Probleme:
 - Node-RED von der Entwicklungsumgebung aus nicht erreichbar (Deploy hier nicht moeglich).
 - `yaml-lint` ist in der aktuellen Umgebung nicht installiert (YAML-Formatcheck nur eingeschränkt moeglich).
 - On-Screen-Tastatur im Kioskmodus weiterhin nicht verfuegbar.
+
+## 2026-02-12 20:15 UTC
+
+Erreicht:
+- RFID RC522 Funktionskette stabilisiert: Hardware-/Probe-Status im Status-Dashboard sichtbar, Profil-Flow mit 3 Buttons (`Lesen`, `Profil 1`, `Profil 2`) und Loesch-/Anlernlogik je Slot umgesetzt.
+- Tropfensensor (Funduino) voll integriert:
+  - Arduino Snapshot um `droplet_raw` + `droplet_status` erweitert,
+  - Dashboard-Statusfelder (Desktop/Mobile) ergaenzt,
+  - Startup-Test auf HC-SR04 + Tropfensensor erweitert,
+  - Parametrierung mit eigenem Offset-Slider umgesetzt.
+- Fehlerfall "Sensor abgezogen" fuer Tropfensensor abgesichert (`error_not_connected`) und Anzeige so angepasst, dass Fehlerwerte nicht mehr als gueltiger Messwert erscheinen.
+- Relaisfunktion umgesetzt (4-Kanal Modul an D22-D25):
+  - Parametrierung: je Relais ein Toggle-Button (Desktop/Mobile),
+  - Status-Dashboard: Relais 1-4 nur als ON/OFF Anzeige,
+  - Datenpfad ueber `ACT,<pin>,<state>` mit ACK-Auswertung.
+- Relaislogik auf active-low angepasst (gegen GND schaltend):
+  - logisch EIN -> LOW (0V),
+  - logisch AUS -> HIGH (5V),
+  - sicherer Bootzustand auf AUS gesetzt.
+- Dokumentation konsistent nachgezogen (`README.md`, `arduino/mega/PINOUT.md`, `Hardware.md`, `FLOW_ARCHITEKTUR_PLAN.md`, `DEPLOYMENT_GUIDE.md`, `components.yaml`).
+- Bedienkomfort auf der Pi verbessert: Shell-Befehl `update` fuer `git pull` + Arduino Upload + Flow-Deploy eingerichtet.
+
+Naechstes Ziel:
+- End-to-End Test auf der Zielhardware durchfuehren (Relais 1 Pumpe + Relais 2-4 Reserve, Statusrueckmeldung ON/OFF im Dashboard pruefen).
+- Optional: Relaisanzeige um stoerungssichere Rueckmelde-Logik erweitern (z. B. separates Fehlerkennzeichen bei ACT-Fehlern).
+- Optionale Bereinigung alter Legacy-QR-Nodes in `Network.json` (falls nach Stabilisierung nicht mehr benoetigt).
+- Arduino-Watch-Upload im Zielsystem im Realbetrieb pruefen (Aenderung -> Auto-Compile -> Auto-Upload).
+
+Bestehende Probleme:
+- Node-RED von der Entwicklungsumgebung aus nicht erreichbar (Deploy hier nicht moeglich).
+- `yaml-lint` ist in der aktuellen Umgebung nicht installiert (YAML-Formatcheck nur eingeschraenkt moeglich).
+- On-Screen-Tastatur im Kioskmodus weiterhin nicht verfuegbar.
