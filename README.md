@@ -118,8 +118,11 @@ Hinweise:
 - Die Distanzanzeige nutzt den korrigierten Wert `hcsr04_distance_display_cm`.
 
 ## Profile (Dashboard)
-- Im Tab `Profile` koennen zwei RFID Chips per Button angelernt werden.
-- Jeder Chip kann per Button einem von zwei Profilen (`Profil 1` / `Profil 2`) zugewiesen werden.
+- Im Tab `Profile` gibt es eine Schaltflaeche `RFID Anlernen / Lesen`.
+- Beim Anlernen werden maximal zwei Chips gespeichert:
+  - erster neuer Chip -> `Profil 1`
+  - zweiter neuer Chip -> `Profil 2`
+- Bereits bekannte Chips aktivieren direkt ihr hinterlegtes Profil.
 - Die erkannte UID, das aktive Profil und der RFID Modulstatus werden live angezeigt.
 
 ## Next Steps (wenn Sensoren/Aktoren bekannt sind)
