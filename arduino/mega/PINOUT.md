@@ -33,10 +33,10 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Akt
 
 | Pin | Funktion | Komponente | Status | Notizen |
 |-----|----------|-----------|--------|---------|
-| 22 | Relais IN1 | 4-Kanal Relaismodul | aktiv | Relais 1: Wasserpumpe |
-| 23 | Relais IN2 | 4-Kanal Relaismodul | aktiv | Relais 2: Reserve |
-| 24 | Relais IN3 | 4-Kanal Relaismodul | aktiv | Relais 3: Reserve |
-| 25 | Relais IN4 | 4-Kanal Relaismodul | aktiv | Relais 4: Reserve |
+| 22 | Relais IN1 | 4-Kanal Relaismodul | aktiv | Relais 1: Wasserpumpe (active-low) |
+| 23 | Relais IN2 | 4-Kanal Relaismodul | aktiv | Relais 2: Reserve (active-low) |
+| 24 | Relais IN3 | 4-Kanal Relaismodul | aktiv | Relais 3: Reserve (active-low) |
+| 25 | Relais IN4 | 4-Kanal Relaismodul | aktiv | Relais 4: Reserve (active-low) |
 | 26 | HC-SR04 TRIG | Ultraschall-Sensor | aktiv | Trigger-Ausgang (10us Pulse) |
 | 49 | RC522 RST | RFID-RC522 | aktiv | Reset-Leitung |
 | 53 | RC522 SS/SDA | RFID-RC522 | aktiv | SPI Chip Select |

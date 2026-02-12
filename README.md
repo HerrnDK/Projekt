@@ -45,6 +45,10 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 - Relaismodul IN3 -> D24 (Relais 3: Reserve)
 - Relaismodul IN4 -> D25 (Relais 4: Reserve)
 
+> Hinweis: Das eingesetzte Relaismodul ist active-low (gegen GND schaltend):
+> `ACT,...,1` = Relais EIN = IN-Pin auf `LOW` (0V),
+> `ACT,...,0` = Relais AUS = IN-Pin auf `HIGH` (5V).
+
 ## Protokoll (Serial1, newline-terminiert)
 - `READ` -> Arduino sendet JSON Sensor-Snapshot
 - `ACT,<pin>,<state>` -> Aktor schalten, JSON-ACK

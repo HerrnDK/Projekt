@@ -19,7 +19,8 @@ namespace {
 void Actuators_begin() {
   for (uint8_t i = 0; i < ACTUATOR_COUNT; i++) {
     pinMode(ACTUATOR_PINS[i], OUTPUT);
-    digitalWrite(ACTUATOR_PINS[i], LOW);
+    // Active-Low Relaismodul: HIGH = aus, LOW = ein
+    digitalWrite(ACTUATOR_PINS[i], HIGH);
   }
 }
 
@@ -28,6 +29,7 @@ bool Actuators_set(uint8_t pin, bool state) {
     return false;
   }
 
-  digitalWrite(pin, state ? HIGH : LOW);
+  // state=true bedeutet logisch EIN -> bei Active-Low physisch LOW
+  digitalWrite(pin, state ? LOW : HIGH);
   return true;
 }
