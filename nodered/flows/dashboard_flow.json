@@ -693,7 +693,7 @@
         "topic":  "droplet_offset_raw",
         "min":  -300,
         "max":  300,
-        "step":  1,
+        "step":  10,
         "x":  240,
         "y":  940,
         "wires":  [
@@ -736,7 +736,7 @@
         "topic":  "droplet_offset_raw",
         "min":  -300,
         "max":  300,
-        "step":  1,
+        "step":  10,
         "x":  240,
         "y":  980,
         "wires":  [
