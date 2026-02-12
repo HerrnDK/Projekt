@@ -25,6 +25,19 @@ namespace {
     return version != 0x00 && version != 0xFF;
   }
 
+  void refreshRfidHardwareStatus() {
+    // Reader kann waehrend Laufzeit ab-/angesteckt werden.
+    if (isRfidReaderDetected()) {
+      rfidHardwareStatus = "ok";
+      return;
+    }
+
+    // Ein Re-Init-Versuch erlaubt Wiedererkennung nach Reconnect.
+    rfidReader.PCD_Init();
+    delay(2);
+    rfidHardwareStatus = isRfidReaderDetected() ? "ok" : "error_not_detected";
+  }
+
   long readHcsr04DistanceCm(bool &ok, const char *&status) {
     // Trigger-Impuls: LOW -> HIGH (10us) -> LOW
     digitalWrite(HC_SR04_TRIG_PIN, LOW);
@@ -61,7 +74,7 @@ void Sensors_begin() {
   SPI.begin();
   rfidReader.PCD_Init();
   delay(4);
-  rfidHardwareStatus = isRfidReaderDetected() ? "ok" : "error_not_detected";
+  refreshRfidHardwareStatus();
 }
 
 void Sensors_readSnapshot(SensorSnapshot &out) {
@@ -81,6 +94,8 @@ void Sensors_readRfid(char *uidOut, size_t uidOutLen, const char *&statusOut) {
 
   uidOut[0] = '\0';
   statusOut = "no_card";
+
+  refreshRfidHardwareStatus();
 
   if (strcmp(rfidHardwareStatus, "ok") != 0) {
     statusOut = rfidHardwareStatus;

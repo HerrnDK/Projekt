@@ -1,11 +1,22 @@
-version: 5
+version: 6
 registry: components
 conventions:
   id_style: "snake_case, stable logical id (not Node-RED node id)"
   refer_by: "Use 'refer: <component_id>' or in instructions 'refer: <component_id>'"
   allowed_fields: [type, flow, node_label, group, description, example_msg, tags, version]
 components:
-  button_update_sensors:
+  profile_train_button:
+    id: profile_train_button
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "RFID Anlernen / Lesen"
+    group: ui_grp_profile_main
+    description: "Ein-Knopf Bedienung fuer Anlernen und Lesen von bis zu 2 RFID Chips (Profil 1/2)"
+    example_msg:
+      topic: ""
+      payload: "RFID_TRAIN"
+    tags: [ui, rfid, profile, train, single_button]
+    version: 1  button_update_sensors:
     id: button_update_sensors
     type: ui_button
     flow: nodered/flows/dashboard_flow.json
@@ -240,30 +251,6 @@ components:
     description: "Ermittelt die kabelgebundene LAN-IP (end0) fuer die Debug-URL"
     tags: [lan, eth0, ip, nmcli, network]
     version: 1
-  profile_learn_chip1_button:
-    id: profile_learn_chip1_button
-    type: ui_button
-    flow: nodered/flows/dashboard_flow.json
-    node_label: "Chip 1 anlernen"
-    group: ui_grp_profile_main
-    description: "Startet den Anlernmodus fuer RFID Chip 1"
-    example_msg:
-      topic: ""
-      payload: "LEARN_CHIP1"
-    tags: [ui, rfid, profile, learn]
-    version: 1
-  profile_learn_chip2_button:
-    id: profile_learn_chip2_button
-    type: ui_button
-    flow: nodered/flows/dashboard_flow.json
-    node_label: "Chip 2 anlernen"
-    group: ui_grp_profile_main
-    description: "Startet den Anlernmodus fuer RFID Chip 2"
-    example_msg:
-      topic: ""
-      payload: "LEARN_CHIP2"
-    tags: [ui, rfid, profile, learn]
-    version: 1
   profile_status_display_desktop:
     id: profile_status_display_desktop
     type: ui_text
@@ -298,3 +285,4 @@ components:
     description: "Verwaltet Lernmodus, Chip-UIDs und Profilzuordnungen"
     tags: [function, rfid, profile, mapping]
     version: 1
+
