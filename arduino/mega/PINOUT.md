@@ -10,8 +10,22 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Akt
 | Pin | Funktion | Verbindung | Baud-Rate |
 |-----|----------|-----------|-----------|
 | USB | Serial (Debug/Programmierung) | Computer | 115200 |
-| TX1 (18) | Serial1 TX (5V) | Pegelwandler 5V->3.3V -> Raspberry Pi RXD | 9600 |
-| RX1 (19) | Serial1 RX | Raspberry Pi TXD (3.3V, direkt moeglich) | 9600 |
+| TX1 (18) | Serial1 TX | Arduino D18 -> B2 -> A2 -> Raspberry Pi RXD | 9600 |
+| RX1 (19) | Serial1 RX | Raspberry Pi TXD -> A1 -> B1 -> Arduino D19 | 9600 |
+
+---
+
+## Pegelwandler-Kanalbelegung (A/B)
+
+| Kanal | A-Seite | B-Seite | Zweck |
+|-------|---------|---------|-------|
+| A1 <-> B1 | Raspberry Pi TXD | Arduino D19 (RX1) | UART Pi -> Mega |
+| A2 <-> B2 | Raspberry Pi RXD | Arduino D18 (TX1) | UART Mega -> Pi |
+| A3 <-> B3 | RC522 SDA/SS | Arduino D53 | SPI CS/SS |
+| A4 <-> B4 | RC522 SCK (vom User als ACK benannt) | Arduino D52 | SPI Takt |
+| A5 <-> B5 | RC522 MOSI | Arduino D51 | SPI MOSI |
+| A6 <-> B6 | RC522 MISO | Arduino D50 | SPI MISO |
+| A7 <-> B7 | RC522 RST | Arduino D49 | RC522 Reset |
 
 ---
 
@@ -96,8 +110,8 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Akt
 
 ```
 RPi GPIO    <->    Arduino Mega
-(TXD, 3.3V) <->    RX1 (Pin 19)
-(RXD, 3.3V) <->    TX1 (Pin 18) ueber Pegelwandler 5V->3.3V
+(TXD, 3.3V) <->    A1/B1 <-> RX1 (Pin 19)
+(RXD, 3.3V) <->    A2/B2 <-> TX1 (Pin 18)
 (GND)       <->    GND
 ```
 
@@ -114,12 +128,12 @@ ECHO         <->    D27
 ### RC522 <-> Arduino Verbindung
 
 ```
-RC522        <->    Arduino Mega
-SDA/SS       <->    D53
-SCK          <->    D52
-MOSI         <->    D51
-MISO         <->    D50
-RST          <->    D49
+RC522        <->    Pegelwandler <-> Arduino Mega
+SDA/SS       <->    A3/B3         <-> D53
+SCK          <->    A4/B4         <-> D52
+MOSI         <->    A5/B5         <-> D51
+MISO         <->    A6/B6         <-> D50
+RST          <->    A7/B7         <-> D49
 3.3V         <->    3.3V
 GND          <->    GND
 ```
@@ -130,3 +144,4 @@ GND          <->    GND
 - Raspberry Pi RXD ist nicht 5V-tolerant: Mega TX1 immer ueber Pegelwandler/Spannungsteiler anschliessen.
 - RC522 nur mit 3.3V betreiben.
 - GND muss zwischen Mega, Raspberry Pi und Sensoren gemeinsam verbunden sein.
+- A1..A7/B1..B7 in dieser Datei sind Kanaele des Pegelwandler-Moduls, nicht Arduino Analogpins A1..A7.

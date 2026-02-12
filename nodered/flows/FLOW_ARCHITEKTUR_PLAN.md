@@ -33,7 +33,7 @@ flowchart TB
   end
 ```
 
-## 2) Sequenzdiagramm (RFID Lernen)
+## 2) UML RFID-Funktionsablauf (Lesen, Anlernen, Loeschen)
 ```mermaid
 sequenceDiagram
   participant U as User
@@ -41,17 +41,59 @@ sequenceDiagram
   participant P as fn_profiles_flow
   participant X as data_exchange_flow
   participant A as Arduino data.cpp
-  participant R as RC522
+  participant S as sensors.cpp + RC522
 
-  U->>D: Klick "Chip 1 anlernen"
-  D->>P: payload LEARN_CHIP1
-  P->>X: payload RFID
-  X->>A: Serial1 RFID
-  A->>R: PICC_IsNewCardPresent + ReadCardSerial
-  R-->>A: UID
-  A-->>X: {type:"rfid", rfid_uid:"...", rfid_status:"ok"}
-  X-->>P: msg.payload
-  P-->>D: Lernstatus + Chip1 UID + Profilzuordnung
+  Note over P: Polling alle 2s: RFID_POLL -> RFID
+
+  alt Lesen
+    U->>D: Klick "Lesen"
+    D->>P: payload RFID_READ
+  else Profil 1
+    U->>D: Klick "Profil 1 anlernen/loeschen"
+    D->>P: payload RFID_LEARN_P1
+  else Profil 2
+    U->>D: Klick "Profil 2 anlernen/loeschen"
+    D->>P: payload RFID_LEARN_P2
+  end
+
+  alt Profil bereits belegt und Learn-Button geklickt
+    P-->>D: Bindung geloescht (ohne Hardwarezugriff)
+  else Lesen/Anlernen aktiv
+    P->>X: payload RFID
+    X->>A: Serial1 "RFID"
+    A->>S: Sensors_readRfid()
+    S-->>A: uid/status/hw_status/probe_status/version
+    A-->>X: JSON {type:"rfid", ...}
+    X-->>P: msg.payload
+
+    alt rfid_status == ok und UID bekannt
+      P-->>D: Aktives Profil 1/2 setzen
+    else rfid_status == ok und Anlernen aktiv
+      P-->>D: UID Slot 1/2 speichern, Learn-Modus beenden
+    else rfid_status == probe_error und kein Learn-Modus
+      P-->>D: Status bleibt "Profile bereit"
+    else sonstiger Fehler
+      P-->>D: Fehlermeldung anzeigen
+    end
+  end
+```
+
+### 2.1 UML Zustandsmodell (Profile-Controller)
+```mermaid
+stateDiagram-v2
+  [*] --> Bereit
+
+  Bereit --> LesenAktiv: RFID_READ
+  Bereit --> LearnP1: RFID_LEARN_P1 (Slot1 leer)
+  Bereit --> LearnP2: RFID_LEARN_P2 (Slot2 leer)
+  Bereit --> Bereit: RFID_LEARN_P1 (Slot1 belegt -> loeschen)
+  Bereit --> Bereit: RFID_LEARN_P2 (Slot2 belegt -> loeschen)
+
+  LesenAktiv --> Bereit: RFID ok/no_card/probe_error
+  LearnP1 --> Bereit: RFID ok (UID -> Slot1)
+  LearnP2 --> Bereit: RFID ok (UID -> Slot2)
+  LearnP1 --> LearnP1: no_card/probe_error
+  LearnP2 --> LearnP2: no_card/probe_error
 ```
 
 ## Struktur je Funktion (Standardmuster)

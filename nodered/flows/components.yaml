@@ -1,4 +1,4 @@
-version: 7
+version: 8
 registry: components
 conventions:
   id_style: "snake_case, stable logical id (not Node-RED node id)"
@@ -21,9 +21,9 @@ components:
     id: profile_learn_profile1_button
     type: ui_button
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Profil 1 anlernen"
+    node_label: "Profil 1 anlernen/loeschen"
     group: ui_grp_profile_main
-    description: "Lernt die aufgelegte UID fest auf Profil 1 an."
+    description: "Wenn Profil 1 frei ist: UID anlernen. Wenn Profil 1 belegt ist: Bindung loeschen."
     example_msg:
       topic: ""
       payload: "RFID_LEARN_P1"
@@ -33,9 +33,9 @@ components:
     id: profile_learn_profile2_button
     type: ui_button
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Profil 2 anlernen"
+    node_label: "Profil 2 anlernen/loeschen"
     group: ui_grp_profile_main
-    description: "Lernt die aufgelegte UID fest auf Profil 2 an."
+    description: "Wenn Profil 2 frei ist: UID anlernen. Wenn Profil 2 belegt ist: Bindung loeschen."
     example_msg:
       topic: ""
       payload: "RFID_LEARN_P2"
@@ -333,7 +333,7 @@ components:
     type: function
     flow: nodered/flows/fn_profiles_flow.json
     node_label: "RFID Profile Controller"
-    description: "Verwaltet RFID_READ, RFID_LEARN_P1, RFID_LEARN_P2 sowie die Zuordnung von 2 Chips auf 2 Profile."
+    description: "Verwaltet RFID_READ, RFID_LEARN_P1, RFID_LEARN_P2 inkl. Toggle: belegt -> loeschen, frei -> anlernen."
     tags: [function, rfid, profile, mapping]
     version: 1
 

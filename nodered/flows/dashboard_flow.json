@@ -1034,12 +1034,12 @@
                   ]
     },
     {
-        "tooltip":  "Aktuellen Chip fuer Profil 1 anlernen",
+        "tooltip":  "Wenn Profil 1 frei: anlernen. Wenn belegt: Bindung loeschen.",
         "id":  "ui_btn_profile_learn_p1_d",
         "payloadType":  "str",
         "type":  "ui_button",
         "passthru":  false,
-        "label":  "Profil 1 anlernen",
+        "label":  "Profil 1 anlernen/loeschen",
         "height":  1,
         "x":  310,
         "wires":  [
@@ -1053,17 +1053,17 @@
         "payload":  "RFID_LEARN_P1",
         "icon":  "school",
         "y":  1020,
-        "name":  "Profil 1 anlernen",
+        "name":  "Profil 1 anlernen/loeschen",
         "z":  "4985bdfbcf200fe6",
         "width":  4
     },
     {
-        "tooltip":  "Aktuellen Chip fuer Profil 2 anlernen",
+        "tooltip":  "Wenn Profil 2 frei: anlernen. Wenn belegt: Bindung loeschen.",
         "id":  "ui_btn_profile_learn_p2_d",
         "payloadType":  "str",
         "type":  "ui_button",
         "passthru":  false,
-        "label":  "Profil 2 anlernen",
+        "label":  "Profil 2 anlernen/loeschen",
         "height":  1,
         "x":  310,
         "wires":  [
@@ -1077,17 +1077,17 @@
         "payload":  "RFID_LEARN_P2",
         "icon":  "school",
         "y":  1060,
-        "name":  "Profil 2 anlernen",
+        "name":  "Profil 2 anlernen/loeschen",
         "z":  "4985bdfbcf200fe6",
         "width":  4
     },
     {
-        "tooltip":  "Aktuellen Chip fuer Profil 1 anlernen",
+        "tooltip":  "Wenn Profil 1 frei: anlernen. Wenn belegt: Bindung loeschen.",
         "id":  "ui_btn_profile_learn_p1_m",
         "payloadType":  "str",
         "type":  "ui_button",
         "passthru":  false,
-        "label":  "Profil 1 anlernen",
+        "label":  "Profil 1 anlernen/loeschen",
         "height":  1,
         "x":  320,
         "wires":  [
@@ -1101,17 +1101,17 @@
         "payload":  "RFID_LEARN_P1",
         "icon":  "school",
         "y":  1280,
-        "name":  "Profil 1 anlernen (Mobile)",
+        "name":  "Profil 1 anlernen/loeschen (Mobile)",
         "z":  "4985bdfbcf200fe6",
         "width":  10
     },
     {
-        "tooltip":  "Aktuellen Chip fuer Profil 2 anlernen",
+        "tooltip":  "Wenn Profil 2 frei: anlernen. Wenn belegt: Bindung loeschen.",
         "id":  "ui_btn_profile_learn_p2_m",
         "payloadType":  "str",
         "type":  "ui_button",
         "passthru":  false,
-        "label":  "Profil 2 anlernen",
+        "label":  "Profil 2 anlernen/loeschen",
         "height":  1,
         "x":  320,
         "wires":  [
@@ -1125,7 +1125,7 @@
         "payload":  "RFID_LEARN_P2",
         "icon":  "school",
         "y":  1320,
-        "name":  "Profil 2 anlernen (Mobile)",
+        "name":  "Profil 2 anlernen/loeschen (Mobile)",
         "z":  "4985bdfbcf200fe6",
         "width":  10
     },

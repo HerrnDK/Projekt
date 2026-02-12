@@ -125,11 +125,12 @@ Hinweise:
 ## Profile (Dashboard)
 - Im Tab `Profile` gibt es drei Schaltflaechen:
   - `Lesen` (sendet `RFID_READ`)
-  - `Profil 1 anlernen` (sendet `RFID_LEARN_P1`)
-  - `Profil 2 anlernen` (sendet `RFID_LEARN_P2`)
+  - `Profil 1 anlernen/loeschen` (sendet `RFID_LEARN_P1`)
+  - `Profil 2 anlernen/loeschen` (sendet `RFID_LEARN_P2`)
 - Es werden genau zwei UID-Slots gepflegt:
   - UID in Slot 1 -> `Profil 1`
   - UID in Slot 2 -> `Profil 2`
+- Wenn ein Profil bereits belegt ist, loescht der jeweilige Profil-Button die Bindung.
 - Bereits bekannte Chips aktivieren direkt ihr hinterlegtes Profil.
 - Die erkannte UID, das aktive Profil und der RFID Modulstatus werden live angezeigt.
 - Im Tab `Projekt-info` unter `Status / Sensoren` wird zusaetzlich `RFID RC522 Status` angezeigt.

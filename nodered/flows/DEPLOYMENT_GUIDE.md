@@ -60,9 +60,10 @@ Gehe zu: `http://192.168.0.250:1880/ui`
 
 Profile Tab:
 - Button `Lesen`
-- Button `Profil 1 anlernen`
-- Button `Profil 2 anlernen`
+- Button `Profil 1 anlernen/loeschen`
+- Button `Profil 2 anlernen/loeschen`
 - Es gibt genau 2 UID-Slots: Slot 1 -> `Profil 1`, Slot 2 -> `Profil 2`
+- Wenn Slot 1/2 bereits belegt ist, loescht der jeweilige Profil-Button die Bindung.
 - Anzeigen fuer UID, Lernstatus und aktives Profil
 - Im Tab `Projekt-info` unter `Status / Sensoren` wird `RFID RC522 Status` angezeigt
 
