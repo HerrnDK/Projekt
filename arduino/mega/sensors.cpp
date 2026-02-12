@@ -18,6 +18,12 @@ namespace {
   constexpr long HC_SR04_MAX_CM = 400;
 
   MFRC522 rfidReader(RC522_SS_PIN, RC522_RST_PIN);
+  const char *rfidHardwareStatus = "error_not_initialized";
+
+  bool isRfidReaderDetected() {
+    const byte version = rfidReader.PCD_ReadRegister(MFRC522::VersionReg);
+    return version != 0x00 && version != 0xFF;
+  }
 
   long readHcsr04DistanceCm(bool &ok, const char *&status) {
     // Trigger-Impuls: LOW -> HIGH (10us) -> LOW
@@ -55,6 +61,7 @@ void Sensors_begin() {
   SPI.begin();
   rfidReader.PCD_Init();
   delay(4);
+  rfidHardwareStatus = isRfidReaderDetected() ? "ok" : "error_not_detected";
 }
 
 void Sensors_readSnapshot(SensorSnapshot &out) {
@@ -74,6 +81,11 @@ void Sensors_readRfid(char *uidOut, size_t uidOutLen, const char *&statusOut) {
 
   uidOut[0] = '\0';
   statusOut = "no_card";
+
+  if (strcmp(rfidHardwareStatus, "ok") != 0) {
+    statusOut = rfidHardwareStatus;
+    return;
+  }
 
   if (!rfidReader.PICC_IsNewCardPresent()) {
     return;
@@ -121,4 +133,8 @@ void Sensors_readRfid(char *uidOut, size_t uidOutLen, const char *&statusOut) {
 
   rfidReader.PICC_HaltA();
   rfidReader.PCD_StopCrypto1();
+}
+
+const char *Sensors_getRfidHardwareStatus() {
+  return rfidHardwareStatus;
 }

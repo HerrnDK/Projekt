@@ -635,21 +635,8 @@
         "x":  220,
         "wires":  [
                       "ui_txt_profile_status_d",
-                      "ui_txt_profile_learning_d",
-                      "ui_txt_profile_chip1_uid_d",
-                      "ui_txt_profile_chip1_profile_d",
-                      "ui_txt_profile_chip2_uid_d",
-                      "ui_txt_profile_chip2_profile_d",
-                      "ui_txt_profile_last_uid_d",
-                      "ui_txt_profile_active_d",
-                      "ui_txt_profile_status_m",
-                      "ui_txt_profile_learning_m",
-                      "ui_txt_profile_chip1_uid_m",
-                      "ui_txt_profile_chip1_profile_m",
-                      "ui_txt_profile_chip2_uid_m",
-                      "ui_txt_profile_chip2_profile_m",
-                      "ui_txt_profile_last_uid_m",
-                      "ui_txt_profile_active_m"
+                      "ui_txt_profile_hw_status_d",
+                      "ui_txt_profile_hw_status_m"
                   ],
         "links":  [
                       "link_out_profiles_to_dashboard"
@@ -1250,5 +1237,41 @@
 
                   ],
         "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_hw_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "ui_grp_profile_main",
+        "order":  16,
+        "width":  14,
+        "height":  1,
+        "name":  "RFID Modulstatus",
+        "label":  "RFID Modulstatus",
+        "format":  "{{msg.payload.rfid_hw_status_text}}",
+        "layout":  "row-spread",
+        "x":  960,
+        "y":  1300,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_profile_hw_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "ui_grp_profile_mobile",
+        "order":  16,
+        "width":  10,
+        "height":  1,
+        "name":  "RFID Modulstatus",
+        "label":  "RFID Modulstatus",
+        "format":  "{{msg.payload.rfid_hw_status_text}}",
+        "layout":  "row-spread",
+        "x":  960,
+        "y":  1620,
+        "wires":  [
+
+                  ]
     }
 ]

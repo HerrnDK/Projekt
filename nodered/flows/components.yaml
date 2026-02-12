@@ -1,4 +1,4 @@
-version: 4
+version: 5
 registry: components
 conventions:
   id_style: "snake_case, stable logical id (not Node-RED node id)"
@@ -276,6 +276,19 @@ components:
       payload:
         profile_status_text: "Profile bereit"
     tags: [ui, rfid, profile, status]
+    version: 1
+  profile_hw_status_display_desktop:
+    id: profile_hw_status_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "RFID Modulstatus"
+    group: ui_grp_profile_main
+    description: "Anzeige des RFID Modulzustands (ok/stoerung)"
+    example_msg:
+      topic: ""
+      payload:
+        rfid_hw_status_text: "ok"
+    tags: [ui, rfid, profile, hardware, status]
     version: 1
   profile_controller_logic:
     id: profile_controller_logic

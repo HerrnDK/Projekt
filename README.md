@@ -35,13 +35,13 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 ## Protokoll (Serial1, newline-terminiert)
 - `READ` -> Arduino sendet JSON Sensor-Snapshot
 - `ACT,<pin>,<state>` -> Aktor schalten, JSON-ACK
-- `RFID` -> RFID Snapshot lesen (UID + Status)
+- `RFID` -> RFID Snapshot lesen (UID + Status inkl. Modulzustand)
 
 JSON-Formate (Beispiele):
 - Sensor: `{"type":"sensor","hcsr04_distance_cm":42,"hcsr04_status":"ok","uptime_ms":7890}`
 - Act: `{"type":"act","ok":1,"pin":22,"state":1,"hcsr04_distance_cm":42,"hcsr04_status":"ok","uptime_ms":7890}`
 - Error: `{"type":"error","code":"unknown_command","hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","uptime_ms":7890}`
-- RFID: `{"type":"rfid","rfid_uid":"DE:AD:BE:EF","rfid_status":"ok","uptime_ms":7890}`
+- RFID: `{"type":"rfid","rfid_uid":"DE:AD:BE:EF","rfid_status":"ok","rfid_hw_status":"ok","uptime_ms":7890}`
 
 HC-SR04 Statuswerte:
 - `ok` gemessene Distanz ist gueltig
@@ -53,6 +53,11 @@ RFID Statuswerte:
 - `no_card` kein RFID Chip praesent
 - `read_error` Lesen fehlgeschlagen
 - `uid_truncated` UID zu lang fuer Payload-Buffer
+
+RFID Hardwarestatus (`rfid_hw_status`):
+- `ok` RC522 Modul antwortet
+- `error_not_detected` RC522 Modul nicht erkannt
+- `error_not_initialized` RC522 noch nicht initialisiert
 
 ## Repo-Struktur (wichtige Dateien)
 - `arduino/mega/`
@@ -115,7 +120,7 @@ Hinweise:
 ## Profile (Dashboard)
 - Im Tab `Profile` koennen zwei RFID Chips per Button angelernt werden.
 - Jeder Chip kann per Button einem von zwei Profilen (`Profil 1` / `Profil 2`) zugewiesen werden.
-- Die erkannte UID und das aktive Profil werden live angezeigt.
+- Die erkannte UID, das aktive Profil und der RFID Modulstatus werden live angezeigt.
 
 ## Next Steps (wenn Sensoren/Aktoren bekannt sind)
 - Weitere Sensoren nach gleichem Muster in `sensors.cpp` ergaenzen.

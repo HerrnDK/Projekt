@@ -1,153 +1,161 @@
 [
-  {
-    "id": "flow_fn_profiles",
-    "type": "tab",
-    "label": "Funktion - Profile",
-    "disabled": false,
-    "info": "RFID Lernen und Profilzuordnung"
-  },
-  {
-    "id": "inject_profiles_init",
-    "type": "inject",
-    "z": "flow_fn_profiles",
-    "name": "Profile initialisieren (Boot)",
-    "props": [
-      {
-        "p": "payload"
-      }
-    ],
-    "repeat": "",
-    "crontab": "",
-    "once": true,
-    "onceDelay": "1",
-    "topic": "",
-    "payload": "INIT_PROFILES",
-    "payloadType": "str",
-    "x": 220,
-    "y": 80,
-    "wires": [
-      [
-        "fn_profiles_controller"
-      ]
-    ]
-  },
-  {
-    "id": "inject_profiles_poll",
-    "type": "inject",
-    "z": "flow_fn_profiles",
-    "name": "RFID Poll (2s)",
-    "props": [
-      {
-        "p": "payload"
-      }
-    ],
-    "repeat": "2",
-    "crontab": "",
-    "once": true,
-    "onceDelay": "2",
-    "topic": "",
-    "payload": "RFID_POLL",
-    "payloadType": "str",
-    "x": 210,
-    "y": 140,
-    "wires": [
-      [
-        "fn_profiles_controller"
-      ]
-    ]
-  },
-  {
-    "id": "link_in_from_dashboard_profiles",
-    "type": "link in",
-    "z": "flow_fn_profiles",
-    "name": "from dashboard (profiles)",
-    "links": [
-      "link_out_dashboard_to_profiles"
-    ],
-    "x": 230,
-    "y": 220,
-    "wires": [
-      [
-        "fn_profiles_controller"
-      ]
-    ]
-  },
-  {
-    "id": "link_in_from_data_profiles",
-    "type": "link in",
-    "z": "flow_fn_profiles",
-    "name": "from data exchange (rfid)",
-    "links": [
-      "link_out_from_data"
-    ],
-    "x": 220,
-    "y": 300,
-    "wires": [
-      [
-        "fn_profiles_controller"
-      ]
-    ]
-  },
-  {
-    "id": "fn_profiles_controller",
-    "type": "function",
-    "z": "flow_fn_profiles",
-    "name": "RFID Profile Controller",
-    "func": "const state = flow.get(\"rfid_profile_state\") || {\n  chip_uids: { \"1\": \"\", \"2\": \"\" },\n  chip_profiles: { \"1\": 1, \"2\": 2 },\n  learning_slot: 0,\n  last_uid: \"\",\n  active_profile: 0,\n  status_text: \"Profile initialisiert.\"\n};\n\nconst clampProfile = (value) => {\n  const n = Number(value);\n  return n === 2 ? 2 : 1;\n};\n\nconst buildUiMessage = () => ({\n  payload: {\n    profile_status_text: state.status_text,\n    rfid_learning_text: state.learning_slot\n      ? (\"Anlernen aktiv fuer Chip \" + state.learning_slot + \" (Chip auflegen)\")\n      : \"Anlernen inaktiv\",\n    rfid_chip1_uid: state.chip_uids[\"1\"] || \"-\",\n    rfid_chip1_profile: \"Profil \" + clampProfile(state.chip_profiles[\"1\"]),\n    rfid_chip2_uid: state.chip_uids[\"2\"] || \"-\",\n    rfid_chip2_profile: \"Profil \" + clampProfile(state.chip_profiles[\"2\"]),\n    rfid_last_uid: state.last_uid || \"-\",\n    rfid_active_profile: state.active_profile ? (\"Profil \" + state.active_profile) : \"-\"\n  }\n});\n\nconst saveState = () => {\n  flow.set(\"rfid_profile_state\", state);\n};\n\nconst payloadStr = (msg.payload === undefined || msg.payload === null) ? \"\" : String(msg.payload);\n\nif (payloadStr === \"INIT_PROFILES\") {\n  state.chip_profiles[\"1\"] = clampProfile(state.chip_profiles[\"1\"]);\n  state.chip_profiles[\"2\"] = clampProfile(state.chip_profiles[\"2\"]);\n  state.learning_slot = 0;\n  state.active_profile = 0;\n  state.status_text = \"Profile bereit.\";\n  saveState();\n  return [null, buildUiMessage()];\n}\n\nif (payloadStr === \"LEARN_CHIP1\" || payloadStr === \"LEARN_CHIP2\") {\n  state.learning_slot = payloadStr === \"LEARN_CHIP1\" ? 1 : 2;\n  state.status_text = \"Anlernen gestartet fuer Chip \" + state.learning_slot + \".\";\n  saveState();\n  return [{ payload: \"RFID\" }, buildUiMessage()];\n}\n\nif (payloadStr === \"RFID_POLL\" || payloadStr === \"RFID_READ\") {\n  if (payloadStr === \"RFID_READ\") {\n    state.status_text = \"Manuelle RFID-Lesung angefordert.\";\n  }\n  saveState();\n  return [{ payload: \"RFID\" }, buildUiMessage()];\n}\n\nif (payloadStr.startsWith(\"ASSIGN,\")) {\n  const parts = payloadStr.split(\",\");\n  if (parts.length === 3 && (parts[1] === \"1\" || parts[1] === \"2\")) {\n    const slot = parts[1];\n    state.chip_profiles[slot] = clampProfile(parts[2]);\n    if (state.last_uid && state.last_uid === state.chip_uids[slot]) {\n      state.active_profile = state.chip_profiles[slot];\n    }\n    state.status_text = \"Chip \" + slot + \" wurde Profil \" + state.chip_profiles[slot] + \" zugewiesen.\";\n  } else {\n    state.status_text = \"Ungueltiger ASSIGN Befehl.\";\n  }\n  saveState();\n  return [null, buildUiMessage()];\n}\n\nconst p = msg.payload || {};\nif (String(p.type || \"\") !== \"rfid\") {\n  return null;\n}\n\nconst status = String(p.rfid_status || \"missing\");\nconst uid = String(p.rfid_uid || \"\").trim();\n\nif (status === \"ok\" && uid) {\n  state.last_uid = uid;\n\n  if (state.learning_slot === 1 || state.learning_slot === 2) {\n    const slot = String(state.learning_slot);\n    state.chip_uids[slot] = uid;\n    state.learning_slot = 0;\n    state.status_text = \"Chip \" + slot + \" angelernt: \" + uid;\n  }\n\n  if (uid === state.chip_uids[\"1\"] && state.chip_uids[\"1\"]) {\n    state.active_profile = clampProfile(state.chip_profiles[\"1\"]);\n    state.status_text = \"RFID erkannt: Profil \" + state.active_profile + \" aktiv (Chip 1).\";\n  } else if (uid === state.chip_uids[\"2\"] && state.chip_uids[\"2\"]) {\n    state.active_profile = clampProfile(state.chip_profiles[\"2\"]);\n    state.status_text = \"RFID erkannt: Profil \" + state.active_profile + \" aktiv (Chip 2).\";\n  } else if (state.learning_slot === 0) {\n    state.active_profile = 0;\n    state.status_text = \"Unbekannter RFID Chip: \" + uid;\n  }\n} else if (status === \"no_card\") {\n  state.active_profile = 0;\n  state.status_text = state.learning_slot\n    ? (\"Warte auf Chip fuer Slot \" + state.learning_slot + \"...\")\n    : \"Kein RFID Chip erkannt.\";\n} else {\n  state.active_profile = 0;\n  state.status_text = \"RFID Fehler: \" + status;\n}\n\nsaveState();\nreturn [null, buildUiMessage()];",
-    "outputs": 2,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "libs": [],
-    "x": 520,
-    "y": 220,
-    "wires": [
-      [
-        "link_out_profiles_to_data"
-      ],
-      [
-        "link_out_profiles_to_dashboard"
-      ]
-    ]
-  },
-  {
-    "id": "link_out_profiles_to_data",
-    "type": "link out",
-    "z": "flow_fn_profiles",
-    "name": "to data exchange (rfid cmd)",
-    "mode": "link",
-    "links": [
-      "link_in_from_dashboard"
-    ],
-    "x": 840,
-    "y": 200,
-    "wires": []
-  },
-  {
-    "id": "link_out_profiles_to_dashboard",
-    "type": "link out",
-    "z": "flow_fn_profiles",
-    "name": "to dashboard (profiles state)",
-    "mode": "link",
-    "links": [
-      "link_in_profiles_from_fn"
-    ],
-    "x": 850,
-    "y": 240,
-    "wires": []
-  },
-  {
-    "id": "debug_profiles",
-    "type": "debug",
-    "z": "flow_fn_profiles",
-    "name": "Profiles state",
-    "active": true,
-    "tosidebar": true,
-    "console": false,
-    "complete": "payload",
-    "targetType": "msg",
-    "x": 830,
-    "y": 300,
-    "wires": []
-  }
+    {
+        "id":  "flow_fn_profiles",
+        "type":  "tab",
+        "label":  "Funktion - Profile",
+        "disabled":  false,
+        "info":  "RFID Lernen und Profilzuordnung"
+    },
+    {
+        "id":  "inject_profiles_init",
+        "type":  "inject",
+        "z":  "flow_fn_profiles",
+        "name":  "Profile initialisieren (Boot)",
+        "props":  [
+                      {
+                          "p":  "payload"
+                      }
+                  ],
+        "repeat":  "",
+        "crontab":  "",
+        "once":  true,
+        "onceDelay":  "1",
+        "topic":  "",
+        "payload":  "INIT_PROFILES",
+        "payloadType":  "str",
+        "x":  220,
+        "y":  80,
+        "wires":  [
+                      [
+                          "fn_profiles_controller"
+                      ]
+                  ]
+    },
+    {
+        "id":  "inject_profiles_poll",
+        "type":  "inject",
+        "z":  "flow_fn_profiles",
+        "name":  "RFID Poll (2s)",
+        "props":  [
+                      {
+                          "p":  "payload"
+                      }
+                  ],
+        "repeat":  "2",
+        "crontab":  "",
+        "once":  true,
+        "onceDelay":  "2",
+        "topic":  "",
+        "payload":  "RFID_POLL",
+        "payloadType":  "str",
+        "x":  210,
+        "y":  140,
+        "wires":  [
+                      [
+                          "fn_profiles_controller"
+                      ]
+                  ]
+    },
+    {
+        "id":  "link_in_from_dashboard_profiles",
+        "type":  "link in",
+        "z":  "flow_fn_profiles",
+        "name":  "from dashboard (profiles)",
+        "links":  [
+                      "link_out_dashboard_to_profiles"
+                  ],
+        "x":  230,
+        "y":  220,
+        "wires":  [
+                      [
+                          "fn_profiles_controller"
+                      ]
+                  ]
+    },
+    {
+        "id":  "link_in_from_data_profiles",
+        "type":  "link in",
+        "z":  "flow_fn_profiles",
+        "name":  "from data exchange (rfid)",
+        "links":  [
+                      "link_out_from_data"
+                  ],
+        "x":  220,
+        "y":  300,
+        "wires":  [
+                      [
+                          "fn_profiles_controller"
+                      ]
+                  ]
+    },
+    {
+        "id":  "fn_profiles_controller",
+        "type":  "function",
+        "z":  "flow_fn_profiles",
+        "name":  "RFID Profile Controller",
+        "func":  "const state = flow.get(\"rfid_profile_state\") || {\n  chip_uids: { \"1\": \"\", \"2\": \"\" },\n  chip_profiles: { \"1\": 1, \"2\": 2 },\n  learning_slot: 0,\n  last_uid: \"\",\n  active_profile: 0,\n  hw_status: \"unknown\",\n  status_text: \"Profile initialisiert.\"\n};\n\nconst clampProfile = (value) =\u003e {\n  const n = Number(value);\n  return n === 2 ? 2 : 1;\n};\n\nconst mapHwStatusText = (hw) =\u003e {\n  if (hw === \"ok\") return \"ok\";\n  if (!hw) return \"stoerung (unknown)\";\n  return \"stoerung (\" + hw + \")\";\n};\n\nconst buildUiMessage = () =\u003e ({\n  payload: {\n    profile_status_text: state.status_text,\n    rfid_hw_status_text: mapHwStatusText(state.hw_status),\n    rfid_learning_text: state.learning_slot\n      ? (\"Anlernen aktiv fuer Chip \" + state.learning_slot + \" (Chip auflegen)\")\n      : \"Anlernen inaktiv\",\n    rfid_chip1_uid: state.chip_uids[\"1\"] || \"-\",\n    rfid_chip1_profile: \"Profil \" + clampProfile(state.chip_profiles[\"1\"]),\n    rfid_chip2_uid: state.chip_uids[\"2\"] || \"-\",\n    rfid_chip2_profile: \"Profil \" + clampProfile(state.chip_profiles[\"2\"]),\n    rfid_last_uid: state.last_uid || \"-\",\n    rfid_active_profile: state.active_profile ? (\"Profil \" + state.active_profile) : \"-\"\n  }\n});\n\nconst saveState = () =\u003e {\n  flow.set(\"rfid_profile_state\", state);\n};\n\nconst payloadStr = (msg.payload === undefined || msg.payload === null) ? \"\" : String(msg.payload);\n\nif (payloadStr === \"INIT_PROFILES\") {\n  state.chip_profiles[\"1\"] = clampProfile(state.chip_profiles[\"1\"]);\n  state.chip_profiles[\"2\"] = clampProfile(state.chip_profiles[\"2\"]);\n  state.learning_slot = 0;\n  state.active_profile = 0;\n  if (typeof state.hw_status !== \"string\" || state.hw_status.length === 0) {\n    state.hw_status = \"unknown\";\n  }\n  state.status_text = \"Profile bereit.\";\n  saveState();\n  return [null, buildUiMessage()];\n}\n\nif (payloadStr === \"LEARN_CHIP1\" || payloadStr === \"LEARN_CHIP2\") {\n  state.learning_slot = payloadStr === \"LEARN_CHIP1\" ? 1 : 2;\n  state.status_text = \"Anlernen gestartet fuer Chip \" + state.learning_slot + \".\";\n  saveState();\n  return [{ payload: \"RFID\" }, buildUiMessage()];\n}\n\nif (payloadStr === \"RFID_POLL\" || payloadStr === \"RFID_READ\") {\n  if (payloadStr === \"RFID_READ\") {\n    state.status_text = \"Manuelle RFID-Lesung angefordert.\";\n  }\n  saveState();\n  return [{ payload: \"RFID\" }, buildUiMessage()];\n}\n\nif (payloadStr.startsWith(\"ASSIGN,\")) {\n  const parts = payloadStr.split(\",\");\n  if (parts.length === 3 \u0026\u0026 (parts[1] === \"1\" || parts[1] === \"2\")) {\n    const slot = parts[1];\n    state.chip_profiles[slot] = clampProfile(parts[2]);\n    if (state.last_uid \u0026\u0026 state.last_uid === state.chip_uids[slot]) {\n      state.active_profile = state.chip_profiles[slot];\n    }\n    state.status_text = \"Chip \" + slot + \" wurde Profil \" + state.chip_profiles[slot] + \" zugewiesen.\";\n  } else {\n    state.status_text = \"Ungueltiger ASSIGN Befehl.\";\n  }\n  saveState();\n  return [null, buildUiMessage()];\n}\n\nconst p = msg.payload || {};\nif (String(p.type || \"\") !== \"rfid\") {\n  return null;\n}\n\nconst hwStatus = String(p.rfid_hw_status || \"missing\");\nstate.hw_status = hwStatus;\n\nif (hwStatus !== \"ok\") {\n  state.active_profile = 0;\n  state.status_text = \"RFID Modulstatus: \" + hwStatus;\n  saveState();\n  return [null, buildUiMessage()];\n}\n\nconst status = String(p.rfid_status || \"missing\");\nconst uid = String(p.rfid_uid || \"\").trim();\n\nif (status === \"ok\" \u0026\u0026 uid) {\n  state.last_uid = uid;\n\n  if (state.learning_slot === 1 || state.learning_slot === 2) {\n    const slot = String(state.learning_slot);\n    state.chip_uids[slot] = uid;\n    state.learning_slot = 0;\n    state.status_text = \"Chip \" + slot + \" angelernt: \" + uid;\n  }\n\n  if (uid === state.chip_uids[\"1\"] \u0026\u0026 state.chip_uids[\"1\"]) {\n    state.active_profile = clampProfile(state.chip_profiles[\"1\"]);\n    state.status_text = \"RFID erkannt: Profil \" + state.active_profile + \" aktiv (Chip 1).\";\n  } else if (uid === state.chip_uids[\"2\"] \u0026\u0026 state.chip_uids[\"2\"]) {\n    state.active_profile = clampProfile(state.chip_profiles[\"2\"]);\n    state.status_text = \"RFID erkannt: Profil \" + state.active_profile + \" aktiv (Chip 2).\";\n  } else if (state.learning_slot === 0) {\n    state.active_profile = 0;\n    state.status_text = \"Unbekannter RFID Chip: \" + uid;\n  }\n} else if (status === \"no_card\") {\n  state.active_profile = 0;\n  state.status_text = state.learning_slot\n    ? (\"Warte auf Chip fuer Slot \" + state.learning_slot + \"...\")\n    : \"Kein RFID Chip erkannt.\";\n} else {\n  state.active_profile = 0;\n  state.status_text = \"RFID Fehler: \" + status;\n}\n\nsaveState();\nreturn [null, buildUiMessage()];",
+        "outputs":  2,
+        "noerr":  0,
+        "initialize":  "",
+        "finalize":  "",
+        "libs":  [
+
+                 ],
+        "x":  520,
+        "y":  220,
+        "wires":  [
+                      [
+                          "link_out_profiles_to_data"
+                      ],
+                      [
+                          "link_out_profiles_to_dashboard"
+                      ]
+                  ]
+    },
+    {
+        "id":  "link_out_profiles_to_data",
+        "type":  "link out",
+        "z":  "flow_fn_profiles",
+        "name":  "to data exchange (rfid cmd)",
+        "mode":  "link",
+        "links":  [
+                      "link_in_from_dashboard"
+                  ],
+        "x":  840,
+        "y":  200,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "link_out_profiles_to_dashboard",
+        "type":  "link out",
+        "z":  "flow_fn_profiles",
+        "name":  "to dashboard (profiles state)",
+        "mode":  "link",
+        "links":  [
+                      "link_in_profiles_from_fn"
+                  ],
+        "x":  850,
+        "y":  240,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "debug_profiles",
+        "type":  "debug",
+        "z":  "flow_fn_profiles",
+        "name":  "Profiles state",
+        "active":  true,
+        "tosidebar":  true,
+        "console":  false,
+        "complete":  "payload",
+        "targetType":  "msg",
+        "x":  830,
+        "y":  300,
+        "wires":  [
+
+                  ]
+    }
 ]
