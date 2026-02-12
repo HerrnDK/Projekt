@@ -342,6 +342,42 @@
                   ]
     },
     {
+        "id":  "ui_txt_droplet_value_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  9,
+        "width":  10,
+        "height":  1,
+        "name":  "Tropfensensor Wert Display (Mobile)",
+        "label":  "Tropfensensor Rohwert korrigiert",
+        "format":  "{{msg.payload.droplet_display_raw}}",
+        "layout":  "row-spread",
+        "x":  700,
+        "y":  800,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_droplet_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  10,
+        "width":  10,
+        "height":  1,
+        "name":  "Tropfensensor Status Display (Mobile)",
+        "label":  "Tropfensensor Status",
+        "format":  "{{msg.payload.droplet_status}}",
+        "layout":  "row-spread",
+        "x":  700,
+        "y":  840,
+        "wires":  [
+
+                  ]
+    },
+    {
         "id":  "92797bc31e9565c2",
         "type":  "ui_text",
         "z":  "4985bdfbcf200fe6",
@@ -391,6 +427,42 @@
         "layout":  "row-spread",
         "x":  670,
         "y":  720,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_droplet_value_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  9,
+        "width":  7,
+        "height":  1,
+        "name":  "Tropfensensor Wert Display",
+        "label":  "Tropfensensor Rohwert korrigiert",
+        "format":  "{{msg.payload.droplet_display_raw}}",
+        "layout":  "row-spread",
+        "x":  700,
+        "y":  800,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_droplet_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  10,
+        "width":  7,
+        "height":  1,
+        "name":  "Tropfensensor Status Display",
+        "label":  "Tropfensensor Status",
+        "format":  "{{msg.payload.droplet_status}}",
+        "layout":  "row-spread",
+        "x":  700,
+        "y":  840,
         "wires":  [
 
                   ]
@@ -448,9 +520,13 @@
                           "92797bc31e9565c2",
                           "8a9df2e34f274275",
                           "4bc78086c6c84e1e",
+                          "ui_txt_droplet_value_d",
+                          "ui_txt_droplet_status_d",
                           "9baf027087ee53a2",
                           "f2c4a6e1bd3e4a70",
-                          "d0fcb2a91e984e6a"
+                          "d0fcb2a91e984e6a",
+                          "ui_txt_droplet_value_m",
+                          "ui_txt_droplet_status_m"
                       ]
                   ]
     },
@@ -491,7 +567,9 @@
         "wires":  [
                       [
                           "991894f4120470bc",
-                          "0c15c9bcd2a45e71"
+                          "0c15c9bcd2a45e71",
+                          "ui_txt_droplet_offset_d",
+                          "ui_txt_droplet_offset_m"
                       ]
                   ]
     },
@@ -526,7 +604,7 @@
         "height":  1,
         "passthru":  false,
         "outs":  "end",
-        "topic":  "",
+        "topic":  "hcsr04_offset_cm",
         "min":  -5,
         "max":  5,
         "step":  1,
@@ -569,12 +647,98 @@
         "height":  1,
         "passthru":  false,
         "outs":  "end",
-        "topic":  "",
+        "topic":  "hcsr04_offset_cm",
         "min":  -5,
         "max":  5,
         "step":  1,
         "x":  240,
         "y":  900,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_txt_droplet_offset_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  3,
+        "width":  14,
+        "height":  1,
+        "name":  "Tropfensensor Offset Display",
+        "label":  "Tropfensensor Offset (raw)",
+        "format":  "{{msg.payload.droplet_offset_raw}}",
+        "layout":  "row-spread",
+        "x":  860,
+        "y":  940,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_sld_droplet_offset_d",
+        "type":  "ui_slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Tropfensensor Offset Slider",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer Tropfensensor Rohwert (-300 bis +300)",
+        "group":  "0ef8bd821a032b93",
+        "order":  4,
+        "width":  14,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "droplet_offset_raw",
+        "min":  -300,
+        "max":  300,
+        "step":  1,
+        "x":  240,
+        "y":  940,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_txt_droplet_offset_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "cd3e28787d1292e1",
+        "order":  3,
+        "width":  10,
+        "height":  1,
+        "name":  "Tropfensensor Offset Display (Mobile)",
+        "label":  "Tropfensensor Offset (raw)",
+        "format":  "{{msg.payload.droplet_offset_raw}}",
+        "layout":  "row-spread",
+        "x":  870,
+        "y":  980,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_sld_droplet_offset_m",
+        "type":  "ui_slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Tropfensensor Offset Slider (Mobile)",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer Tropfensensor Rohwert (-300 bis +300)",
+        "group":  "cd3e28787d1292e1",
+        "order":  4,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "droplet_offset_raw",
+        "min":  -300,
+        "max":  300,
+        "step":  1,
+        "x":  240,
+        "y":  980,
         "wires":  [
                       [
                           "b8c0e9d3f4a15412"

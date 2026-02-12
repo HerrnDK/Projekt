@@ -17,12 +17,16 @@ extern const uint8_t ACTUATOR_COUNT;
 struct SensorSnapshot {
   long hcsr04_distance_cm;
   const char *hcsr04_status;
+  long droplet_raw;
+  const char *droplet_status;
   unsigned long uptime_ms;
 };
 
 // HC-SR04 Ultraschallsensor
 constexpr uint8_t HC_SR04_TRIG_PIN = 26;
 constexpr uint8_t HC_SR04_ECHO_PIN = 27;
+// Funduino Tropfensensor (Analog)
+constexpr uint8_t DROPLET_SENSOR_PIN = A0;
 
 // RFID RC522 (SPI)
 constexpr uint8_t RC522_SS_PIN = 53;

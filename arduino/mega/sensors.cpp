@@ -12,6 +12,7 @@
   sensors.cpp
   - Sensor-Handling
   - HC-SR04 auf D26 (TRIG) / D27 (ECHO)
+  - Funduino Tropfensensor auf A0 (Analog-Rohwert)
   - RFID RC522 via SPI (SS D53, RST D49)
 */
 
@@ -19,6 +20,8 @@ namespace {
   constexpr unsigned long HC_SR04_TIMEOUT_US = 30000UL;
   constexpr long HC_SR04_MIN_CM = 2;
   constexpr long HC_SR04_MAX_CM = 400;
+  constexpr long DROPLET_MIN_RAW = 0;
+  constexpr long DROPLET_MAX_RAW = 1023;
 
   MFRC522 rfidReader(RC522_SS_PIN, RC522_RST_PIN);
   const char *rfidHardwareStatus = "error_not_initialized";
@@ -115,11 +118,25 @@ namespace {
     status = "ok";
     return distanceCm;
   }
+
+  long readDropletRaw(bool &ok, const char *&status) {
+    int raw = analogRead(DROPLET_SENSOR_PIN);
+    if (raw < DROPLET_MIN_RAW || raw > DROPLET_MAX_RAW) {
+      ok = false;
+      status = "error_range";
+      return -1;
+    }
+
+    ok = true;
+    status = "ok";
+    return static_cast<long>(raw);
+  }
 }
 
 void Sensors_begin() {
   pinMode(HC_SR04_TRIG_PIN, OUTPUT);
   pinMode(HC_SR04_ECHO_PIN, INPUT);
+  pinMode(DROPLET_SENSOR_PIN, INPUT);
   digitalWrite(HC_SR04_TRIG_PIN, LOW);
 
   SPI.begin();
@@ -133,6 +150,11 @@ void Sensors_readSnapshot(SensorSnapshot &out) {
   const char *hcsr04Status = "error_unknown";
   out.hcsr04_distance_cm = readHcsr04DistanceCm(hcsr04Ok, hcsr04Status);
   out.hcsr04_status = hcsr04Status;
+
+  bool dropletOk = false;
+  const char *dropletStatus = "error_unknown";
+  out.droplet_raw = readDropletRaw(dropletOk, dropletStatus);
+  out.droplet_status = dropletStatus;
 
   out.uptime_ms = millis();
 }

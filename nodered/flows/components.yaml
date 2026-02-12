@@ -1,4 +1,4 @@
-version: 8
+version: 9
 registry: components
 conventions:
   id_style: "snake_case, stable logical id (not Node-RED node id)"
@@ -150,9 +150,9 @@ components:
     type: function
     flow: nodered/flows/fn_startup_test_flow.json
     node_label: "Startup-Test validieren"
-    description: "Validiert HC-SR04 Status und Uptime; setzt Anlagenstatus inkl. Fehlertext"
-    tags: [startup, status, validation, hcsr04]
-    version: 2
+    description: "Validiert HC-SR04 + Tropfensensor Status inkl. Uptime; setzt Anlagenstatus inkl. Fehlertext"
+    tags: [startup, status, validation, hcsr04, droplet]
+    version: 3
   startup_status_indicator_desktop:
     id: startup_status_indicator_desktop
     type: ui_text
@@ -199,40 +199,64 @@ components:
     flow: nodered/flows/dashboard_flow.json
     node_label: "HC-SR04 Korrektur Slider"
     group: ui_grp_parameter_main
-    description: "Slider fuer HC-SR04 Korrektur-Offset in cm (Desktop, -5..+5)"
+    description: "Slider fuer HC-SR04 Korrektur-Offset in cm (Desktop, -5..+5, topic=hcsr04_offset_cm)"
     example_msg:
-      topic: ""
+      topic: "hcsr04_offset_cm"
       payload: 2
     tags: [ui, parameter, hcsr04, offset, desktop]
-    version: 1
+    version: 2
   parameter_offset_slider_mobile:
     id: parameter_offset_slider_mobile
     type: ui_slider
     flow: nodered/flows/dashboard_flow.json
     node_label: "HC-SR04 Korrektur Slider (Mobile)"
     group: ui_grp_parameter_mobile
-    description: "Slider fuer HC-SR04 Korrektur-Offset in cm (Mobile, -5..+5)"
+    description: "Slider fuer HC-SR04 Korrektur-Offset in cm (Mobile, -5..+5, topic=hcsr04_offset_cm)"
     example_msg:
-      topic: ""
+      topic: "hcsr04_offset_cm"
       payload: -1
     tags: [ui, parameter, hcsr04, offset, mobile]
+    version: 2
+  parameter_droplet_offset_slider_desktop:
+    id: parameter_droplet_offset_slider_desktop
+    type: ui_slider
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Tropfensensor Offset Slider"
+    group: ui_grp_parameter_main
+    description: "Slider fuer Tropfensensor Offset (Desktop, -300..+300, topic=droplet_offset_raw)"
+    example_msg:
+      topic: "droplet_offset_raw"
+      payload: 50
+    tags: [ui, parameter, droplet, offset, desktop]
+    version: 1
+  parameter_droplet_offset_slider_mobile:
+    id: parameter_droplet_offset_slider_mobile
+    type: ui_slider
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Tropfensensor Offset Slider (Mobile)"
+    group: ui_grp_parameter_mobile
+    description: "Slider fuer Tropfensensor Offset (Mobile, -300..+300, topic=droplet_offset_raw)"
+    example_msg:
+      topic: "droplet_offset_raw"
+      payload: -30
+    tags: [ui, parameter, droplet, offset, mobile]
     version: 1
   parameter_offset_store:
     id: parameter_offset_store
     type: function
     flow: nodered/flows/fn_parameters_flow.json
     node_label: "Offset speichern"
-    description: "Validiert und speichert den HC-SR04 Offset in global.hcsr04_offset_cm"
-    tags: [parameter, function, hcsr04, offset]
-    version: 1
+    description: "Validiert und speichert HC-SR04/Tropfensensor Offsets anhand msg.topic"
+    tags: [parameter, function, hcsr04, droplet, offset]
+    version: 2
   parameter_offset_apply:
     id: parameter_offset_apply
     type: function
     flow: nodered/flows/fn_parameters_flow.json
     node_label: "Offset auf Distanz anwenden"
-    description: "Erweitert Sensorpayload um hcsr04_distance_display_cm und hcsr04_offset_cm"
-    tags: [parameter, function, sensor, hcsr04, offset]
-    version: 1
+    description: "Erweitert Sensorpayload um hcsr04_distance_display_cm, droplet_display_raw und beide Offsets"
+    tags: [parameter, function, sensor, hcsr04, droplet, offset]
+    version: 2
   qr_welcome_dynamic:
     id: qr_welcome_dynamic
     type: ui_template
@@ -327,6 +351,58 @@ components:
       payload:
         rfid_hw_status_text: "stoerung (error_not_detected)"
     tags: [ui, rfid, status, mobile]
+    version: 1
+  status_droplet_value_display_desktop:
+    id: status_droplet_value_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Tropfensensor Wert Display"
+    group: ui_grp_info_main
+    description: "Tropfensensor Rohwert inkl. Offset im Status/Sensoren-Tab (Desktop)."
+    example_msg:
+      topic: ""
+      payload:
+        droplet_display_raw: 540
+    tags: [ui, droplet, status, value, desktop]
+    version: 1
+  status_droplet_value_display_mobile:
+    id: status_droplet_value_display_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Tropfensensor Wert Display (Mobile)"
+    group: ui_grp_info_mobile
+    description: "Tropfensensor Rohwert inkl. Offset im Status/Sensoren-Tab (Mobile)."
+    example_msg:
+      topic: ""
+      payload:
+        droplet_display_raw: 540
+    tags: [ui, droplet, status, value, mobile]
+    version: 1
+  status_droplet_state_display_desktop:
+    id: status_droplet_state_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Tropfensensor Status Display"
+    group: ui_grp_info_main
+    description: "Tropfensensor Status im Status/Sensoren-Tab (Desktop)."
+    example_msg:
+      topic: ""
+      payload:
+        droplet_status: "ok"
+    tags: [ui, droplet, status, desktop]
+    version: 1
+  status_droplet_state_display_mobile:
+    id: status_droplet_state_display_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Tropfensensor Status Display (Mobile)"
+    group: ui_grp_info_mobile
+    description: "Tropfensensor Status im Status/Sensoren-Tab (Mobile)."
+    example_msg:
+      topic: ""
+      payload:
+        droplet_status: "ok"
+    tags: [ui, droplet, status, mobile]
     version: 1
   profile_controller_logic:
     id: profile_controller_logic

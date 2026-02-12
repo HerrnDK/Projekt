@@ -32,21 +32,30 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 
 > Hinweis: RC522 muss mit 3.3V betrieben werden.
 
+## Wiring (Funduino Tropfensensor)
+- Tropfensensor +5V -> 5V
+- Tropfensensor -GND -> GND
+- Tropfensensor S (Analog) -> A0
+
 ## Protokoll (Serial1, newline-terminiert)
 - `READ` -> Arduino sendet JSON Sensor-Snapshot
 - `ACT,<pin>,<state>` -> Aktor schalten, JSON-ACK
 - `RFID` -> RFID Snapshot lesen (UID + Status inkl. Modulzustand)
 
 JSON-Formate (Beispiele):
-- Sensor: `{"type":"sensor","hcsr04_distance_cm":42,"hcsr04_status":"ok","uptime_ms":7890}`
-- Act: `{"type":"act","ok":1,"pin":22,"state":1,"hcsr04_distance_cm":42,"hcsr04_status":"ok","uptime_ms":7890}`
-- Error: `{"type":"error","code":"unknown_command","hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","uptime_ms":7890}`
+- Sensor: `{"type":"sensor","hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","uptime_ms":7890}`
+- Act: `{"type":"act","ok":1,"pin":22,"state":1,"hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","uptime_ms":7890}`
+- Error: `{"type":"error","code":"unknown_command","hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","droplet_raw":-1,"droplet_status":"error_range","uptime_ms":7890}`
 - RFID: `{"type":"rfid","rfid_uid":"DE:AD:BE:EF","rfid_status":"ok","rfid_hw_status":"ok","rfid_probe_status":"STATUS_OK","rfid_version_reg":"0x92","uptime_ms":7890}`
 
 HC-SR04 Statuswerte:
 - `ok` gemessene Distanz ist gueltig
 - `error_timeout` kein Echo innerhalb Timeout
 - `error_range` gemessene Distanz ausserhalb 2..400 cm
+
+Tropfensensor Statuswerte:
+- `ok` analoger Rohwert ist gueltig (0..1023)
+- `error_range` analoger Rohwert ausserhalb des gueltigen ADC-Bereichs
 
 RFID Statuswerte:
 - `ok` gueltige UID gelesen
@@ -77,7 +86,7 @@ RFID Diagnose:
   - `dashboard_flow.json` UI + Sensoranzeigen + Parametrierung
   - `Network.json` Netzwerk-Tab
   - `data_exchange_flow.json` Serial-I/O Arduino
-  - `fn_parameters_flow.json` Parameter-Logik (HC-SR04 Korrektur-Offset)
+  - `fn_parameters_flow.json` Parameter-Logik (HC-SR04 + Tropfensensor Offset)
   - `fn_profiles_flow.json` RFID Profile-Logik (Anlernen + Profilzuweisung)
   - `components.yaml` logische Komponentenreferenzen
   - `deploy_flows.sh` Flow-Deploy Script (POST /flows)
@@ -119,8 +128,9 @@ Hinweise:
 
 ## Parametrierung (Dashboard)
 - Im Tab `Projekt-Parametrierung` gibt es einen Slider `HC-SR04 Korrektur (cm)` mit Bereich `-5 .. +5`.
-- Der Offset wird in `fn_parameters_flow.json` gespeichert (`global.hcsr04_offset_cm`).
-- Die Distanzanzeige nutzt den korrigierten Wert `hcsr04_distance_display_cm`.
+- Es gibt zusaetzlich einen Slider `Tropfensensor Offset (raw)` mit Bereich `-300 .. +300`.
+- Die Offsets werden in `fn_parameters_flow.json` gespeichert (`global.hcsr04_offset_cm`, `global.droplet_offset_raw`).
+- Die Anzeigen nutzen die korrigierten Werte `hcsr04_distance_display_cm` und `droplet_display_raw`.
 
 ## Profile (Dashboard)
 - Im Tab `Profile` gibt es drei Schaltflaechen:
@@ -133,7 +143,7 @@ Hinweise:
 - Wenn ein Profil bereits belegt ist, loescht der jeweilige Profil-Button die Bindung.
 - Bereits bekannte Chips aktivieren direkt ihr hinterlegtes Profil.
 - Die erkannte UID, das aktive Profil und der RFID Modulstatus werden live angezeigt.
-- Im Tab `Projekt-info` unter `Status / Sensoren` wird zusaetzlich `RFID RC522 Status` angezeigt.
+- Im Tab `Projekt-info` unter `Status / Sensoren` werden zusaetzlich `RFID RC522 Status` und `Tropfensensor Status` angezeigt.
 
 ## Next Steps (wenn Sensoren/Aktoren bekannt sind)
 - Weitere Sensoren nach gleichem Muster in `sensors.cpp` ergaenzen.

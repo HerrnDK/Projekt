@@ -56,7 +56,7 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Akt
 
 | Pin | Adc-Nummer | Sensor | Spannung | Kalibrierung | Notizen |
 |-----|-----------|--------|----------|-------------|---------|
-| A0 | ADC0 | derzeit nicht genutzt | 0-5V | | |
+| A0 | ADC0 | Funduino Tropfensensor (Signal S) | 0-5V | Offset via Dashboard (`droplet_offset_raw`) | Analog-Rohwert 0..1023 |
 | A1 | ADC1 | derzeit nicht genutzt | 0-5V | | |
 | A2 | ADC2 | derzeit nicht genutzt | 0-5V | | |
 | A3 | ADC3 | derzeit nicht genutzt | 0-5V | | |
@@ -88,7 +88,7 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Akt
 
 | Quelle | GND | 5V | 3.3V | Komponenten |
 |--------|-----|----|------|-------------|
-| Mega 5V | x | x | | HC-SR04, Power Board |
+| Mega 5V | x | x | | HC-SR04, Funduino Tropfensensor, Power Board |
 | Mega 3.3V | x | | x | RC522 |
 | Extern | | | | |
 
@@ -136,6 +136,15 @@ MISO         <->    A6/B6         <-> D50
 RST          <->    A7/B7         <-> D49
 3.3V         <->    3.3V
 GND          <->    GND
+```
+
+### Funduino Tropfensensor <-> Arduino Verbindung
+
+```
+Funduino Tropfensensor   <->    Arduino Mega
++5V                      <->    5V
+-GND                     <->    GND
+S (Analog Out)           <->    A0
 ```
 
 ---
