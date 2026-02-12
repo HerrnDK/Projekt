@@ -22,6 +22,10 @@ namespace {
   constexpr long HC_SR04_MAX_CM = 400;
   constexpr long DROPLET_MIN_RAW = 0;
   constexpr long DROPLET_MAX_RAW = 1023;
+  constexpr uint8_t DROPLET_SAMPLE_COUNT = 5;
+  constexpr int DROPLET_FLOATING_SPREAD_THRESHOLD = 80;
+  constexpr int DROPLET_PULLUP_HIGH_THRESHOLD = 1000;
+  constexpr int DROPLET_PULLUP_DELTA_THRESHOLD = 250;
 
   MFRC522 rfidReader(RC522_SS_PIN, RC522_RST_PIN);
   const char *rfidHardwareStatus = "error_not_initialized";
@@ -120,10 +124,43 @@ namespace {
   }
 
   long readDropletRaw(bool &ok, const char *&status) {
-    int raw = analogRead(DROPLET_SENSOR_PIN);
+    pinMode(DROPLET_SENSOR_PIN, INPUT);
+
+    long sum = 0;
+    int minRaw = 1023;
+    int maxRaw = 0;
+    for (uint8_t i = 0; i < DROPLET_SAMPLE_COUNT; i++) {
+      const int sample = analogRead(DROPLET_SENSOR_PIN);
+      sum += sample;
+      if (sample < minRaw) {
+        minRaw = sample;
+      }
+      if (sample > maxRaw) {
+        maxRaw = sample;
+      }
+      delayMicroseconds(200);
+    }
+
+    const int raw = static_cast<int>(sum / DROPLET_SAMPLE_COUNT);
     if (raw < DROPLET_MIN_RAW || raw > DROPLET_MAX_RAW) {
       ok = false;
       status = "error_range";
+      return -1;
+    }
+
+    // Floating-Check: internen Pullup kurz aktivieren.
+    // Bei abgezogenem Sensor springt der ADC-Wert deutlich gegen 1023.
+    pinMode(DROPLET_SENSOR_PIN, INPUT_PULLUP);
+    delayMicroseconds(200);
+    const int pullupSample = analogRead(DROPLET_SENSOR_PIN);
+    pinMode(DROPLET_SENSOR_PIN, INPUT);
+
+    const bool floatingByNoise = (maxRaw - minRaw) >= DROPLET_FLOATING_SPREAD_THRESHOLD;
+    const bool floatingByPullup = (pullupSample >= DROPLET_PULLUP_HIGH_THRESHOLD) &&
+                                  ((pullupSample - raw) >= DROPLET_PULLUP_DELTA_THRESHOLD);
+    if (floatingByNoise || floatingByPullup) {
+      ok = false;
+      status = "error_not_connected";
       return -1;
     }
 

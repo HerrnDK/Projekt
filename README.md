@@ -56,6 +56,7 @@ HC-SR04 Statuswerte:
 Tropfensensor Statuswerte:
 - `ok` analoger Rohwert ist gueltig (0..1023)
 - `error_range` analoger Rohwert ausserhalb des gueltigen ADC-Bereichs
+- `error_not_connected` Sensorleitung ist vermutlich abgezogen/floating
 
 RFID Statuswerte:
 - `ok` gueltige UID gelesen
