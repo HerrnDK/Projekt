@@ -414,6 +414,42 @@
                   ]
     },
     {
+        "id":  "ui_txt_tds_value_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  17,
+        "width":  10,
+        "height":  1,
+        "name":  "TDS-Sensor Wert Anzeige \\(Mobil\\)",
+        "label":  "TDS-Sensor Rohwert korrigiert",
+        "format":  "{{msg.payload.tds_display_raw}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  960,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_tds_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  18,
+        "width":  10,
+        "height":  1,
+        "name":  "TDS-Sensor Status Anzeige \\(Mobil\\)",
+        "label":  "TDS-Sensor Status",
+        "format":  "{{msg.payload.tds_status}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  1000,
+        "wires":  [
+
+                  ]
+    },
+    {
         "id":  "92797bc31e9565c2",
         "type":  "ui_text",
         "z":  "4985bdfbcf200fe6",
@@ -540,6 +576,42 @@
                   ]
     },
     {
+        "id":  "ui_txt_tds_value_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  17,
+        "width":  7,
+        "height":  1,
+        "name":  "TDS-Sensor Wert Anzeige",
+        "label":  "TDS-Sensor Rohwert korrigiert",
+        "format":  "{{msg.payload.tds_display_raw}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  960,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_tds_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  18,
+        "width":  7,
+        "height":  1,
+        "name":  "TDS-Sensor Status Anzeige",
+        "label":  "TDS-Sensor Status",
+        "format":  "{{msg.payload.tds_status}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  1000,
+        "wires":  [
+
+                  ]
+    },
+    {
         "id":  "f5c0bddf87cbb257",
         "type":  "ui_button",
         "z":  "4985bdfbcf200fe6",
@@ -596,13 +668,17 @@
                           "ui_txt_droplet_status_d",
                           "ui_txt_turbidity_value_d",
                           "ui_txt_turbidity_status_d",
+                          "ui_txt_tds_value_d",
+                          "ui_txt_tds_status_d",
                           "9baf027087ee53a2",
                           "f2c4a6e1bd3e4a70",
                           "d0fcb2a91e984e6a",
                           "ui_txt_droplet_value_m",
                           "ui_txt_droplet_status_m",
                           "ui_txt_turbidity_value_m",
-                          "ui_txt_turbidity_status_m"
+                          "ui_txt_turbidity_status_m",
+                          "ui_txt_tds_value_m",
+                          "ui_txt_tds_status_m"
                       ]
                   ]
     },
@@ -647,7 +723,9 @@
                           "ui_txt_droplet_offset_d",
                           "ui_txt_droplet_offset_m",
                           "ui_txt_turbidity_offset_d",
-                          "ui_txt_turbidity_offset_m"
+                          "ui_txt_turbidity_offset_m",
+                          "ui_txt_tds_offset_d",
+                          "ui_txt_tds_offset_m"
                       ]
                   ]
     },
@@ -867,6 +945,49 @@
                   ]
     },
     {
+        "id":  "ui_txt_tds_offset_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  11,
+        "width":  14,
+        "height":  1,
+        "name":  "TDS-Sensor Offset Anzeige",
+        "label":  "TDS-Sensor Offset (raw)",
+        "format":  "{{msg.payload.tds_offset_raw}}",
+        "layout":  "row-spread",
+        "x":  870,
+        "y":  1100,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_sld_tds_offset_d",
+        "type":  "ui_slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "TDS-Sensor Offset Slider",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer TDS-Sensor Rohwert (-300 bis +300)",
+        "group":  "0ef8bd821a032b93",
+        "order":  12,
+        "width":  14,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "tds_offset_raw",
+        "min":  -300,
+        "max":  300,
+        "step":  10,
+        "x":  250,
+        "y":  1100,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
         "id":  "ui_txt_turbidity_offset_m",
         "type":  "ui_text",
         "z":  "4985bdfbcf200fe6",
@@ -903,6 +1024,49 @@
         "step":  10,
         "x":  250,
         "y":  1060,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_txt_tds_offset_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "cd3e28787d1292e1",
+        "order":  11,
+        "width":  10,
+        "height":  1,
+        "name":  "TDS-Sensor Offset Anzeige \\(Mobil\\)",
+        "label":  "TDS-Sensor Offset (raw)",
+        "format":  "{{msg.payload.tds_offset_raw}}",
+        "layout":  "row-spread",
+        "x":  880,
+        "y":  1140,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_sld_tds_offset_m",
+        "type":  "ui_slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "TDS-Sensor Offset Slider \\(Mobil\\)",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer TDS-Sensor Rohwert (-300 bis +300)",
+        "group":  "cd3e28787d1292e1",
+        "order":  12,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "tds_offset_raw",
+        "min":  -300,
+        "max":  300,
+        "step":  10,
+        "x":  250,
+        "y":  1140,
         "wires":  [
                       [
                           "b8c0e9d3f4a15412"

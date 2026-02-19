@@ -42,6 +42,11 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 - Wassertruebungssensor -GND -> GND
 - Wassertruebungssensor S (Analog) -> A1
 
+## Verdrahtung (Ocean-TDS-Meter-Sensor)
+- TDS-Sensor +5V -> 5V
+- TDS-Sensor -GND -> GND
+- TDS-Sensor S (Analog) -> A2
+
 ## Verdrahtung (4-Kanal Relaismodul)
 - Relaismodul VCC -> 5V
 - Relaismodul GND -> GND
@@ -60,9 +65,9 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 - `RFID` -> RFID Snapshot lesen (UID + Status inkl. Modulzustand)
 
 JSON-Formate (Beispiele):
-- Sensor: `{"type":"sensor","hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","uptime_ms":7890}`
-- Aktor: `{"type":"act","ok":1,"pin":22,"state":1,"hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","uptime_ms":7890}`
-- Fehler: `{"type":"error","code":"unknown_command","hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","droplet_raw":-1,"droplet_status":"error_range","turbidity_raw":-1,"turbidity_status":"error_not_connected","uptime_ms":7890}`
+- Sensor: `{"type":"sensor","hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","tds_raw":430,"tds_status":"ok","uptime_ms":7890}`
+- Aktor: `{"type":"act","ok":1,"pin":22,"state":1,"hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","tds_raw":430,"tds_status":"ok","uptime_ms":7890}`
+- Fehler: `{"type":"error","code":"unknown_command","hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","droplet_raw":-1,"droplet_status":"error_range","turbidity_raw":-1,"turbidity_status":"error_not_connected","tds_raw":-1,"tds_status":"error_not_connected","uptime_ms":7890}`
 - RFID: `{"type":"rfid","rfid_uid":"DE:AD:BE:EF","rfid_status":"ok","rfid_hw_status":"ok","rfid_probe_status":"STATUS_OK","rfid_version_reg":"0x92","uptime_ms":7890}`
 
 HC-SR04 Statuswerte:
@@ -76,6 +81,11 @@ Tropfensensor Statuswerte:
 - `error_not_connected` Sensorleitung ist vermutlich abgezogen/floating
 
 Truebungssensor Statuswerte:
+- `ok` analoger Rohwert ist gueltig (0..1023)
+- `error_range` analoger Rohwert ausserhalb des gueltigen ADC-Bereichs
+- `error_not_connected` Sensorleitung ist vermutlich abgezogen/floating
+
+TDS-Sensor Statuswerte:
 - `ok` analoger Rohwert ist gueltig (0..1023)
 - `error_range` analoger Rohwert ausserhalb des gueltigen ADC-Bereichs
 - `error_not_connected` Sensorleitung ist vermutlich abgezogen/floating
@@ -107,13 +117,14 @@ RFID Diagnose:
   - `sensor_hcsr04.cpp` HC-SR04 Modul
   - `sensor_tropfen.cpp` Tropfensensor Modul
   - `sensor_truebung.cpp` Truebungssensor Modul
+  - `sensor_tds.cpp` TDS-Sensor Modul
   - `sensor_rfid.cpp` RFID RC522 Modul
   - `PINOUT.md` Quelle der Wahrheit fuer Pins
 - `nodered/flows/`
   - `dashboard_flow.json` UI + Sensoranzeigen + Parametrierung
   - `Network.json` Netzwerk-Tab
   - `data_exchange_flow.json` Datenaustausch mit Arduino
-  - `fn_parameters_flow.json` Parameter-Logik (HC-SR04 + Tropfensensor + Truebungssensor Offset + Relaissteuerung)
+  - `fn_parameters_flow.json` Parameter-Logik (HC-SR04 + Tropfensensor + Truebungssensor + TDS-Sensor Offset + Relaissteuerung)
   - `fn_profiles_flow.json` RFID-Profillogik (Anlernen + Profilzuweisung)
   - `components.yaml` logische Komponentenreferenzen
   - `deploy_flows.sh` Skript zur Flow-Bereitstellung (POST /flows)
@@ -160,13 +171,14 @@ Hinweise:
 - Im Tab `Projekt-Parametrierung` gibt es einen Slider `HC-SR04 Korrektur (cm)` mit Bereich `-5 .. +5`.
 - Es gibt zusaetzlich einen Slider `Tropfensensor Offset (raw)` mit Bereich `-300 .. +300`.
 - Es gibt zusaetzlich einen Slider `Truebungssensor Offset (raw)` mit Bereich `-200 .. +200`.
+- Es gibt zusaetzlich einen Slider `TDS-Sensor Offset (raw)` mit Bereich `-300 .. +300`.
 - Im Tab `Projekt-Parametrierung` gibt es zusaetzlich 4 Relais-Buttons:
   - `Relais 1 (Pumpe)` schaltet D22
   - `Relais 2 (Reserve)` schaltet D23
   - `Relais 3 (Reserve)` schaltet D24
   - `Relais 4 (Reserve)` schaltet D25
-- Die Offsets werden in `fn_parameters_flow.json` gespeichert (`global.hcsr04_offset_cm`, `global.droplet_offset_raw`, `global.turbidity_offset_raw`).
-- Die Anzeigen nutzen die korrigierten Werte `hcsr04_distance_display_cm`, `droplet_display_raw` und `turbidity_display_raw`.
+- Die Offsets werden in `fn_parameters_flow.json` gespeichert (`global.hcsr04_offset_cm`, `global.droplet_offset_raw`, `global.turbidity_offset_raw`, `global.tds_offset_raw`).
+- Die Anzeigen nutzen die korrigierten Werte `hcsr04_distance_display_cm`, `droplet_display_raw`, `turbidity_display_raw` und `tds_display_raw`.
 
 ## Profilsteuerung (Dashboard-Tab `Profile`)
 - Im Tab `Profile` gibt es drei Schaltflaechen:
@@ -179,7 +191,7 @@ Hinweise:
 - Wenn ein Profil bereits belegt ist, loescht der jeweilige Profil-Button die Bindung.
 - Bereits bekannte Chips aktivieren direkt ihr hinterlegtes Profil.
 - Die erkannte UID, das aktive Profil und der RFID Modulstatus werden live angezeigt.
-- Im Tab `Projekt-info` unter `Status / Sensoren` werden zusaetzlich `RFID RC522 Status`, `Tropfensensor Status`, `Truebungssensor Status` und die 4 Relais-Zustaende (`ON`/`OFF`) angezeigt.
+- Im Tab `Projekt-info` unter `Status / Sensoren` werden zusaetzlich `RFID RC522 Status`, `Tropfensensor Status`, `Truebungssensor Status`, `TDS-Sensor Status` und die 4 Relais-Zustaende (`ON`/`OFF`) angezeigt.
 
 ## Naechste Schritte (wenn Sensoren/Aktoren bekannt sind)
 - Weitere Sensoren als eigenes `sensor_<name>.cpp` ergaenzen und in `sensoren.cpp` anbinden.

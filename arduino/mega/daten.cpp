@@ -21,7 +21,13 @@ namespace {
   char eingabePuffer[DATEN_KOMMANDO_MAX];
   uint8_t eingabeLaenge = 0;
 
-  SensorMomentaufnahme letzterSnapshot = {-1, "error_init", -1, "error_init", -1, "error_init", 0};
+  SensorMomentaufnahme letzterSnapshot = {
+    -1, "error_init",
+    -1, "error_init",
+    -1, "error_init",
+    -1, "error_init",
+    0
+  };
 
   void Daten_verarbeiteKommando(const char *kommando);
   bool Daten_parseActKommando(const char *kommando, uint8_t &pin, uint8_t &zustand);
@@ -101,6 +107,11 @@ void Daten_sendenSensorMomentaufnahme() {
   PORT_DATEN.print(momentaufnahme.truebung_roh);
   PORT_DATEN.print(",\"turbidity_status\":\"");
   PORT_DATEN.print(momentaufnahme.truebung_status);
+  PORT_DATEN.print("\"");
+  PORT_DATEN.print(",\"tds_raw\":");
+  PORT_DATEN.print(momentaufnahme.tds_roh);
+  PORT_DATEN.print(",\"tds_status\":\"");
+  PORT_DATEN.print(momentaufnahme.tds_status);
   PORT_DATEN.print("\"");
   PORT_DATEN.print(",\"uptime_ms\":");
   PORT_DATEN.print(momentaufnahme.laufzeit_ms);
@@ -250,6 +261,11 @@ namespace {
     PORT_DATEN.print(",\"turbidity_status\":\"");
     PORT_DATEN.print(letzterSnapshot.truebung_status);
     PORT_DATEN.print("\"");
+    PORT_DATEN.print(",\"tds_raw\":");
+    PORT_DATEN.print(letzterSnapshot.tds_roh);
+    PORT_DATEN.print(",\"tds_status\":\"");
+    PORT_DATEN.print(letzterSnapshot.tds_status);
+    PORT_DATEN.print("\"");
     PORT_DATEN.print(",\"uptime_ms\":");
     PORT_DATEN.print(letzterSnapshot.laufzeit_ms);
     PORT_DATEN.println("}");
@@ -280,6 +296,11 @@ namespace {
     PORT_DATEN.print(letzterSnapshot.truebung_roh);
     PORT_DATEN.print(",\"turbidity_status\":\"");
     PORT_DATEN.print(letzterSnapshot.truebung_status);
+    PORT_DATEN.print("\"");
+    PORT_DATEN.print(",\"tds_raw\":");
+    PORT_DATEN.print(letzterSnapshot.tds_roh);
+    PORT_DATEN.print(",\"tds_status\":\"");
+    PORT_DATEN.print(letzterSnapshot.tds_status);
     PORT_DATEN.print("\"");
     PORT_DATEN.print(",\"uptime_ms\":");
     PORT_DATEN.print(letzterSnapshot.laufzeit_ms);

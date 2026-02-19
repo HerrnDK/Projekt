@@ -30,6 +30,8 @@ struct SensorMomentaufnahme {
   const char *tropfen_status;
   long truebung_roh;
   const char *truebung_status;
+  long tds_roh;
+  const char *tds_status;
   unsigned long laufzeit_ms;
 };
 
@@ -40,6 +42,8 @@ constexpr uint8_t HC_SR04_ECHO_PIN = 27;
 constexpr uint8_t TROPFEN_SENSOR_PIN = A0;
 // Wassertruebungssensor (Analog)
 constexpr uint8_t TRUEBUNG_SENSOR_PIN = A1;
+// Ocean TDS Meter Sensor (Analog)
+constexpr uint8_t TDS_SENSOR_PIN = A2;
 
 // RFID RC522 (SPI)
 constexpr uint8_t RC522_PIN_SS = 53;
@@ -59,6 +63,9 @@ long Tropfen_leseRohwert(const char *&statusAusgabe);
 
 void Truebung_starten();
 long Truebung_leseRohwert(const char *&statusAusgabe);
+
+void Tds_starten();
+long Tds_leseRohwert(const char *&statusAusgabe);
 
 void Rfid_starten();
 void Rfid_lesenUid(char *uidAusgabe, size_t uidAusgabeLaenge, const char *&statusAusgabe);

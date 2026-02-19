@@ -21,6 +21,7 @@ void Sensoren_starten() {
   Hcsr04_starten();
   Tropfen_starten();
   Truebung_starten();
+  Tds_starten();
   Rfid_starten();
 }
 
@@ -45,6 +46,10 @@ void Sensoren_lesenMomentaufnahme(SensorMomentaufnahme &ausgabe) {
   const char *truebungStatus = "error_unknown";
   ausgabe.truebung_roh = Truebung_leseRohwert(truebungStatus);
   ausgabe.truebung_status = truebungStatus;
+
+  const char *tdsStatus = "error_unknown";
+  ausgabe.tds_roh = Tds_leseRohwert(tdsStatus);
+  ausgabe.tds_status = tdsStatus;
 
   ausgabe.laufzeit_ms = millis();
 }

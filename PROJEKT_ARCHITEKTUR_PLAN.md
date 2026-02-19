@@ -152,9 +152,11 @@ flowchart TD
   P1 -- Nein --> F
   P1 -- Ja --> P2{"turbidity_status == ok?"}
   P2 -- Nein --> F
-  P2 -- Ja --> P3{"uptime gueltig?"}
+  P2 -- Ja --> P3{"tds_status == ok?"}
   P3 -- Nein --> F
-  P3 -- Ja --> OK["Anlage bereit"]
+  P3 -- Ja --> P4{"uptime gueltig?"}
+  P4 -- Nein --> F
+  P4 -- Ja --> OK["Anlage bereit"]
   F --> E([Ende])
   OK --> E
 ```
@@ -232,13 +234,15 @@ flowchart TD
   A0 --> A1["Hcsr04_starten()"]
   A1 --> A2["Tropfen_starten()"]
   A2 --> A3["Truebung_starten()"]
-  A3 --> A4["Rfid_starten()"]
-  A4 --> B0["Sensoren_lesenMomentaufnahme()"]
+  A3 --> A4["Tds_starten()"]
+  A4 --> A5["Rfid_starten()"]
+  A5 --> B0["Sensoren_lesenMomentaufnahme()"]
   B0 --> B1["Hcsr04_leseDistanzCm()"]
   B1 --> B2["Tropfen_leseRohwert()"]
   B2 --> B3["Truebung_leseRohwert()"]
-  B3 --> B4["laufzeit_ms = millis()"]
-  B4 --> E([Ende])
+  B3 --> B4["Tds_leseRohwert()"]
+  B4 --> B5["laufzeit_ms = millis()"]
+  B5 --> E([Ende])
 ```
 
 ### 2.6 `Hcsr04_leseDistanzCm()`
@@ -285,7 +289,23 @@ flowchart TD
   C0 -- Ja --> E1["status=error_not_connected, Rueckgabe -1"] --> E
 ```
 
-### 2.9 `Rfid_lesenUid()`
+### 2.9 `Tds_leseRohwert()`
+```mermaid
+flowchart TD
+  S([Start]) --> M0["Mehrere ADC-Werte lesen"]
+  M0 --> M1["Mittelwert/min/max bilden"]
+  M1 --> V0{"Rohwert 0..1023?"}
+  V0 -- Nein --> E0["status=error_range, Rueckgabe -1"] --> E([Ende])
+  V0 -- Ja --> P0["Pullup-Teststichprobe lesen"]
+  P0 --> F0{"Trennung/Floating vermutet?"}
+  F0 -- Nein --> O0["status=ok, Rueckgabe Rohwert"] --> E
+  F0 -- Ja --> Z1["Verdachtszaehler erhoehen"]
+  Z1 --> C0{"Zaehler >= Bestaetigung?"}
+  C0 -- Nein --> O0
+  C0 -- Ja --> E1["status=error_not_connected, Rueckgabe -1"] --> E
+```
+
+### 2.10 `Rfid_lesenUid()`
 ```mermaid
 flowchart TD
   S([Start]) --> A0["Buffer/Status initialisieren"]
@@ -305,7 +325,7 @@ flowchart TD
   O0 --> E
 ```
 
-### 2.10 RFID Diagnose-Funktionen
+### 2.11 RFID Diagnose-Funktionen
 ```mermaid
 flowchart TD
   S([Start]) --> D0["Rfid_holeHardwareStatus()"]
@@ -352,6 +372,7 @@ flowchart TD
     SFAS --> SH["Hcsr04_leseDistanzCm()"]
     SFAS --> ST["Tropfen_leseRohwert()"]
     SFAS --> SU["Truebung_leseRohwert()"]
+    SFAS --> STDS["Tds_leseRohwert()"]
     DRFID --> SR["Rfid_lesenUid()"]
   end
 

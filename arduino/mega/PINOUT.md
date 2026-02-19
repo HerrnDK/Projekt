@@ -58,7 +58,7 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Akt
 |-----|-----------|--------|----------|-------------|---------|
 | A0 | ADC0 | Funduino Tropfensensor (Signal S) | 0-5V | Offset via Dashboard (`droplet_offset_raw`) | Analog-Rohwert 0..1023 |
 | A1 | ADC1 | Wassertruebungssensor (Signal S) | 0-5V | Offset via Dashboard (`turbidity_offset_raw`) | Analog-Rohwert 0..1023 |
-| A2 | ADC2 | derzeit nicht genutzt | 0-5V | | |
+| A2 | ADC2 | Ocean-TDS-Meter-Sensor (Signal S) | 0-5V | Offset via Dashboard (`tds_offset_raw`) | Analog-Rohwert 0..1023 |
 | A3 | ADC3 | derzeit nicht genutzt | 0-5V | | |
 | A4 | ADC4 | derzeit nicht genutzt | 0-5V | | |
 | A5 | ADC5 | derzeit nicht genutzt | 0-5V | | |
@@ -88,7 +88,7 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Akt
 
 | Quelle | GND | 5V | 3.3V | Komponenten |
 |--------|-----|----|------|-------------|
-| Mega 5V | x | x | | HC-SR04, Funduino Tropfensensor, Wassertruebungssensor, Power Board |
+| Mega 5V | x | x | | HC-SR04, Funduino Tropfensensor, Wassertruebungssensor, Ocean-TDS-Sensor, Power Board |
 | Mega 3.3V | x | | x | RC522 |
 | Extern | | | | |
 
@@ -154,6 +154,15 @@ Wassertruebungssensor    <->    Arduino Mega
 +5V                      <->    5V
 -GND                     <->    GND
 S (Analog Out)           <->    A1
+```
+
+### Ocean-TDS-Meter-Sensor <-> Arduino Verbindung
+
+```
+Ocean-TDS-Meter-Sensor   <->    Arduino Mega
++5V                      <->    5V
+-GND                     <->    GND
+S (Analog Out)           <->    A2
 ```
 
 ### 4-Kanal Relaismodul <-> Arduino Verbindung

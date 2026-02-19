@@ -9,5 +9,6 @@
 - 1x HC-SR04 Ultraschallsensor (TRIG D26, ECHO D27, 5V)
 - 1x Funduino Tropfensensor (A0, +5V, GND, analoger Rohwert 0..1023)
 - 1x Wassertruebungssensor (A1, +5V, GND, analoger Rohwert 0..1023)
+- 1x Ocean-TDS-Meter-Sensor (A2, +5V, GND, analoger Rohwert 0..1023)
 - 1x RFID-RC522 Modul (SPI: SS D53, SCK D52, MOSI D51, MISO D50, RST D49, 3.3V)
 

@@ -1,4 +1,4 @@
-version: 12
+version: 13
 registry: components
 conventions:
   id_style: "snake_case, stable logical id (not Node-RED node id)"
@@ -150,8 +150,8 @@ components:
     type: function
     flow: nodered/flows/fn_startup_test_flow.json
     node_label: "Startup-Test validieren"
-    description: "Validiert HC-SR04 + Tropfensensor + Truebungssensor Status inkl. Uptime; setzt Anlagenstatus inkl. Fehlertext"
-    tags: [startup, status, validation, hcsr04, droplet, turbidity]
+    description: "Validiert HC-SR04 + Tropfensensor + Truebungssensor + TDS-Sensor Status inkl. Uptime; setzt Anlagenstatus inkl. Fehlertext"
+    tags: [startup, status, validation, hcsr04, droplet, turbidity, tds]
     version: 4
   startup_status_indicator_desktop:
     id: startup_status_indicator_desktop
@@ -265,6 +265,30 @@ components:
       payload: -40
     tags: [ui, parameter, turbidity, offset, mobile]
     version: 1
+  parameter_tds_offset_slider_desktop:
+    id: parameter_tds_offset_slider_desktop
+    type: ui_slider
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "TDS-Sensor Offset Slider"
+    group: ui_grp_parameter_main
+    description: "Slider fuer TDS-Sensor Offset (Desktop, -300..+300, topic=tds_offset_raw)"
+    example_msg:
+      topic: "tds_offset_raw"
+      payload: 25
+    tags: [ui, parameter, tds, offset, desktop]
+    version: 1
+  parameter_tds_offset_slider_mobile:
+    id: parameter_tds_offset_slider_mobile
+    type: ui_slider
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "TDS-Sensor Offset Slider (Mobil)"
+    group: ui_grp_parameter_mobile
+    description: "Slider fuer TDS-Sensor Offset (Mobil, -300..+300, topic=tds_offset_raw)"
+    example_msg:
+      topic: "tds_offset_raw"
+      payload: -20
+    tags: [ui, parameter, tds, offset, mobile]
+    version: 1
   parameter_relay1_button_desktop:
     id: parameter_relay1_button_desktop
     type: ui_button
@@ -366,16 +390,16 @@ components:
     type: function
     flow: nodered/flows/fn_parameters_flow.json
     node_label: "Offset speichern"
-    description: "Validiert und speichert HC-SR04/Tropfensensor/Truebungssensor Offsets anhand msg.topic"
-    tags: [parameter, function, hcsr04, droplet, turbidity, offset]
+    description: "Validiert und speichert HC-SR04/Tropfensensor/Truebungssensor/TDS-Sensor Offsets anhand msg.topic"
+    tags: [parameter, function, hcsr04, droplet, turbidity, tds, offset]
     version: 3
   parameter_offset_apply:
     id: parameter_offset_apply
     type: function
     flow: nodered/flows/fn_parameters_flow.json
     node_label: "Offset auf Distanz anwenden"
-    description: "Erweitert Sensorpayload um hcsr04_distance_display_cm, droplet_display_raw, turbidity_display_raw und alle Offsets"
-    tags: [parameter, function, sensor, hcsr04, droplet, turbidity, offset]
+    description: "Erweitert Sensorpayload um hcsr04_distance_display_cm, droplet_display_raw, turbidity_display_raw, tds_display_raw und alle Offsets"
+    tags: [parameter, function, sensor, hcsr04, droplet, turbidity, tds, offset]
     version: 3
   parameter_relay_controller:
     id: parameter_relay_controller
@@ -583,6 +607,58 @@ components:
       payload:
         turbidity_status: "ok"
     tags: [ui, turbidity, status, mobile]
+    version: 1
+  status_tds_value_display_desktop:
+    id: status_tds_value_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "TDS-Sensor Wertanzeige"
+    group: ui_grp_info_main
+    description: "TDS-Sensor Rohwert inkl. Offset im Status/Sensoren-Tab (Desktop)."
+    example_msg:
+      topic: ""
+      payload:
+        tds_display_raw: 420
+    tags: [ui, tds, status, value, desktop]
+    version: 1
+  status_tds_value_display_mobile:
+    id: status_tds_value_display_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "TDS-Sensor Wertanzeige (Mobil)"
+    group: ui_grp_info_mobile
+    description: "TDS-Sensor Rohwert inkl. Offset im Status/Sensoren-Tab (Mobil)."
+    example_msg:
+      topic: ""
+      payload:
+        tds_display_raw: 420
+    tags: [ui, tds, status, value, mobile]
+    version: 1
+  status_tds_state_display_desktop:
+    id: status_tds_state_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "TDS-Sensor Statusanzeige"
+    group: ui_grp_info_main
+    description: "TDS-Sensor Status im Status/Sensoren-Tab (Desktop)."
+    example_msg:
+      topic: ""
+      payload:
+        tds_status: "ok"
+    tags: [ui, tds, status, desktop]
+    version: 1
+  status_tds_state_display_mobile:
+    id: status_tds_state_display_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "TDS-Sensor Statusanzeige (Mobil)"
+    group: ui_grp_info_mobile
+    description: "TDS-Sensor Status im Status/Sensoren-Tab (Mobil)."
+    example_msg:
+      topic: ""
+      payload:
+        tds_status: "ok"
+    tags: [ui, tds, status, mobile]
     version: 1
   status_relay1_display_desktop:
     id: status_relay1_display_desktop
