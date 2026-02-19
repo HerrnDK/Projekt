@@ -1,3 +1,12 @@
+/*
+  sensor_tropfen.cpp
+  Nutzen:
+  - Kapselt das Auslesen des Funduino-Tropfensensors.
+  Funktion:
+  - Liest den Analogwert per Mittelung, prueft den Gueltigkeitsbereich
+    und erkennt eine moegliche Trennung/Floating-Situation.
+*/
+
 #include "mega_gemeinsam.h"
 
 namespace {
@@ -9,10 +18,28 @@ namespace {
   constexpr int TROPFEN_PULLUP_DELTA_SCHWELLE = 250;
 }
 
+/*
+  Zweck:
+  - Initialisiert den Tropfensensor-Eingang.
+  Verhalten:
+  - Konfiguriert den Analogpin als INPUT.
+  Rueckgabe:
+  - Keine.
+*/
 void Tropfen_starten() {
   pinMode(TROPFEN_SENSOR_PIN, INPUT);
 }
 
+/*
+  Zweck:
+  - Liest den Tropfensensor als robusten Rohwert.
+  Verhalten:
+  - Bildet einen Mittelwert aus mehreren ADC-Stichproben.
+  - Prueft Bereich und fuehrt zusaetzlich einen Floating-Check mit Pullup durch.
+  Rueckgabe:
+  - Rohwert 0..1023 bei Erfolg, sonst `-1`.
+  - Statustext wird ueber `statusAusgabe` gesetzt.
+*/
 long Tropfen_leseRohwert(const char *&statusAusgabe) {
   pinMode(TROPFEN_SENSOR_PIN, INPUT);
 

@@ -69,7 +69,8 @@ Nach Code-Aenderungen: Build mit `scripts/arduino_build.sh` und PINOUT aktualisi
 Sketch-Aufteilung (Arduino Mega):
 - `arduino/mega/mega.ino`: Sketch-Root mit `setup()`/`loop()`.
 - Modul-Implementierungen liegen in `.cpp` Dateien im gleichen Ordner
-  (z. B. `data.cpp`, `actuators.cpp`, `sensors.cpp`).
+  (z. B. `daten.cpp`, `aktoren.cpp`, `sensoren.cpp`, `sensor_<name>.cpp`).
+- Funktions-Prototypen liegen zentral in `mega_gemeinsam.h`.
 Serielle Regeln:
 - `Serial` (RX0/TX0) bleibt fuer USB Debug/Programmierung.
 - `Serial1` (RX1/TX1) fuer Node-RED/Raspberry Pi UART.
@@ -100,17 +101,18 @@ SENSOR-MUSTER (ANALOG)
 ----------------------
 Bei neuen Analogsensoren (z. B. A0/A1) immer dieses Muster nutzen:
 1) Arduino
-- Pin-Konstante in `mega_shared.h`.
-- Felder in `SensorSnapshot` erweitern (`<sensor>_raw`, `<sensor>_status`).
-- Lesen in `sensors.cpp` inkl. Status (`ok`, `error_range`, `error_not_connected` falls sinnvoll).
-- JSON in `data.cpp` fuer `type=sensor`, `type=act`, `type=error` erweitern.
+- Pin-Konstante in `mega_gemeinsam.h`.
+- Felder in `SensorMomentaufnahme` erweitern (`<sensor>_raw`, `<sensor>_status`).
+- Sensorlogik in eigenem `sensor_<name>.cpp` implementieren (Status `ok`, `error_range`, `error_not_connected` falls sinnvoll).
+- Sensor in `sensoren.cpp` anbinden (Start + Snapshot).
+- JSON in `daten.cpp` fuer `type=sensor`, `type=act`, `type=error` erweitern.
 2) Node-RED
 - `fn_parameters_flow.json`: Default/Store/Apply fuer `<sensor>_offset_raw` und `<sensor>_display_raw`.
 - `dashboard_flow.json`: Status-Anzeige (Wert + Status) Desktop/Mobile und Offset-Slider Desktop/Mobile.
 - `fn_startup_test_flow.json`: Validierung fuer neuen Sensor in Anlagenstatus aufnehmen.
 - `components.yaml`: neue Komponenten eintragen und `version` erhoehen.
 3) Doku
-- `arduino/mega/PINOUT.md`, `Hardware.md`, `README.md`, `FLOW_ARCHITEKTUR_PLAN.md` aktualisieren.
+- `arduino/mega/PINOUT.md`, `Hardware.md`, `README.md`, `PROJEKT_ARCHITEKTUR_PLAN.md` aktualisieren.
 4) Checks
 - `jq . nodered/flows/*.json`
 - `yaml-lint components.yaml` (wenn verfuegbar)

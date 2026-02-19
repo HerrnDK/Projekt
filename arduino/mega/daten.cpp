@@ -1,16 +1,20 @@
+/*
+  daten.cpp
+  Nutzen:
+  - Kommunikationsbruecke zwischen Node-RED (Raspberry Pi) und Arduino.
+  Funktion:
+  - Nimmt Kommandos ueber Serial1 entgegen, ruft die passenden Modul-Funktionen auf
+    und sendet strukturierte JSON-Antworten zurueck.
+  Protokoll (newline-terminiert):
+    READ\n              -> Sensor-Momentaufnahme (type=sensor)
+    ACT,<pin>,<state>\n -> Aktor schalten + Bestaetigung (type=act)
+    RFID\n              -> RFID-Momentaufnahme (type=rfid)
+*/
+
 #include "mega_gemeinsam.h"
 
 #include <stdlib.h>
 #include <string.h>
-
-/*
-  daten.cpp
-  - Bruecke zwischen Node-RED und Arduino-Funktionen ueber Serial1
-  - Erwartete ASCII-Kommandos (newline-terminiert):
-    READ\n              -> sendet JSON Sensor-Momentaufnahme (type=sensor)
-    ACT,<pin>,<state>\n -> schaltet Aktor + JSON-Bestaetigung (type=act)
-    RFID\n              -> sendet RFID-Momentaufnahme (type=rfid)
-*/
 
 namespace {
   constexpr size_t DATEN_KOMMANDO_MAX = 128;
@@ -26,9 +30,13 @@ namespace {
 }
 
 /*
-  Initialisiert das Datenmodul.
-  - setzt den Eingabepuffer zurueck
-  - liest einmal alle Sensoren, damit bei ACT/ERROR eine gueltige Baseline vorliegt
+  Zweck:
+  - Initialisiert den Kommunikationszustand des Datenmoduls.
+  Verhalten:
+  - Leert den Eingabepuffer und erstellt einen ersten Sensor-Snapshot
+    als Baseline fuer ACK-/Fehlermeldungen.
+  Rueckgabe:
+  - Keine.
 */
 void Daten_starten() {
   eingabeLaenge = 0;
@@ -36,10 +44,13 @@ void Daten_starten() {
 }
 
 /*
-  Zyklischer Poll fuer den seriellen Eingang.
-  - sammelt Zeichen bis Newline
-  - uebergibt komplette Kommandos an den Parser
-  - verwirft ueberlange Eingaben (Overflow-Schutz)
+  Zweck:
+  - Liest fortlaufend Kommandos von `PORT_DATEN`.
+  Verhalten:
+  - Pufferung bis Zeilenende (`\\n`/`\\r`), anschliessend Kommandoverarbeitung.
+  - Bei Ueberlaenge wird der Puffer verworfen (Overflow-Schutz).
+  Rueckgabe:
+  - Keine.
 */
 void Daten_tick() {
   while (PORT_DATEN.available() > 0) {
@@ -63,8 +74,13 @@ void Daten_tick() {
 }
 
 /*
-  Liest alle Sensoren und sendet eine JSON-Zeile an Node-RED.
-  Das JSON-Format bleibt absichtlich stabil, damit bestehende Flows kompatibel bleiben.
+  Zweck:
+  - Sendet den aktuellen Sensorzustand als JSON.
+  Verhalten:
+  - Liest alle Sensoren, speichert den Snapshot und schreibt eine `type=sensor`
+    Antwort im stabilen Protokollformat auf `PORT_DATEN`.
+  Rueckgabe:
+  - Keine.
 */
 void Daten_sendenSensorMomentaufnahme() {
   SensorMomentaufnahme momentaufnahme;
@@ -92,8 +108,13 @@ void Daten_sendenSensorMomentaufnahme() {
 }
 
 /*
-  Liest den RFID-Status und sendet eine JSON-Zeile an Node-RED.
-  Neben UID und Lesestatus werden auch Hardware-/Probe-Infos uebertragen.
+  Zweck:
+  - Sendet den aktuellen RFID-Zustand als JSON.
+  Verhalten:
+  - Liest UID/Status ueber das RFID-Modul und uebertraegt zusaetzlich
+    Hardwarestatus, Probe-Status und Versionsregister.
+  Rueckgabe:
+  - Keine.
 */
 void Daten_sendenRfidMomentaufnahme() {
   char uid[RFID_UID_MAX_LAENGE];
@@ -123,8 +144,13 @@ void Daten_sendenRfidMomentaufnahme() {
 
 namespace {
   /*
-    Zentrale Kommandoverarbeitung fuer READ / ACT / RFID.
-    Unbekannte oder fehlerhafte Kommandos werden als Fehler-JSON gemeldet.
+    Zweck:
+    - Verteilt ein empfangenes Kommando auf die passende Aktion.
+    Verhalten:
+    - Unterstuetzt `READ`, `RFID` und `ACT,<pin>,<state>`.
+    - Unbekannte oder fehlerhafte Kommandos erzeugen ein Fehler-JSON.
+    Rueckgabe:
+    - Keine.
   */
   void Daten_verarbeiteKommando(const char *kommando) {
     if (strcmp(kommando, "READ") == 0) {
@@ -159,8 +185,13 @@ namespace {
   }
 
   /*
-    Parst ein ACT-Kommando im Format ACT,<pin>,<state>.
-    state ist nur 0 oder 1.
+    Zweck:
+    - Parst und validiert ein `ACT` Kommando.
+    Verhalten:
+    - Erwartet exakt `ACT,<pin>,<state>` mit `state` in `{0,1}`.
+    - Prueft Wertebereich und Format.
+    Rueckgabe:
+    - `true` bei gueltiger Eingabe, sonst `false`.
   */
   bool Daten_parseActKommando(const char *kommando, uint8_t &pin, uint8_t &zustand) {
     const char *werteStart = kommando + 4;
@@ -190,8 +221,12 @@ namespace {
   }
 
   /*
-    Sendet eine ACT-Bestaetigung als JSON.
-    Der letzte Sensor-Snapshot wird mitgesendet, damit UI-Felder nicht leer werden.
+    Zweck:
+    - Sendet die Bestaetigung auf einen Aktor-Schaltbefehl.
+    Verhalten:
+    - Schreibt ein `type=act` JSON inklusive Schaltergebnis und letztem Sensor-Snapshot.
+    Rueckgabe:
+    - Keine.
   */
   void Daten_sendeActBestaetigung(uint8_t pin, uint8_t zustand, bool erfolgreich) {
     PORT_DATEN.print("{\"type\":\"act\",\"ok\":");
@@ -221,7 +256,12 @@ namespace {
   }
 
   /*
-    Sendet ein Fehler-JSON mit Fehlercode und letztem Sensor-Snapshot.
+    Zweck:
+    - Meldet Kommunikations- oder Befehlsfehler an Node-RED.
+    Verhalten:
+    - Schreibt ein `type=error` JSON mit Fehlercode und letztem Sensor-Snapshot.
+    Rueckgabe:
+    - Keine.
   */
   void Daten_sendeFehler(const char *fehlercode) {
     PORT_DATEN.print("{\"type\":\"error\",\"code\":\"");

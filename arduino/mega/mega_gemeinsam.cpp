@@ -1,3 +1,12 @@
+/*
+  mega_gemeinsam.cpp
+  Nutzen:
+  - Stellt zentrale globale Definitionen bereit.
+  Funktion:
+  - Verknuepft logische Schnittstellen mit konkreter Hardware
+    (Serial/Serial1 und Aktor-Pinliste).
+*/
+
 #include "mega_gemeinsam.h"
 
 HardwareSerial &PORT_DEBUG = Serial;

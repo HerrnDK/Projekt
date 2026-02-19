@@ -1,12 +1,23 @@
-#include "mega_gemeinsam.h"
-
 /*
   aktoren.cpp
-  - Verwaltung der Relais-/Aktorpins
+  Nutzen:
+  - Kapselt die komplette Relais-/Aktorsteuerung.
+  Funktion:
+  - Initialisiert alle freigegebenen Aktor-Pins und setzt Schaltbefehle
+    fuer die Relais (active-low) sicher um.
 */
 
+#include "mega_gemeinsam.h"
+
 namespace {
-  // Prueft, ob ein Pin in der zentralen Aktorliste vorhanden ist.
+  /*
+    Zweck:
+    - Validiert, ob ein Pin als Aktor freigegeben ist.
+    Verhalten:
+    - Vergleicht den Ziel-Pin mit allen Eintraegen in `AKTOR_PINS`.
+    Rueckgabe:
+    - `true`, wenn der Pin erlaubt ist, sonst `false`.
+  */
   bool Aktoren_istGueltigerPin(uint8_t pin) {
     for (uint8_t i = 0; i < AKTOR_ANZAHL; i++) {
       if (AKTOR_PINS[i] == pin) {
@@ -18,9 +29,12 @@ namespace {
 }
 
 /*
-  Initialisiert alle Aktoren beim Start.
-  - setzt alle konfigurierten Pins auf OUTPUT
-  - setzt alle Relais in den sicheren AUS-Zustand
+  Zweck:
+  - Bringt alle Relais beim Start in einen definierten Zustand.
+  Verhalten:
+  - Konfiguriert jeden Aktor-Pin als Ausgang und setzt ihn auf `HIGH` (AUS bei active-low).
+  Rueckgabe:
+  - Keine.
 */
 void Aktoren_starten() {
   for (uint8_t i = 0; i < AKTOR_ANZAHL; i++) {
@@ -31,12 +45,14 @@ void Aktoren_starten() {
 }
 
 /*
-  Schaltet einen Aktor logisch ein oder aus.
-  - zustand=true  bedeutet EIN
-  - zustand=false bedeutet AUS
+  Zweck:
+  - Schaltet genau einen freigegebenen Aktor-Pin.
+  Verhalten:
+  - Prueft den Pin gegen die Freigabeliste und setzt active-low:
+    `zustand=true` -> LOW (EIN), `zustand=false` -> HIGH (AUS).
   Rueckgabe:
-  - true  => Pin war gueltig und wurde gesetzt
-  - false => Pin ist kein freigegebener Aktor-Pin
+  - `true`, wenn erfolgreich gesetzt.
+  - `false`, wenn der Pin nicht freigegeben ist.
 */
 bool Aktoren_setzen(uint8_t pin, bool zustand) {
   if (!Aktoren_istGueltigerPin(pin)) {

@@ -1,11 +1,22 @@
 /*
   mega.ino
-  - Sketch-Einstieg (setup/loop)
-  - Fachlogik liegt in den Modulen unter .cpp
+  Nutzen:
+  - Einstiegspunkt des Arduino-Sketches.
+  Funktion:
+  - Initialisiert beim Start alle Module (Aktoren, Sensoren, Datenkommunikation)
+    und fuehrt im Hauptzyklus die serielle Verarbeitung aus.
 */
 
 #include "mega_gemeinsam.h"
 
+/*
+  Zweck:
+  - Einmalige Initialisierung aller Module beim Boot.
+  Verhalten:
+  - Startet Debug- und Daten-UART, initialisiert Aktoren, Sensoren und Datenlogik.
+  Rueckgabe:
+  - Keine.
+*/
 void setup() {
   PORT_DEBUG.begin(BAUDRATE_DEBUG);  // USB-Debugschnittstelle
   PORT_DATEN.begin(BAUDRATE_DATEN);  // UART zu Node-RED (Serial1)
@@ -17,6 +28,14 @@ void setup() {
   PORT_DEBUG.println("Mega Grundgeruest bereit.");
 }
 
+/*
+  Zweck:
+  - Hauptzyklus fuer die Laufzeitverarbeitung.
+  Verhalten:
+  - Bearbeitet fortlaufend eingehende Serial1-Kommandos.
+  Rueckgabe:
+  - Keine.
+*/
 void loop() {
   // Serielle Kommunikation (Node-RED)
   Daten_tick();

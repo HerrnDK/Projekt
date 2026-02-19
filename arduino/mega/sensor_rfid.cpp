@@ -1,3 +1,12 @@
+/*
+  sensor_rfid.cpp
+  Nutzen:
+  - Kapselt die komplette RC522-RFID-Kommunikation.
+  Funktion:
+  - Initialisiert SPI/Reader, erkennt Karten-UIDs und liefert
+    zusaetzliche Diagnosewerte (Hardwarestatus, Probe-Status, Versionsregister).
+*/
+
 #include "mega_gemeinsam.h"
 
 #include <SPI.h>
@@ -15,6 +24,14 @@ namespace {
   byte rfidVersionsRegister = 0x00;
   MFRC522::StatusCode rfidProbeStatus = MFRC522::STATUS_TIMEOUT;
 
+  /*
+    Zweck:
+    - Uebersetzt MFRC522-Statuscodes in stabile Textwerte.
+    Verhalten:
+    - Mappt bekannte Codes auf feste Strings fuer JSON-Diagnose.
+    Rueckgabe:
+    - Zeiger auf den passenden Statusstring.
+  */
   const char *rfidStatusCodeZuText(MFRC522::StatusCode code) {
     switch (code) {
       case MFRC522::STATUS_OK: return "STATUS_OK";
@@ -30,12 +47,29 @@ namespace {
     }
   }
 
+  /*
+    Zweck:
+    - Aktiviert und optimiert den RFID-Empfang.
+    Verhalten:
+    - Schaltet die Antenne ein und setzt maximale Empfaengerverstaerkung.
+    Rueckgabe:
+    - Keine.
+  */
   void konfiguriereRfidLeser() {
     rfidLeser.PCD_AntennaOn();
     rfidLeser.PCD_SetAntennaGain(MFRC522::RxGain_max);
     rfidLeserKonfiguriert = true;
   }
 
+  /*
+    Zweck:
+    - Prueft, ob aktuell eine RFID-Karte praesent ist.
+    Verhalten:
+    - Nutzt zuerst "new card present", danach WakeupA als Fallback.
+    - Aktualisiert dabei den internen Probe-Status.
+    Rueckgabe:
+    - `true`, wenn eine Karte erkannt bzw. aufgeweckt wurde.
+  */
   bool istKarteVorhandenOderAufwecken() {
     if (rfidLeser.PICC_IsNewCardPresent()) {
       rfidProbeStatus = MFRC522::STATUS_OK;
@@ -49,11 +83,28 @@ namespace {
     return wakeStatus == MFRC522::STATUS_OK || wakeStatus == MFRC522::STATUS_COLLISION;
   }
 
+  /*
+    Zweck:
+    - Prueft die Erreichbarkeit des RC522 ueber SPI.
+    Verhalten:
+    - Liest `VersionReg` und wertet 0x00/0xFF als nicht erkannt.
+    Rueckgabe:
+    - `true`, wenn das Modul plausibel antwortet.
+  */
   bool istRfidLeserErkannt() {
     rfidVersionsRegister = rfidLeser.PCD_ReadRegister(MFRC522::VersionReg);
     return rfidVersionsRegister != 0x00 && rfidVersionsRegister != 0xFF;
   }
 
+  /*
+    Zweck:
+    - Aktualisiert den globalen RFID-Hardwarestatus.
+    Verhalten:
+    - Prueft Reader-Erkennung, fuehrt bei Bedarf Re-Init aus
+      und setzt den resultierenden Statusstring.
+    Rueckgabe:
+    - Keine.
+  */
   void aktualisiereRfidHardwareZustand() {
     if (istRfidLeserErkannt()) {
       if (!rfidLeserKonfiguriert) {
@@ -75,6 +126,14 @@ namespace {
   }
 }
 
+/*
+  Zweck:
+  - Startet das RFID-Teilmodul beim Boot.
+  Verhalten:
+  - Initialisiert SPI und RC522 und fuehrt einen ersten Hardwarecheck durch.
+  Rueckgabe:
+  - Keine.
+*/
 void Rfid_starten() {
   SPI.begin();
   rfidLeser.PCD_Init();
@@ -82,6 +141,15 @@ void Rfid_starten() {
   aktualisiereRfidHardwareZustand();
 }
 
+/*
+  Zweck:
+  - Liest die UID einer praesentierten RFID-Karte.
+  Verhalten:
+  - Prueft Hardwarestatus, fuehrt Presence/Probe-Check durch und formatiert UID.
+  - Setzt fuer alle Fehlerfaelle einen stabilen Statustext.
+  Rueckgabe:
+  - Keine (UID/Status ueber Referenzparameter).
+*/
 void Rfid_lesenUid(char *uidAusgabe, size_t uidAusgabeLaenge, const char *&statusAusgabe) {
   if (uidAusgabe == nullptr || uidAusgabeLaenge == 0) {
     statusAusgabe = "buffer_error";
@@ -154,14 +222,38 @@ void Rfid_lesenUid(char *uidAusgabe, size_t uidAusgabeLaenge, const char *&statu
   rfidLeser.PCD_StopCrypto1();
 }
 
+/*
+  Zweck:
+  - Liefert den aktuellen RFID-Hardwarestatus.
+  Verhalten:
+  - Gibt den zuletzt ermittelten Zustandstext direkt zurueck.
+  Rueckgabe:
+  - Zeiger auf den Statusstring.
+*/
 const char *Rfid_holeHardwareStatus() {
   return rfidHardwareZustand;
 }
 
+/*
+  Zweck:
+  - Liefert den letzten Probe-Status als Text.
+  Verhalten:
+  - Konvertiert den gespeicherten MFRC522-Statuscode in einen String.
+  Rueckgabe:
+  - Zeiger auf den Probe-Statusstring.
+*/
 const char *Rfid_holeProbeStatus() {
   return rfidStatusCodeZuText(rfidProbeStatus);
 }
 
+/*
+  Zweck:
+  - Liefert das zuletzt gelesene RC522-Versionsregister.
+  Verhalten:
+  - Gibt den internen Registerpuffer unveraendert zurueck.
+  Rueckgabe:
+  - 8-Bit Registerwert.
+*/
 uint8_t Rfid_holeVersionsRegister() {
   return rfidVersionsRegister;
 }

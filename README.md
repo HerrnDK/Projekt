@@ -103,7 +103,11 @@ RFID Diagnose:
   - `mega_gemeinsam.cpp` gemeinsame Definitionen
   - `daten.cpp` Implementierung Serial1-Protokoll
   - `aktoren.cpp` Implementierung Aktoren
-  - `sensoren.cpp` Implementierung Sensoren
+  - `sensoren.cpp` Sensor-Fassade/Orchestrierung
+  - `sensor_hcsr04.cpp` HC-SR04 Modul
+  - `sensor_tropfen.cpp` Tropfensensor Modul
+  - `sensor_truebung.cpp` Truebungssensor Modul
+  - `sensor_rfid.cpp` RFID RC522 Modul
   - `PINOUT.md` Quelle der Wahrheit fuer Pins
 - `nodered/flows/`
   - `dashboard_flow.json` UI + Sensoranzeigen + Parametrierung
@@ -178,6 +182,6 @@ Hinweise:
 - Im Tab `Projekt-info` unter `Status / Sensoren` werden zusaetzlich `RFID RC522 Status`, `Tropfensensor Status`, `Truebungssensor Status` und die 4 Relais-Zustaende (`ON`/`OFF`) angezeigt.
 
 ## Naechste Schritte (wenn Sensoren/Aktoren bekannt sind)
-- Weitere Sensoren nach gleichem Muster in `sensoren.cpp` ergaenzen.
-- `ACTUATOR_PINS` und UI-Buttons bei Bedarf erweitern.
+- Weitere Sensoren als eigenes `sensor_<name>.cpp` ergaenzen und in `sensoren.cpp` anbinden.
+- `AKTOR_PINS` und UI-Buttons bei Bedarf erweitern.
 - Baudrate ggf. anpassen.

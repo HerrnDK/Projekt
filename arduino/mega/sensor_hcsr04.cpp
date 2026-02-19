@@ -1,3 +1,12 @@
+/*
+  sensor_hcsr04.cpp
+  Nutzen:
+  - Kapselt die Ansteuerung des HC-SR04 Ultraschallsensors.
+  Funktion:
+  - Initialisiert TRIG/ECHO und liefert Distanzmessungen in cm
+    inklusive Statusklassifizierung (ok, timeout, range).
+*/
+
 #include "mega_gemeinsam.h"
 
 namespace {
@@ -6,12 +15,29 @@ namespace {
   constexpr long HC_SR04_MAX_DISTANZ_CM = 400;
 }
 
+/*
+  Zweck:
+  - Initialisiert die HC-SR04 Pins.
+  Verhalten:
+  - Setzt TRIG als OUTPUT, ECHO als INPUT und legt TRIG auf LOW.
+  Rueckgabe:
+  - Keine.
+*/
 void Hcsr04_starten() {
   pinMode(HC_SR04_TRIG_PIN, OUTPUT);
   pinMode(HC_SR04_ECHO_PIN, INPUT);
   digitalWrite(HC_SR04_TRIG_PIN, LOW);
 }
 
+/*
+  Zweck:
+  - Fuehrt eine Distanzmessung mit dem HC-SR04 aus.
+  Verhalten:
+  - Sendet Triggerimpuls, misst Echo-Dauer und prueft den Distanzbereich.
+  Rueckgabe:
+  - Distanz in cm bei Erfolg, sonst `-1`.
+  - Statustext wird ueber `statusAusgabe` gesetzt.
+*/
 long Hcsr04_leseDistanzCm(const char *&statusAusgabe) {
   digitalWrite(HC_SR04_TRIG_PIN, LOW);
   delayMicroseconds(2);

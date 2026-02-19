@@ -1,3 +1,12 @@
+/*
+  mega_gemeinsam.h
+  Nutzen:
+  - Zentrale Schnittstelle fuer alle Arduino-Module.
+  Funktion:
+  - Definiert gemeinsame Konstanten, Pins, Datenstrukturen und Funktionsprototypen,
+    damit alle .cpp-Dateien konsistent zusammenarbeiten.
+*/
+
 #pragma once
 
 #include <Arduino.h>

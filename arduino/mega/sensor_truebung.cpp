@@ -1,3 +1,12 @@
+/*
+  sensor_truebung.cpp
+  Nutzen:
+  - Kapselt das Auslesen des Truebungssensors.
+  Funktion:
+  - Liest den Analogwert per Mittelung, bewertet die Messqualitaet
+    und meldet Trennungs-/Floating-Fehler erst nach Bestaetigung.
+*/
+
 #include "mega_gemeinsam.h"
 
 namespace {
@@ -12,10 +21,29 @@ namespace {
   uint8_t truebungTrennungVerdachtZaehler = 0;
 }
 
+/*
+  Zweck:
+  - Initialisiert den Truebungssensor-Eingang.
+  Verhalten:
+  - Konfiguriert den Analogpin als INPUT.
+  Rueckgabe:
+  - Keine.
+*/
 void Truebung_starten() {
   pinMode(TRUEBUNG_SENSOR_PIN, INPUT);
 }
 
+/*
+  Zweck:
+  - Liest den Truebungssensor als robusten Rohwert.
+  Verhalten:
+  - Bildet einen Mittelwert aus mehreren ADC-Stichproben.
+  - Fuehrt Bereichs- und Floating-Checks durch.
+  - Meldet eine Trennung erst nach mehrfacher Bestaetigung.
+  Rueckgabe:
+  - Rohwert 0..1023 bei Erfolg, sonst `-1`.
+  - Statustext wird ueber `statusAusgabe` gesetzt.
+*/
 long Truebung_leseRohwert(const char *&statusAusgabe) {
   pinMode(TRUEBUNG_SENSOR_PIN, INPUT);
 
