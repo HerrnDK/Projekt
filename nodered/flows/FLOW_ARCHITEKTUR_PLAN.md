@@ -1,4 +1,4 @@
-# Projekt-UML und Ablaufdiagramme
+# Projekt-Flussdiagramme und Ablaufdarstellungen
 
 ## Ziel
 - Komplettsicht auf Architektur und Laufzeit fuer Arduino, Raspberry Pi und Node-RED.
@@ -6,273 +6,280 @@
 
 ## 1) Systemarchitektur (Komponentenblick)
 ```mermaid
-flowchart TB
-  Benutzer["Benutzer"] --> Browser["Touch-Browser"]
-  Browser --> Dashboard["Node-RED Dashboard<br/>nodered/flows/dashboard_flow.json"]
+flowchart TD
+  S([Start]) --> Benutzer["Benutzer am Touch-Browser"]
+  Benutzer --> Dashboard["Node-RED Dashboard (dashboard_flow.json)"]
 
   subgraph RPi["Raspberry Pi"]
-    Dashboard --> DataFlow["data_exchange_flow.json<br/>Serial ein/aus + JSON-Parse"]
-    Dashboard --> NetFlow["Network.json<br/>WLAN / Status / QR"]
-    Dashboard --> StartupFlow["fn_startup_test_flow.json<br/>Startstatus"]
-    Dashboard --> ParamFlow["fn_parameters_flow.json<br/>Parameter + Offsets + Relais"]
-    Dashboard --> ProfileFlow["fn_profiles_flow.json<br/>RFID-Profile"]
+    Dashboard --> NetFlow["Network.json"]
+    Dashboard --> DataFlow["data_exchange_flow.json"]
+    Dashboard --> StartupFlow["fn_startup_test_flow.json"]
+    Dashboard --> ParamFlow["fn_parameters_flow.json"]
+    Dashboard --> ProfileFlow["fn_profiles_flow.json"]
   end
 
-  DataFlow --> SerialPort["/dev/serial0 UART"]
-  SerialPort --> LevelShift["Pegelwandler 5V -> 3.3V"]
-  LevelShift --> Mega["Arduino Mega 2560 Serial1<br/>TX1=18, RX1=19"]
+  DataFlow --> SerialPort["UART /dev/serial0"]
+  SerialPort --> Pegel["Pegelwandler 5V auf 3.3V"]
+  Pegel --> Mega["Arduino Mega Serial1"]
 
   subgraph Arduino["Arduino-Sketch"]
-    Mega --> MainCpp["mega.ino<br/>setup() und loop()"]
-    MainCpp --> DataCpp["data.cpp<br/>READ / ACT / RFID Protokoll"]
-    MainCpp --> SensorsCpp["sensors.cpp<br/>HC-SR04 + Tropfensensor + Truebungssensor + RC522"]
+    Mega --> MainCpp["mega.ino"]
+    MainCpp --> DataCpp["data.cpp"]
+    MainCpp --> SensorsCpp["sensors.cpp"]
     MainCpp --> ActCpp["actuators.cpp"]
-    DataCpp --> Shared["mega_shared.h / mega_shared.cpp"]
+    DataCpp --> Shared["mega_shared.h und mega_shared.cpp"]
     SensorsCpp --> Shared
     ActCpp --> Shared
   end
+
+  Shared --> E([Ende])
 ```
 
-## 2) UML RFID-Funktionsablauf (Lesen, Anlernen, Loeschen)
+## 2) RFID-Funktionsablauf (Lesen, Anlernen, Loeschen)
 ```mermaid
-sequenceDiagram
-  participant U as Benutzer
-  participant D as Dashboard (Profile)
-  participant P as fn_profiles_flow
-  participant X as data_exchange_flow
-  participant A as Arduino data.cpp
-  participant S as sensors.cpp + RC522
+flowchart TD
+  S([Start]) --> T0["Trigger: Lesen, Profil 1, Profil 2 oder RFID_POLL"]
+  T0 --> D0{"Profil-Button und Slot bereits belegt?"}
 
-  Note over P: Abfrage alle 2 s: RFID_POLL -> RFID
+  D0 -- Ja --> L0["UID-Bindung loeschen"]
+  L0 --> UI0["Profilstatus im Dashboard aktualisieren"]
+  UI0 --> E([Ende])
 
-  alt Lesen
-    U->>D: Klick "Lesen"
-    D->>P: payload RFID_READ
-  else Profil 1
-    U->>D: Klick "Profil 1 anlernen/loeschen"
-    D->>P: payload RFID_LEARN_P1
-  else Profil 2
-    U->>D: Klick "Profil 2 anlernen/loeschen"
-    D->>P: payload RFID_LEARN_P2
-  end
+  D0 -- Nein --> C0["Befehl RFID an data_exchange_flow senden"]
+  C0 --> C1["Serial1 Anfrage RFID an Arduino"]
+  C1 --> C2["RC522 lesen: UID, Status, Hardwarestatus"]
+  C2 --> D1{"Hardwarestatus ok?"}
 
-  alt Profil bereits belegt und Lern-Button geklickt
-    P-->>D: Bindung geloescht (ohne Hardwarezugriff)
-  else Lesen/Anlernen aktiv
-    P->>X: payload RFID
-    X->>A: Serial1 "RFID"
-    A->>S: Sensors_readRfid()
-    S-->>A: uid/status/hw_status/probe_status/version
-    A-->>X: JSON {type:"rfid", ...}
-    X-->>P: msg.payload
+  D1 -- Nein --> F0["Status: RFID Modulstoerung"]
+  F0 --> UI1["Dashboard: Profilstatus und Modulstatus aktualisieren"]
+  UI1 --> E
 
-    alt rfid_status == ok und UID bekannt
-      P-->>D: Aktives Profil 1/2 setzen
-    else rfid_status == ok und Anlernen aktiv
-      P-->>D: UID Slot 1/2 speichern, Lernmodus beenden
-    else rfid_status == probe_error und kein Lernmodus
-      P-->>D: Status bleibt "Profile bereit."
-    else sonstiger Fehler
-      P-->>D: Fehlermeldung anzeigen
-    end
-  end
+  D1 -- Ja --> D2{"rfid_status ok und UID vorhanden?"}
+  D2 -- Nein --> D3{"rfid_status no_card oder probe_error?"}
+  D3 -- Ja --> W0["Wartezustand oder Bereitschaft anzeigen"]
+  W0 --> UI1
+  D3 -- Nein --> F1["RFID Fehlertext setzen"]
+  F1 --> UI1
+
+  D2 -- Ja --> D4{"Anlernen Profil 1 oder Profil 2 aktiv?"}
+  D4 -- Ja --> S1["UID in entsprechenden Slot speichern"]
+  S1 --> P1["Lernmodus beenden"]
+  P1 --> UI1
+
+  D4 -- Nein --> D5{"UID passt zu Profil 1 oder Profil 2?"}
+  D5 -- Ja --> A0["Aktives Profil setzen"]
+  A0 --> UI1
+  D5 -- Nein --> U0["Unbekannten Chip melden"]
+  U0 --> UI1
 ```
 
-### 2.1 UML Zustandsmodell (Profilsteuerung)
+### 2.1 Flusslogik (Profilsteuerung)
 ```mermaid
-stateDiagram-v2
-  [*] --> Bereit
+flowchart TD
+  S([Start]) --> B0["Zustand Bereit"]
+  B0 --> D0{"Ereignis?"}
+  D0 -- RFID_READ --> R0["Zustand Lesen aktiv"]
+  D0 -- RFID_LEARN_P1 --> D1{"Slot 1 leer?"}
+  D0 -- RFID_LEARN_P2 --> D2{"Slot 2 leer?"}
 
-  Bereit --> LesenAktiv: RFID_READ
-  Bereit --> LearnP1: RFID_LEARN_P1 (Slot1 leer)
-  Bereit --> LearnP2: RFID_LEARN_P2 (Slot2 leer)
-  Bereit --> Bereit: RFID_LEARN_P1 (Slot1 belegt -> loeschen)
-  Bereit --> Bereit: RFID_LEARN_P2 (Slot2 belegt -> loeschen)
+  D1 -- Ja --> L1["Zustand LearnP1"]
+  D1 -- Nein --> X1["Slot 1 Bindung loeschen"]
+  X1 --> B0
 
-  LesenAktiv --> Bereit: RFID ok/no_card/probe_error
-  LearnP1 --> Bereit: RFID ok (UID -> Slot1)
-  LearnP2 --> Bereit: RFID ok (UID -> Slot2)
-  LearnP1 --> LearnP1: no_card/probe_error
-  LearnP2 --> LearnP2: no_card/probe_error
+  D2 -- Ja --> L2["Zustand LearnP2"]
+  D2 -- Nein --> X2["Slot 2 Bindung loeschen"]
+  X2 --> B0
+
+  R0 --> D3{"RFID Antwort ok/no_card/probe_error?"}
+  D3 -- Ja --> B0
+  D3 -- Nein --> B0
+
+  L1 --> D4{"UID gelesen?"}
+  D4 -- Ja --> S1["UID in Slot 1 speichern"] --> B0
+  D4 -- Nein --> L1
+
+  L2 --> D5{"UID gelesen?"}
+  D5 -- Ja --> S2["UID in Slot 2 speichern"] --> B0
+  D5 -- Nein --> L2
 ```
 
-## 3) UML HC-SR04 + Tropfensensor + Truebungssensor (READ, Offsets, Status)
+## 3) Sensorablauf HC-SR04, Tropfensensor, Truebungssensor
 ```mermaid
-sequenceDiagram
-  participant U as Benutzer
-  participant D as Dashboard (Projekt-info)
-  participant ST as fn_startup_test_flow
-  participant X as data_exchange_flow
-  participant A as Arduino data.cpp
-  participant S as sensors.cpp HC-SR04 + Tropfensensor + Truebungssensor
-  participant P as fn_parameters_flow
+flowchart TD
+  S([Start]) --> D0{"Trigger?"}
+  D0 -- Manuell --> T1["Button Sensoren aktualisieren"]
+  D0 -- Zyklisch --> T2["Starttest-Intervall"]
+  T1 --> C0["READ an data_exchange_flow senden"]
+  T2 --> C0
 
-  alt Manuell
-    U->>D: Klick "Sensoren aktualisieren"
-    D->>X: payload READ
-  else Starttest/zyklisch
-    ST->>X: payload READ
-  end
-
-  X->>A: Serial1 "READ"
-  A->>S: Sensors_readSnapshot()
-  S-->>A: hcsr04_distance_cm/status + droplet_raw/status + turbidity_raw/status + uptime_ms
-  A-->>X: JSON {type:"sensor", ...}
-  X->>P: msg.payload (sensor)
-  P->>P: Offsets anwenden (hcsr04_offset_cm + droplet_offset_raw + turbidity_offset_raw)
-  P-->>D: hcsr04_distance_display_cm + droplet_display_raw + turbidity_display_raw + Status + uptime_hms
-  P-->>ST: Sensorpayload fuer Starttest-Validierung
-  ST-->>D: Anlagenstatus (bereit/stoerung)
+  C0 --> C1["Serial1 READ an Arduino"]
+  C1 --> C2["Sensors_readSnapshot ausfuehren"]
+  C2 --> C3["JSON Sensorpayload empfangen"]
+  C3 --> C4["Offsets anwenden im fn_parameters_flow"]
+  C4 --> UI0["Dashboard-Werte und Status aktualisieren"]
+  C4 --> ST0["Payload an fn_startup_test_flow"]
+  ST0 --> D1{"Alle Sensorstatus gueltig?"}
+  D1 -- Ja --> A0["Anlagenstatus: bereit"]
+  D1 -- Nein --> A1["Anlagenstatus: stoerung"]
+  A0 --> E([Ende])
+  A1 --> E
 ```
 
-### 3.1 UML Zustandsmodell (Sensorik/Anlagenstatus)
+### 3.1 Flusslogik (Anlagenstatus)
 ```mermaid
-stateDiagram-v2
-  [*] --> Start
-  Start --> Stoerung: Standard beim Boot
-
-  Stoerung --> Bereit: hcsr04_status == ok && droplet_status == ok && turbidity_status == ok && uptime gueltig
-  Stoerung --> Stoerung: hcsr04_status != ok || droplet_status != ok || turbidity_status != ok
-
-  Bereit --> Bereit: hcsr04_status == ok && droplet_status == ok && turbidity_status == ok
-  Bereit --> Stoerung: HC-SR04/Tropfensensor/Truebungssensor fehlerhaft/ungueltig
+flowchart TD
+  S([Start]) --> I0["Initial: Anlage stoerung"]
+  I0 --> D0{"hcsr04_status ok?"}
+  D0 -- Nein --> F0["Stoerung bleibt aktiv"]
+  D0 -- Ja --> D1{"droplet_status ok?"}
+  D1 -- Nein --> F0
+  D1 -- Ja --> D2{"turbidity_status ok?"}
+  D2 -- Nein --> F0
+  D2 -- Ja --> D3{"uptime gueltig?"}
+  D3 -- Nein --> F0
+  D3 -- Ja --> OK0["Anlage bereit"]
+  F0 --> E([Ende])
+  OK0 --> E
 ```
 
-## 4) UML data_exchange_flow (Serial-Gateway)
+## 4) data_exchange_flow (Serial-Gateway)
 ```mermaid
-sequenceDiagram
-  participant Src as Dashboard/Funktionsflows
-  participant X as data_exchange_flow
-  participant A as Arduino Serial1
-  participant Fn as fn_startup/fn_parameters/fn_profiles
-
-  Src->>X: Link-In (READ/RFID/ACT,...)
-  X->>A: serial out "/dev/serial0" + "\\n"
-  A-->>X: serial in JSON line
-  X->>X: JSON parsen
-  X->>X: uptime_hms formatieren
-  X-->>Fn: Link-Out (msg.payload mit type)
+flowchart TD
+  S([Start]) --> IN0["Link-In von Dashboard oder Funktionsflow"]
+  IN0 --> TX0["Serial out an Arduino mit Newline"]
+  TX0 --> RX0["Serial in vom Arduino empfangen"]
+  RX0 --> D0{"JSON parsebar?"}
+  D0 -- Nein --> DBG0["Debug: Rohdaten und Parse-Fehler"]
+  DBG0 --> E([Ende])
+  D0 -- Ja --> P0["Payload uebernehmen"]
+  P0 --> P1["uptime_hms berechnen"]
+  P1 --> OUT0["Link-Out zu startup, parameter, profile"]
+  OUT0 --> DBG1["Debug: geparste Daten"]
+  DBG1 --> E
 ```
 
-### 4.1 UML Aktivitaetsdiagramm (data_exchange_flow)
+### 4.1 Technischer Datenpfad (data_exchange_flow)
 ```mermaid
-flowchart LR
-  A[Link-In von Dashboard/Funktionsflows] --> B[serial out -> Arduino]
-  B --> C[serial in vom Arduino]
-  C --> D[JSON-Parse]
-  D --> E[uptime_hms berechnen]
-  E --> F[Link-Out zu fn_startup/fn_parameters/fn_profiles]
-  C --> G[Debug roh]
-  D --> H[Debug geparst]
+flowchart TD
+  S([Start]) --> A0["Befehl READ, RFID oder ACT empfangen"]
+  A0 --> A1["Befehl seriell senden"]
+  A1 --> A2["JSON Antwortzeile empfangen"]
+  A2 --> A3["JSON verarbeiten"]
+  A3 --> A4["Uptime formatieren"]
+  A4 --> A5["An Funktionsflows verteilen"]
+  A5 --> E([Ende])
 ```
 
-## 5) UML fn_startup_test_flow (Starttest-Validierung)
+## 5) fn_startup_test_flow (Starttest-Validierung)
 ```mermaid
-sequenceDiagram
-  participant Boot as Boot-Inject
-  participant ST as fn_startup_test_flow
-  participant X as data_exchange_flow
-  participant A as Arduino
-  participant D as Dashboard Status
-
-  Boot->>ST: INIT_STARTUP_STATUS
-  ST-->>D: "Anlage stoerung" (Standard)
-
-  loop alle 2 s (ab Boot +5 s)
-    ST->>X: payload READ
-    X->>A: Serial1 READ
-    A-->>X: {type:"sensor", ...}
-    X-->>ST: sensor payload
-    ST->>ST: switch: nur type=="sensor"
-    ST->>ST: uptime + hcsr04_status/range + droplet_status/range + turbidity_status/range validieren
-    ST-->>D: "Anlage bereit" oder "Anlage stoerung"
-  end
+flowchart TD
+  S([Start]) --> I0["Boot: INIT_STARTUP_STATUS setzen"]
+  I0 --> I1["Standardstatus: Anlage stoerung"]
+  I1 --> L0["Alle 2 Sekunden READ ausloesen"]
+  L0 --> C0["Sensorpayload ueber data_exchange_flow empfangen"]
+  C0 --> D0{"payload.type gleich sensor?"}
+  D0 -- Nein --> L0
+  D0 -- Ja --> V0["Uptime und Sensorstatus validieren"]
+  V0 --> D1{"Alle Pruefungen ok?"}
+  D1 -- Ja --> OK0["Dashboard: Anlage bereit"]
+  D1 -- Nein --> ER0["Dashboard: Anlage stoerung"]
+  OK0 --> L0
+  ER0 --> L0
 ```
 
-## 6) UML fn_parameters_flow (Offsets + Relais + Anzeigewerte)
+## 6) fn_parameters_flow (Offsets + Relais + Anzeigewerte)
 ```mermaid
-sequenceDiagram
-  participant Boot as Boot-Inject
-  participant UI as Dashboard Slider/Relais-Buttons
-  participant PF as fn_parameters_flow
-  participant X as data_exchange_flow
-  participant D as Dashboard
+flowchart TD
+  S([Start]) --> I0["INIT_OFFSET verarbeiten"]
+  I0 --> I1["Standard-Offsets setzen und begrenzen"]
+  I1 --> UI0["Parameterstatus an Dashboard senden"]
+  UI0 --> W0["Warten auf Eingangsereignis"]
 
-  Boot->>PF: INIT_OFFSET
-  PF->>PF: Standard-Offsets clampen
-  PF-->>D: Parameterstatus (hcsr04_offset_cm + droplet_offset_raw + turbidity_offset_raw)
+  W0 --> D0{"Eingangstyp?"}
+  D0 -- Slider --> P0["Offset nach topic speichern"]
+  P0 --> P1["Werte begrenzen und global speichern"]
+  P1 --> UI1["Parameterstatus aktualisieren"]
+  UI1 --> W0
 
-  UI->>PF: Slider-Wert
-  PF->>PF: Offset speichern (abh. von msg.topic)
-  PF-->>D: Parameterstatus (hcsr04_offset_cm + droplet_offset_raw + turbidity_offset_raw)
+  D0 -- Relais-Button --> R0["ACT pin state erzeugen"]
+  R0 --> R1["An data_exchange_flow senden"]
+  R1 --> R2["act ACK empfangen"]
+  R2 --> D1{"ACK ok?"}
+  D1 -- Ja --> R3["Relaisstatus aktualisieren"]
+  D1 -- Nein --> R4["Relaisstatus unveraendert lassen"]
+  R3 --> UI2["ON/OFF an Dashboard senden"]
+  R4 --> UI2
+  UI2 --> W0
 
-  UI->>PF: Relais-Button (topic=relay_toggle)
-  PF-->>X: ACT,<pin>,<state>
-  X-->>PF: act ACK (ok/pin/state)
-  PF-->>D: relay1..relay4 = ON/OFF
-
-  X-->>PF: sensor payload
-  PF->>PF: Offsets auf Distanz/Rohwert anwenden
-  PF-->>D: hcsr04_distance_display_cm + droplet_display_raw + turbidity_display_raw + Sensorstatus + uptime_hms
+  D0 -- Sensorpayload --> S0["Offsets auf Distanz und Rohwerte anwenden"]
+  S0 --> UI3["Sensoranzeige mit korrigierten Werten senden"]
+  UI3 --> W0
 ```
 
-### 6.1 UML Zustandsmodell (Offset)
+### 6.1 Flusslogik (Offset)
 ```mermaid
-stateDiagram-v2
-  [*] --> OffsetInit
-  OffsetInit --> OffsetReady: INIT_OFFSET
-  OffsetReady --> OffsetReady: Slider-Update (HC-SR04 -5..+5 / Tropfen -300..+300 / Truebung -200..+200)
-  OffsetReady --> OffsetReady: Sensorpayload -> Anzeige Distanz/Rohwert
+flowchart TD
+  S([Start]) --> L0["Aktuelle Offsets laden"]
+  L0 --> C0["Grenzwerte anwenden"]
+  C0 --> D0{"Welcher topic-Wert kommt?"}
+  D0 -- hcsr04_offset_cm --> U0["HC-SR04 Offset aktualisieren"]
+  D0 -- droplet_offset_raw --> U1["Tropfensensor Offset aktualisieren"]
+  D0 -- turbidity_offset_raw --> U2["Truebungssensor Offset aktualisieren"]
+  U0 --> S0["Offsets speichern"]
+  U1 --> S0
+  U2 --> S0
+  S0 --> P0["Parameterstatus veroeffentlichen"]
+  P0 --> E([Ende])
 ```
 
-### 6.2 UML Zustandsmodell (Relais 1..4)
+### 6.2 Flusslogik (Relais 1 bis 4)
 ```mermaid
-stateDiagram-v2
-  [*] --> AlleOFF
-  AlleOFF --> Gemischt: erster Toggle
-  Gemischt --> Gemischt: weitere Toggles
-  Gemischt --> AlleOFF: alle Relais auf OFF
-
-  note right of Gemischt
-    Jeder Button sendet relay_toggle.
-    fn_parameters_flow erzeugt ACT,<pin>,<state>
-    und aktualisiert den Status erst nach ACT-ACK.
-  end note
+flowchart TD
+  S([Start]) --> I0["Relaiszustand initialisieren"]
+  I0 --> W0["Warten auf relay_toggle"]
+  W0 --> T0["Gewuenschten naechsten Zustand berechnen"]
+  T0 --> C0["ACT pin state senden"]
+  C0 --> A0["ACK empfangen"]
+  A0 --> D0{"ACK ok?"}
+  D0 -- Ja --> U0["Relaiszustand uebernehmen"]
+  D0 -- Nein --> U1["Relaiszustand nicht aendern"]
+  U0 --> P0["ON/OFF an Dashboard senden"]
+  U1 --> P0
+  P0 --> W0
 ```
 
-## 7) UML Network.json (WLAN + QR + UI)
+## 7) Network.json (WLAN + QR + UI)
 ```mermaid
-sequenceDiagram
-  participant Poll as 1s Abfrage
-  participant Net as Network.json
-  participant OS as nmcli/ip
-  participant D as Dashboard WLAN/Willkommen
-
-  loop jede 1 s
-    Poll->>Net: trigger
-    Net->>OS: nmcli device status
-    OS-->>Net: wlan0 state/connection
-    Net->>OS: nmcli wlan0 ip + ip end0
-    OS-->>Net: WLAN/LAN IP
-    Net->>Net: Status auswerten + QR-Ziele
-    Net->>OS: qrencode (AP/Anmeldung/Dashboard)
-    OS-->>Net: SVG
-    Net-->>D: WLAN-Status + Debug/WLAN-URL + Willkommens-QR-Karten
-  end
+flowchart TD
+  S([Start]) --> L0["Alle 1 Sekunde Netzwerkabfrage"]
+  L0 --> N0["nmcli device status lesen"]
+  N0 --> N1["WLAN/AP Status auswerten"]
+  N1 --> N2["WLAN und LAN IP ermitteln"]
+  N2 --> N3["QR Ziele festlegen"]
+  N3 --> N4["QR Codes ueber qrencode erzeugen"]
+  N4 --> UI0["Dashboard: WLAN-Status und URLs aktualisieren"]
+  UI0 --> UI1["Dashboard: Willkommens-QR Karten aktualisieren"]
+  UI1 --> L0
 ```
 
-### 7.1 UML WLAN-Verbindungsablauf
+### 7.1 WLAN-Verbindungsablauf
 ```mermaid
-flowchart LR
-  A[SSID Auswahl + Passwort] --> B[Verbinden-Button]
-  B --> C[Funktion: Verbindungsbefehl bauen]
-  C --> D[nmcli con down projekt-ap]
-  D --> E[Verzoegerung]
-  E --> F[nmcli connection delete <SSID>]
-  F --> G[Verzoegerung]
-  G --> H[nmcli dev wifi connect <SSID> password <PW>]
-  H --> I[Toast OK + Navigation Projekt-info]
-  H --> J[Toast Fehler]
+flowchart TD
+  S([Start]) --> I0["SSID und Passwort erfassen"]
+  I0 --> D0{"SSID und Passwort gueltig?"}
+  D0 -- Nein --> F0["Toast: Eingabe unvollstaendig"]
+  F0 --> E([Ende])
+
+  D0 -- Ja --> C0["AP stoppen: nmcli con down projekt-ap"]
+  C0 --> C1["Verzoegerung"]
+  C1 --> C2["Alte Verbindung loeschen"]
+  C2 --> C3["Verzoegerung"]
+  C3 --> C4["WLAN verbinden mit nmcli"]
+  C4 --> D1{"Verbindung erfolgreich?"}
+  D1 -- Ja --> OK0["Toast OK und Navigation zu Projekt-info"]
+  D1 -- Nein --> ER0["Toast Fehler"]
+  OK0 --> E
+  ER0 --> E
 ```
 
 ## Struktur je Funktion (Standardmuster)
