@@ -7,27 +7,27 @@
 ## 1) Systemarchitektur (Komponentenblick)
 ```mermaid
 flowchart TB
-  Benutzer[Benutzer] --> Browser[Touch-Browser]
-  Browser --> Dashboard[Node-RED Dashboard\nnodered/flows/dashboard_flow.json]
+  Benutzer["Benutzer"] --> Browser["Touch-Browser"]
+  Browser --> Dashboard["Node-RED Dashboard<br/>nodered/flows/dashboard_flow.json"]
 
-  subgraph RPi[Raspberry Pi]
-    Dashboard --> DataFlow[data_exchange_flow.json\nSerial ein/aus + JSON-Parse]
-    Dashboard --> NetFlow[Network.json\nWLAN / Status / QR]
-    Dashboard --> StartupFlow[fn_startup_test_flow.json\nStartstatus]
-    Dashboard --> ParamFlow[fn_parameters_flow.json\nParameter + Offsets + Relais]
-    Dashboard --> ProfileFlow[fn_profiles_flow.json\nRFID-Profile]
+  subgraph RPi["Raspberry Pi"]
+    Dashboard --> DataFlow["data_exchange_flow.json<br/>Serial ein/aus + JSON-Parse"]
+    Dashboard --> NetFlow["Network.json<br/>WLAN / Status / QR"]
+    Dashboard --> StartupFlow["fn_startup_test_flow.json<br/>Startstatus"]
+    Dashboard --> ParamFlow["fn_parameters_flow.json<br/>Parameter + Offsets + Relais"]
+    Dashboard --> ProfileFlow["fn_profiles_flow.json<br/>RFID-Profile"]
   end
 
   DataFlow --> SerialPort["/dev/serial0 UART"]
-  SerialPort --> LevelShift[Pegelwandler 5V -> 3.3V]
-  LevelShift --> Mega[Arduino Mega 2560 Serial1\nTX1=18 RX1=19]
+  SerialPort --> LevelShift["Pegelwandler 5V -> 3.3V"]
+  LevelShift --> Mega["Arduino Mega 2560 Serial1<br/>TX1=18, RX1=19"]
 
-  subgraph Arduino[Arduino Sketch arduino/mega]
-    Mega --> MainCpp[mega.ino\nsetup() / loop()]
-    MainCpp --> DataCpp[data.cpp\nREAD / ACT / RFID Protokoll]
-    MainCpp --> SensorsCpp[sensors.cpp\nHC-SR04 + Tropfensensor + Truebungssensor + RC522]
-    MainCpp --> ActCpp[actuators.cpp]
-    DataCpp --> Shared[mega_shared.h/.cpp]
+  subgraph Arduino["Arduino-Sketch"]
+    Mega --> MainCpp["mega.ino<br/>setup() und loop()"]
+    MainCpp --> DataCpp["data.cpp<br/>READ / ACT / RFID Protokoll"]
+    MainCpp --> SensorsCpp["sensors.cpp<br/>HC-SR04 + Tropfensensor + Truebungssensor + RC522"]
+    MainCpp --> ActCpp["actuators.cpp"]
+    DataCpp --> Shared["mega_shared.h / mega_shared.cpp"]
     SensorsCpp --> Shared
     ActCpp --> Shared
   end
