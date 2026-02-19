@@ -2,13 +2,14 @@
 
 /*
   actuators.cpp
-  - Aktoren-Handling
+  - Verwaltung der Relais-/Aktorpins
 */
 
 namespace {
-  bool Actuators_isValidPin(uint8_t pin) {
-    for (uint8_t i = 0; i < ACTUATOR_COUNT; i++) {
-      if (ACTUATOR_PINS[i] == pin) {
+  // Prueft, ob ein Pin in der zentralen Aktorliste vorhanden ist.
+  bool Aktoren_istGueltigerPin(uint8_t pin) {
+    for (uint8_t i = 0; i < AKTOR_ANZAHL; i++) {
+      if (AKTOR_PINS[i] == pin) {
         return true;
       }
     }
@@ -16,20 +17,33 @@ namespace {
   }
 }
 
-void Actuators_begin() {
-  for (uint8_t i = 0; i < ACTUATOR_COUNT; i++) {
-    pinMode(ACTUATOR_PINS[i], OUTPUT);
+/*
+  Initialisiert alle Aktoren beim Start.
+  - setzt alle konfigurierten Pins auf OUTPUT
+  - setzt alle Relais in den sicheren AUS-Zustand
+*/
+void Aktoren_starten() {
+  for (uint8_t i = 0; i < AKTOR_ANZAHL; i++) {
+    pinMode(AKTOR_PINS[i], OUTPUT);
     // Active-Low Relaismodul: HIGH = aus, LOW = ein
-    digitalWrite(ACTUATOR_PINS[i], HIGH);
+    digitalWrite(AKTOR_PINS[i], HIGH);
   }
 }
 
-bool Actuators_set(uint8_t pin, bool state) {
-  if (!Actuators_isValidPin(pin)) {
+/*
+  Schaltet einen Aktor logisch ein oder aus.
+  - zustand=true  bedeutet EIN
+  - zustand=false bedeutet AUS
+  Rueckgabe:
+  - true  => Pin war gueltig und wurde gesetzt
+  - false => Pin ist kein freigegebener Aktor-Pin
+*/
+bool Aktoren_setzen(uint8_t pin, bool zustand) {
+  if (!Aktoren_istGueltigerPin(pin)) {
     return false;
   }
 
-  // state=true bedeutet logisch EIN -> bei Active-Low physisch LOW
-  digitalWrite(pin, state ? LOW : HIGH);
+  // zustand=true bedeutet logisch EIN -> bei Active-Low physisch LOW
+  digitalWrite(pin, zustand ? LOW : HIGH);
   return true;
 }

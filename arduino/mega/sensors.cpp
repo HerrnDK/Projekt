@@ -10,42 +10,45 @@
 
 /*
   sensors.cpp
-  - Sensor-Handling
-  - HC-SR04 auf D26 (TRIG) / D27 (ECHO)
-  - Funduino Tropfensensor auf A0 (Analog-Rohwert)
-  - Wassertruebungssensor auf A1 (Analog-Rohwert)
-  - RFID RC522 via SPI (SS D53, RST D49)
+  - Sensor-Handling fuer HC-SR04, Tropfensensor, Truebungssensor und RFID RC522
+  - HC-SR04: D26 (TRIG) / D27 (ECHO)
+  - Tropfensensor: A0
+  - Truebungssensor: A1
+  - RC522: SPI mit SS D53 und RST D49
 */
 
 namespace {
-  constexpr unsigned long HC_SR04_TIMEOUT_US = 30000UL;
-  constexpr long HC_SR04_MIN_CM = 2;
-  constexpr long HC_SR04_MAX_CM = 400;
-  constexpr long DROPLET_MIN_RAW = 0;
-  constexpr long DROPLET_MAX_RAW = 1023;
-  constexpr uint8_t DROPLET_SAMPLE_COUNT = 5;
-  constexpr int DROPLET_FLOATING_SPREAD_THRESHOLD = 80;
-  constexpr int DROPLET_PULLUP_HIGH_THRESHOLD = 1000;
-  constexpr int DROPLET_PULLUP_DELTA_THRESHOLD = 250;
-  constexpr long TURBIDITY_MIN_RAW = 0;
-  constexpr long TURBIDITY_MAX_RAW = 1023;
-  constexpr uint8_t TURBIDITY_SAMPLE_COUNT = 5;
+  constexpr unsigned long HC_SR04_TIMEOUT_MIKROSEKUNDEN = 30000UL;
+  constexpr long HC_SR04_MIN_DISTANZ_CM = 2;
+  constexpr long HC_SR04_MAX_DISTANZ_CM = 400;
+
+  constexpr long TROPFEN_MIN_ROH = 0;
+  constexpr long TROPFEN_MAX_ROH = 1023;
+  constexpr uint8_t TROPFEN_STICHPROBEN_ANZAHL = 5;
+  constexpr int TROPFEN_FLOATING_SPREAD_SCHWELLE = 80;
+  constexpr int TROPFEN_PULLUP_HOCH_SCHWELLE = 1000;
+  constexpr int TROPFEN_PULLUP_DELTA_SCHWELLE = 250;
+
+  constexpr long TRUEBUNG_MIN_ROH = 0;
+  constexpr long TRUEBUNG_MAX_ROH = 1023;
+  constexpr uint8_t TRUEBUNG_STICHPROBEN_ANZAHL = 5;
   // Beim Truebungssensor ist das Analogsignal deutlich rauschiger als beim Tropfensensor.
   // Deshalb sind die Schwellen konservativer und der Fehler wird erst nach Bestaetigung gesetzt.
-  constexpr int TURBIDITY_FLOATING_SPREAD_THRESHOLD = 220;
-  constexpr int TURBIDITY_RAW_HIGH_THRESHOLD = 850;
-  constexpr int TURBIDITY_PULLUP_HIGH_THRESHOLD = 1015;
-  constexpr int TURBIDITY_PULLUP_DELTA_THRESHOLD = 450;
-  constexpr uint8_t TURBIDITY_DISCONNECT_CONFIRM_SNAPSHOTS = 3;
-  uint8_t turbidityDisconnectSuspectCount = 0;
+  constexpr int TRUEBUNG_FLOATING_SPREAD_SCHWELLE = 220;
+  constexpr int TRUEBUNG_ROH_HOCH_SCHWELLE = 850;
+  constexpr int TRUEBUNG_PULLUP_HOCH_SCHWELLE = 1015;
+  constexpr int TRUEBUNG_PULLUP_DELTA_SCHWELLE = 450;
+  constexpr uint8_t TRUEBUNG_TRENNUNG_BESTAETIGUNG_SNAPSHOTS = 3;
+  uint8_t truebungTrennungVerdachtZaehler = 0;
 
-  MFRC522 rfidReader(RC522_SS_PIN, RC522_RST_PIN);
-  const char *rfidHardwareStatus = "error_not_initialized";
-  bool rfidReaderConfigured = false;
-  byte rfidVersionReg = 0x00;
+  MFRC522 rfidLeser(RC522_PIN_SS, RC522_PIN_RST);
+  const char *rfidHardwareZustand = "error_not_initialized";
+  bool rfidLeserKonfiguriert = false;
+  byte rfidVersionsRegister = 0x00;
   MFRC522::StatusCode rfidProbeStatus = MFRC522::STATUS_TIMEOUT;
 
-  const char *rfidStatusCodeToText(MFRC522::StatusCode code) {
+  // Wandelt MFRC522-Statuscodes in stabile Klartexte fuer JSON um.
+  const char *rfidStatusCodeZuText(MFRC522::StatusCode code) {
     switch (code) {
       case MFRC522::STATUS_OK: return "STATUS_OK";
       case MFRC522::STATUS_ERROR: return "STATUS_ERROR";
@@ -60,55 +63,56 @@ namespace {
     }
   }
 
-  void configureRfidReader() {
-    // Improve detection stability for weak tags/modules.
-    rfidReader.PCD_AntennaOn();
-    rfidReader.PCD_SetAntennaGain(MFRC522::RxGain_max);
-    rfidReaderConfigured = true;
+  // Aktiviert Antenne/Gain fuer stabile RFID-Erkennung.
+  void konfiguriereRfidLeser() {
+    rfidLeser.PCD_AntennaOn();
+    rfidLeser.PCD_SetAntennaGain(MFRC522::RxGain_max);
+    rfidLeserKonfiguriert = true;
   }
 
-  bool isCardPresentOrWakeup() {
-    if (rfidReader.PICC_IsNewCardPresent()) {
+  // Prueft, ob eine Karte neu praesent ist oder aufgeweckt werden kann.
+  bool istKarteVorhandenOderAufwecken() {
+    if (rfidLeser.PICC_IsNewCardPresent()) {
       rfidProbeStatus = MFRC522::STATUS_OK;
       return true;
     }
 
-    // Also detect cards that are already in field / halted.
     byte atqa[2] = {0, 0};
-    byte atqaSize = sizeof(atqa);
-    MFRC522::StatusCode wakeStatus = rfidReader.PICC_WakeupA(atqa, &atqaSize);
+    byte atqaGroesse = sizeof(atqa);
+    MFRC522::StatusCode wakeStatus = rfidLeser.PICC_WakeupA(atqa, &atqaGroesse);
     rfidProbeStatus = wakeStatus;
     return wakeStatus == MFRC522::STATUS_OK || wakeStatus == MFRC522::STATUS_COLLISION;
   }
 
-  bool isRfidReaderDetected() {
-    rfidVersionReg = rfidReader.PCD_ReadRegister(MFRC522::VersionReg);
-    return rfidVersionReg != 0x00 && rfidVersionReg != 0xFF;
+  // Liest VersionReg und prueft, ob der Leser auf SPI antwortet.
+  bool istRfidLeserErkannt() {
+    rfidVersionsRegister = rfidLeser.PCD_ReadRegister(MFRC522::VersionReg);
+    return rfidVersionsRegister != 0x00 && rfidVersionsRegister != 0xFF;
   }
 
-  void refreshRfidHardwareStatus() {
-    // Reader kann waehrend Laufzeit ab-/angesteckt werden.
-    if (isRfidReaderDetected()) {
-      if (!rfidReaderConfigured) {
-        configureRfidReader();
+  // Aktualisiert den RFID-Hardwarezustand inkl. Re-Init bei Laufzeit-Reconnect.
+  void aktualisiereRfidHardwareZustand() {
+    if (istRfidLeserErkannt()) {
+      if (!rfidLeserKonfiguriert) {
+        konfiguriereRfidLeser();
       }
-      rfidHardwareStatus = "ok";
+      rfidHardwareZustand = "ok";
       return;
     }
 
-    // Ein Re-Init-Versuch erlaubt Wiedererkennung nach Reconnect.
-    rfidReader.PCD_Init();
-    rfidReaderConfigured = false;
+    rfidLeser.PCD_Init();
+    rfidLeserKonfiguriert = false;
     delay(2);
-    if (isRfidReaderDetected()) {
-      configureRfidReader();
-      rfidHardwareStatus = "ok";
+    if (istRfidLeserErkannt()) {
+      konfiguriereRfidLeser();
+      rfidHardwareZustand = "ok";
     } else {
-      rfidHardwareStatus = "error_not_detected";
+      rfidHardwareZustand = "error_not_detected";
     }
   }
 
-  long readHcsr04DistanceCm(bool &ok, const char *&status) {
+  // Liest die Distanz des HC-SR04 in Zentimetern und liefert Statuscodes.
+  long leseHcsr04DistanzCm(bool &messungGueltig, const char *&status) {
     // Trigger-Impuls: LOW -> HIGH (10us) -> LOW
     digitalWrite(HC_SR04_TRIG_PIN, LOW);
     delayMicroseconds(2);
@@ -116,241 +120,264 @@ namespace {
     delayMicroseconds(10);
     digitalWrite(HC_SR04_TRIG_PIN, LOW);
 
-    unsigned long durationUs = pulseIn(HC_SR04_ECHO_PIN, HIGH, HC_SR04_TIMEOUT_US);
-    if (durationUs == 0) {
-      ok = false;
+    unsigned long dauerMikrosekunden = pulseIn(HC_SR04_ECHO_PIN, HIGH, HC_SR04_TIMEOUT_MIKROSEKUNDEN);
+    if (dauerMikrosekunden == 0) {
+      messungGueltig = false;
       status = "error_timeout";
       return -1;
     }
 
-    long distanceCm = static_cast<long>(durationUs / 58UL);
-    if (distanceCm < HC_SR04_MIN_CM || distanceCm > HC_SR04_MAX_CM) {
-      ok = false;
+    long distanzCm = static_cast<long>(dauerMikrosekunden / 58UL);
+    if (distanzCm < HC_SR04_MIN_DISTANZ_CM || distanzCm > HC_SR04_MAX_DISTANZ_CM) {
+      messungGueltig = false;
       status = "error_range";
       return -1;
     }
 
-    ok = true;
+    messungGueltig = true;
     status = "ok";
-    return distanceCm;
+    return distanzCm;
   }
 
-  long readDropletRaw(bool &ok, const char *&status) {
-    pinMode(DROPLET_SENSOR_PIN, INPUT);
+  // Liest den Tropfensensor als gemittelten Rohwert inkl. Floating-Erkennung.
+  long leseTropfenRohwert(bool &messungGueltig, const char *&status) {
+    pinMode(TROPFEN_SENSOR_PIN, INPUT);
 
-    long sum = 0;
-    int minRaw = 1023;
-    int maxRaw = 0;
-    for (uint8_t i = 0; i < DROPLET_SAMPLE_COUNT; i++) {
-      const int sample = analogRead(DROPLET_SENSOR_PIN);
-      sum += sample;
-      if (sample < minRaw) {
-        minRaw = sample;
+    long summe = 0;
+    int minRoh = 1023;
+    int maxRoh = 0;
+    for (uint8_t i = 0; i < TROPFEN_STICHPROBEN_ANZAHL; i++) {
+      const int stichprobe = analogRead(TROPFEN_SENSOR_PIN);
+      summe += stichprobe;
+      if (stichprobe < minRoh) {
+        minRoh = stichprobe;
       }
-      if (sample > maxRaw) {
-        maxRaw = sample;
+      if (stichprobe > maxRoh) {
+        maxRoh = stichprobe;
       }
       delayMicroseconds(200);
     }
 
-    const int raw = static_cast<int>(sum / DROPLET_SAMPLE_COUNT);
-    if (raw < DROPLET_MIN_RAW || raw > DROPLET_MAX_RAW) {
-      ok = false;
+    const int roh = static_cast<int>(summe / TROPFEN_STICHPROBEN_ANZAHL);
+    if (roh < TROPFEN_MIN_ROH || roh > TROPFEN_MAX_ROH) {
+      messungGueltig = false;
       status = "error_range";
       return -1;
     }
 
     // Floating-Check: internen Pullup kurz aktivieren.
-    // Bei abgezogenem Sensor springt der ADC-Wert deutlich gegen 1023.
-    pinMode(DROPLET_SENSOR_PIN, INPUT_PULLUP);
+    pinMode(TROPFEN_SENSOR_PIN, INPUT_PULLUP);
     delayMicroseconds(200);
-    const int pullupSample = analogRead(DROPLET_SENSOR_PIN);
-    pinMode(DROPLET_SENSOR_PIN, INPUT);
+    const int pullupStichprobe = analogRead(TROPFEN_SENSOR_PIN);
+    pinMode(TROPFEN_SENSOR_PIN, INPUT);
 
-    const bool floatingByNoise = (maxRaw - minRaw) >= DROPLET_FLOATING_SPREAD_THRESHOLD;
-    const bool floatingByPullup = (pullupSample >= DROPLET_PULLUP_HIGH_THRESHOLD) &&
-                                  ((pullupSample - raw) >= DROPLET_PULLUP_DELTA_THRESHOLD);
-    if (floatingByNoise || floatingByPullup) {
-      ok = false;
+    const bool floatingDurchRauschen = (maxRoh - minRoh) >= TROPFEN_FLOATING_SPREAD_SCHWELLE;
+    const bool floatingDurchPullup = (pullupStichprobe >= TROPFEN_PULLUP_HOCH_SCHWELLE) &&
+                                     ((pullupStichprobe - roh) >= TROPFEN_PULLUP_DELTA_SCHWELLE);
+    if (floatingDurchRauschen || floatingDurchPullup) {
+      messungGueltig = false;
       status = "error_not_connected";
       return -1;
     }
 
-    ok = true;
+    messungGueltig = true;
     status = "ok";
-    return static_cast<long>(raw);
+    return static_cast<long>(roh);
   }
 
-  long readTurbidityRaw(bool &ok, const char *&status) {
-    pinMode(TURBIDITY_SENSOR_PIN, INPUT);
+  // Liest den Truebungssensor als Rohwert inkl. bestaetigter Trennungs-Erkennung.
+  long leseTruebungRohwert(bool &messungGueltig, const char *&status) {
+    pinMode(TRUEBUNG_SENSOR_PIN, INPUT);
 
-    long sum = 0;
-    int minRaw = 1023;
-    int maxRaw = 0;
-    for (uint8_t i = 0; i < TURBIDITY_SAMPLE_COUNT; i++) {
-      const int sample = analogRead(TURBIDITY_SENSOR_PIN);
-      sum += sample;
-      if (sample < minRaw) {
-        minRaw = sample;
+    long summe = 0;
+    int minRoh = 1023;
+    int maxRoh = 0;
+    for (uint8_t i = 0; i < TRUEBUNG_STICHPROBEN_ANZAHL; i++) {
+      const int stichprobe = analogRead(TRUEBUNG_SENSOR_PIN);
+      summe += stichprobe;
+      if (stichprobe < minRoh) {
+        minRoh = stichprobe;
       }
-      if (sample > maxRaw) {
-        maxRaw = sample;
+      if (stichprobe > maxRoh) {
+        maxRoh = stichprobe;
       }
       delayMicroseconds(200);
     }
 
-    const int raw = static_cast<int>(sum / TURBIDITY_SAMPLE_COUNT);
-    if (raw < TURBIDITY_MIN_RAW || raw > TURBIDITY_MAX_RAW) {
-      ok = false;
+    const int roh = static_cast<int>(summe / TRUEBUNG_STICHPROBEN_ANZAHL);
+    if (roh < TRUEBUNG_MIN_ROH || roh > TRUEBUNG_MAX_ROH) {
+      messungGueltig = false;
       status = "error_range";
       return -1;
     }
 
     // Floating-Check: internen Pullup kurz aktivieren.
-    // Bei abgezogenem Sensor springt der ADC-Wert deutlich gegen 1023.
-    pinMode(TURBIDITY_SENSOR_PIN, INPUT_PULLUP);
+    pinMode(TRUEBUNG_SENSOR_PIN, INPUT_PULLUP);
     delayMicroseconds(200);
-    const int pullupSample = analogRead(TURBIDITY_SENSOR_PIN);
-    pinMode(TURBIDITY_SENSOR_PIN, INPUT);
+    const int pullupStichprobe = analogRead(TRUEBUNG_SENSOR_PIN);
+    pinMode(TRUEBUNG_SENSOR_PIN, INPUT);
 
-    const bool floatingByNoise = (maxRaw - minRaw) >= TURBIDITY_FLOATING_SPREAD_THRESHOLD;
-    const bool floatingByPullup = (raw >= TURBIDITY_RAW_HIGH_THRESHOLD) &&
-                                  (pullupSample >= TURBIDITY_PULLUP_HIGH_THRESHOLD) &&
-                                  ((pullupSample - raw) >= TURBIDITY_PULLUP_DELTA_THRESHOLD);
-    const bool disconnectSuspected = floatingByNoise && floatingByPullup;
+    const bool floatingDurchRauschen = (maxRoh - minRoh) >= TRUEBUNG_FLOATING_SPREAD_SCHWELLE;
+    const bool floatingDurchPullup = (roh >= TRUEBUNG_ROH_HOCH_SCHWELLE) &&
+                                     (pullupStichprobe >= TRUEBUNG_PULLUP_HOCH_SCHWELLE) &&
+                                     ((pullupStichprobe - roh) >= TRUEBUNG_PULLUP_DELTA_SCHWELLE);
+    const bool trennungVermutet = floatingDurchRauschen && floatingDurchPullup;
 
-    if (disconnectSuspected) {
-      if (turbidityDisconnectSuspectCount < TURBIDITY_DISCONNECT_CONFIRM_SNAPSHOTS) {
-        turbidityDisconnectSuspectCount++;
+    if (trennungVermutet) {
+      if (truebungTrennungVerdachtZaehler < TRUEBUNG_TRENNUNG_BESTAETIGUNG_SNAPSHOTS) {
+        truebungTrennungVerdachtZaehler++;
       }
     } else {
-      turbidityDisconnectSuspectCount = 0;
+      truebungTrennungVerdachtZaehler = 0;
     }
 
-    if (turbidityDisconnectSuspectCount >= TURBIDITY_DISCONNECT_CONFIRM_SNAPSHOTS) {
-      ok = false;
+    if (truebungTrennungVerdachtZaehler >= TRUEBUNG_TRENNUNG_BESTAETIGUNG_SNAPSHOTS) {
+      messungGueltig = false;
       status = "error_not_connected";
       return -1;
     }
 
-    ok = true;
+    messungGueltig = true;
     status = "ok";
-    return static_cast<long>(raw);
+    return static_cast<long>(roh);
   }
 }
 
-void Sensors_begin() {
+/*
+  Initialisiert alle Sensor-Schnittstellen.
+  - setzt Pinmodi
+  - startet SPI und initialisiert den RC522
+*/
+void Sensoren_starten() {
   pinMode(HC_SR04_TRIG_PIN, OUTPUT);
   pinMode(HC_SR04_ECHO_PIN, INPUT);
-  pinMode(DROPLET_SENSOR_PIN, INPUT);
-  pinMode(TURBIDITY_SENSOR_PIN, INPUT);
+  pinMode(TROPFEN_SENSOR_PIN, INPUT);
+  pinMode(TRUEBUNG_SENSOR_PIN, INPUT);
   digitalWrite(HC_SR04_TRIG_PIN, LOW);
 
   SPI.begin();
-  rfidReader.PCD_Init();
+  rfidLeser.PCD_Init();
   delay(4);
-  refreshRfidHardwareStatus();
+  aktualisiereRfidHardwareZustand();
 }
 
-void Sensors_readSnapshot(SensorSnapshot &out) {
-  bool hcsr04Ok = false;
+/*
+  Liest alle Sensoren und fuellt eine gemeinsame Momentaufnahme.
+*/
+void Sensoren_lesenMomentaufnahme(SensorMomentaufnahme &ausgabe) {
+  bool hcsr04Gueltig = false;
   const char *hcsr04Status = "error_unknown";
-  out.hcsr04_distance_cm = readHcsr04DistanceCm(hcsr04Ok, hcsr04Status);
-  out.hcsr04_status = hcsr04Status;
+  ausgabe.hcsr04_distanz_cm = leseHcsr04DistanzCm(hcsr04Gueltig, hcsr04Status);
+  ausgabe.hcsr04_status = hcsr04Status;
 
-  bool dropletOk = false;
-  const char *dropletStatus = "error_unknown";
-  out.droplet_raw = readDropletRaw(dropletOk, dropletStatus);
-  out.droplet_status = dropletStatus;
+  bool tropfenGueltig = false;
+  const char *tropfenStatus = "error_unknown";
+  ausgabe.tropfen_roh = leseTropfenRohwert(tropfenGueltig, tropfenStatus);
+  ausgabe.tropfen_status = tropfenStatus;
 
-  bool turbidityOk = false;
-  const char *turbidityStatus = "error_unknown";
-  out.turbidity_raw = readTurbidityRaw(turbidityOk, turbidityStatus);
-  out.turbidity_status = turbidityStatus;
+  bool truebungGueltig = false;
+  const char *truebungStatus = "error_unknown";
+  ausgabe.truebung_roh = leseTruebungRohwert(truebungGueltig, truebungStatus);
+  ausgabe.truebung_status = truebungStatus;
 
-  out.uptime_ms = millis();
+  ausgabe.laufzeit_ms = millis();
 }
 
-void Sensors_readRfid(char *uidOut, size_t uidOutLen, const char *&statusOut) {
-  if (uidOut == nullptr || uidOutLen == 0) {
-    statusOut = "buffer_error";
+/*
+  Liest die aktuelle RFID-Karte.
+  - liefert UID im Buffer
+  - liefert Statuscode ueber Referenzparameter
+  - behandelt Kartenabwesenheit, Probe- und Lesefehler robust
+*/
+void Sensoren_lesenRfid(char *uidAusgabe, size_t uidAusgabeLaenge, const char *&statusAusgabe) {
+  if (uidAusgabe == nullptr || uidAusgabeLaenge == 0) {
+    statusAusgabe = "buffer_error";
     return;
   }
 
-  uidOut[0] = '\0';
-  statusOut = "no_card";
+  uidAusgabe[0] = '\0';
+  statusAusgabe = "no_card";
 
-  refreshRfidHardwareStatus();
+  aktualisiereRfidHardwareZustand();
 
-  if (strcmp(rfidHardwareStatus, "ok") != 0) {
+  if (strcmp(rfidHardwareZustand, "ok") != 0) {
     rfidProbeStatus = MFRC522::STATUS_ERROR;
-    statusOut = rfidHardwareStatus;
+    statusAusgabe = rfidHardwareZustand;
     return;
   }
 
-  if (!isCardPresentOrWakeup()) {
+  if (!istKarteVorhandenOderAufwecken()) {
     if (rfidProbeStatus != MFRC522::STATUS_TIMEOUT) {
-      statusOut = "probe_error";
+      statusAusgabe = "probe_error";
     }
     return;
   }
 
-  if (!rfidReader.PICC_ReadCardSerial()) {
+  if (!rfidLeser.PICC_ReadCardSerial()) {
     delay(2);
-    if (!rfidReader.PICC_ReadCardSerial()) {
+    if (!rfidLeser.PICC_ReadCardSerial()) {
       rfidProbeStatus = MFRC522::STATUS_ERROR;
-      statusOut = "read_error";
+      statusAusgabe = "read_error";
       return;
     }
   }
 
-  bool truncated = false;
+  bool abgeschnitten = false;
   size_t pos = 0;
-  statusOut = "ok";
+  statusAusgabe = "ok";
 
-  for (byte i = 0; i < rfidReader.uid.size; i++) {
+  for (byte i = 0; i < rfidLeser.uid.size; i++) {
     if (i > 0) {
-      if (pos + 1 >= uidOutLen) {
-        truncated = true;
+      if (pos + 1 >= uidAusgabeLaenge) {
+        abgeschnitten = true;
         break;
       }
-      uidOut[pos++] = ':';
+      uidAusgabe[pos++] = ':';
     }
 
-    if (pos + 2 >= uidOutLen) {
-      truncated = true;
+    if (pos + 2 >= uidAusgabeLaenge) {
+      abgeschnitten = true;
       break;
     }
 
-    int written = snprintf(uidOut + pos, uidOutLen - pos, "%02X", rfidReader.uid.uidByte[i]);
-    if (written != 2) {
-      statusOut = "uid_format_error";
-      uidOut[0] = '\0';
+    int geschrieben = snprintf(uidAusgabe + pos, uidAusgabeLaenge - pos, "%02X", rfidLeser.uid.uidByte[i]);
+    if (geschrieben != 2) {
+      statusAusgabe = "uid_format_error";
+      uidAusgabe[0] = '\0';
       break;
     }
-    pos += static_cast<size_t>(written);
+    pos += static_cast<size_t>(geschrieben);
   }
 
-  uidOut[(pos < uidOutLen) ? pos : (uidOutLen - 1)] = '\0';
+  uidAusgabe[(pos < uidAusgabeLaenge) ? pos : (uidAusgabeLaenge - 1)] = '\0';
 
-  if (truncated) {
-    statusOut = "uid_truncated";
-  } else if (uidOut[0] == '\0' && strcmp(statusOut, "uid_format_error") != 0) {
-    statusOut = "uid_empty";
+  if (abgeschnitten) {
+    statusAusgabe = "uid_truncated";
+  } else if (uidAusgabe[0] == '\0' && strcmp(statusAusgabe, "uid_format_error") != 0) {
+    statusAusgabe = "uid_empty";
   }
 
-  rfidReader.PICC_HaltA();
-  rfidReader.PCD_StopCrypto1();
+  rfidLeser.PICC_HaltA();
+  rfidLeser.PCD_StopCrypto1();
 }
 
-const char *Sensors_getRfidHardwareStatus() {
-  return rfidHardwareStatus;
+/*
+  Liefert den zuletzt bekannten RFID-Hardwarezustand.
+*/
+const char *Sensoren_holeRfidHardwareStatus() {
+  return rfidHardwareZustand;
 }
 
-const char *Sensors_getRfidProbeStatus() {
-  return rfidStatusCodeToText(rfidProbeStatus);
+/*
+  Liefert den letzten Probe-Status (REQA/WUPA) als Klartext.
+*/
+const char *Sensoren_holeRfidProbeStatus() {
+  return rfidStatusCodeZuText(rfidProbeStatus);
 }
 
-uint8_t Sensors_getRfidVersionReg() {
-  return rfidVersionReg;
+/*
+  Liefert den Inhalt des RC522 VersionReg fuer Diagnosezwecke.
+*/
+uint8_t Sensoren_holeRfidVersionsRegister() {
+  return rfidVersionsRegister;
 }

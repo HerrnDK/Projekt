@@ -1,217 +1,248 @@
 #include "mega_shared.h"
 
-#include <string.h>
 #include <stdlib.h>
+#include <string.h>
 
 /*
   data.cpp
-  - Uebersetzung der Daten fuer Node-RED (Serial1)
-  - Erwartet ASCII-Kommandos (newline-terminiert):
-    READ\n              -> sendet JSON-Snapshot (type=sensor, HC-SR04 + Tropfen + Truebung)
-    ACT,<pin>,<state>\n -> schaltet Aktor + JSON-ACK (type=act)
-    RFID\n             -> sendet RFID-Snapshot (type=rfid)
+  - Bruecke zwischen Node-RED und Arduino-Funktionen ueber Serial1
+  - Erwartete ASCII-Kommandos (newline-terminiert):
+    READ\n              -> sendet JSON Sensor-Momentaufnahme (type=sensor)
+    ACT,<pin>,<state>\n -> schaltet Aktor + JSON-Bestaetigung (type=act)
+    RFID\n              -> sendet RFID-Momentaufnahme (type=rfid)
 */
 
 namespace {
-  constexpr size_t DATA_CMD_MAX = 128;
-  char inputBuffer[DATA_CMD_MAX];
-  uint8_t inputLen = 0;
+  constexpr size_t DATEN_KOMMANDO_MAX = 128;
+  char eingabePuffer[DATEN_KOMMANDO_MAX];
+  uint8_t eingabeLaenge = 0;
 
-  SensorSnapshot lastSnapshot = {-1, "error_init", -1, "error_init", -1, "error_init", 0};
+  SensorMomentaufnahme letzterSnapshot = {-1, "error_init", -1, "error_init", -1, "error_init", 0};
 
-  void Data_handleCommand(const char *cmd);
-  bool Data_parseAct(const char *cmd, uint8_t &pin, uint8_t &state);
-  void Data_sendActAck(uint8_t pin, uint8_t state, bool ok);
-  void Data_sendError(const char *code);
+  void Daten_verarbeiteKommando(const char *kommando);
+  bool Daten_parseActKommando(const char *kommando, uint8_t &pin, uint8_t &zustand);
+  void Daten_sendeActBestaetigung(uint8_t pin, uint8_t zustand, bool erfolgreich);
+  void Daten_sendeFehler(const char *fehlercode);
 }
 
-void Data_begin() {
-  inputLen = 0;
-  Sensors_readSnapshot(lastSnapshot);
+/*
+  Initialisiert das Datenmodul.
+  - setzt den Eingabepuffer zurueck
+  - liest einmal alle Sensoren, damit bei ACT/ERROR eine gueltige Baseline vorliegt
+*/
+void Daten_starten() {
+  eingabeLaenge = 0;
+  Sensoren_lesenMomentaufnahme(letzterSnapshot);
 }
 
-void Data_tick() {
-  while (DATA_PORT.available() > 0) {
-    char c = static_cast<char>(DATA_PORT.read());
+/*
+  Zyklischer Poll fuer den seriellen Eingang.
+  - sammelt Zeichen bis Newline
+  - uebergibt komplette Kommandos an den Parser
+  - verwirft ueberlange Eingaben (Overflow-Schutz)
+*/
+void Daten_tick() {
+  while (PORT_DATEN.available() > 0) {
+    char zeichen = static_cast<char>(PORT_DATEN.read());
 
-    if (c == '\n' || c == '\r') {
-      if (inputLen > 0) {
-        inputBuffer[inputLen] = '\0';
-        Data_handleCommand(inputBuffer);
-        inputLen = 0;
+    if (zeichen == '\n' || zeichen == '\r') {
+      if (eingabeLaenge > 0) {
+        eingabePuffer[eingabeLaenge] = '\0';
+        Daten_verarbeiteKommando(eingabePuffer);
+        eingabeLaenge = 0;
       }
     } else {
-      if (inputLen < DATA_CMD_MAX - 1) {
-        inputBuffer[inputLen++] = c;
+      if (eingabeLaenge < DATEN_KOMMANDO_MAX - 1) {
+        eingabePuffer[eingabeLaenge++] = zeichen;
       } else {
-        // Buffer-Overflow vermeiden
-        inputLen = 0;
+        // Buffer-Overflow vermeiden.
+        eingabeLaenge = 0;
       }
     }
   }
 }
 
-void Data_sendSensorSnapshot() {
-  SensorSnapshot snapshot;
-  Sensors_readSnapshot(snapshot);
-  lastSnapshot = snapshot;
+/*
+  Liest alle Sensoren und sendet eine JSON-Zeile an Node-RED.
+  Das JSON-Format bleibt absichtlich stabil, damit bestehende Flows kompatibel bleiben.
+*/
+void Daten_sendenSensorMomentaufnahme() {
+  SensorMomentaufnahme momentaufnahme;
+  Sensoren_lesenMomentaufnahme(momentaufnahme);
+  letzterSnapshot = momentaufnahme;
 
-  // JSON-Zeile fuer Node-RED (data_exchange_flow.json erwartet JSON)
-  DATA_PORT.print("{\"type\":\"sensor\",\"hcsr04_distance_cm\":");
-  DATA_PORT.print(snapshot.hcsr04_distance_cm);
-  DATA_PORT.print(",\"hcsr04_status\":\"");
-  DATA_PORT.print(snapshot.hcsr04_status);
-  DATA_PORT.print("\"");
-  DATA_PORT.print(",\"droplet_raw\":");
-  DATA_PORT.print(snapshot.droplet_raw);
-  DATA_PORT.print(",\"droplet_status\":\"");
-  DATA_PORT.print(snapshot.droplet_status);
-  DATA_PORT.print("\"");
-  DATA_PORT.print(",\"turbidity_raw\":");
-  DATA_PORT.print(snapshot.turbidity_raw);
-  DATA_PORT.print(",\"turbidity_status\":\"");
-  DATA_PORT.print(snapshot.turbidity_status);
-  DATA_PORT.print("\"");
-  DATA_PORT.print(",\"uptime_ms\":");
-  DATA_PORT.print(snapshot.uptime_ms);
-  DATA_PORT.println("}");
+  PORT_DATEN.print("{\"type\":\"sensor\",\"hcsr04_distance_cm\":");
+  PORT_DATEN.print(momentaufnahme.hcsr04_distanz_cm);
+  PORT_DATEN.print(",\"hcsr04_status\":\"");
+  PORT_DATEN.print(momentaufnahme.hcsr04_status);
+  PORT_DATEN.print("\"");
+  PORT_DATEN.print(",\"droplet_raw\":");
+  PORT_DATEN.print(momentaufnahme.tropfen_roh);
+  PORT_DATEN.print(",\"droplet_status\":\"");
+  PORT_DATEN.print(momentaufnahme.tropfen_status);
+  PORT_DATEN.print("\"");
+  PORT_DATEN.print(",\"turbidity_raw\":");
+  PORT_DATEN.print(momentaufnahme.truebung_roh);
+  PORT_DATEN.print(",\"turbidity_status\":\"");
+  PORT_DATEN.print(momentaufnahme.truebung_status);
+  PORT_DATEN.print("\"");
+  PORT_DATEN.print(",\"uptime_ms\":");
+  PORT_DATEN.print(momentaufnahme.laufzeit_ms);
+  PORT_DATEN.println("}");
 }
 
-void Data_sendRfidSnapshot() {
-  char uid[RFID_UID_MAX_LEN];
+/*
+  Liest den RFID-Status und sendet eine JSON-Zeile an Node-RED.
+  Neben UID und Lesestatus werden auch Hardware-/Probe-Infos uebertragen.
+*/
+void Daten_sendenRfidMomentaufnahme() {
+  char uid[RFID_UID_MAX_LAENGE];
   const char *rfidStatus = "error_init";
-  Sensors_readRfid(uid, sizeof(uid), rfidStatus);
-  const char *rfidHwStatus = Sensors_getRfidHardwareStatus();
-  const char *rfidProbeStatus = Sensors_getRfidProbeStatus();
-  const uint8_t rfidVersionReg = Sensors_getRfidVersionReg();
+  Sensoren_lesenRfid(uid, sizeof(uid), rfidStatus);
+  const char *rfidHardwareStatus = Sensoren_holeRfidHardwareStatus();
+  const char *rfidProbeStatus = Sensoren_holeRfidProbeStatus();
+  const uint8_t rfidVersionsRegister = Sensoren_holeRfidVersionsRegister();
 
-  DATA_PORT.print("{\"type\":\"rfid\",\"rfid_uid\":\"");
-  DATA_PORT.print(uid);
-  DATA_PORT.print("\",\"rfid_status\":\"");
-  DATA_PORT.print(rfidStatus);
-  DATA_PORT.print("\",\"rfid_hw_status\":\"");
-  DATA_PORT.print(rfidHwStatus);
-  DATA_PORT.print("\",\"rfid_probe_status\":\"");
-  DATA_PORT.print(rfidProbeStatus);
-  DATA_PORT.print("\",\"rfid_version_reg\":\"0x");
-  if (rfidVersionReg < 0x10) {
-    DATA_PORT.print('0');
+  PORT_DATEN.print("{\"type\":\"rfid\",\"rfid_uid\":\"");
+  PORT_DATEN.print(uid);
+  PORT_DATEN.print("\",\"rfid_status\":\"");
+  PORT_DATEN.print(rfidStatus);
+  PORT_DATEN.print("\",\"rfid_hw_status\":\"");
+  PORT_DATEN.print(rfidHardwareStatus);
+  PORT_DATEN.print("\",\"rfid_probe_status\":\"");
+  PORT_DATEN.print(rfidProbeStatus);
+  PORT_DATEN.print("\",\"rfid_version_reg\":\"0x");
+  if (rfidVersionsRegister < 0x10) {
+    PORT_DATEN.print('0');
   }
-  DATA_PORT.print(rfidVersionReg, HEX);
-  DATA_PORT.print("\",\"uptime_ms\":");
-  DATA_PORT.print(millis());
-  DATA_PORT.println("}");
+  PORT_DATEN.print(rfidVersionsRegister, HEX);
+  PORT_DATEN.print("\",\"uptime_ms\":");
+  PORT_DATEN.print(millis());
+  PORT_DATEN.println("}");
 }
 
 namespace {
-  void Data_handleCommand(const char *cmd) {
-    if (strcmp(cmd, "READ") == 0) {
-      Data_sendSensorSnapshot();
+  /*
+    Zentrale Kommandoverarbeitung fuer READ / ACT / RFID.
+    Unbekannte oder fehlerhafte Kommandos werden als Fehler-JSON gemeldet.
+  */
+  void Daten_verarbeiteKommando(const char *kommando) {
+    if (strcmp(kommando, "READ") == 0) {
+      Daten_sendenSensorMomentaufnahme();
       return;
     }
 
-    if (strcmp(cmd, "RFID") == 0) {
-      Data_sendRfidSnapshot();
+    if (strcmp(kommando, "RFID") == 0) {
+      Daten_sendenRfidMomentaufnahme();
       return;
     }
 
-    if (strncmp(cmd, "ACT,", 4) == 0) {
+    if (strncmp(kommando, "ACT,", 4) == 0) {
       uint8_t pin = 0;
-      uint8_t state = 0;
-      if (Data_parseAct(cmd, pin, state)) {
-        bool ok = Actuators_set(pin, state != 0);
-        Data_sendActAck(pin, state, ok);
-        if (!ok) {
-          DEBUG_PORT.println("ACT: ungueltiger Pin");
+      uint8_t zustand = 0;
+      if (Daten_parseActKommando(kommando, pin, zustand)) {
+        bool erfolgreich = Aktoren_setzen(pin, zustand != 0);
+        Daten_sendeActBestaetigung(pin, zustand, erfolgreich);
+        if (!erfolgreich) {
+          PORT_DEBUG.println("ACT: ungueltiger Pin");
         }
       } else {
-        DEBUG_PORT.println("ACT: Parse-Fehler");
-        Data_sendError("act_parse_error");
+        PORT_DEBUG.println("ACT: Parse-Fehler");
+        Daten_sendeFehler("act_parse_error");
       }
       return;
     }
 
-    DEBUG_PORT.print("Unbekanntes Kommando: ");
-    DEBUG_PORT.println(cmd);
-    Data_sendError("unknown_command");
+    PORT_DEBUG.print("Unbekanntes Kommando: ");
+    PORT_DEBUG.println(kommando);
+    Daten_sendeFehler("unknown_command");
   }
 
-  bool Data_parseAct(const char *cmd, uint8_t &pin, uint8_t &state) {
-    // Erwartet: ACT,<pin>,<state>
-    const char *p = cmd + 4;
-    char *end = nullptr;
+  /*
+    Parst ein ACT-Kommando im Format ACT,<pin>,<state>.
+    state ist nur 0 oder 1.
+  */
+  bool Daten_parseActKommando(const char *kommando, uint8_t &pin, uint8_t &zustand) {
+    const char *werteStart = kommando + 4;
+    char *ende = nullptr;
 
-    long pinVal = strtol(p, &end, 10);
-    if (end == p || *end != ',') {
+    long pinWert = strtol(werteStart, &ende, 10);
+    if (ende == werteStart || *ende != ',') {
       return false;
     }
 
-    long stateVal = strtol(end + 1, &end, 10);
-    if (*end != '\0') {
+    long zustandWert = strtol(ende + 1, &ende, 10);
+    if (*ende != '\0') {
       return false;
     }
 
-    if (pinVal < 0 || pinVal > 255) {
+    if (pinWert < 0 || pinWert > 255) {
       return false;
     }
 
-    if (stateVal != 0 && stateVal != 1) {
+    if (zustandWert != 0 && zustandWert != 1) {
       return false;
     }
 
-    pin = static_cast<uint8_t>(pinVal);
-    state = static_cast<uint8_t>(stateVal);
+    pin = static_cast<uint8_t>(pinWert);
+    zustand = static_cast<uint8_t>(zustandWert);
     return true;
   }
 
-  void Data_sendActAck(uint8_t pin, uint8_t state, bool ok) {
-    // Letzten Snapshot mitsenden, damit UI-Felder nicht leer werden
-    DATA_PORT.print("{\"type\":\"act\",\"ok\":");
-    DATA_PORT.print(ok ? 1 : 0);
-    DATA_PORT.print(",\"pin\":");
-    DATA_PORT.print(pin);
-    DATA_PORT.print(",\"state\":");
-    DATA_PORT.print(state ? 1 : 0);
-    DATA_PORT.print(",\"hcsr04_distance_cm\":");
-    DATA_PORT.print(lastSnapshot.hcsr04_distance_cm);
-    DATA_PORT.print(",\"hcsr04_status\":\"");
-    DATA_PORT.print(lastSnapshot.hcsr04_status);
-    DATA_PORT.print("\"");
-    DATA_PORT.print(",\"droplet_raw\":");
-    DATA_PORT.print(lastSnapshot.droplet_raw);
-    DATA_PORT.print(",\"droplet_status\":\"");
-    DATA_PORT.print(lastSnapshot.droplet_status);
-    DATA_PORT.print("\"");
-    DATA_PORT.print(",\"turbidity_raw\":");
-    DATA_PORT.print(lastSnapshot.turbidity_raw);
-    DATA_PORT.print(",\"turbidity_status\":\"");
-    DATA_PORT.print(lastSnapshot.turbidity_status);
-    DATA_PORT.print("\"");
-    DATA_PORT.print(",\"uptime_ms\":");
-    DATA_PORT.print(lastSnapshot.uptime_ms);
-    DATA_PORT.println("}");
+  /*
+    Sendet eine ACT-Bestaetigung als JSON.
+    Der letzte Sensor-Snapshot wird mitgesendet, damit UI-Felder nicht leer werden.
+  */
+  void Daten_sendeActBestaetigung(uint8_t pin, uint8_t zustand, bool erfolgreich) {
+    PORT_DATEN.print("{\"type\":\"act\",\"ok\":");
+    PORT_DATEN.print(erfolgreich ? 1 : 0);
+    PORT_DATEN.print(",\"pin\":");
+    PORT_DATEN.print(pin);
+    PORT_DATEN.print(",\"state\":");
+    PORT_DATEN.print(zustand ? 1 : 0);
+    PORT_DATEN.print(",\"hcsr04_distance_cm\":");
+    PORT_DATEN.print(letzterSnapshot.hcsr04_distanz_cm);
+    PORT_DATEN.print(",\"hcsr04_status\":\"");
+    PORT_DATEN.print(letzterSnapshot.hcsr04_status);
+    PORT_DATEN.print("\"");
+    PORT_DATEN.print(",\"droplet_raw\":");
+    PORT_DATEN.print(letzterSnapshot.tropfen_roh);
+    PORT_DATEN.print(",\"droplet_status\":\"");
+    PORT_DATEN.print(letzterSnapshot.tropfen_status);
+    PORT_DATEN.print("\"");
+    PORT_DATEN.print(",\"turbidity_raw\":");
+    PORT_DATEN.print(letzterSnapshot.truebung_roh);
+    PORT_DATEN.print(",\"turbidity_status\":\"");
+    PORT_DATEN.print(letzterSnapshot.truebung_status);
+    PORT_DATEN.print("\"");
+    PORT_DATEN.print(",\"uptime_ms\":");
+    PORT_DATEN.print(letzterSnapshot.laufzeit_ms);
+    PORT_DATEN.println("}");
   }
 
-  void Data_sendError(const char *code) {
-    DATA_PORT.print("{\"type\":\"error\",\"code\":\"");
-    DATA_PORT.print(code);
-    DATA_PORT.print("\",\"hcsr04_distance_cm\":");
-    DATA_PORT.print(lastSnapshot.hcsr04_distance_cm);
-    DATA_PORT.print(",\"hcsr04_status\":\"");
-    DATA_PORT.print(lastSnapshot.hcsr04_status);
-    DATA_PORT.print("\"");
-    DATA_PORT.print(",\"droplet_raw\":");
-    DATA_PORT.print(lastSnapshot.droplet_raw);
-    DATA_PORT.print(",\"droplet_status\":\"");
-    DATA_PORT.print(lastSnapshot.droplet_status);
-    DATA_PORT.print("\"");
-    DATA_PORT.print(",\"turbidity_raw\":");
-    DATA_PORT.print(lastSnapshot.turbidity_raw);
-    DATA_PORT.print(",\"turbidity_status\":\"");
-    DATA_PORT.print(lastSnapshot.turbidity_status);
-    DATA_PORT.print("\"");
-    DATA_PORT.print(",\"uptime_ms\":");
-    DATA_PORT.print(lastSnapshot.uptime_ms);
-    DATA_PORT.println("}");
+  /*
+    Sendet ein Fehler-JSON mit Fehlercode und letztem Sensor-Snapshot.
+  */
+  void Daten_sendeFehler(const char *fehlercode) {
+    PORT_DATEN.print("{\"type\":\"error\",\"code\":\"");
+    PORT_DATEN.print(fehlercode);
+    PORT_DATEN.print("\",\"hcsr04_distance_cm\":");
+    PORT_DATEN.print(letzterSnapshot.hcsr04_distanz_cm);
+    PORT_DATEN.print(",\"hcsr04_status\":\"");
+    PORT_DATEN.print(letzterSnapshot.hcsr04_status);
+    PORT_DATEN.print("\"");
+    PORT_DATEN.print(",\"droplet_raw\":");
+    PORT_DATEN.print(letzterSnapshot.tropfen_roh);
+    PORT_DATEN.print(",\"droplet_status\":\"");
+    PORT_DATEN.print(letzterSnapshot.tropfen_status);
+    PORT_DATEN.print("\"");
+    PORT_DATEN.print(",\"turbidity_raw\":");
+    PORT_DATEN.print(letzterSnapshot.truebung_roh);
+    PORT_DATEN.print(",\"turbidity_status\":\"");
+    PORT_DATEN.print(letzterSnapshot.truebung_status);
+    PORT_DATEN.print("\"");
+    PORT_DATEN.print(",\"uptime_ms\":");
+    PORT_DATEN.print(letzterSnapshot.laufzeit_ms);
+    PORT_DATEN.println("}");
   }
 }

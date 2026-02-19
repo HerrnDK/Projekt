@@ -7,19 +7,19 @@
 #include "mega_shared.h"
 
 void setup() {
-  DEBUG_PORT.begin(DEBUG_BAUD);  // USB Debug
-  DATA_PORT.begin(DATA_BAUD);    // UART zu Node-RED (Serial1)
+  PORT_DEBUG.begin(BAUDRATE_DEBUG);  // USB-Debugschnittstelle
+  PORT_DATEN.begin(BAUDRATE_DATEN);  // UART zu Node-RED (Serial1)
 
-  Actuators_begin();
-  Sensors_begin();
-  Data_begin();
+  Aktoren_starten();
+  Sensoren_starten();
+  Daten_starten();
 
-  DEBUG_PORT.println("Mega Grundgeruest bereit.");
+  PORT_DEBUG.println("Mega Grundgeruest bereit.");
 }
 
 void loop() {
   // Serielle Kommunikation (Node-RED)
-  Data_tick();
+  Daten_tick();
 
   // Platz fuer weitere zyklische Tasks
 }
