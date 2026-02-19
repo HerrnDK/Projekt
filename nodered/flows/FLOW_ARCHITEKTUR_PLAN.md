@@ -1,4 +1,4 @@
-# Projekt UML und Ablaufdiagramme
+# Projekt-UML und Ablaufdiagramme
 
 ## Ziel
 - Komplettsicht auf Architektur und Laufzeit fuer Arduino, Raspberry Pi und Node-RED.
@@ -7,15 +7,15 @@
 ## 1) Systemarchitektur (Komponentenblick)
 ```mermaid
 flowchart TB
-  User[User] --> Browser[Touch Browser]
+  Benutzer[Benutzer] --> Browser[Touch-Browser]
   Browser --> Dashboard[Node-RED Dashboard\nnodered/flows/dashboard_flow.json]
 
   subgraph RPi[Raspberry Pi]
-    Dashboard --> DataFlow[data_exchange_flow.json\nSerial In/Out + JSON Parse]
+    Dashboard --> DataFlow[data_exchange_flow.json\nSerial ein/aus + JSON-Parse]
     Dashboard --> NetFlow[Network.json\nWLAN / Status / QR]
-    Dashboard --> StartupFlow[fn_startup_test_flow.json\nStartup-Status]
+    Dashboard --> StartupFlow[fn_startup_test_flow.json\nStartstatus]
     Dashboard --> ParamFlow[fn_parameters_flow.json\nParameter + Offsets + Relais]
-    Dashboard --> ProfileFlow[fn_profiles_flow.json\nRFID Profile]
+    Dashboard --> ProfileFlow[fn_profiles_flow.json\nRFID-Profile]
   end
 
   DataFlow --> SerialPort[/dev/serial0 UART]
@@ -36,14 +36,14 @@ flowchart TB
 ## 2) UML RFID-Funktionsablauf (Lesen, Anlernen, Loeschen)
 ```mermaid
 sequenceDiagram
-  participant U as User
-  participant D as Dashboard(Profile)
+  participant U as Benutzer
+  participant D as Dashboard (Profile)
   participant P as fn_profiles_flow
   participant X as data_exchange_flow
   participant A as Arduino data.cpp
   participant S as sensors.cpp + RC522
 
-  Note over P: Polling alle 2s: RFID_POLL -> RFID
+  Note over P: Abfrage alle 2 s: RFID_POLL -> RFID
 
   alt Lesen
     U->>D: Klick "Lesen"
@@ -56,7 +56,7 @@ sequenceDiagram
     D->>P: payload RFID_LEARN_P2
   end
 
-  alt Profil bereits belegt und Learn-Button geklickt
+  alt Profil bereits belegt und Lern-Button geklickt
     P-->>D: Bindung geloescht (ohne Hardwarezugriff)
   else Lesen/Anlernen aktiv
     P->>X: payload RFID
@@ -69,16 +69,16 @@ sequenceDiagram
     alt rfid_status == ok und UID bekannt
       P-->>D: Aktives Profil 1/2 setzen
     else rfid_status == ok und Anlernen aktiv
-      P-->>D: UID Slot 1/2 speichern, Learn-Modus beenden
-    else rfid_status == probe_error und kein Learn-Modus
-      P-->>D: Status bleibt "Profile bereit"
+      P-->>D: UID Slot 1/2 speichern, Lernmodus beenden
+    else rfid_status == probe_error und kein Lernmodus
+      P-->>D: Status bleibt "Profile bereit."
     else sonstiger Fehler
       P-->>D: Fehlermeldung anzeigen
     end
   end
 ```
 
-### 2.1 UML Zustandsmodell (Profile-Controller)
+### 2.1 UML Zustandsmodell (Profilsteuerung)
 ```mermaid
 stateDiagram-v2
   [*] --> Bereit
@@ -96,11 +96,11 @@ stateDiagram-v2
   LearnP2 --> LearnP2: no_card/probe_error
 ```
 
-## 3) UML HC-SR04 + Tropfensensor + Truebungssensor-Funktionsablauf (READ, Offsets, Status)
+## 3) UML HC-SR04 + Tropfensensor + Truebungssensor (READ, Offsets, Status)
 ```mermaid
 sequenceDiagram
-  participant U as User
-  participant D as Dashboard(Projekt-info)
+  participant U as Benutzer
+  participant D as Dashboard (Projekt-info)
   participant ST as fn_startup_test_flow
   participant X as data_exchange_flow
   participant A as Arduino data.cpp
@@ -110,7 +110,7 @@ sequenceDiagram
   alt Manuell
     U->>D: Klick "Sensoren aktualisieren"
     D->>X: payload READ
-  else Startup/zyklisch
+  else Starttest/zyklisch
     ST->>X: payload READ
   end
 
@@ -121,15 +121,15 @@ sequenceDiagram
   X->>P: msg.payload (sensor)
   P->>P: Offsets anwenden (hcsr04_offset_cm + droplet_offset_raw + turbidity_offset_raw)
   P-->>D: hcsr04_distance_display_cm + droplet_display_raw + turbidity_display_raw + Status + uptime_hms
-  P-->>ST: Sensorpayload fuer Startup-Validierung
+  P-->>ST: Sensorpayload fuer Starttest-Validierung
   ST-->>D: Anlagenstatus (bereit/stoerung)
 ```
 
-### 3.1 UML Zustandsmodell (HC-SR04 + Tropfensensor + Truebungssensor/Anlagenstatus)
+### 3.1 UML Zustandsmodell (Sensorik/Anlagenstatus)
 ```mermaid
 stateDiagram-v2
-  [*] --> Startup
-  Startup --> Stoerung: Default beim Boot
+  [*] --> Start
+  Start --> Stoerung: Standard beim Boot
 
   Stoerung --> Bereit: hcsr04_status == ok && droplet_status == ok && turbidity_status == ok && uptime gueltig
   Stoerung --> Stoerung: hcsr04_status != ok || droplet_status != ok || turbidity_status != ok
@@ -138,10 +138,10 @@ stateDiagram-v2
   Bereit --> Stoerung: HC-SR04/Tropfensensor/Truebungssensor fehlerhaft/ungueltig
 ```
 
-## 4) UML data_exchange_flow (Serial Gateway)
+## 4) UML data_exchange_flow (Serial-Gateway)
 ```mermaid
 sequenceDiagram
-  participant Src as Dashboard/fn_flows
+  participant Src as Dashboard/Funktionsflows
   participant X as data_exchange_flow
   participant A as Arduino Serial1
   participant Fn as fn_startup/fn_parameters/fn_profiles
@@ -149,42 +149,42 @@ sequenceDiagram
   Src->>X: Link-In (READ/RFID/ACT,...)
   X->>A: serial out "/dev/serial0" + "\\n"
   A-->>X: serial in JSON line
-  X->>X: Parse JSON
-  X->>X: Format uptime_hms
+  X->>X: JSON parsen
+  X->>X: uptime_hms formatieren
   X-->>Fn: Link-Out (msg.payload mit type)
 ```
 
-### 4.1 UML Aktivitaet (data_exchange_flow)
+### 4.1 UML Aktivitaetsdiagramm (data_exchange_flow)
 ```mermaid
 flowchart LR
-  A[Link-In von Dashboard/Funktionen] --> B[serial out -> Arduino]
+  A[Link-In von Dashboard/Funktionsflows] --> B[serial out -> Arduino]
   B --> C[serial in vom Arduino]
-  C --> D[JSON Parse]
-  D --> E[Function: uptime_hms berechnen]
+  C --> D[JSON-Parse]
+  D --> E[uptime_hms berechnen]
   E --> F[Link-Out zu fn_startup/fn_parameters/fn_profiles]
-  C --> G[Debug Raw]
-  D --> H[Debug Parsed]
+  C --> G[Debug roh]
+  D --> H[Debug geparst]
 ```
 
-## 5) UML fn_startup_test_flow (Startup-Validierung)
+## 5) UML fn_startup_test_flow (Starttest-Validierung)
 ```mermaid
 sequenceDiagram
-  participant Boot as Boot Inject
+  participant Boot as Boot-Inject
   participant ST as fn_startup_test_flow
   participant X as data_exchange_flow
   participant A as Arduino
   participant D as Dashboard Status
 
   Boot->>ST: INIT_STARTUP_STATUS
-  ST-->>D: "Anlage stoerung" (Default)
+  ST-->>D: "Anlage stoerung" (Standard)
 
-  loop alle 2s (ab Boot +5s)
+  loop alle 2 s (ab Boot +5 s)
     ST->>X: payload READ
     X->>A: Serial1 READ
     A-->>X: {type:"sensor", ...}
     X-->>ST: sensor payload
     ST->>ST: switch: nur type=="sensor"
-    ST->>ST: validate uptime + hcsr04_status/range + droplet_status/range + turbidity_status/range
+    ST->>ST: uptime + hcsr04_status/range + droplet_status/range + turbidity_status/range validieren
     ST-->>D: "Anlage bereit" oder "Anlage stoerung"
   end
 ```
@@ -192,19 +192,19 @@ sequenceDiagram
 ## 6) UML fn_parameters_flow (Offsets + Relais + Anzeigewerte)
 ```mermaid
 sequenceDiagram
-  participant Boot as Boot Inject
+  participant Boot as Boot-Inject
   participant UI as Dashboard Slider/Relais-Buttons
   participant PF as fn_parameters_flow
   participant X as data_exchange_flow
   participant D as Dashboard
 
   Boot->>PF: INIT_OFFSET
-  PF->>PF: Default-Offsets clampen
-  PF-->>D: parameter state (hcsr04_offset_cm + droplet_offset_raw + turbidity_offset_raw)
+  PF->>PF: Standard-Offsets clampen
+  PF-->>D: Parameterstatus (hcsr04_offset_cm + droplet_offset_raw + turbidity_offset_raw)
 
   UI->>PF: Slider-Wert
   PF->>PF: Offset speichern (abh. von msg.topic)
-  PF-->>D: parameter state (hcsr04_offset_cm + droplet_offset_raw + turbidity_offset_raw)
+  PF-->>D: Parameterstatus (hcsr04_offset_cm + droplet_offset_raw + turbidity_offset_raw)
 
   UI->>PF: Relais-Button (topic=relay_toggle)
   PF-->>X: ACT,<pin>,<state>
@@ -221,8 +221,8 @@ sequenceDiagram
 stateDiagram-v2
   [*] --> OffsetInit
   OffsetInit --> OffsetReady: INIT_OFFSET
-  OffsetReady --> OffsetReady: Slider update (HC-SR04 -5..+5 / Tropfen -300..+300 / Truebung -200..+200)
-  OffsetReady --> OffsetReady: Sensorpayload -> display distance/raw
+  OffsetReady --> OffsetReady: Slider-Update (HC-SR04 -5..+5 / Tropfen -300..+300 / Truebung -200..+200)
+  OffsetReady --> OffsetReady: Sensorpayload -> Anzeige Distanz/Rohwert
 ```
 
 ### 6.2 UML Zustandsmodell (Relais 1..4)
@@ -236,42 +236,42 @@ stateDiagram-v2
   note right of Gemischt
     Jeder Button sendet relay_toggle.
     fn_parameters_flow erzeugt ACT,<pin>,<state>
-    und aktualisiert Status erst nach ACT-ACK.
+    und aktualisiert den Status erst nach ACT-ACK.
   end note
 ```
 
 ## 7) UML Network.json (WLAN + QR + UI)
 ```mermaid
 sequenceDiagram
-  participant Poll as 1s Poll
+  participant Poll as 1s Abfrage
   participant Net as Network.json
   participant OS as nmcli/ip
-  participant D as Dashboard WiFi/Welcome
+  participant D as Dashboard WLAN/Willkommen
 
-  loop jede 1s
+  loop jede 1 s
     Poll->>Net: trigger
     Net->>OS: nmcli device status
     OS-->>Net: wlan0 state/connection
     Net->>OS: nmcli wlan0 ip + ip end0
     OS-->>Net: WLAN/LAN IP
-    Net->>Net: Status auswerten + QR targets
-    Net->>OS: qrencode (AP/Login/Dashboard)
+    Net->>Net: Status auswerten + QR-Ziele
+    Net->>OS: qrencode (AP/Anmeldung/Dashboard)
     OS-->>Net: SVG
-    Net-->>D: WLAN Status + Debug/WiFi URL + Welcome QR Cards
+    Net-->>D: WLAN-Status + Debug/WLAN-URL + Willkommens-QR-Karten
   end
 ```
 
-### 7.1 UML WLAN-Connect Ablauf
+### 7.1 UML WLAN-Verbindungsablauf
 ```mermaid
 flowchart LR
-  A[SSID Auswahl + Passwort] --> B[Connect Button]
-  B --> C[Function: Connect Kommando bauen]
+  A[SSID Auswahl + Passwort] --> B[Verbinden-Button]
+  B --> C[Funktion: Verbindungsbefehl bauen]
   C --> D[nmcli con down projekt-ap]
-  D --> E[Delay]
+  D --> E[Verzoegerung]
   E --> F[nmcli connection delete <SSID>]
-  F --> G[Delay]
+  F --> G[Verzoegerung]
   G --> H[nmcli dev wifi connect <SSID> password <PW>]
-  H --> I[Toast OK + Navigate Projekt-info]
+  H --> I[Toast OK + Navigation Projekt-info]
   H --> J[Toast Fehler]
 ```
 
@@ -280,8 +280,8 @@ flowchart LR
 - Node-RED: `fn_<name>_flow.json` mit Link In/Out zur `data_exchange_flow.json`.
 - Protokoll: Kommandos nach Serial1, Antworten immer als JSON mit `type`.
 
-## Definition of Done je neue Funktion
+## Abnahmekriterien je neue Funktion
 - Arduino-Modul implementiert und Build erfolgreich.
-- Node-RED Funktions-Flow angelegt und ueber Link-Nodes angebunden.
+- Node-RED-Funktionsflow angelegt und ueber Link-Nodes angebunden.
 - Dashboard-Interaktion vorhanden (Buttons/Anzeigen).
-- End-to-End Test (Kommando -> Hardware -> JSON -> UI) erfolgreich.
+- End-to-End-Test (Kommando -> Hardware -> JSON -> UI) erfolgreich.

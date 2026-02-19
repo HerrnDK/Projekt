@@ -1,4 +1,4 @@
-# Arduino Mega 2560 - Kontaktanschlussplan (Pinout)
+# Arduino Mega 2560 - Kontaktanschlussplan (Pinbelegung)
 
 ## Uebersicht
 Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Aktoren.

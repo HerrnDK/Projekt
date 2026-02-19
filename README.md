@@ -3,7 +3,7 @@
 Dieses Repository enthaelt das Grundgeruest fuer die serielle Kommunikation
 zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 
-## Wiring (Serial1)
+## Verdrahtung (Serial1)
 - **Arduino Mega 2560** Serial1:
   - TX1 (Pin 18, 5V) -> Pegelwandler 5V->3.3V -> Raspberry Pi RX
   - RX1 (Pin 19) <- Raspberry Pi TX (3.3V)
@@ -15,13 +15,13 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 
 > Der USB-Port (Serial RX0/TX0) bleibt fuer Programmierung und Debug frei.
 
-## Wiring (HC-SR04)
+## Verdrahtung (HC-SR04)
 - HC-SR04 VCC -> 5V
 - HC-SR04 GND -> GND
 - HC-SR04 TRIG -> D26
 - HC-SR04 ECHO -> D27
 
-## Wiring (RFID RC522)
+## Verdrahtung (RFID RC522)
 - RC522 SDA/SS -> D53 (SS)
 - RC522 SCK -> D52
 - RC522 MOSI -> D51
@@ -32,17 +32,17 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 
 > Hinweis: RC522 muss mit 3.3V betrieben werden.
 
-## Wiring (Funduino Tropfensensor)
+## Verdrahtung (Funduino Tropfensensor)
 - Tropfensensor +5V -> 5V
 - Tropfensensor -GND -> GND
 - Tropfensensor S (Analog) -> A0
 
-## Wiring (Wassertruebungssensor)
+## Verdrahtung (Wassertruebungssensor)
 - Wassertruebungssensor +5V -> 5V
 - Wassertruebungssensor -GND -> GND
 - Wassertruebungssensor S (Analog) -> A1
 
-## Wiring (4-Kanal Relaismodul)
+## Verdrahtung (4-Kanal Relaismodul)
 - Relaismodul VCC -> 5V
 - Relaismodul GND -> GND
 - Relaismodul IN1 -> D22 (Relais 1: Wasserpumpe)
@@ -61,8 +61,8 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 
 JSON-Formate (Beispiele):
 - Sensor: `{"type":"sensor","hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","uptime_ms":7890}`
-- Act: `{"type":"act","ok":1,"pin":22,"state":1,"hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","uptime_ms":7890}`
-- Error: `{"type":"error","code":"unknown_command","hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","droplet_raw":-1,"droplet_status":"error_range","turbidity_raw":-1,"turbidity_status":"error_not_connected","uptime_ms":7890}`
+- Aktor: `{"type":"act","ok":1,"pin":22,"state":1,"hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","uptime_ms":7890}`
+- Fehler: `{"type":"error","code":"unknown_command","hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","droplet_raw":-1,"droplet_status":"error_range","turbidity_raw":-1,"turbidity_status":"error_not_connected","uptime_ms":7890}`
 - RFID: `{"type":"rfid","rfid_uid":"DE:AD:BE:EF","rfid_status":"ok","rfid_hw_status":"ok","rfid_probe_status":"STATUS_OK","rfid_version_reg":"0x92","uptime_ms":7890}`
 
 HC-SR04 Statuswerte:
@@ -96,7 +96,7 @@ RFID Diagnose:
 - `rfid_probe_status` letzte REQA/WUPA Probe (`STATUS_OK`, `STATUS_TIMEOUT`, ...)
 - `rfid_version_reg` Inhalt von `VersionReg` (typisch `0x91` oder `0x92`)
 
-## Repo-Struktur (wichtige Dateien)
+## Projektstruktur (wichtige Dateien)
 - `arduino/mega/`
   - `mega.ino` Sketch-Root mit `setup()`/`loop()`
   - `mega_shared.h` gemeinsame Typen/Prototypen
@@ -108,12 +108,12 @@ RFID Diagnose:
 - `nodered/flows/`
   - `dashboard_flow.json` UI + Sensoranzeigen + Parametrierung
   - `Network.json` Netzwerk-Tab
-  - `data_exchange_flow.json` Serial-I/O Arduino
+  - `data_exchange_flow.json` Datenaustausch mit Arduino
   - `fn_parameters_flow.json` Parameter-Logik (HC-SR04 + Tropfensensor + Truebungssensor Offset + Relaissteuerung)
-  - `fn_profiles_flow.json` RFID Profile-Logik (Anlernen + Profilzuweisung)
+  - `fn_profiles_flow.json` RFID-Profillogik (Anlernen + Profilzuweisung)
   - `components.yaml` logische Komponentenreferenzen
-  - `deploy_flows.sh` Flow-Deploy Script (POST /flows)
-  - `DEPLOYMENT_GUIDE.md` Deployment-Doku
+  - `deploy_flows.sh` Skript zur Flow-Bereitstellung (POST /flows)
+  - `DEPLOYMENT_GUIDE.md` Bereitstellungsdokumentation
 - `scripts/arduino_build.sh` lokaler Build via Arduino CLI
 - `.github/instructions/Anweisungen.instructions.md` Arbeitsregeln
 - `LOGBOOK.md` Arbeitslog (nur nach expliziter Aufforderung aktualisieren)
@@ -122,11 +122,11 @@ RFID Diagnose:
 - Oeffne `arduino/mega/mega.ino`.
 - Die `.cpp/.h` Dateien werden automatisch mitgebaut.
 
-## Arduino Libraries
+## Arduino-Bibliotheken
 - Fuer RFID RC522 wird die Bibliothek `MFRC522` benoetigt (Library Manager oder Arduino CLI).
 
 ## Build (Arduino CLI)
-- Compile (Mega 2560):
+- Kompilieren (Mega 2560):
   - `bin/arduino-cli compile --fqbn arduino:avr:mega arduino/mega`
   - oder: `./scripts/arduino_build.sh` (installiert den Core automatisch, falls noetig)
 
@@ -139,15 +139,18 @@ RFID Diagnose:
   - `./scripts/arduino_watch_upload.sh --once`
 
 Hinweise:
-- Das Script beobachtet `arduino/mega` auf `*.ino`, `*.cpp`, `*.c`, `*.h`, `*.hpp`.
-- Bei jeder Aenderung: Compile via `scripts/arduino_build.sh`, danach Upload via `arduino-cli upload`.
+- Das Skript beobachtet `arduino/mega` auf `*.ino`, `*.cpp`, `*.c`, `*.h`, `*.hpp`.
+- Bei jeder Aenderung: Kompilieren via `scripts/arduino_build.sh`, danach Upload via `arduino-cli upload`.
 - Falls `arduino-cli` fehlt, wird es automatisch lokal nach `./bin/arduino-cli` installiert.
 - Mit `inotifywait` reagiert es sofort, sonst nutzt es Polling als Fallback.
 
-## Deployment (Node-RED auf dem Pi)
-- Flows werden direkt auf dem Raspberry Pi aktualisiert:
-  1. `cd ~/.node-red` (falls das dein Repo-Root ist), dann `git pull`
-  2. `./nodered/flows/deploy_flows.sh`
+## Bereitstellung (Node-RED auf dem Pi)
+- Fuer ein Komplett-Update auf der Pi reicht im Projektverzeichnis der Befehl:
+  - `update`
+- Manuell alternativ:
+  1. `cd ~/.node-red` (falls das deine Projektwurzel ist), dann `git pull`
+  2. `./scripts/arduino_watch_upload.sh --once`
+  3. `./nodered/flows/deploy_flows.sh`
 
 ## Parametrierung (Dashboard)
 - Im Tab `Projekt-Parametrierung` gibt es einen Slider `HC-SR04 Korrektur (cm)` mit Bereich `-5 .. +5`.
@@ -161,7 +164,7 @@ Hinweise:
 - Die Offsets werden in `fn_parameters_flow.json` gespeichert (`global.hcsr04_offset_cm`, `global.droplet_offset_raw`, `global.turbidity_offset_raw`).
 - Die Anzeigen nutzen die korrigierten Werte `hcsr04_distance_display_cm`, `droplet_display_raw` und `turbidity_display_raw`.
 
-## Profile (Dashboard)
+## Profilsteuerung (Dashboard-Tab `Profile`)
 - Im Tab `Profile` gibt es drei Schaltflaechen:
   - `Lesen` (sendet `RFID_READ`)
   - `Profil 1 anlernen/loeschen` (sendet `RFID_LEARN_P1`)
@@ -174,9 +177,7 @@ Hinweise:
 - Die erkannte UID, das aktive Profil und der RFID Modulstatus werden live angezeigt.
 - Im Tab `Projekt-info` unter `Status / Sensoren` werden zusaetzlich `RFID RC522 Status`, `Tropfensensor Status`, `Truebungssensor Status` und die 4 Relais-Zustaende (`ON`/`OFF`) angezeigt.
 
-## Next Steps (wenn Sensoren/Aktoren bekannt sind)
+## Naechste Schritte (wenn Sensoren/Aktoren bekannt sind)
 - Weitere Sensoren nach gleichem Muster in `sensors.cpp` ergaenzen.
 - `ACTUATOR_PINS` und UI-Buttons bei Bedarf erweitern.
 - Baudrate ggf. anpassen.
-
-

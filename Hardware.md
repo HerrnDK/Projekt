@@ -1,5 +1,7 @@
+# Hardware-Uebersicht
+
 - Arduino Mega 2560 R3
-- Raspberry Pi (Node-RED, UART /dev/serial0)
+- Raspberry Pi (Node-RED, UART `/dev/serial0`)
 - Pegelwandler 5V->3.3V (Pflicht fuer Mega TX1 -> Raspberry Pi RXD)
 - 1x 4-Kanal Relaismodul 5V (IN1..IN4 an D22..D25, 10A @ 250VAC / 30VDC)
 - Relais 1: 5V Wasserpumpe

@@ -1,4 +1,4 @@
-version: 11
+version: 12
 registry: components
 conventions:
   id_style: "snake_case, stable logical id (not Node-RED node id)"
@@ -58,7 +58,7 @@ components:
     id: ui_text_hcsr04_distance_desktop
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "HC-SR04 Distanz Display"
+    node_label: "HC-SR04 Distanz Anzeige"
     group: ui_grp_info_main
     description: "Anzeige der HC-SR04 Distanz inkl. Korrektur-Offset in cm (Desktop)"
     example_msg:
@@ -71,9 +71,9 @@ components:
     id: ui_text_hcsr04_distance_mobile
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "HC-SR04 Distanz Display (Mobile)"
+    node_label: "HC-SR04 Distanz Anzeige (Mobil)"
     group: ui_grp_info_mobile
-    description: "Anzeige der HC-SR04 Distanz inkl. Korrektur-Offset in cm (Mobile)"
+    description: "Anzeige der HC-SR04 Distanz inkl. Korrektur-Offset in cm (Mobil)"
     example_msg:
       topic: ""
       payload:
@@ -84,7 +84,7 @@ components:
     id: ui_text_hcsr04_status_desktop
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "HC-SR04 Status Display"
+    node_label: "HC-SR04 Statusanzeige"
     group: ui_grp_info_main
     description: "Anzeige des HC-SR04 Status (ok/error_timeout/error_range) auf Desktop"
     example_msg:
@@ -97,9 +97,9 @@ components:
     id: ui_text_hcsr04_status_mobile
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "HC-SR04 Status Display (Mobile)"
+    node_label: "HC-SR04 Statusanzeige (Mobil)"
     group: ui_grp_info_mobile
-    description: "Anzeige des HC-SR04 Status (ok/error_timeout/error_range) auf Mobile"
+    description: "Anzeige des HC-SR04 Status (ok/error_timeout/error_range) auf Mobil"
     example_msg:
       topic: ""
       payload:
@@ -157,7 +157,7 @@ components:
     id: startup_status_indicator_desktop
     type: ui_text
     flow: nodered/flows/fn_startup_test_flow.json
-    node_label: "Startup Status (Desktop)"
+    node_label: "Startstatus (Desktop)"
     group: ui_grp_info_main
     description: "Statusanzeige fuer Anlagenbereitschaft (Desktop)"
     example_msg:
@@ -169,9 +169,9 @@ components:
     id: startup_status_indicator_mobile
     type: ui_text
     flow: nodered/flows/fn_startup_test_flow.json
-    node_label: "Startup Status (Mobile)"
+    node_label: "Startup Status (Mobil)"
     group: ui_grp_info_mobile
-    description: "Statusanzeige fuer Anlagenbereitschaft (Mobile)"
+    description: "Statusanzeige fuer Anlagenbereitschaft (Mobil)"
     example_msg:
       topic: ""
       payload: "Anlage stoerung"
@@ -181,7 +181,7 @@ components:
     id: startup_link_to_data
     type: link_out
     flow: nodered/flows/fn_startup_test_flow.json
-    node_label: "to data exchange (startup)"
+    node_label: "zu Datenaustausch (Starttest)"
     description: "Uebergibt Startup-Befehle an die Kommunikationsschicht"
     tags: [startup, link, serial]
     version: 1
@@ -189,7 +189,7 @@ components:
     id: startup_link_from_data
     type: link_in
     flow: nodered/flows/fn_startup_test_flow.json
-    node_label: "from data exchange (startup)"
+    node_label: "aus Datenaustausch (Starttest)"
     description: "Empfaengt Antworten aus der Kommunikationsschicht"
     tags: [startup, link, serial]
     version: 1
@@ -209,9 +209,9 @@ components:
     id: parameter_offset_slider_mobile
     type: ui_slider
     flow: nodered/flows/dashboard_flow.json
-    node_label: "HC-SR04 Korrektur Slider (Mobile)"
+    node_label: "HC-SR04 Korrektur Slider (Mobil)"
     group: ui_grp_parameter_mobile
-    description: "Slider fuer HC-SR04 Korrektur-Offset in cm (Mobile, -5..+5, topic=hcsr04_offset_cm)"
+    description: "Slider fuer HC-SR04 Korrektur-Offset in cm (Mobil, -5..+5, topic=hcsr04_offset_cm)"
     example_msg:
       topic: "hcsr04_offset_cm"
       payload: -1
@@ -233,9 +233,9 @@ components:
     id: parameter_droplet_offset_slider_mobile
     type: ui_slider
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Tropfensensor Offset Slider (Mobile)"
+    node_label: "Tropfensensor Offset Slider (Mobil)"
     group: ui_grp_parameter_mobile
-    description: "Slider fuer Tropfensensor Offset (Mobile, -300..+300, topic=droplet_offset_raw)"
+    description: "Slider fuer Tropfensensor Offset (Mobil, -300..+300, topic=droplet_offset_raw)"
     example_msg:
       topic: "droplet_offset_raw"
       payload: -30
@@ -257,9 +257,9 @@ components:
     id: parameter_turbidity_offset_slider_mobile
     type: ui_slider
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Truebungssensor Offset Slider (Mobile)"
+    node_label: "Truebungssensor Offset Slider (Mobil)"
     group: ui_grp_parameter_mobile
-    description: "Slider fuer Truebungssensor Offset (Mobile, -200..+200, topic=turbidity_offset_raw)"
+    description: "Slider fuer Truebungssensor Offset (Mobil, -200..+200, topic=turbidity_offset_raw)"
     example_msg:
       topic: "turbidity_offset_raw"
       payload: -40
@@ -317,9 +317,9 @@ components:
     id: parameter_relay1_button_mobile
     type: ui_button
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Relais 1 (Pumpe) schalten (Mobile)"
+    node_label: "Relais 1 (Pumpe) schalten (Mobil)"
     group: ui_grp_parameter_mobile
-    description: "Toggle fuer Relais 1 (Pumpe) auf Pin D22 (Mobile)."
+    description: "Toggle fuer Relais 1 (Pumpe) auf Pin D22 (Mobil)."
     example_msg:
       topic: "relay_toggle"
       payload: "22"
@@ -329,9 +329,9 @@ components:
     id: parameter_relay2_button_mobile
     type: ui_button
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Relais 2 schalten (Mobile)"
+    node_label: "Relais 2 schalten (Mobil)"
     group: ui_grp_parameter_mobile
-    description: "Toggle fuer Relais 2 (Reserve) auf Pin D23 (Mobile)."
+    description: "Toggle fuer Relais 2 (Reserve) auf Pin D23 (Mobil)."
     example_msg:
       topic: "relay_toggle"
       payload: "23"
@@ -341,9 +341,9 @@ components:
     id: parameter_relay3_button_mobile
     type: ui_button
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Relais 3 schalten (Mobile)"
+    node_label: "Relais 3 schalten (Mobil)"
     group: ui_grp_parameter_mobile
-    description: "Toggle fuer Relais 3 (Reserve) auf Pin D24 (Mobile)."
+    description: "Toggle fuer Relais 3 (Reserve) auf Pin D24 (Mobil)."
     example_msg:
       topic: "relay_toggle"
       payload: "24"
@@ -353,9 +353,9 @@ components:
     id: parameter_relay4_button_mobile
     type: ui_button
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Relais 4 schalten (Mobile)"
+    node_label: "Relais 4 schalten (Mobil)"
     group: ui_grp_parameter_mobile
-    description: "Toggle fuer Relais 4 (Reserve) auf Pin D25 (Mobile)."
+    description: "Toggle fuer Relais 4 (Reserve) auf Pin D25 (Mobil)."
     example_msg:
       topic: "relay_toggle"
       payload: "25"
@@ -381,7 +381,7 @@ components:
     id: parameter_relay_controller
     type: function
     flow: nodered/flows/fn_parameters_flow.json
-    node_label: "Relais Controller"
+    node_label: "Relaissteuerung"
     description: "Verarbeitet relay_toggle und ACT-ACKs, sendet ACT-Befehle und publiziert ON/OFF-Zustaende fuer Relais 1..4."
     tags: [parameter, function, relay, actuator, act]
     version: 1
@@ -389,9 +389,9 @@ components:
     id: qr_welcome_dynamic
     type: ui_template
     flow: nodered/flows/Network.json
-    node_label: "QR Welcome (dynamisch)"
+    node_label: "QR Willkommen (dynamisch)"
     group: ui_grp_welcome_main
-    description: "Welcome-QR Anzeige: Setup (AP+Login) oder zentraler Dashboard-QR bei WLAN-Verbindung"
+    description: "Willkommens-QR-Anzeige: Einrichtung (AP+Anmeldung) oder zentraler Dashboard-QR bei WLAN-Verbindung"
     tags: [qr, welcome, network, ui]
     version: 1
   wifi_urls_display_desktop:
@@ -407,9 +407,9 @@ components:
     id: wifi_urls_display_mobile
     type: ui_template
     flow: nodered/flows/Network.json
-    node_label: "WLAN Status Anzeige (Mobile)"
+    node_label: "WLAN Status Anzeige (Mobil)"
     group: ui_grp_wifi_mobile
-    description: "Zeigt WLAN-Status sowie Debug- und Dashboard-URL (Mobile)"
+    description: "Zeigt WLAN-Status sowie Debug- und Dashboard-URL (Mobil)"
     tags: [wifi, url, debug, dashboard, ui]
     version: 1
   wlan_ip_resolver:
@@ -432,7 +432,7 @@ components:
     id: profile_status_display_desktop
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Profile Status"
+    node_label: "Profilstatus"
     group: ui_grp_profile_main
     description: "Zeigt Status und Lernzustand der RFID Profilzuordnung"
     example_msg:
@@ -473,7 +473,7 @@ components:
     flow: nodered/flows/dashboard_flow.json
     node_label: "RFID RC522 Status"
     group: ui_grp_info_mobile
-    description: "RFID Hardwarestatus im Status/Sensoren-Tab (Mobile)."
+    description: "RFID Hardwarestatus im Status/Sensoren-Tab (Mobil)."
     example_msg:
       topic: ""
       payload:
@@ -484,7 +484,7 @@ components:
     id: status_droplet_value_display_desktop
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Tropfensensor Wert Display"
+    node_label: "Tropfensensor Wertanzeige"
     group: ui_grp_info_main
     description: "Tropfensensor Rohwert inkl. Offset im Status/Sensoren-Tab (Desktop)."
     example_msg:
@@ -497,9 +497,9 @@ components:
     id: status_droplet_value_display_mobile
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Tropfensensor Wert Display (Mobile)"
+    node_label: "Tropfensensor Wertanzeige (Mobil)"
     group: ui_grp_info_mobile
-    description: "Tropfensensor Rohwert inkl. Offset im Status/Sensoren-Tab (Mobile)."
+    description: "Tropfensensor Rohwert inkl. Offset im Status/Sensoren-Tab (Mobil)."
     example_msg:
       topic: ""
       payload:
@@ -510,7 +510,7 @@ components:
     id: status_droplet_state_display_desktop
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Tropfensensor Status Display"
+    node_label: "Tropfensensor Statusanzeige"
     group: ui_grp_info_main
     description: "Tropfensensor Status im Status/Sensoren-Tab (Desktop)."
     example_msg:
@@ -523,9 +523,9 @@ components:
     id: status_droplet_state_display_mobile
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Tropfensensor Status Display (Mobile)"
+    node_label: "Tropfensensor Statusanzeige (Mobil)"
     group: ui_grp_info_mobile
-    description: "Tropfensensor Status im Status/Sensoren-Tab (Mobile)."
+    description: "Tropfensensor Status im Status/Sensoren-Tab (Mobil)."
     example_msg:
       topic: ""
       payload:
@@ -536,7 +536,7 @@ components:
     id: status_turbidity_value_display_desktop
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Truebungssensor Wert Display"
+    node_label: "Truebungssensor Wertanzeige"
     group: ui_grp_info_main
     description: "Truebungssensor Rohwert inkl. Offset im Status/Sensoren-Tab (Desktop)."
     example_msg:
@@ -549,9 +549,9 @@ components:
     id: status_turbidity_value_display_mobile
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Truebungssensor Wert Display (Mobile)"
+    node_label: "Truebungssensor Wertanzeige (Mobil)"
     group: ui_grp_info_mobile
-    description: "Truebungssensor Rohwert inkl. Offset im Status/Sensoren-Tab (Mobile)."
+    description: "Truebungssensor Rohwert inkl. Offset im Status/Sensoren-Tab (Mobil)."
     example_msg:
       topic: ""
       payload:
@@ -562,7 +562,7 @@ components:
     id: status_turbidity_state_display_desktop
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Truebungssensor Status Display"
+    node_label: "Truebungssensor Statusanzeige"
     group: ui_grp_info_main
     description: "Truebungssensor Status im Status/Sensoren-Tab (Desktop)."
     example_msg:
@@ -575,9 +575,9 @@ components:
     id: status_turbidity_state_display_mobile
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Truebungssensor Status Display (Mobile)"
+    node_label: "Truebungssensor Statusanzeige (Mobil)"
     group: ui_grp_info_mobile
-    description: "Truebungssensor Status im Status/Sensoren-Tab (Mobile)."
+    description: "Truebungssensor Status im Status/Sensoren-Tab (Mobil)."
     example_msg:
       topic: ""
       payload:
@@ -588,7 +588,7 @@ components:
     id: status_relay1_display_desktop
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Relais 1 Status Display"
+    node_label: "Relais 1 Statusanzeige"
     group: ui_grp_info_main
     description: "ON/OFF Anzeige fuer Relais 1 (Pumpe) im Status/Sensoren-Tab (Desktop)."
     example_msg:
@@ -601,7 +601,7 @@ components:
     id: status_relay2_display_desktop
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Relais 2 Status Display"
+    node_label: "Relais 2 Statusanzeige"
     group: ui_grp_info_main
     description: "ON/OFF Anzeige fuer Relais 2 (Reserve) im Status/Sensoren-Tab (Desktop)."
     example_msg:
@@ -614,7 +614,7 @@ components:
     id: status_relay3_display_desktop
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Relais 3 Status Display"
+    node_label: "Relais 3 Statusanzeige"
     group: ui_grp_info_main
     description: "ON/OFF Anzeige fuer Relais 3 (Reserve) im Status/Sensoren-Tab (Desktop)."
     example_msg:
@@ -627,7 +627,7 @@ components:
     id: status_relay4_display_desktop
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Relais 4 Status Display"
+    node_label: "Relais 4 Statusanzeige"
     group: ui_grp_info_main
     description: "ON/OFF Anzeige fuer Relais 4 (Reserve) im Status/Sensoren-Tab (Desktop)."
     example_msg:
@@ -640,9 +640,9 @@ components:
     id: status_relay1_display_mobile
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Relais 1 Status Display (Mobile)"
+    node_label: "Relais 1 Statusanzeige (Mobil)"
     group: ui_grp_info_mobile
-    description: "ON/OFF Anzeige fuer Relais 1 (Pumpe) im Status/Sensoren-Tab (Mobile)."
+    description: "ON/OFF Anzeige fuer Relais 1 (Pumpe) im Status/Sensoren-Tab (Mobil)."
     example_msg:
       topic: ""
       payload:
@@ -653,9 +653,9 @@ components:
     id: status_relay2_display_mobile
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Relais 2 Status Display (Mobile)"
+    node_label: "Relais 2 Statusanzeige (Mobil)"
     group: ui_grp_info_mobile
-    description: "ON/OFF Anzeige fuer Relais 2 (Reserve) im Status/Sensoren-Tab (Mobile)."
+    description: "ON/OFF Anzeige fuer Relais 2 (Reserve) im Status/Sensoren-Tab (Mobil)."
     example_msg:
       topic: ""
       payload:
@@ -666,9 +666,9 @@ components:
     id: status_relay3_display_mobile
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Relais 3 Status Display (Mobile)"
+    node_label: "Relais 3 Statusanzeige (Mobil)"
     group: ui_grp_info_mobile
-    description: "ON/OFF Anzeige fuer Relais 3 (Reserve) im Status/Sensoren-Tab (Mobile)."
+    description: "ON/OFF Anzeige fuer Relais 3 (Reserve) im Status/Sensoren-Tab (Mobil)."
     example_msg:
       topic: ""
       payload:
@@ -679,9 +679,9 @@ components:
     id: status_relay4_display_mobile
     type: ui_text
     flow: nodered/flows/dashboard_flow.json
-    node_label: "Relais 4 Status Display (Mobile)"
+    node_label: "Relais 4 Statusanzeige (Mobil)"
     group: ui_grp_info_mobile
-    description: "ON/OFF Anzeige fuer Relais 4 (Reserve) im Status/Sensoren-Tab (Mobile)."
+    description: "ON/OFF Anzeige fuer Relais 4 (Reserve) im Status/Sensoren-Tab (Mobil)."
     example_msg:
       topic: ""
       payload:
@@ -692,8 +692,10 @@ components:
     id: profile_controller_logic
     type: function
     flow: nodered/flows/fn_profiles_flow.json
-    node_label: "RFID Profile Controller"
+    node_label: "RFID-Profilsteuerung"
     description: "Verwaltet RFID_READ, RFID_LEARN_P1, RFID_LEARN_P2 inkl. Toggle: belegt -> loeschen, frei -> anlernen."
     tags: [function, rfid, profile, mapping]
     version: 1
+
+
 

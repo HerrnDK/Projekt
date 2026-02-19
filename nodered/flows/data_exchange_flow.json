@@ -2,9 +2,9 @@
     {
         "id":  "flow_data_exchange",
         "type":  "tab",
-        "label":  "Data Exchange - Arduino (JSON)",
+        "label":  "Datenaustausch - Arduino (JSON)",
         "disabled":  false,
-        "info":  "Serial communication and parsing"
+        "info":  "Serielle Kommunikation und JSON-Verarbeitung"
     },
     {
         "id":  "serial-config",
@@ -24,7 +24,7 @@
         "id":  "serial-in",
         "type":  "serial in",
         "z":  "flow_data_exchange",
-        "name":  "From Arduino Mega",
+        "name":  "Vom Arduino Mega",
         "serial":  "serial-config",
         "x":  180,
         "y":  160,
@@ -109,7 +109,7 @@
         "id":  "serial-out",
         "type":  "serial out",
         "z":  "flow_data_exchange",
-        "name":  "To Arduino Mega",
+        "name":  "Zum Arduino Mega",
         "serial":  "serial-config",
         "x":  620,
         "y":  320,
@@ -121,7 +121,7 @@
         "id":  "link_in_from_dashboard",
         "type":  "link in",
         "z":  "flow_data_exchange",
-        "name":  "from Dashboard",
+        "name":  "vom Dashboard",
         "links":  [
                       "4ac1b66aca6f1626",
                       "link_out_startup_to_data",
@@ -140,7 +140,7 @@
         "id":  "link_out_from_data",
         "type":  "link out",
         "z":  "flow_data_exchange",
-        "name":  "to function flows (sensors)",
+        "name":  "zu Funktions-Flows \\(Sensoren\\)",
         "links":  [
                       "link_in_from_data_startup",
                       "link_in_from_data_parameters",
@@ -163,3 +163,4 @@
                     }
     }
 ]
+

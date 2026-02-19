@@ -1,203 +1,216 @@
 [
-  {
-    "id": "flow_fn_startup_test",
-    "type": "tab",
-    "label": "Funktion - Startup Test",
-    "disabled": false,
-    "info": "Startup-Test fuer Sensorvalidierung und Anlagenstatus"
-  },
-  {
-    "id": "inject_startup_test_once",
-    "type": "inject",
-    "z": "flow_fn_startup_test",
-    "name": "Startup Test ausloesen (Boot + zyklisch)",
-    "props": [
-      {
-        "p": "payload"
-      }
-    ],
-    "repeat": "2",
-    "crontab": "",
-    "once": true,
-    "onceDelay": "5",
-    "topic": "",
-    "payload": "READ",
-    "payloadType": "str",
-    "x": 240,
-    "y": 120,
-    "wires": [
-      [
-        "link_out_startup_to_data"
-      ]
-    ]
-  },
-  {
-    "id": "inject_startup_default_once",
-    "type": "inject",
-    "z": "flow_fn_startup_test",
-    "name": "Initialstatus setzen (Boot)",
-    "props": [
-      {
-        "p": "payload"
-      }
-    ],
-    "repeat": "",
-    "crontab": "",
-    "once": true,
-    "onceDelay": "0.5",
-    "topic": "",
-    "payload": "INIT_STARTUP_STATUS",
-    "payloadType": "str",
-    "x": 250,
-    "y": 60,
-    "wires": [
-      [
-        "fn_startup_default_fault"
-      ]
-    ]
-  },
-  {
-    "id": "fn_startup_default_fault",
-    "type": "function",
-    "z": "flow_fn_startup_test",
-    "name": "Initialstatus setzen (Stoerung)",
-    "func": "msg.startup_test = {\n  ok: false,\n  reason: \"Noch keine gueltige Sensorantwort\",\n  checked_at_iso: new Date().toISOString()\n};\nmsg.status_text = \"Anlage stoerung\";\nmsg.status_color = \"#C62828\";\nmsg.payload = \"Anlage stoerung (warte auf erste Sensordaten)\";\nreturn msg;",
-    "outputs": 1,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "libs": [],
-    "x": 540,
-    "y": 60,
-    "wires": [
-      [
-        "ui_text_startup_status_desktop",
-        "ui_text_startup_status_mobile",
-        "debug_startup_test_result"
-      ]
-    ]
-  },
-  {
-    "id": "link_out_startup_to_data",
-    "type": "link out",
-    "z": "flow_fn_startup_test",
-    "name": "to data exchange (startup)",
-    "mode": "link",
-    "links": [
-      "link_in_from_dashboard"
-    ],
-    "x": 540,
-    "y": 120,
-    "wires": []
-  },
-  {
-    "id": "link_in_from_data_startup",
-    "type": "link in",
-    "z": "flow_fn_startup_test",
-    "name": "from data exchange (startup)",
-    "links": [
-      "link_out_from_data"
-    ],
-    "x": 230,
-    "y": 220,
-    "wires": [
-      [
-        "switch_startup_sensor_only"
-      ]
-    ]
-  },
-  {
-    "id": "switch_startup_sensor_only",
-    "type": "switch",
-    "z": "flow_fn_startup_test",
-    "name": "Nur Sensor-Antworten",
-    "property": "payload.type",
-    "propertyType": "msg",
-    "rules": [
-      {
-        "t": "eq",
-        "v": "sensor",
-        "vt": "str"
-      }
-    ],
-    "checkall": "true",
-    "repair": false,
-    "outputs": 1,
-    "x": 500,
-    "y": 220,
-    "wires": [
-      [
-        "fn_startup_validate"
-      ]
-    ]
-  },
-  {
-    "id": "fn_startup_validate",
-    "type": "function",
-    "z": "flow_fn_startup_test",
-    "name": "Startup-Test validieren",
-    "func": "const p = msg.payload || {};\nconst toNum = (v) => Number(v);\nconst uptime = toNum(p.uptime_ms);\nconst hcsr04Distance = toNum(p.hcsr04_distance_cm);\nconst hcsr04Status = String(p.hcsr04_status || \"missing\");\nconst dropletRaw = toNum(p.droplet_raw);\nconst dropletStatus = String(p.droplet_status || \"missing\");\nconst turbidityRaw = toNum(p.turbidity_raw);\nconst turbidityStatus = String(p.turbidity_status || \"missing\");\n\nconst uptimeOk = Number.isFinite(uptime) && uptime >= 0;\nconst hcsr04Ok = hcsr04Status === \"ok\" && Number.isFinite(hcsr04Distance) && hcsr04Distance >= 2 && hcsr04Distance <= 400;\nconst dropletOk = dropletStatus === \"ok\" && Number.isFinite(dropletRaw) && dropletRaw >= 0 && dropletRaw <= 1023;\nconst turbidityOk = turbidityStatus === \"ok\" && Number.isFinite(turbidityRaw) && turbidityRaw >= 0 && turbidityRaw <= 1023;\n\nconst faultParts = [];\nif (!uptimeOk) {\n  faultParts.push(\"Uptime: ungueltig\");\n}\nif (!hcsr04Ok) {\n  faultParts.push(\"HC-SR04: \" + hcsr04Status);\n}\nif (!dropletOk) {\n  faultParts.push(\"Tropfensensor: \" + dropletStatus);\n}\nif (!turbidityOk) {\n  faultParts.push(\"Truebungssensor: \" + turbidityStatus);\n}\n\nconst ok = faultParts.length === 0;\nconst reason = ok ? \"Sensorwerte gueltig\" : (\"Stoerung: \" + faultParts.join(\"; \"));\n\nmsg.startup_test = {\n  ok,\n  reason,\n  checked_at_iso: new Date().toISOString(),\n  sensors: {\n    uptime_ms: uptime,\n    hcsr04_distance_cm: hcsr04Distance,\n    hcsr04_status: hcsr04Status,\n    droplet_raw: dropletRaw,\n    droplet_status: dropletStatus,\n    turbidity_raw: turbidityRaw,\n    turbidity_status: turbidityStatus\n  }\n};\n\nmsg.status_text = ok ? \"Anlage bereit\" : \"Anlage stoerung\";\nmsg.status_color = ok ? \"#1B8E3E\" : \"#C62828\";\nmsg.payload = ok\n  ? \"Anlage bereit\"\n  : (\"Anlage stoerung (\" + faultParts.join(\"; \") + \")\");\nreturn msg;",
-    "outputs": 1,
-    "noerr": 0,
-    "initialize": "",
-    "finalize": "",
-    "libs": [],
-    "x": 770,
-    "y": 220,
-    "wires": [
-      [
-        "ui_text_startup_status_desktop",
-        "ui_text_startup_status_mobile",
-        "debug_startup_test_result"
-      ]
-    ]
-  },
-  {
-    "id": "ui_text_startup_status_desktop",
-    "type": "ui_text",
-    "z": "flow_fn_startup_test",
-    "group": "3584a9c30b6db556",
-    "order": 5,
-    "width": 7,
-    "height": 1,
-    "name": "Startup Status (Desktop)",
-    "label": "Anlagenstatus",
-    "format": "<span style=\"font-weight:700\">{{msg.payload}}</span>",
-    "layout": "row-spread",
-    "className": "",
-    "x": 1080,
-    "y": 180,
-    "wires": []
-  },
-  {
-    "id": "ui_text_startup_status_mobile",
-    "type": "ui_text",
-    "z": "flow_fn_startup_test",
-    "group": "939aa8523e70cefb",
-    "order": 5,
-    "width": 10,
-    "height": 1,
-    "name": "Startup Status (Mobile)",
-    "label": "Anlagenstatus",
-    "format": "<span style=\"font-weight:700\">{{msg.payload}}</span>",
-    "layout": "row-spread",
-    "className": "",
-    "x": 1070,
-    "y": 240,
-    "wires": []
-  },
-  {
-    "id": "debug_startup_test_result",
-    "type": "debug",
-    "z": "flow_fn_startup_test",
-    "name": "Startup-Test Ergebnis",
-    "active": true,
-    "tosidebar": true,
-    "console": false,
-    "complete": "startup_test",
-    "targetType": "msg",
-    "x": 1080,
-    "y": 300,
-    "wires": []
-  }
+    {
+        "id":  "flow_fn_startup_test",
+        "type":  "tab",
+        "label":  "Funktion - Starttest",
+        "disabled":  false,
+        "info":  "Starttest fuer Sensorvalidierung und Anlagenstatus"
+    },
+    {
+        "id":  "inject_startup_test_once",
+        "type":  "inject",
+        "z":  "flow_fn_startup_test",
+        "name":  "Starttest ausloesen (Boot + zyklisch)",
+        "props":  [
+                      {
+                          "p":  "payload"
+                      }
+                  ],
+        "repeat":  "2",
+        "crontab":  "",
+        "once":  true,
+        "onceDelay":  "5",
+        "topic":  "",
+        "payload":  "READ",
+        "payloadType":  "str",
+        "x":  240,
+        "y":  120,
+        "wires":  [
+                      [
+                          "link_out_startup_to_data"
+                      ]
+                  ]
+    },
+    {
+        "id":  "inject_startup_default_once",
+        "type":  "inject",
+        "z":  "flow_fn_startup_test",
+        "name":  "Initialstatus setzen (Boot)",
+        "props":  [
+                      {
+                          "p":  "payload"
+                      }
+                  ],
+        "repeat":  "",
+        "crontab":  "",
+        "once":  true,
+        "onceDelay":  "0.5",
+        "topic":  "",
+        "payload":  "INIT_STARTUP_STATUS",
+        "payloadType":  "str",
+        "x":  250,
+        "y":  60,
+        "wires":  [
+                      [
+                          "fn_startup_default_fault"
+                      ]
+                  ]
+    },
+    {
+        "id":  "fn_startup_default_fault",
+        "type":  "function",
+        "z":  "flow_fn_startup_test",
+        "name":  "Initialstatus setzen (Stoerung)",
+        "func":  "msg.startup_test = {\n  ok: false,\n  reason: \"Noch keine gueltige Sensorantwort\",\n  checked_at_iso: new Date().toISOString()\n};\nmsg.status_text = \"Anlage stoerung\";\nmsg.status_color = \"#C62828\";\nmsg.payload = \"Anlage stoerung (warte auf erste Sensordaten)\";\nreturn msg;",
+        "outputs":  1,
+        "noerr":  0,
+        "initialize":  "",
+        "finalize":  "",
+        "libs":  [
+
+                 ],
+        "x":  540,
+        "y":  60,
+        "wires":  [
+                      [
+                          "ui_text_startup_status_desktop",
+                          "ui_text_startup_status_mobile",
+                          "debug_startup_test_result"
+                      ]
+                  ]
+    },
+    {
+        "id":  "link_out_startup_to_data",
+        "type":  "link out",
+        "z":  "flow_fn_startup_test",
+        "name":  "zu Datenaustausch (Starttest)",
+        "mode":  "link",
+        "links":  [
+                      "link_in_from_dashboard"
+                  ],
+        "x":  540,
+        "y":  120,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "link_in_from_data_startup",
+        "type":  "link in",
+        "z":  "flow_fn_startup_test",
+        "name":  "aus Datenaustausch (Starttest)",
+        "links":  [
+                      "link_out_from_data"
+                  ],
+        "x":  230,
+        "y":  220,
+        "wires":  [
+                      [
+                          "switch_startup_sensor_only"
+                      ]
+                  ]
+    },
+    {
+        "id":  "switch_startup_sensor_only",
+        "type":  "switch",
+        "z":  "flow_fn_startup_test",
+        "name":  "Nur Sensor-Antworten",
+        "property":  "payload.type",
+        "propertyType":  "msg",
+        "rules":  [
+                      {
+                          "t":  "eq",
+                          "v":  "sensor",
+                          "vt":  "str"
+                      }
+                  ],
+        "checkall":  "true",
+        "repair":  false,
+        "outputs":  1,
+        "x":  500,
+        "y":  220,
+        "wires":  [
+                      [
+                          "fn_startup_validate"
+                      ]
+                  ]
+    },
+    {
+        "id":  "fn_startup_validate",
+        "type":  "function",
+        "z":  "flow_fn_startup_test",
+        "name":  "Starttest validieren",
+        "func":  "const p = msg.payload || {};\nconst toNum = (v) =\u003e Number(v);\nconst uptime = toNum(p.uptime_ms);\nconst hcsr04Distance = toNum(p.hcsr04_distance_cm);\nconst hcsr04Status = String(p.hcsr04_status || \"missing\");\nconst dropletRaw = toNum(p.droplet_raw);\nconst dropletStatus = String(p.droplet_status || \"missing\");\nconst turbidityRaw = toNum(p.turbidity_raw);\nconst turbidityStatus = String(p.turbidity_status || \"missing\");\n\nconst uptimeOk = Number.isFinite(uptime) \u0026\u0026 uptime \u003e= 0;\nconst hcsr04Ok = hcsr04Status === \"ok\" \u0026\u0026 Number.isFinite(hcsr04Distance) \u0026\u0026 hcsr04Distance \u003e= 2 \u0026\u0026 hcsr04Distance \u003c= 400;\nconst dropletOk = dropletStatus === \"ok\" \u0026\u0026 Number.isFinite(dropletRaw) \u0026\u0026 dropletRaw \u003e= 0 \u0026\u0026 dropletRaw \u003c= 1023;\nconst turbidityOk = turbidityStatus === \"ok\" \u0026\u0026 Number.isFinite(turbidityRaw) \u0026\u0026 turbidityRaw \u003e= 0 \u0026\u0026 turbidityRaw \u003c= 1023;\n\nconst faultParts = [];\nif (!uptimeOk) {\n  faultParts.push(\"Uptime: ungueltig\");\n}\nif (!hcsr04Ok) {\n  faultParts.push(\"HC-SR04: \" + hcsr04Status);\n}\nif (!dropletOk) {\n  faultParts.push(\"Tropfensensor: \" + dropletStatus);\n}\nif (!turbidityOk) {\n  faultParts.push(\"Truebungssensor: \" + turbidityStatus);\n}\n\nconst ok = faultParts.length === 0;\nconst reason = ok ? \"Sensorwerte gueltig\" : (\"Stoerung: \" + faultParts.join(\"; \"));\n\nmsg.startup_test = {\n  ok,\n  reason,\n  checked_at_iso: new Date().toISOString(),\n  sensors: {\n    uptime_ms: uptime,\n    hcsr04_distance_cm: hcsr04Distance,\n    hcsr04_status: hcsr04Status,\n    droplet_raw: dropletRaw,\n    droplet_status: dropletStatus,\n    turbidity_raw: turbidityRaw,\n    turbidity_status: turbidityStatus\n  }\n};\n\nmsg.status_text = ok ? \"Anlage bereit\" : \"Anlage stoerung\";\nmsg.status_color = ok ? \"#1B8E3E\" : \"#C62828\";\nmsg.payload = ok\n  ? \"Anlage bereit\"\n  : (\"Anlage stoerung (\" + faultParts.join(\"; \") + \")\");\nreturn msg;",
+        "outputs":  1,
+        "noerr":  0,
+        "initialize":  "",
+        "finalize":  "",
+        "libs":  [
+
+                 ],
+        "x":  770,
+        "y":  220,
+        "wires":  [
+                      [
+                          "ui_text_startup_status_desktop",
+                          "ui_text_startup_status_mobile",
+                          "debug_startup_test_result"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_text_startup_status_desktop",
+        "type":  "ui_text",
+        "z":  "flow_fn_startup_test",
+        "group":  "3584a9c30b6db556",
+        "order":  5,
+        "width":  7,
+        "height":  1,
+        "name":  "Startstatus (Hauptansicht)",
+        "label":  "Anlagenstatus",
+        "format":  "\u003cspan style=\"font-weight:700\"\u003e{{msg.payload}}\u003c/span\u003e",
+        "layout":  "row-spread",
+        "className":  "",
+        "x":  1080,
+        "y":  180,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_text_startup_status_mobile",
+        "type":  "ui_text",
+        "z":  "flow_fn_startup_test",
+        "group":  "939aa8523e70cefb",
+        "order":  5,
+        "width":  10,
+        "height":  1,
+        "name":  "Startstatus \\(Mobil\\)",
+        "label":  "Anlagenstatus",
+        "format":  "\u003cspan style=\"font-weight:700\"\u003e{{msg.payload}}\u003c/span\u003e",
+        "layout":  "row-spread",
+        "className":  "",
+        "x":  1070,
+        "y":  240,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "debug_startup_test_result",
+        "type":  "debug",
+        "z":  "flow_fn_startup_test",
+        "name":  "Starttest Ergebnis",
+        "active":  true,
+        "tosidebar":  true,
+        "console":  false,
+        "complete":  "startup_test",
+        "targetType":  "msg",
+        "x":  1080,
+        "y":  300,
+        "wires":  [
+
+                  ]
+    }
 ]
+
