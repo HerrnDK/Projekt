@@ -30,9 +30,14 @@ namespace {
   constexpr long TURBIDITY_MIN_RAW = 0;
   constexpr long TURBIDITY_MAX_RAW = 1023;
   constexpr uint8_t TURBIDITY_SAMPLE_COUNT = 5;
-  constexpr int TURBIDITY_FLOATING_SPREAD_THRESHOLD = 80;
-  constexpr int TURBIDITY_PULLUP_HIGH_THRESHOLD = 1000;
-  constexpr int TURBIDITY_PULLUP_DELTA_THRESHOLD = 250;
+  // Beim Truebungssensor ist das Analogsignal deutlich rauschiger als beim Tropfensensor.
+  // Deshalb sind die Schwellen konservativer und der Fehler wird erst nach Bestaetigung gesetzt.
+  constexpr int TURBIDITY_FLOATING_SPREAD_THRESHOLD = 220;
+  constexpr int TURBIDITY_RAW_HIGH_THRESHOLD = 850;
+  constexpr int TURBIDITY_PULLUP_HIGH_THRESHOLD = 1015;
+  constexpr int TURBIDITY_PULLUP_DELTA_THRESHOLD = 450;
+  constexpr uint8_t TURBIDITY_DISCONNECT_CONFIRM_SNAPSHOTS = 3;
+  uint8_t turbidityDisconnectSuspectCount = 0;
 
   MFRC522 rfidReader(RC522_SS_PIN, RC522_RST_PIN);
   const char *rfidHardwareStatus = "error_not_initialized";
@@ -209,9 +214,20 @@ namespace {
     pinMode(TURBIDITY_SENSOR_PIN, INPUT);
 
     const bool floatingByNoise = (maxRaw - minRaw) >= TURBIDITY_FLOATING_SPREAD_THRESHOLD;
-    const bool floatingByPullup = (pullupSample >= TURBIDITY_PULLUP_HIGH_THRESHOLD) &&
+    const bool floatingByPullup = (raw >= TURBIDITY_RAW_HIGH_THRESHOLD) &&
+                                  (pullupSample >= TURBIDITY_PULLUP_HIGH_THRESHOLD) &&
                                   ((pullupSample - raw) >= TURBIDITY_PULLUP_DELTA_THRESHOLD);
-    if (floatingByNoise || floatingByPullup) {
+    const bool disconnectSuspected = floatingByNoise && floatingByPullup;
+
+    if (disconnectSuspected) {
+      if (turbidityDisconnectSuspectCount < TURBIDITY_DISCONNECT_CONFIRM_SNAPSHOTS) {
+        turbidityDisconnectSuspectCount++;
+      }
+    } else {
+      turbidityDisconnectSuspectCount = 0;
+    }
+
+    if (turbidityDisconnectSuspectCount >= TURBIDITY_DISCONNECT_CONFIRM_SNAPSHOTS) {
       ok = false;
       status = "error_not_connected";
       return -1;
