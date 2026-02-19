@@ -1,10 +1,10 @@
-#include "mega_shared.h"
+#include "mega_gemeinsam.h"
 
 #include <stdlib.h>
 #include <string.h>
 
 /*
-  data.cpp
+  daten.cpp
   - Bruecke zwischen Node-RED und Arduino-Funktionen ueber Serial1
   - Erwartete ASCII-Kommandos (newline-terminiert):
     READ\n              -> sendet JSON Sensor-Momentaufnahme (type=sensor)

@@ -24,10 +24,10 @@ flowchart TD
 
   subgraph Arduino["Arduino-Sketch"]
     Mega --> MainCpp["mega.ino"]
-    MainCpp --> DataCpp["data.cpp"]
-    MainCpp --> SensorsCpp["sensors.cpp"]
-    MainCpp --> ActCpp["actuators.cpp"]
-    DataCpp --> Shared["mega_shared.h und mega_shared.cpp"]
+    MainCpp --> DataCpp["daten.cpp"]
+    MainCpp --> SensorsCpp["sensoren.cpp"]
+    MainCpp --> ActCpp["aktoren.cpp"]
+    DataCpp --> Shared["mega_gemeinsam.h und mega_gemeinsam.cpp"]
     SensorsCpp --> Shared
     ActCpp --> Shared
   end

@@ -1,4 +1,4 @@
-#include "mega_shared.h"
+#include "mega_gemeinsam.h"
 
 HardwareSerial &PORT_DEBUG = Serial;
 HardwareSerial &PORT_DATEN = Serial1;

@@ -4,7 +4,7 @@
   - Fachlogik liegt in den Modulen unter .cpp
 */
 
-#include "mega_shared.h"
+#include "mega_gemeinsam.h"
 
 void setup() {
   PORT_DEBUG.begin(BAUDRATE_DEBUG);  // USB-Debugschnittstelle

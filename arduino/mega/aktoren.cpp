@@ -1,7 +1,7 @@
-#include "mega_shared.h"
+#include "mega_gemeinsam.h"
 
 /*
-  actuators.cpp
+  aktoren.cpp
   - Verwaltung der Relais-/Aktorpins
 */
 

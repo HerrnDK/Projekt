@@ -1,4 +1,4 @@
-#include "mega_shared.h"
+#include "mega_gemeinsam.h"
 
 #include <SPI.h>
 #ifndef MFRC522_SPICLOCK
@@ -9,7 +9,7 @@
 #include <string.h>
 
 /*
-  sensors.cpp
+  sensoren.cpp
   - Sensor-Handling fuer HC-SR04, Tropfensensor, Truebungssensor und RFID RC522
   - HC-SR04: D26 (TRIG) / D27 (ECHO)
   - Tropfensensor: A0
