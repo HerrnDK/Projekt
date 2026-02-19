@@ -1,4 +1,4 @@
-version: 10
+version: 11
 registry: components
 conventions:
   id_style: "snake_case, stable logical id (not Node-RED node id)"
@@ -150,9 +150,9 @@ components:
     type: function
     flow: nodered/flows/fn_startup_test_flow.json
     node_label: "Startup-Test validieren"
-    description: "Validiert HC-SR04 + Tropfensensor Status inkl. Uptime; setzt Anlagenstatus inkl. Fehlertext"
-    tags: [startup, status, validation, hcsr04, droplet]
-    version: 3
+    description: "Validiert HC-SR04 + Tropfensensor + Truebungssensor Status inkl. Uptime; setzt Anlagenstatus inkl. Fehlertext"
+    tags: [startup, status, validation, hcsr04, droplet, turbidity]
+    version: 4
   startup_status_indicator_desktop:
     id: startup_status_indicator_desktop
     type: ui_text
@@ -240,6 +240,30 @@ components:
       topic: "droplet_offset_raw"
       payload: -30
     tags: [ui, parameter, droplet, offset, mobile]
+    version: 1
+  parameter_turbidity_offset_slider_desktop:
+    id: parameter_turbidity_offset_slider_desktop
+    type: ui_slider
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Truebungssensor Offset Slider"
+    group: ui_grp_parameter_main
+    description: "Slider fuer Truebungssensor Offset (Desktop, -200..+200, topic=turbidity_offset_raw)"
+    example_msg:
+      topic: "turbidity_offset_raw"
+      payload: 40
+    tags: [ui, parameter, turbidity, offset, desktop]
+    version: 1
+  parameter_turbidity_offset_slider_mobile:
+    id: parameter_turbidity_offset_slider_mobile
+    type: ui_slider
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Truebungssensor Offset Slider (Mobile)"
+    group: ui_grp_parameter_mobile
+    description: "Slider fuer Truebungssensor Offset (Mobile, -200..+200, topic=turbidity_offset_raw)"
+    example_msg:
+      topic: "turbidity_offset_raw"
+      payload: -40
+    tags: [ui, parameter, turbidity, offset, mobile]
     version: 1
   parameter_relay1_button_desktop:
     id: parameter_relay1_button_desktop
@@ -342,17 +366,17 @@ components:
     type: function
     flow: nodered/flows/fn_parameters_flow.json
     node_label: "Offset speichern"
-    description: "Validiert und speichert HC-SR04/Tropfensensor Offsets anhand msg.topic"
-    tags: [parameter, function, hcsr04, droplet, offset]
-    version: 2
+    description: "Validiert und speichert HC-SR04/Tropfensensor/Truebungssensor Offsets anhand msg.topic"
+    tags: [parameter, function, hcsr04, droplet, turbidity, offset]
+    version: 3
   parameter_offset_apply:
     id: parameter_offset_apply
     type: function
     flow: nodered/flows/fn_parameters_flow.json
     node_label: "Offset auf Distanz anwenden"
-    description: "Erweitert Sensorpayload um hcsr04_distance_display_cm, droplet_display_raw und beide Offsets"
-    tags: [parameter, function, sensor, hcsr04, droplet, offset]
-    version: 2
+    description: "Erweitert Sensorpayload um hcsr04_distance_display_cm, droplet_display_raw, turbidity_display_raw und alle Offsets"
+    tags: [parameter, function, sensor, hcsr04, droplet, turbidity, offset]
+    version: 3
   parameter_relay_controller:
     id: parameter_relay_controller
     type: function
@@ -507,6 +531,58 @@ components:
       payload:
         droplet_status: "ok"
     tags: [ui, droplet, status, mobile]
+    version: 1
+  status_turbidity_value_display_desktop:
+    id: status_turbidity_value_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Truebungssensor Wert Display"
+    group: ui_grp_info_main
+    description: "Truebungssensor Rohwert inkl. Offset im Status/Sensoren-Tab (Desktop)."
+    example_msg:
+      topic: ""
+      payload:
+        turbidity_display_raw: 610
+    tags: [ui, turbidity, status, value, desktop]
+    version: 1
+  status_turbidity_value_display_mobile:
+    id: status_turbidity_value_display_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Truebungssensor Wert Display (Mobile)"
+    group: ui_grp_info_mobile
+    description: "Truebungssensor Rohwert inkl. Offset im Status/Sensoren-Tab (Mobile)."
+    example_msg:
+      topic: ""
+      payload:
+        turbidity_display_raw: 610
+    tags: [ui, turbidity, status, value, mobile]
+    version: 1
+  status_turbidity_state_display_desktop:
+    id: status_turbidity_state_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Truebungssensor Status Display"
+    group: ui_grp_info_main
+    description: "Truebungssensor Status im Status/Sensoren-Tab (Desktop)."
+    example_msg:
+      topic: ""
+      payload:
+        turbidity_status: "ok"
+    tags: [ui, turbidity, status, desktop]
+    version: 1
+  status_turbidity_state_display_mobile:
+    id: status_turbidity_state_display_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Truebungssensor Status Display (Mobile)"
+    group: ui_grp_info_mobile
+    description: "Truebungssensor Status im Status/Sensoren-Tab (Mobile)."
+    example_msg:
+      topic: ""
+      payload:
+        turbidity_status: "ok"
+    tags: [ui, turbidity, status, mobile]
     version: 1
   status_relay1_display_desktop:
     id: status_relay1_display_desktop

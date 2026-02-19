@@ -60,9 +60,11 @@ Gehe zu: `http://192.168.0.250:1880/ui`
 
 Projekt-Parametrierung:
 - 4 Relais-Buttons (`Relais 1 (Pumpe)`, `Relais 2-4 (Reserve)`) zum Umschalten ON/OFF
+- Offset-Slider fuer `HC-SR04`, `Tropfensensor` und `Truebungssensor`
 
 Projekt-info / Status-Sensoren:
 - Relais 1..4 Statusanzeige als `ON` / `OFF`
+- Sensoranzeigen fuer HC-SR04, Tropfensensor und Truebungssensor inkl. Status
 
 Profile Tab:
 - Button `Lesen`
@@ -72,6 +74,7 @@ Profile Tab:
 - Wenn Slot 1/2 bereits belegt ist, loescht der jeweilige Profil-Button die Bindung.
 - Anzeigen fuer UID, Lernstatus und aktives Profil
 - Im Tab `Projekt-info` unter `Status / Sensoren` werden `RFID RC522 Status` und `Tropfensensor Status` angezeigt
+- Im Tab `Projekt-info` unter `Status / Sensoren` werden `RFID RC522 Status`, `Tropfensensor Status` und `Truebungssensor Status` angezeigt
 
 ## Fehlerbehandlung
 
@@ -102,6 +105,6 @@ jq . nodered/flows/fn_profiles_flow.json > /dev/null
 | `nodered/flows/Network.json` | WLAN-Verbindung, Status, QR-Codes |
 | `nodered/flows/data_exchange_flow.json` | Serial-I/O Layer zur Arduino |
 | `nodered/flows/fn_startup_test_flow.json` | Startup-Test und Anlagenstatus |
-| `nodered/flows/fn_parameters_flow.json` | Parameterverwaltung HC-SR04 + Tropfensensor + Relaissteuerung |
+| `nodered/flows/fn_parameters_flow.json` | Parameterverwaltung HC-SR04 + Tropfensensor + Truebungssensor + Relaissteuerung |
 | `nodered/flows/fn_profiles_flow.json` | RFID Profile (Anlernen + Zuordnung) |
 | `nodered/flows/FLOW_ARCHITEKTUR_PLAN.md` | Ablaufplan und Zielarchitektur |

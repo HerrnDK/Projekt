@@ -25,7 +25,7 @@ flowchart TB
   subgraph Arduino[Arduino Sketch arduino/mega]
     Mega --> MainCpp[mega.ino\nsetup() / loop()]
     MainCpp --> DataCpp[data.cpp\nREAD / ACT / RFID Protokoll]
-    MainCpp --> SensorsCpp[sensors.cpp\nHC-SR04 + Tropfensensor + RC522]
+    MainCpp --> SensorsCpp[sensors.cpp\nHC-SR04 + Tropfensensor + Truebungssensor + RC522]
     MainCpp --> ActCpp[actuators.cpp]
     DataCpp --> Shared[mega_shared.h/.cpp]
     SensorsCpp --> Shared
@@ -96,7 +96,7 @@ stateDiagram-v2
   LearnP2 --> LearnP2: no_card/probe_error
 ```
 
-## 3) UML HC-SR04 + Tropfensensor-Funktionsablauf (READ, Offsets, Status)
+## 3) UML HC-SR04 + Tropfensensor + Truebungssensor-Funktionsablauf (READ, Offsets, Status)
 ```mermaid
 sequenceDiagram
   participant U as User
@@ -104,7 +104,7 @@ sequenceDiagram
   participant ST as fn_startup_test_flow
   participant X as data_exchange_flow
   participant A as Arduino data.cpp
-  participant S as sensors.cpp HC-SR04 + Tropfensensor
+  participant S as sensors.cpp HC-SR04 + Tropfensensor + Truebungssensor
   participant P as fn_parameters_flow
 
   alt Manuell
@@ -116,26 +116,26 @@ sequenceDiagram
 
   X->>A: Serial1 "READ"
   A->>S: Sensors_readSnapshot()
-  S-->>A: hcsr04_distance_cm/status + droplet_raw/status + uptime_ms
+  S-->>A: hcsr04_distance_cm/status + droplet_raw/status + turbidity_raw/status + uptime_ms
   A-->>X: JSON {type:"sensor", ...}
   X->>P: msg.payload (sensor)
-  P->>P: Offsets anwenden (hcsr04_offset_cm + droplet_offset_raw)
-  P-->>D: hcsr04_distance_display_cm + droplet_display_raw + Status + uptime_hms
+  P->>P: Offsets anwenden (hcsr04_offset_cm + droplet_offset_raw + turbidity_offset_raw)
+  P-->>D: hcsr04_distance_display_cm + droplet_display_raw + turbidity_display_raw + Status + uptime_hms
   P-->>ST: Sensorpayload fuer Startup-Validierung
   ST-->>D: Anlagenstatus (bereit/stoerung)
 ```
 
-### 3.1 UML Zustandsmodell (HC-SR04 + Tropfensensor/Anlagenstatus)
+### 3.1 UML Zustandsmodell (HC-SR04 + Tropfensensor + Truebungssensor/Anlagenstatus)
 ```mermaid
 stateDiagram-v2
   [*] --> Startup
   Startup --> Stoerung: Default beim Boot
 
-  Stoerung --> Bereit: hcsr04_status == ok && droplet_status == ok && uptime gueltig
-  Stoerung --> Stoerung: hcsr04_status != ok || droplet_status != ok
+  Stoerung --> Bereit: hcsr04_status == ok && droplet_status == ok && turbidity_status == ok && uptime gueltig
+  Stoerung --> Stoerung: hcsr04_status != ok || droplet_status != ok || turbidity_status != ok
 
-  Bereit --> Bereit: hcsr04_status == ok && droplet_status == ok
-  Bereit --> Stoerung: HC-SR04 oder Tropfensensor fehlerhaft/ungueltig
+  Bereit --> Bereit: hcsr04_status == ok && droplet_status == ok && turbidity_status == ok
+  Bereit --> Stoerung: HC-SR04/Tropfensensor/Truebungssensor fehlerhaft/ungueltig
 ```
 
 ## 4) UML data_exchange_flow (Serial Gateway)
@@ -184,7 +184,7 @@ sequenceDiagram
     A-->>X: {type:"sensor", ...}
     X-->>ST: sensor payload
     ST->>ST: switch: nur type=="sensor"
-    ST->>ST: validate uptime + hcsr04_status/range + droplet_status/range
+    ST->>ST: validate uptime + hcsr04_status/range + droplet_status/range + turbidity_status/range
     ST-->>D: "Anlage bereit" oder "Anlage stoerung"
   end
 ```
@@ -200,11 +200,11 @@ sequenceDiagram
 
   Boot->>PF: INIT_OFFSET
   PF->>PF: Default-Offsets clampen
-  PF-->>D: parameter state (hcsr04_offset_cm + droplet_offset_raw)
+  PF-->>D: parameter state (hcsr04_offset_cm + droplet_offset_raw + turbidity_offset_raw)
 
   UI->>PF: Slider-Wert
   PF->>PF: Offset speichern (abh. von msg.topic)
-  PF-->>D: parameter state (hcsr04_offset_cm + droplet_offset_raw)
+  PF-->>D: parameter state (hcsr04_offset_cm + droplet_offset_raw + turbidity_offset_raw)
 
   UI->>PF: Relais-Button (topic=relay_toggle)
   PF-->>X: ACT,<pin>,<state>
@@ -213,7 +213,7 @@ sequenceDiagram
 
   X-->>PF: sensor payload
   PF->>PF: Offsets auf Distanz/Rohwert anwenden
-  PF-->>D: hcsr04_distance_display_cm + droplet_display_raw + Sensorstatus + uptime_hms
+  PF-->>D: hcsr04_distance_display_cm + droplet_display_raw + turbidity_display_raw + Sensorstatus + uptime_hms
 ```
 
 ### 6.1 UML Zustandsmodell (Offset)
@@ -221,7 +221,7 @@ sequenceDiagram
 stateDiagram-v2
   [*] --> OffsetInit
   OffsetInit --> OffsetReady: INIT_OFFSET
-  OffsetReady --> OffsetReady: Slider update (HC-SR04 -5..+5 / Tropfen -300..+300)
+  OffsetReady --> OffsetReady: Slider update (HC-SR04 -5..+5 / Tropfen -300..+300 / Truebung -200..+200)
   OffsetReady --> OffsetReady: Sensorpayload -> display distance/raw
 ```
 

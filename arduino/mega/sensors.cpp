@@ -13,6 +13,7 @@
   - Sensor-Handling
   - HC-SR04 auf D26 (TRIG) / D27 (ECHO)
   - Funduino Tropfensensor auf A0 (Analog-Rohwert)
+  - Wassertruebungssensor auf A1 (Analog-Rohwert)
   - RFID RC522 via SPI (SS D53, RST D49)
 */
 
@@ -26,6 +27,12 @@ namespace {
   constexpr int DROPLET_FLOATING_SPREAD_THRESHOLD = 80;
   constexpr int DROPLET_PULLUP_HIGH_THRESHOLD = 1000;
   constexpr int DROPLET_PULLUP_DELTA_THRESHOLD = 250;
+  constexpr long TURBIDITY_MIN_RAW = 0;
+  constexpr long TURBIDITY_MAX_RAW = 1023;
+  constexpr uint8_t TURBIDITY_SAMPLE_COUNT = 5;
+  constexpr int TURBIDITY_FLOATING_SPREAD_THRESHOLD = 80;
+  constexpr int TURBIDITY_PULLUP_HIGH_THRESHOLD = 1000;
+  constexpr int TURBIDITY_PULLUP_DELTA_THRESHOLD = 250;
 
   MFRC522 rfidReader(RC522_SS_PIN, RC522_RST_PIN);
   const char *rfidHardwareStatus = "error_not_initialized";
@@ -168,12 +175,59 @@ namespace {
     status = "ok";
     return static_cast<long>(raw);
   }
+
+  long readTurbidityRaw(bool &ok, const char *&status) {
+    pinMode(TURBIDITY_SENSOR_PIN, INPUT);
+
+    long sum = 0;
+    int minRaw = 1023;
+    int maxRaw = 0;
+    for (uint8_t i = 0; i < TURBIDITY_SAMPLE_COUNT; i++) {
+      const int sample = analogRead(TURBIDITY_SENSOR_PIN);
+      sum += sample;
+      if (sample < minRaw) {
+        minRaw = sample;
+      }
+      if (sample > maxRaw) {
+        maxRaw = sample;
+      }
+      delayMicroseconds(200);
+    }
+
+    const int raw = static_cast<int>(sum / TURBIDITY_SAMPLE_COUNT);
+    if (raw < TURBIDITY_MIN_RAW || raw > TURBIDITY_MAX_RAW) {
+      ok = false;
+      status = "error_range";
+      return -1;
+    }
+
+    // Floating-Check: internen Pullup kurz aktivieren.
+    // Bei abgezogenem Sensor springt der ADC-Wert deutlich gegen 1023.
+    pinMode(TURBIDITY_SENSOR_PIN, INPUT_PULLUP);
+    delayMicroseconds(200);
+    const int pullupSample = analogRead(TURBIDITY_SENSOR_PIN);
+    pinMode(TURBIDITY_SENSOR_PIN, INPUT);
+
+    const bool floatingByNoise = (maxRaw - minRaw) >= TURBIDITY_FLOATING_SPREAD_THRESHOLD;
+    const bool floatingByPullup = (pullupSample >= TURBIDITY_PULLUP_HIGH_THRESHOLD) &&
+                                  ((pullupSample - raw) >= TURBIDITY_PULLUP_DELTA_THRESHOLD);
+    if (floatingByNoise || floatingByPullup) {
+      ok = false;
+      status = "error_not_connected";
+      return -1;
+    }
+
+    ok = true;
+    status = "ok";
+    return static_cast<long>(raw);
+  }
 }
 
 void Sensors_begin() {
   pinMode(HC_SR04_TRIG_PIN, OUTPUT);
   pinMode(HC_SR04_ECHO_PIN, INPUT);
   pinMode(DROPLET_SENSOR_PIN, INPUT);
+  pinMode(TURBIDITY_SENSOR_PIN, INPUT);
   digitalWrite(HC_SR04_TRIG_PIN, LOW);
 
   SPI.begin();
@@ -192,6 +246,11 @@ void Sensors_readSnapshot(SensorSnapshot &out) {
   const char *dropletStatus = "error_unknown";
   out.droplet_raw = readDropletRaw(dropletOk, dropletStatus);
   out.droplet_status = dropletStatus;
+
+  bool turbidityOk = false;
+  const char *turbidityStatus = "error_unknown";
+  out.turbidity_raw = readTurbidityRaw(turbidityOk, turbidityStatus);
+  out.turbidity_status = turbidityStatus;
 
   out.uptime_ms = millis();
 }

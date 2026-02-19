@@ -22,6 +22,10 @@ GRUNDREGELN
 - Keine Geheimdaten hinzufuegen.
 - Vor jeder Aenderung: kurze Vorschau/Diff zeigen und explizit "Anwenden" oder "Abbrechen" erfragen.
 - Konsistente Formatierung.
+- Auf der Raspberry Pi fuer Gesamt-Update nur den Befehl `update` verwenden
+  (enthaelt `git pull`, Arduino-Upload und Flow-Deploy).
+- Berechtigungen der Codex-Laufzeit koennen nicht durch Repo-Dateien erweitert werden;
+  zusaetzliche Rechte muessen in der Codex-Session/Umgebung freigegeben werden.
 
 VALIDIERUNG
 -----------
@@ -91,6 +95,26 @@ DOKU
 ----
 - Aenderungen an Flow-Struktur in `DEPLOYMENT_GUIDE.md` und `README.md` nachziehen.
 - Bei Hardware-/Komponenten-Aenderungen `Hardware.md` mitpflegen.
+
+SENSOR-MUSTER (ANALOG)
+----------------------
+Bei neuen Analogsensoren (z. B. A0/A1) immer dieses Muster nutzen:
+1) Arduino
+- Pin-Konstante in `mega_shared.h`.
+- Felder in `SensorSnapshot` erweitern (`<sensor>_raw`, `<sensor>_status`).
+- Lesen in `sensors.cpp` inkl. Status (`ok`, `error_range`, `error_not_connected` falls sinnvoll).
+- JSON in `data.cpp` fuer `type=sensor`, `type=act`, `type=error` erweitern.
+2) Node-RED
+- `fn_parameters_flow.json`: Default/Store/Apply fuer `<sensor>_offset_raw` und `<sensor>_display_raw`.
+- `dashboard_flow.json`: Status-Anzeige (Wert + Status) Desktop/Mobile und Offset-Slider Desktop/Mobile.
+- `fn_startup_test_flow.json`: Validierung fuer neuen Sensor in Anlagenstatus aufnehmen.
+- `components.yaml`: neue Komponenten eintragen und `version` erhoehen.
+3) Doku
+- `arduino/mega/PINOUT.md`, `Hardware.md`, `README.md`, `FLOW_ARCHITEKTUR_PLAN.md` aktualisieren.
+4) Checks
+- `jq . nodered/flows/*.json`
+- `yaml-lint components.yaml` (wenn verfuegbar)
+- Arduino Build mit `scripts/arduino_build.sh`
 
 KONSISTENZ
 ----------

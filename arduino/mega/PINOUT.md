@@ -57,7 +57,7 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Akt
 | Pin | Adc-Nummer | Sensor | Spannung | Kalibrierung | Notizen |
 |-----|-----------|--------|----------|-------------|---------|
 | A0 | ADC0 | Funduino Tropfensensor (Signal S) | 0-5V | Offset via Dashboard (`droplet_offset_raw`) | Analog-Rohwert 0..1023 |
-| A1 | ADC1 | derzeit nicht genutzt | 0-5V | | |
+| A1 | ADC1 | Wassertruebungssensor (Signal S) | 0-5V | Offset via Dashboard (`turbidity_offset_raw`) | Analog-Rohwert 0..1023 |
 | A2 | ADC2 | derzeit nicht genutzt | 0-5V | | |
 | A3 | ADC3 | derzeit nicht genutzt | 0-5V | | |
 | A4 | ADC4 | derzeit nicht genutzt | 0-5V | | |
@@ -88,7 +88,7 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Akt
 
 | Quelle | GND | 5V | 3.3V | Komponenten |
 |--------|-----|----|------|-------------|
-| Mega 5V | x | x | | HC-SR04, Funduino Tropfensensor, Power Board |
+| Mega 5V | x | x | | HC-SR04, Funduino Tropfensensor, Wassertruebungssensor, Power Board |
 | Mega 3.3V | x | | x | RC522 |
 | Extern | | | | |
 
@@ -147,6 +147,15 @@ Funduino Tropfensensor   <->    Arduino Mega
 S (Analog Out)           <->    A0
 ```
 
+### Wassertruebungssensor <-> Arduino Verbindung
+
+```
+Wassertruebungssensor    <->    Arduino Mega
++5V                      <->    5V
+-GND                     <->    GND
+S (Analog Out)           <->    A1
+```
+
 ### 4-Kanal Relaismodul <-> Arduino Verbindung
 
 ```
@@ -165,4 +174,5 @@ IN4                      <->    D25
 - Raspberry Pi RXD ist nicht 5V-tolerant: Mega TX1 immer ueber Pegelwandler/Spannungsteiler anschliessen.
 - RC522 nur mit 3.3V betreiben.
 - GND muss zwischen Mega, Raspberry Pi und Sensoren gemeinsam verbunden sein.
-- A1..A7/B1..B7 in dieser Datei sind Kanaele des Pegelwandler-Moduls, nicht Arduino Analogpins A1..A7.
+- Im Abschnitt Pegelwandler bedeutet A1..A7/B1..B7 die Kanalbezeichnung des Pegelwandler-Moduls.
+- Das ist unabhaengig von den Arduino-Analogeingaengen A0..A15 (z. B. Sensor auf Arduino A1).

@@ -378,6 +378,42 @@
                   ]
     },
     {
+        "id":  "ui_txt_turbidity_value_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  15,
+        "width":  10,
+        "height":  1,
+        "name":  "Truebungssensor Wert Display (Mobile)",
+        "label":  "Truebungssensor Rohwert korrigiert",
+        "format":  "{{msg.payload.turbidity_display_raw}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  880,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_turbidity_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  16,
+        "width":  10,
+        "height":  1,
+        "name":  "Truebungssensor Status Display (Mobile)",
+        "label":  "Truebungssensor Status",
+        "format":  "{{msg.payload.turbidity_status}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  920,
+        "wires":  [
+
+                  ]
+    },
+    {
         "id":  "92797bc31e9565c2",
         "type":  "ui_text",
         "z":  "4985bdfbcf200fe6",
@@ -468,6 +504,42 @@
                   ]
     },
     {
+        "id":  "ui_txt_turbidity_value_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  15,
+        "width":  7,
+        "height":  1,
+        "name":  "Truebungssensor Wert Display",
+        "label":  "Truebungssensor Rohwert korrigiert",
+        "format":  "{{msg.payload.turbidity_display_raw}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  880,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_turbidity_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  16,
+        "width":  7,
+        "height":  1,
+        "name":  "Truebungssensor Status Display",
+        "label":  "Truebungssensor Status",
+        "format":  "{{msg.payload.turbidity_status}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  920,
+        "wires":  [
+
+                  ]
+    },
+    {
         "id":  "f5c0bddf87cbb257",
         "type":  "ui_button",
         "z":  "4985bdfbcf200fe6",
@@ -522,11 +594,15 @@
                           "4bc78086c6c84e1e",
                           "ui_txt_droplet_value_d",
                           "ui_txt_droplet_status_d",
+                          "ui_txt_turbidity_value_d",
+                          "ui_txt_turbidity_status_d",
                           "9baf027087ee53a2",
                           "f2c4a6e1bd3e4a70",
                           "d0fcb2a91e984e6a",
                           "ui_txt_droplet_value_m",
-                          "ui_txt_droplet_status_m"
+                          "ui_txt_droplet_status_m",
+                          "ui_txt_turbidity_value_m",
+                          "ui_txt_turbidity_status_m"
                       ]
                   ]
     },
@@ -569,7 +645,9 @@
                           "991894f4120470bc",
                           "0c15c9bcd2a45e71",
                           "ui_txt_droplet_offset_d",
-                          "ui_txt_droplet_offset_m"
+                          "ui_txt_droplet_offset_m",
+                          "ui_txt_turbidity_offset_d",
+                          "ui_txt_turbidity_offset_m"
                       ]
                   ]
     },
@@ -739,6 +817,92 @@
         "step":  10,
         "x":  240,
         "y":  980,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_txt_turbidity_offset_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  9,
+        "width":  14,
+        "height":  1,
+        "name":  "Truebungssensor Offset Display",
+        "label":  "Truebungssensor Offset (raw)",
+        "format":  "{{msg.payload.turbidity_offset_raw}}",
+        "layout":  "row-spread",
+        "x":  870,
+        "y":  1020,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_sld_turbidity_offset_d",
+        "type":  "ui_slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Truebungssensor Offset Slider",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer Truebungssensor Rohwert (-200 bis +200)",
+        "group":  "0ef8bd821a032b93",
+        "order":  10,
+        "width":  14,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "turbidity_offset_raw",
+        "min":  -200,
+        "max":  200,
+        "step":  10,
+        "x":  250,
+        "y":  1020,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_txt_turbidity_offset_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "cd3e28787d1292e1",
+        "order":  9,
+        "width":  10,
+        "height":  1,
+        "name":  "Truebungssensor Offset Display (Mobile)",
+        "label":  "Truebungssensor Offset (raw)",
+        "format":  "{{msg.payload.turbidity_offset_raw}}",
+        "layout":  "row-spread",
+        "x":  880,
+        "y":  1060,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_sld_turbidity_offset_m",
+        "type":  "ui_slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Truebungssensor Offset Slider (Mobile)",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer Truebungssensor Rohwert (-200 bis +200)",
+        "group":  "cd3e28787d1292e1",
+        "order":  10,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "turbidity_offset_raw",
+        "min":  -200,
+        "max":  200,
+        "step":  10,
+        "x":  250,
+        "y":  1060,
         "wires":  [
                       [
                           "b8c0e9d3f4a15412"
