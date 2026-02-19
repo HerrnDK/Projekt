@@ -183,3 +183,53 @@ Bestehende Probleme:
 - Node-RED von der Entwicklungsumgebung aus nicht erreichbar (Deploy hier nicht moeglich).
 - `yaml-lint` ist in der aktuellen Umgebung nicht installiert (YAML-Formatcheck nur eingeschraenkt moeglich).
 - On-Screen-Tastatur im Kioskmodus weiterhin nicht verfuegbar.
+
+## 2026-02-19
+
+Erreicht:
+- Arduino-Code weiter modularisiert und vereinheitlicht:
+  - Sensorik in eigene Module aufgeteilt (`sensor_hcsr04.cpp`, `sensor_tropfen.cpp`, `sensor_truebung.cpp`, `sensor_tds.cpp`, `sensor_rfid.cpp`).
+  - Gemeinsame Schnittstelle in `mega_gemeinsam.h/.cpp` konsolidiert.
+  - Dateikopf-Kommentare in Arduino-Dateien ergaenzt (Nutzen/Funktion je Datei).
+- Sprachkonsistenz verbessert:
+  - Bezeichner und Dokumentation weitgehend auf deutsche Begriffe umgestellt.
+  - Doppelte Alt-/Neu-Dateien bereinigt, um Build-Konflikte (multiple definition) zu vermeiden.
+- RFID-Funktion stabilisiert und erweitert:
+  - Diagnosewerte (`rfid_hw_status`, `rfid_probe_status`, `rfid_version_reg`) durchgaengig nutzbar.
+  - Profil-Logik mit 3 Buttons (`Lesen`, `Profil 1 anlernen/loeschen`, `Profil 2 anlernen/loeschen`) finalisiert.
+  - Statusanzeige im Dashboard konsistent angebunden.
+- Wassertruebungssensor voll integriert:
+  - Arduino-Messwert + Status in Snapshot/JSON.
+  - Dashboard-Anzeige (Wert/Status) in Desktop und Mobile.
+  - Offset-Parametrierung inkl. Slider.
+  - Fehlerlogik fuer `error_not_connected` angepasst.
+- Ocean-TDS-Sensor voll integriert:
+  - Arduino-Modul `sensor_tds.cpp` mit robuster Auslese- und Trennungslogik.
+  - Snapshot/JSON um `tds_raw` und `tds_status` erweitert.
+  - Startup-Test und Anlagenstatuspruefung um TDS erweitert.
+  - Dashboard-Anzeigen (Wert/Status) und Offset-Slider (Desktop/Mobile) ergaenzt.
+  - Komponentenregister (`nodered/flows/components.yaml`) inkl. Versionsanhebung aktualisiert.
+- Anlagenstatus-Text verbessert:
+  - Stoerungsanzeige fokussiert auf den betroffenen Sensor statt pauschaler Sammelmeldung.
+- Architektur- und UML/Flow-Dokumentation ueberarbeitet:
+  - Mermaid-Fehler fuer GitHub-Rendering korrigiert.
+  - `PROJEKT_ARCHITEKTUR_PLAN.md` als zentrale, durchnummerierte Dokumentation erweitert.
+  - Gesamtflussdiagramm fuer End-to-End-Ablauf hinzugefuegt.
+- Betriebs- und Projektdoku aktualisiert:
+  - `README.md`, `Hardware.md`, `arduino/mega/PINOUT.md`, `nodered/flows/DEPLOYMENT_GUIDE.md` auf neuen Stand gebracht.
+  - Hinweise in `.github/instructions/Anweisungen.instructions.md` um Update-Workflow (`update`) und Berechtigungsgrenzen ergaenzt.
+- Leistungsberechnung neu erstellt:
+  - `LEISTUNGSBILANZ.md` angelegt.
+  - Bilanz ohne Wasserpumpe aufgeteilt in Arduino-Teil und Raspberry-Pi-Teil.
+  - Min-/Max-Leistungswerte sowie Gesamt-Min/Max dokumentiert.
+
+Naechstes Ziel:
+- End-to-End Test auf Zielhardware fuer alle Sensoren inkl. TDS und Truebung dokumentieren (Messplaene + Soll/Ist).
+- Optional: TDS/Truebung mit realen Kalibrierpunkten (Referenzfluessigkeiten) verifizieren und Offset-Grenzen feinjustieren.
+- Optional: Netzteil-/Stromkonzept mit echten Messwerten (Multimeter/USB-Power-Meter) gegen `LEISTUNGSBILANZ.md` validieren.
+- Optional: Legacy-/Altknoten in `Network.json` weiter aufraeumen, falls im Betrieb nicht benoetigt.
+
+Bestehende Probleme:
+- Node-RED von der Entwicklungsumgebung aus nicht erreichbar (Deploy hier nicht moeglich).
+- `yaml-lint` ist in der aktuellen Umgebung nicht installiert (YAML-Formatcheck nur eingeschraenkt moeglich).
+- On-Screen-Tastatur im Kioskmodus weiterhin nicht verfuegbar.
