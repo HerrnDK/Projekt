@@ -41,6 +41,22 @@ constexpr size_t RFID_UID_MAX_LAENGE = 32;
 void Aktoren_starten();
 bool Aktoren_setzen(uint8_t pin, bool zustand);
 
+// Sensor-Teilmodule (werden in sensoren.cpp orchestriert)
+void Hcsr04_starten();
+long Hcsr04_leseDistanzCm(const char *&statusAusgabe);
+
+void Tropfen_starten();
+long Tropfen_leseRohwert(const char *&statusAusgabe);
+
+void Truebung_starten();
+long Truebung_leseRohwert(const char *&statusAusgabe);
+
+void Rfid_starten();
+void Rfid_lesenUid(char *uidAusgabe, size_t uidAusgabeLaenge, const char *&statusAusgabe);
+const char *Rfid_holeHardwareStatus();
+const char *Rfid_holeProbeStatus();
+uint8_t Rfid_holeVersionsRegister();
+
 void Sensoren_starten();
 void Sensoren_lesenMomentaufnahme(SensorMomentaufnahme &ausgabe);
 void Sensoren_lesenRfid(char *uidAusgabe, size_t uidAusgabeLaenge, const char *&statusAusgabe);
