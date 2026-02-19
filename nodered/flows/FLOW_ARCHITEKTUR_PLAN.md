@@ -18,7 +18,7 @@ flowchart TB
     Dashboard --> ProfileFlow[fn_profiles_flow.json\nRFID-Profile]
   end
 
-  DataFlow --> SerialPort[/dev/serial0 UART]
+  DataFlow --> SerialPort["/dev/serial0 UART"]
   SerialPort --> LevelShift[Pegelwandler 5V -> 3.3V]
   LevelShift --> Mega[Arduino Mega 2560 Serial1\nTX1=18 RX1=19]
 
