@@ -314,6 +314,76 @@ flowchart TD
   D2 --> E([Ende])
 ```
 
+## 3) Gesamtflussdiagramm (End-to-End)
+```mermaid
+flowchart TD
+  S([Start]) --> B["Benutzer im Browser"]
+  B --> UI["Node-RED Dashboard"]
+
+  UI --> EVT{"Ereignis"}
+  EVT -- Sensor aktualisieren --> CMD1["READ"]
+  EVT -- Relais schalten --> CMD2["ACT,<pin>,<state>"]
+  EVT -- RFID lesen/anlernen --> CMD3["RFID"]
+  EVT -- WLAN verwalten --> NET0["Network.json Aktion"]
+
+  subgraph NR["Node-RED Funktionsmodule"]
+    UI --> F_START["fn_startup_test_flow.json"]
+    UI --> F_PARAM["fn_parameters_flow.json"]
+    UI --> F_PROF["fn_profiles_flow.json"]
+    UI --> F_NET["Network.json"]
+    F_START --> DX["data_exchange_flow.json"]
+    F_PARAM --> DX
+    F_PROF --> DX
+    CMD1 --> DX
+    CMD2 --> DX
+    CMD3 --> DX
+  end
+
+  DX --> SER["Serial /dev/serial0"]
+
+  subgraph ARD["Arduino Mega"]
+    SER --> DTICK["Daten_tick()"]
+    DTICK --> PARSE{"Kommando?"}
+    PARSE -- READ --> DSENS["Daten_sendenSensorMomentaufnahme()"]
+    PARSE -- ACT --> DACT["Aktoren_setzen() + Daten_sendeActBestaetigung()"]
+    PARSE -- RFID --> DRFID["Daten_sendenRfidMomentaufnahme()"]
+
+    DSENS --> SFAS["Sensoren_lesenMomentaufnahme()"]
+    SFAS --> SH["Hcsr04_leseDistanzCm()"]
+    SFAS --> ST["Tropfen_leseRohwert()"]
+    SFAS --> SU["Truebung_leseRohwert()"]
+    DRFID --> SR["Rfid_lesenUid()"]
+  end
+
+  DSENS --> RESP_S["JSON type=sensor"]
+  DACT --> RESP_A["JSON type=act"]
+  DRFID --> RESP_R["JSON type=rfid"]
+  PARSE --> RESP_E["JSON type=error"]
+
+  RESP_S --> SER_R["Serial Rueckkanal"]
+  RESP_A --> SER_R
+  RESP_R --> SER_R
+  RESP_E --> SER_R
+
+  SER_R --> DXR["data_exchange_flow.json Parse + Routing"]
+  DXR --> F_START
+  DXR --> F_PARAM
+  DXR --> F_PROF
+  DXR --> UI
+
+  F_PARAM --> DISP1["Korrigierte Sensorwerte + Relaisstatus"]
+  F_START --> DISP2["Anlagenstatus bereit/stoerung"]
+  F_PROF --> DISP3["Aktives Profil + RFID Status"]
+  F_NET --> DISP4["WLAN/LAN + QR-Status"]
+
+  NET0 --> F_NET
+  DISP1 --> UI
+  DISP2 --> UI
+  DISP3 --> UI
+  DISP4 --> UI
+  UI --> E([Ende eines Zyklus])
+```
+
 ## Abnahmekriterien je neue Funktion
 - Arduino-Modul implementiert und Build erfolgreich.
 - Node-RED-Funktionsflow angebunden und getestet.
