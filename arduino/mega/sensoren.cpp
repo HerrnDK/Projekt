@@ -51,6 +51,9 @@ void Sensoren_lesenMomentaufnahme(SensorMomentaufnahme &ausgabe) {
   ausgabe.tds_roh = Tds_leseRohwert(tdsStatus);
   ausgabe.tds_status = tdsStatus;
 
+  ausgabe.schrittmotor_position_grad = Schrittmotor_holePositionGrad();
+  ausgabe.schrittmotor_status = Schrittmotor_holeStatus();
+
   ausgabe.laufzeit_ms = millis();
 }
 

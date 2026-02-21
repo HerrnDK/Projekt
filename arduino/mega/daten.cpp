@@ -9,6 +9,8 @@
     READ\n              -> Sensor-Momentaufnahme (type=sensor)
     ACT,<pin>,<state>\n -> Aktor schalten + Bestaetigung (type=act)
     RFID\n              -> RFID-Momentaufnahme (type=rfid)
+    STEPPER_5S\n        -> Schrittmotor 5 Sekunden starten (type=stepper)
+    STEPPER_120\n       -> Schrittmotor um ca. 120 Grad starten (type=stepper)
 */
 
 #include "mega_gemeinsam.h"
@@ -26,12 +28,14 @@ namespace {
     -1, "error_init",
     -1, "error_init",
     -1, "error_init",
+    0, "idle",
     0
   };
 
   void Daten_verarbeiteKommando(const char *kommando);
   bool Daten_parseActKommando(const char *kommando, uint8_t &pin, uint8_t &zustand);
   void Daten_sendeActBestaetigung(uint8_t pin, uint8_t zustand, bool erfolgreich);
+  void Daten_sendeSchrittmotorBestaetigung(const char *kommando, bool erfolgreich, const char *status);
   void Daten_sendeFehler(const char *fehlercode);
 }
 
@@ -113,6 +117,11 @@ void Daten_sendenSensorMomentaufnahme() {
   PORT_DATEN.print(",\"tds_status\":\"");
   PORT_DATEN.print(momentaufnahme.tds_status);
   PORT_DATEN.print("\"");
+  PORT_DATEN.print(",\"stepper_position_deg\":");
+  PORT_DATEN.print(momentaufnahme.schrittmotor_position_grad);
+  PORT_DATEN.print(",\"stepper_status\":\"");
+  PORT_DATEN.print(momentaufnahme.schrittmotor_status);
+  PORT_DATEN.print("\"");
   PORT_DATEN.print(",\"uptime_ms\":");
   PORT_DATEN.print(momentaufnahme.laufzeit_ms);
   PORT_DATEN.println("}");
@@ -158,7 +167,7 @@ namespace {
     Zweck:
     - Verteilt ein empfangenes Kommando auf die passende Aktion.
     Verhalten:
-    - Unterstuetzt `READ`, `RFID` und `ACT,<pin>,<state>`.
+    - Unterstuetzt `READ`, `RFID`, `ACT,<pin>,<state>`, `STEPPER_5S`, `STEPPER_120`.
     - Unbekannte oder fehlerhafte Kommandos erzeugen ein Fehler-JSON.
     Rueckgabe:
     - Keine.
@@ -187,6 +196,20 @@ namespace {
         PORT_DEBUG.println("ACT: Parse-Fehler");
         Daten_sendeFehler("act_parse_error");
       }
+      return;
+    }
+
+    if (strcmp(kommando, "STEPPER_5S") == 0) {
+      const char *status = "error_unknown";
+      const bool erfolgreich = Schrittmotor_startDrehenZeitMs(5000UL, status);
+      Daten_sendeSchrittmotorBestaetigung("run_5s", erfolgreich, status);
+      return;
+    }
+
+    if (strcmp(kommando, "STEPPER_120") == 0) {
+      const char *status = "error_unknown";
+      const bool erfolgreich = Schrittmotor_startDrehenGrad(120L, status);
+      Daten_sendeSchrittmotorBestaetigung("rotate_120", erfolgreich, status);
       return;
     }
 
@@ -266,8 +289,35 @@ namespace {
     PORT_DATEN.print(",\"tds_status\":\"");
     PORT_DATEN.print(letzterSnapshot.tds_status);
     PORT_DATEN.print("\"");
+    PORT_DATEN.print(",\"stepper_position_deg\":");
+    PORT_DATEN.print(letzterSnapshot.schrittmotor_position_grad);
+    PORT_DATEN.print(",\"stepper_status\":\"");
+    PORT_DATEN.print(letzterSnapshot.schrittmotor_status);
+    PORT_DATEN.print("\"");
     PORT_DATEN.print(",\"uptime_ms\":");
     PORT_DATEN.print(letzterSnapshot.laufzeit_ms);
+    PORT_DATEN.println("}");
+  }
+
+  /*
+    Zweck:
+    - Sendet die Bestaetigung fuer einen Schrittmotor-Befehl.
+    Verhalten:
+    - Uebertraegt Ergebnis, Kommando und aktuellen Positions-/Statuswert.
+    Rueckgabe:
+    - Keine.
+  */
+  void Daten_sendeSchrittmotorBestaetigung(const char *kommando, bool erfolgreich, const char *status) {
+    PORT_DATEN.print("{\"type\":\"stepper\",\"ok\":");
+    PORT_DATEN.print(erfolgreich ? 1 : 0);
+    PORT_DATEN.print(",\"cmd\":\"");
+    PORT_DATEN.print(kommando);
+    PORT_DATEN.print("\",\"stepper_position_deg\":");
+    PORT_DATEN.print(Schrittmotor_holePositionGrad());
+    PORT_DATEN.print(",\"stepper_status\":\"");
+    PORT_DATEN.print(status);
+    PORT_DATEN.print("\",\"uptime_ms\":");
+    PORT_DATEN.print(millis());
     PORT_DATEN.println("}");
   }
 
@@ -301,6 +351,11 @@ namespace {
     PORT_DATEN.print(letzterSnapshot.tds_roh);
     PORT_DATEN.print(",\"tds_status\":\"");
     PORT_DATEN.print(letzterSnapshot.tds_status);
+    PORT_DATEN.print("\"");
+    PORT_DATEN.print(",\"stepper_position_deg\":");
+    PORT_DATEN.print(letzterSnapshot.schrittmotor_position_grad);
+    PORT_DATEN.print(",\"stepper_status\":\"");
+    PORT_DATEN.print(letzterSnapshot.schrittmotor_status);
     PORT_DATEN.print("\"");
     PORT_DATEN.print(",\"uptime_ms\":");
     PORT_DATEN.print(letzterSnapshot.laufzeit_ms);

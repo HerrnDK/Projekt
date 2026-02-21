@@ -59,16 +59,38 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 > `ACT,...,1` = Relais EIN = IN-Pin auf `LOW` (0V),
 > `ACT,...,0` = Relais AUS = IN-Pin auf `HIGH` (5V).
 
+## Verdrahtung (TB6600 Schrittmotor-Treiber)
+- TB6600 PUL+/STEP+ -> D28
+- TB6600 DIR+ -> D29
+- TB6600 ENA+ -> D30
+- TB6600 PUL-/DIR-/ENA- -> GND
+- TB6600 GND (Logik) -> GND
+- TB6600 Motorversorgung (VMOT) -> externes 12V Netzteil (Treiber-Versorgung)
+- Schrittmotor-Phasen -> A+/A-/B+/B- am TB6600
+- Geplanter Motor: voraussichtlich `42HSC8402-15B11` (Nennspannung `3.3V` pro Phase)
+- Motor-Nennstrom laut Datenblatt: `1.5A` (rated current, pro Phase)
+- Motorleistung bei 2 aktiven Phasen: `2 * 3.3V * 1.5A = 9.9W`
+- 12V-Versorgungszweig (TB6600) abgeschaetzt: ca. `12W` max
+- Netzteil-Empfehlung: mindestens `12V / 2A` (24W)
+- NEMA17-Referenz (allgemein): https://reprap.org/wiki/NEMA_17_Stepper_motor
+
+> Wichtig: Die 3.3V sind Motor-Nennwerte der Spule. Der TB6600 wird separat
+> mit z. B. 12V versorgt und regelt den Phasenstrom.
+> GND von Arduino und TB6600/Netzteil muss gemeinsam verbunden sein.
+
 ## Protokoll (Serial1, newline-terminiert)
 - `READ` -> Arduino sendet JSON Sensor-Snapshot
 - `ACT,<pin>,<state>` -> Aktor schalten, JSON-ACK
 - `RFID` -> RFID Snapshot lesen (UID + Status inkl. Modulzustand)
+- `STEPPER_5S` -> Schrittmotor fuer 5 Sekunden drehen (JSON-ACK)
+- `STEPPER_120` -> Schrittmotor um ca. 120 Grad drehen (JSON-ACK)
 
 JSON-Formate (Beispiele):
-- Sensor: `{"type":"sensor","hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","tds_raw":430,"tds_status":"ok","uptime_ms":7890}`
-- Aktor: `{"type":"act","ok":1,"pin":22,"state":1,"hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","tds_raw":430,"tds_status":"ok","uptime_ms":7890}`
-- Fehler: `{"type":"error","code":"unknown_command","hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","droplet_raw":-1,"droplet_status":"error_range","turbidity_raw":-1,"turbidity_status":"error_not_connected","tds_raw":-1,"tds_status":"error_not_connected","uptime_ms":7890}`
+- Sensor: `{"type":"sensor","hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","tds_raw":430,"tds_status":"ok","stepper_position_deg":120,"stepper_status":"idle","uptime_ms":7890}`
+- Aktor: `{"type":"act","ok":1,"pin":22,"state":1,"hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","tds_raw":430,"tds_status":"ok","stepper_position_deg":120,"stepper_status":"idle","uptime_ms":7890}`
+- Fehler: `{"type":"error","code":"unknown_command","hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","droplet_raw":-1,"droplet_status":"error_range","turbidity_raw":-1,"turbidity_status":"error_not_connected","tds_raw":-1,"tds_status":"error_not_connected","stepper_position_deg":120,"stepper_status":"idle","uptime_ms":7890}`
 - RFID: `{"type":"rfid","rfid_uid":"DE:AD:BE:EF","rfid_status":"ok","rfid_hw_status":"ok","rfid_probe_status":"STATUS_OK","rfid_version_reg":"0x92","uptime_ms":7890}`
+- Stepper ACK: `{"type":"stepper","ok":1,"cmd":"rotate_120","stepper_position_deg":240,"stepper_status":"ok","uptime_ms":7890}`
 
 HC-SR04 Statuswerte:
 - `ok` gemessene Distanz ist gueltig
@@ -106,6 +128,11 @@ RFID Diagnose:
 - `rfid_probe_status` letzte REQA/WUPA Probe (`STATUS_OK`, `STATUS_TIMEOUT`, ...)
 - `rfid_version_reg` Inhalt von `VersionReg` (typisch `0x91` oder `0x92`)
 
+Schrittmotor Statuswerte:
+- `idle` aktuell kein Bewegungsauftrag aktiv
+- `running` Bewegungsauftrag laeuft
+- Command-ACK Status (type=stepper): z. B. `ok`, `busy`, `invalid_duration`, `invalid_degree`
+
 ## Projektstruktur (wichtige Dateien)
 - `arduino/mega/`
   - `mega.ino` Sketch-Root mit `setup()`/`loop()`
@@ -119,12 +146,13 @@ RFID Diagnose:
   - `sensor_truebung.cpp` Truebungssensor Modul
   - `sensor_tds.cpp` TDS-Sensor Modul
   - `sensor_rfid.cpp` RFID RC522 Modul
+  - `schrittmotor.cpp` TB6600 Schrittmotor Modul
   - `PINOUT.md` Quelle der Wahrheit fuer Pins
 - `nodered/flows/`
   - `dashboard_flow.json` UI + Sensoranzeigen + Parametrierung
   - `Network.json` Netzwerk-Tab
   - `data_exchange_flow.json` Datenaustausch mit Arduino
-  - `fn_parameters_flow.json` Parameter-Logik (HC-SR04 + Tropfensensor + Truebungssensor + TDS-Sensor Offset + Relaissteuerung)
+  - `fn_parameters_flow.json` Parameter-Logik (HC-SR04 + Tropfensensor + Truebungssensor + TDS-Sensor Offset + Relaissteuerung + Stepper-Befehle)
   - `fn_profiles_flow.json` RFID-Profillogik (Anlernen + Profilzuweisung)
   - `components.yaml` logische Komponentenreferenzen
   - `deploy_flows.sh` Skript zur Flow-Bereitstellung (POST /flows)
@@ -177,6 +205,9 @@ Hinweise:
   - `Relais 2 (Reserve)` schaltet D23
   - `Relais 3 (Reserve)` schaltet D24
   - `Relais 4 (Reserve)` schaltet D25
+- Zusaetzlich gibt es zwei Schrittmotor-Buttons:
+  - `Schrittmotor 5s` sendet `STEPPER_5S`
+  - `Schrittmotor +120 Grad` sendet `STEPPER_120`
 - Die Offsets werden in `fn_parameters_flow.json` gespeichert (`global.hcsr04_offset_cm`, `global.droplet_offset_raw`, `global.turbidity_offset_raw`, `global.tds_offset_raw`).
 - Die Anzeigen nutzen die korrigierten Werte `hcsr04_distance_display_cm`, `droplet_display_raw`, `turbidity_display_raw` und `tds_display_raw`.
 
@@ -191,7 +222,7 @@ Hinweise:
 - Wenn ein Profil bereits belegt ist, loescht der jeweilige Profil-Button die Bindung.
 - Bereits bekannte Chips aktivieren direkt ihr hinterlegtes Profil.
 - Die erkannte UID, das aktive Profil und der RFID Modulstatus werden live angezeigt.
-- Im Tab `Projekt-info` unter `Status / Sensoren` werden zusaetzlich `RFID RC522 Status`, `Tropfensensor Status`, `Truebungssensor Status`, `TDS-Sensor Status` und die 4 Relais-Zustaende (`ON`/`OFF`) angezeigt.
+- Im Tab `Projekt-info` unter `Status / Sensoren` werden zusaetzlich `RFID RC522 Status`, `Tropfensensor Status`, `Truebungssensor Status`, `TDS-Sensor Status`, `Schrittmotor Position (Grad)` und die 4 Relais-Zustaende (`ON`/`OFF`) angezeigt.
 
 ## Naechste Schritte (wenn Sensoren/Aktoren bekannt sind)
 - Weitere Sensoren als eigenes `sensor_<name>.cpp` ergaenzen und in `sensoren.cpp` anbinden.

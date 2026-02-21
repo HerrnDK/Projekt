@@ -22,6 +22,7 @@ void setup() {
   PORT_DATEN.begin(BAUDRATE_DATEN);  // UART zu Node-RED (Serial1)
 
   Aktoren_starten();
+  Schrittmotor_starten();
   Sensoren_starten();
   Daten_starten();
 
@@ -39,6 +40,7 @@ void setup() {
 void loop() {
   // Serielle Kommunikation (Node-RED)
   Daten_tick();
+  Schrittmotor_tick();
 
   // Platz fuer weitere zyklische Tasks
 }

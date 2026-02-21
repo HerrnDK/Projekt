@@ -11,4 +11,7 @@
 - 1x Wassertruebungssensor (A1, +5V, GND, analoger Rohwert 0..1023)
 - 1x Ocean-TDS-Meter-Sensor (A2, +5V, GND, analoger Rohwert 0..1023)
 - 1x RFID-RC522 Modul (SPI: SS D53, SCK D52, MOSI D51, MISO D50, RST D49, 3.3V)
+- 1x TB6600 Schrittmotor-Treiber (STEP D28, DIR D29, ENA D30)
+- 1x Schrittmotor (voraussichtlich Modell 42HSC8402-15B11, Nennspannung 3.3V pro Phase, rated current 1.5A)
+- 1x externes 12V Netzteil fuer TB6600/Schrittmotorzweig (mindestens 12V/2A empfohlen)
 

@@ -38,6 +38,9 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Akt
 | 24 | Relais IN3 | 4-Kanal Relaismodul | aktiv | Relais 3: Reserve (active-low) |
 | 25 | Relais IN4 | 4-Kanal Relaismodul | aktiv | Relais 4: Reserve (active-low) |
 | 26 | HC-SR04 TRIG | Ultraschall-Sensor | aktiv | Trigger-Ausgang (10us Pulse) |
+| 28 | TB6600 STEP | Schrittmotor-Treiber | aktiv | Schrittimpuls |
+| 29 | TB6600 DIR | Schrittmotor-Treiber | aktiv | Richtung |
+| 30 | TB6600 ENA | Schrittmotor-Treiber | aktiv | Enable (active-low in Software) |
 | 49 | RC522 RST | RFID-RC522 | aktiv | Reset-Leitung |
 | 53 | RC522 SS/SDA | RFID-RC522 | aktiv | SPI Chip Select |
 
@@ -88,9 +91,9 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Akt
 
 | Quelle | GND | 5V | 3.3V | Komponenten |
 |--------|-----|----|------|-------------|
-| Mega 5V | x | x | | HC-SR04, Funduino Tropfensensor, Wassertruebungssensor, Ocean-TDS-Sensor, Power Board |
+| Mega 5V | x | x | | HC-SR04, Funduino Tropfensensor, Wassertruebungssensor, Ocean-TDS-Sensor, Power Board, TB6600 Logik |
 | Mega 3.3V | x | | x | RC522 |
-| Extern | | | | |
+| Extern 12V | x | | | TB6600 Motorversorgung (VMOT), Schrittmotor 42HSC8402-15B11 (Nennspannung 3.3V/Phase, rated current 1.5A), Netzteil mindestens 12V/2A |
 
 ---
 
@@ -177,11 +180,40 @@ IN3                      <->    D24
 IN4                      <->    D25
 ```
 
+### TB6600 <-> Arduino Verbindung
+
+```
+TB6600                  <->    Arduino Mega
+PUL+ / STEP+            <->    D28
+DIR+                    <->    D29
+ENA+                    <->    D30
+PUL- / DIR- / ENA-      <->    GND
+GND (Logik)             <->    GND
+```
+
+### Schrittmotor 12V <-> TB6600 Verbindung
+
+```
+TB6600                  <->    Schrittmotor / Netzteil
+A+ A- B+ B-             <->    Motorphasen
+VMOT +                  <->    +12V extern
+VMOT -                  <->    GND extern
+```
+
+Hinweis:
+- Geplantes Motor-Modell: `42HSC8402-15B11` (voraussichtlich, finale Datenblattpruefung offen)
+- Motor-Nennspannung laut Datenblatt: `3.3V` pro Phase
+- Motor-Nennstrom laut Datenblatt: `1.5A` pro Phase (rated current)
+- Die 12V beziehen sich auf die TB6600-Treiberversorgung, nicht auf die Motornennspannung.
+- Netzteilberechnung fuer den 12V-Treiberzweig: siehe `LEISTUNGSBILANZ.md`
+- Netzteil-Empfehlung: mindestens `12V / 2A` (siehe `LEISTUNGSBILANZ.md`)
+
 ---
 
 ## Notizen
 - Raspberry Pi RXD ist nicht 5V-tolerant: Mega TX1 immer ueber Pegelwandler/Spannungsteiler anschliessen.
 - RC522 nur mit 3.3V betreiben.
 - GND muss zwischen Mega, Raspberry Pi und Sensoren gemeinsam verbunden sein.
+- Beim TB6600 mit externem 12V-Netzteil muss der GND des Netzteils mit Arduino-GND verbunden sein.
 - Im Abschnitt Pegelwandler bedeutet A1..A7/B1..B7 die Kanalbezeichnung des Pegelwandler-Moduls.
 - Das ist unabhaengig von den Arduino-Analogeingaengen A0..A15 (z. B. Sensor auf Arduino A1).

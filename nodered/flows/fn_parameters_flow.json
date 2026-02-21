@@ -66,7 +66,8 @@
         "wires":  [
                       [
                           "fn_parameters_set_offset",
-                          "fn_relay_controller"
+                          "fn_relay_controller",
+                          "fn_stepper_controller"
                       ]
                   ]
     },
@@ -184,10 +185,31 @@
                   ]
     },
     {
+        "id":  "fn_stepper_controller",
+        "type":  "function",
+        "z":  "flow_fn_parameters",
+        "name":  "Schrittmotorsteuerung",
+        "func":  "if (String(msg.topic || \"\") !== \"stepper_action\") {\n  return null;\n}\n\nconst action = String(msg.payload || \"\");\nif (action === \"run_5s\") {\n  msg.payload = \"STEPPER_5S\";\n} else if (action === \"rotate_120\") {\n  msg.payload = \"STEPPER_120\";\n} else {\n  return null;\n}\n\nmsg.topic = \"\";\nreturn msg;",
+        "outputs":  1,
+        "noerr":  0,
+        "initialize":  "",
+        "finalize":  "",
+        "libs":  [
+
+                 ],
+        "x":  490,
+        "y":  420,
+        "wires":  [
+                      [
+                          "link_out_parameters_to_data"
+                      ]
+                  ]
+    },
+    {
         "id":  "link_out_parameters_to_data",
         "type":  "link out",
         "z":  "flow_fn_parameters",
-        "name":  "zu Datenaustausch (act cmd)",
+        "name":  "zu Datenaustausch (act/stepper cmd)",
         "mode":  "link",
         "links":  [
                       "link_in_from_dashboard"

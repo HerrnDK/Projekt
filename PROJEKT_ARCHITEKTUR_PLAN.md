@@ -63,7 +63,7 @@ flowchart TD
   A1 --> C0
 ```
 
-### 1.4 `fn_parameters_flow.json` (Offsets + Relais)
+### 1.4 `fn_parameters_flow.json` (Offsets + Relais + Schrittmotor)
 ```mermaid
 flowchart TD
   S([Start]) --> I0["INIT_OFFSET verarbeiten"]
@@ -80,6 +80,11 @@ flowchart TD
   R1 --> R2["ACK auswerten"]
   R2 --> R3["Relaisstatus ON/OFF publizieren"]
   R3 --> W
+
+  T -- Schrittmotor --> M0["STEPPER_5S / STEPPER_120 bilden"]
+  M0 --> M1["An data_exchange senden"]
+  M1 --> M2["ACK auswerten"]
+  M2 --> W
 
   T -- Sensorpayload --> S0["Offsets anwenden"]
   S0 --> S1["Korrigierte Werte senden"]
@@ -208,7 +213,9 @@ flowchart TD
   A1 -- Ja --> A2["Aktoren_setzen(pin,state)"]
   A2 --> A3["Daten_sendeActBestaetigung(...)"]
   A3 --> E
-  D2 -- Nein --> F1["Daten_sendeFehler(unknown_command)"] --> E
+  D2 -- Nein --> D3{"STEPPER_5S / STEPPER_120?"}
+  D3 -- Ja --> S0["Schrittmotor starten + ACK senden"] --> E
+  D3 -- Nein --> F1["Daten_sendeFehler(unknown_command)"] --> E
 ```
 
 ### 2.4 `Aktoren_starten()` und `Aktoren_setzen()`
@@ -334,6 +341,22 @@ flowchart TD
   D2 --> E([Ende])
 ```
 
+### 2.12 `Schrittmotor_start...()` und `Schrittmotor_tick()`
+```mermaid
+flowchart TD
+  S([Start]) --> C0{"Kommando"}
+  C0 -- STEPPER_5S --> A0["Schrittmotor_startDrehenZeitMs(5000)"]
+  C0 -- STEPPER_120 --> A1["Schrittmotor_startDrehenGrad(120)"]
+  A0 --> T0["Schrittmotor_tick() zyklisch"]
+  A1 --> T0
+  T0 --> P0["STEP Impuls ausgeben"]
+  P0 --> U0["Positionsschritte aktualisieren"]
+  U0 --> E0{"Zeit/Schritte fertig?"}
+  E0 -- Nein --> T0
+  E0 -- Ja --> X0["Treiber deaktivieren, status=idle"]
+  X0 --> E([Ende])
+```
+
 ## 3) Gesamtflussdiagramm (End-to-End)
 ```mermaid
 flowchart TD
@@ -343,6 +366,7 @@ flowchart TD
   UI --> EVT{"Ereignis"}
   EVT -- Sensor aktualisieren --> CMD1["READ"]
   EVT -- Relais schalten --> CMD2["ACT,<pin>,<state>"]
+  EVT -- Schrittmotor --> CMD4["STEPPER_5S / STEPPER_120"]
   EVT -- RFID lesen/anlernen --> CMD3["RFID"]
   EVT -- WLAN verwalten --> NET0["Network.json Aktion"]
 
@@ -356,6 +380,7 @@ flowchart TD
     F_PROF --> DX
     CMD1 --> DX
     CMD2 --> DX
+    CMD4 --> DX
     CMD3 --> DX
   end
 
@@ -366,6 +391,7 @@ flowchart TD
     DTICK --> PARSE{"Kommando?"}
     PARSE -- READ --> DSENS["Daten_sendenSensorMomentaufnahme()"]
     PARSE -- ACT --> DACT["Aktoren_setzen() + Daten_sendeActBestaetigung()"]
+    PARSE -- STEPPER --> DSTEP["Schrittmotor_start...() + Stepper-ACK"]
     PARSE -- RFID --> DRFID["Daten_sendenRfidMomentaufnahme()"]
 
     DSENS --> SFAS["Sensoren_lesenMomentaufnahme()"]
@@ -378,11 +404,13 @@ flowchart TD
 
   DSENS --> RESP_S["JSON type=sensor"]
   DACT --> RESP_A["JSON type=act"]
+  DSTEP --> RESP_ST["JSON type=stepper"]
   DRFID --> RESP_R["JSON type=rfid"]
   PARSE --> RESP_E["JSON type=error"]
 
   RESP_S --> SER_R["Serial Rueckkanal"]
   RESP_A --> SER_R
+  RESP_ST --> SER_R
   RESP_R --> SER_R
   RESP_E --> SER_R
 

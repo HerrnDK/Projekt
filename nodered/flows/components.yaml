@@ -1,4 +1,4 @@
-version: 13
+version: 14
 registry: components
 conventions:
   id_style: "snake_case, stable logical id (not Node-RED node id)"
@@ -409,6 +409,62 @@ components:
     description: "Verarbeitet relay_toggle und ACT-ACKs, sendet ACT-Befehle und publiziert ON/OFF-Zustaende fuer Relais 1..4."
     tags: [parameter, function, relay, actuator, act]
     version: 1
+  parameter_stepper_controller:
+    id: parameter_stepper_controller
+    type: function
+    flow: nodered/flows/fn_parameters_flow.json
+    node_label: "Schrittmotorsteuerung"
+    description: "Uebersetzt Dashboard-Aktionen in STEPPER_5S/STEPPER_120 Kommandos fuer Arduino."
+    tags: [parameter, function, stepper, tb6600, actuator]
+    version: 1
+  parameter_stepper_5s_button_desktop:
+    id: parameter_stepper_5s_button_desktop
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Schrittmotor 5s drehen"
+    group: ui_grp_parameter_main
+    description: "Startet den Schrittmotor fuer 5 Sekunden (Desktop)."
+    example_msg:
+      topic: "stepper_action"
+      payload: "run_5s"
+    tags: [ui, parameter, stepper, tb6600, desktop]
+    version: 1
+  parameter_stepper_120_button_desktop:
+    id: parameter_stepper_120_button_desktop
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Schrittmotor 120 Grad drehen"
+    group: ui_grp_parameter_main
+    description: "Dreht den Schrittmotor pro Tastendruck um ca. 120 Grad (Desktop)."
+    example_msg:
+      topic: "stepper_action"
+      payload: "rotate_120"
+    tags: [ui, parameter, stepper, tb6600, desktop]
+    version: 1
+  parameter_stepper_5s_button_mobile:
+    id: parameter_stepper_5s_button_mobile
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Schrittmotor 5s drehen (Mobil)"
+    group: ui_grp_parameter_mobile
+    description: "Startet den Schrittmotor fuer 5 Sekunden (Mobil)."
+    example_msg:
+      topic: "stepper_action"
+      payload: "run_5s"
+    tags: [ui, parameter, stepper, tb6600, mobile]
+    version: 1
+  parameter_stepper_120_button_mobile:
+    id: parameter_stepper_120_button_mobile
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Schrittmotor 120 Grad drehen (Mobil)"
+    group: ui_grp_parameter_mobile
+    description: "Dreht den Schrittmotor pro Tastendruck um ca. 120 Grad (Mobil)."
+    example_msg:
+      topic: "stepper_action"
+      payload: "rotate_120"
+    tags: [ui, parameter, stepper, tb6600, mobile]
+    version: 1
   qr_welcome_dynamic:
     id: qr_welcome_dynamic
     type: ui_template
@@ -659,6 +715,32 @@ components:
       payload:
         tds_status: "ok"
     tags: [ui, tds, status, mobile]
+    version: 1
+  status_stepper_position_display_desktop:
+    id: status_stepper_position_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Schrittmotor Position Anzeige"
+    group: ui_grp_info_main
+    description: "Aktuelle Schrittmotor-Position in Grad im Status/Sensoren-Tab (Desktop)."
+    example_msg:
+      topic: ""
+      payload:
+        stepper_position_deg: 120
+    tags: [ui, stepper, tb6600, position, desktop]
+    version: 1
+  status_stepper_position_display_mobile:
+    id: status_stepper_position_display_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Schrittmotor Position Anzeige (Mobil)"
+    group: ui_grp_info_mobile
+    description: "Aktuelle Schrittmotor-Position in Grad im Status/Sensoren-Tab (Mobil)."
+    example_msg:
+      topic: ""
+      payload:
+        stepper_position_deg: 120
+    tags: [ui, stepper, tb6600, position, mobile]
     version: 1
   status_relay1_display_desktop:
     id: status_relay1_display_desktop

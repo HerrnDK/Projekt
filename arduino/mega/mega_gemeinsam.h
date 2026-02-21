@@ -32,6 +32,8 @@ struct SensorMomentaufnahme {
   const char *truebung_status;
   long tds_roh;
   const char *tds_status;
+  long schrittmotor_position_grad;
+  const char *schrittmotor_status;
   unsigned long laufzeit_ms;
 };
 
@@ -44,6 +46,11 @@ constexpr uint8_t TROPFEN_SENSOR_PIN = A0;
 constexpr uint8_t TRUEBUNG_SENSOR_PIN = A1;
 // Ocean TDS Meter Sensor (Analog)
 constexpr uint8_t TDS_SENSOR_PIN = A2;
+// TB6600 Schrittmotor-Treiber (Digital)
+constexpr uint8_t SCHRITTMOTOR_STEP_PIN = 28;
+constexpr uint8_t SCHRITTMOTOR_DIR_PIN = 29;
+constexpr uint8_t SCHRITTMOTOR_ENA_PIN = 30;
+constexpr long SCHRITTMOTOR_SCHRITTE_PRO_UMDREHUNG = 200;
 
 // RFID RC522 (SPI)
 constexpr uint8_t RC522_PIN_SS = 53;
@@ -79,6 +86,13 @@ void Sensoren_lesenRfid(char *uidAusgabe, size_t uidAusgabeLaenge, const char *&
 const char *Sensoren_holeRfidHardwareStatus();
 const char *Sensoren_holeRfidProbeStatus();
 uint8_t Sensoren_holeRfidVersionsRegister();
+
+void Schrittmotor_starten();
+void Schrittmotor_tick();
+bool Schrittmotor_startDrehenZeitMs(unsigned long dauerMs, const char *&statusAusgabe);
+bool Schrittmotor_startDrehenGrad(long grad, const char *&statusAusgabe);
+long Schrittmotor_holePositionGrad();
+const char *Schrittmotor_holeStatus();
 
 void Daten_starten();
 void Daten_tick();

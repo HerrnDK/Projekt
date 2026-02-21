@@ -450,6 +450,24 @@
                   ]
     },
     {
+        "id":  "ui_txt_stepper_pos_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  19,
+        "width":  10,
+        "height":  1,
+        "name":  "Schrittmotor Position Anzeige \\(Mobil\\)",
+        "label":  "Schrittmotor Position (Grad)",
+        "format":  "{{msg.payload.stepper_position_deg}}",
+        "layout":  "row-spread",
+        "x":  740,
+        "y":  1040,
+        "wires":  [
+
+                  ]
+    },
+    {
         "id":  "92797bc31e9565c2",
         "type":  "ui_text",
         "z":  "4985bdfbcf200fe6",
@@ -612,6 +630,24 @@
                   ]
     },
     {
+        "id":  "ui_txt_stepper_pos_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  19,
+        "width":  7,
+        "height":  1,
+        "name":  "Schrittmotor Position Anzeige",
+        "label":  "Schrittmotor Position (Grad)",
+        "format":  "{{msg.payload.stepper_position_deg}}",
+        "layout":  "row-spread",
+        "x":  740,
+        "y":  1040,
+        "wires":  [
+
+                  ]
+    },
+    {
         "id":  "f5c0bddf87cbb257",
         "type":  "ui_button",
         "z":  "4985bdfbcf200fe6",
@@ -670,6 +706,7 @@
                           "ui_txt_turbidity_status_d",
                           "ui_txt_tds_value_d",
                           "ui_txt_tds_status_d",
+                          "ui_txt_stepper_pos_d",
                           "9baf027087ee53a2",
                           "f2c4a6e1bd3e4a70",
                           "d0fcb2a91e984e6a",
@@ -678,7 +715,8 @@
                           "ui_txt_turbidity_value_m",
                           "ui_txt_turbidity_status_m",
                           "ui_txt_tds_value_m",
-                          "ui_txt_tds_status_m"
+                          "ui_txt_tds_status_m",
+                          "ui_txt_stepper_pos_m"
                       ]
                   ]
     },
@@ -1067,6 +1105,110 @@
         "step":  10,
         "x":  250,
         "y":  1140,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_stepper_5s_d",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Schrittmotor 5s drehen",
+        "group":  "0ef8bd821a032b93",
+        "order":  13,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Schrittmotor 5s",
+        "tooltip":  "Startet den Schrittmotor fuer 5 Sekunden",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "autorenew",
+        "payload":  "run_5s",
+        "payloadType":  "str",
+        "topic":  "stepper_action",
+        "x":  270,
+        "y":  1200,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_stepper_120_d",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Schrittmotor 120 Grad drehen",
+        "group":  "0ef8bd821a032b93",
+        "order":  14,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Schrittmotor +120 Grad",
+        "tooltip":  "Dreht den Schrittmotor um ca. 120 Grad",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "rotate_right",
+        "payload":  "rotate_120",
+        "payloadType":  "str",
+        "topic":  "stepper_action",
+        "x":  280,
+        "y":  1240,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_stepper_5s_m",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Schrittmotor 5s drehen \\(Mobil\\)",
+        "group":  "cd3e28787d1292e1",
+        "order":  13,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Schrittmotor 5s",
+        "tooltip":  "Startet den Schrittmotor fuer 5 Sekunden",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "autorenew",
+        "payload":  "run_5s",
+        "payloadType":  "str",
+        "topic":  "stepper_action",
+        "x":  300,
+        "y":  1360,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_stepper_120_m",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Schrittmotor 120 Grad drehen \\(Mobil\\)",
+        "group":  "cd3e28787d1292e1",
+        "order":  14,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Schrittmotor +120 Grad",
+        "tooltip":  "Dreht den Schrittmotor um ca. 120 Grad",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "rotate_right",
+        "payload":  "rotate_120",
+        "payloadType":  "str",
+        "topic":  "stepper_action",
+        "x":  310,
+        "y":  1400,
         "wires":  [
                       [
                           "b8c0e9d3f4a15412"
