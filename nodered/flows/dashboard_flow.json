@@ -1,0 +1,2178 @@
+[
+    {
+        "id":  "4985bdfbcf200fe6",
+        "type":  "tab",
+        "label":  "Projekt Automatisierung - FINAL (800x480 + QR offline)",
+        "disabled":  false,
+        "info":  ""
+    },
+    {
+        "id":  "0318f4604525f4f7",
+        "type":  "ui_tab",
+        "name":  "Willkommen",
+        "icon":  "dashboard",
+        "order":  1,
+        "disabled":  false,
+        "hidden":  false
+    },
+    {
+        "id":  "1a87758382986ddf",
+        "type":  "ui_tab",
+        "name":  "WLAN",
+        "icon":  "wifi",
+        "order":  6,
+        "disabled":  false,
+        "hidden":  false
+    },
+    {
+        "id":  "b482803534c81cb7",
+        "type":  "ui_tab",
+        "name":  "Projekt-info",
+        "icon":  "info",
+        "order":  3,
+        "disabled":  false,
+        "hidden":  false
+    },
+    {
+        "id":  "9db2c967c1a488ee",
+        "type":  "ui_tab",
+        "name":  "Projekt-Parametrierung",
+        "icon":  "tune",
+        "order":  4,
+        "disabled":  false,
+        "hidden":  false
+    },
+    {
+        "id":  "3fe8602f3f429631",
+        "type":  "ui_tab",
+        "name":  "Projekt-Datenlog",
+        "icon":  "list",
+        "order":  5,
+        "disabled":  false,
+        "hidden":  false
+    },
+    {
+        "id":  "1b4dd4e879ccb455",
+        "type":  "ui_group",
+        "name":  "Willkommen auf dem Projekt-Dashboard",
+        "tab":  "0318f4604525f4f7",
+        "order":  1,
+        "disp":  true,
+        "width":  "14",
+        "collapse":  false,
+        "className":  ""
+    },
+    {
+        "id":  "6888e5abb8efb54d",
+        "type":  "ui_group",
+        "name":  "WLAN Anmeldung",
+        "tab":  "1a87758382986ddf",
+        "order":  1,
+        "disp":  true,
+        "width":  14,
+        "collapse":  false,
+        "className":  "desktop-only"
+    },
+    {
+        "id":  "18e42aa468913fd1",
+        "type":  "ui_group",
+        "name":  "WLAN Anmeldung",
+        "tab":  "1a87758382986ddf",
+        "order":  2,
+        "disp":  true,
+        "width":  10,
+        "collapse":  false,
+        "className":  "mobile-only"
+    },
+    {
+        "id":  "939aa8523e70cefb",
+        "type":  "ui_group",
+        "name":  "Status / Sensoren",
+        "tab":  "b482803534c81cb7",
+        "order":  2,
+        "disp":  true,
+        "width":  10,
+        "collapse":  false,
+        "className":  "mobile-only"
+    },
+    {
+        "id":  "3584a9c30b6db556",
+        "type":  "ui_group",
+        "name":  "Status / Sensoren",
+        "tab":  "b482803534c81cb7",
+        "order":  1,
+        "disp":  true,
+        "width":  14,
+        "collapse":  false,
+        "className":  "desktop-only"
+    },
+    {
+        "id":  "0ef8bd821a032b93",
+        "type":  "ui_group",
+        "name":  "Parametrierung",
+        "tab":  "9db2c967c1a488ee",
+        "order":  1,
+        "disp":  true,
+        "width":  14,
+        "collapse":  false,
+        "className":  "desktop-only"
+    },
+    {
+        "id":  "cd3e28787d1292e1",
+        "type":  "ui_group",
+        "name":  "Parametrierung",
+        "tab":  "9db2c967c1a488ee",
+        "order":  2,
+        "disp":  true,
+        "width":  10,
+        "collapse":  false,
+        "className":  "mobile-only"
+    },
+    {
+        "id":  "bdc119e647f71c57",
+        "type":  "ui_group",
+        "name":  "Datenlog",
+        "tab":  "3fe8602f3f429631",
+        "order":  1,
+        "disp":  true,
+        "width":  14,
+        "collapse":  false
+    },
+    {
+        "id":  "3430d891af8fa1f6",
+        "type":  "ui_base",
+        "theme":  {
+                      "name":  "theme-light",
+                      "lightTheme":  {
+                                         "default":  "#0094CE",
+                                         "baseColor":  "#0094CE",
+                                         "baseFont":  "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                                         "edited":  true,
+                                         "reset":  false
+                                     },
+                      "darkTheme":  {
+                                        "default":  "#097479",
+                                        "baseColor":  "#097479",
+                                        "baseFont":  "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
+                                        "edited":  false
+                                    },
+                      "themeState":  {
+                                         "base-color":  {
+                                                            "default":  "#0094CE",
+                                                            "value":  "#0094CE",
+                                                            "edited":  false
+                                                        },
+                                         "page-titlebar-backgroundColor":  {
+                                                                               "value":  "#0094CE",
+                                                                               "edited":  false
+                                                                           },
+                                         "page-backgroundColor":  {
+                                                                      "value":  "#fafafa",
+                                                                      "edited":  false
+                                                                  },
+                                         "page-sidebar-backgroundColor":  {
+                                                                              "value":  "#ffffff",
+                                                                              "edited":  false
+                                                                          },
+                                         "group-textColor":  {
+                                                                 "value":  "#1bbfff",
+                                                                 "edited":  false
+                                                             },
+                                         "group-borderColor":  {
+                                                                   "value":  "#ffffff",
+                                                                   "edited":  false
+                                                               },
+                                         "group-backgroundColor":  {
+                                                                       "value":  "#ffffff",
+                                                                       "edited":  false
+                                                                   },
+                                         "widget-textColor":  {
+                                                                  "value":  "#111111",
+                                                                  "edited":  false
+                                                              },
+                                         "widget-backgroundColor":  {
+                                                                        "value":  "#0094ce",
+                                                                        "edited":  false
+                                                                    },
+                                         "widget-borderColor":  {
+                                                                    "value":  "#ffffff",
+                                                                    "edited":  false
+                                                                }
+                                     }
+                  },
+        "site":  {
+                     "name":  "Node-RED Dashboard",
+                     "hideToolbar":  "false",
+                     "allowSwipe":  "false",
+                     "lockMenu":  "false",
+                     "allowTempTheme":  "true",
+                     "dateFormat":  "DD.MM.YYYY",
+                     "sizes":  {
+                                   "sx":  48,
+                                   "sy":  48,
+                                   "gx":  6,
+                                   "gy":  6,
+                                   "cx":  6,
+                                   "cy":  6,
+                                   "px":  0,
+                                   "py":  0
+                               }
+                 }
+    },
+    {
+        "id":  "4e62a4011a9a2d00",
+        "type":  "ui_template",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "1b4dd4e879ccb455",
+        "name":  "Responsive CSS Global",
+        "order":  -1,
+        "width":  0,
+        "height":  0,
+        "format":  "\u003cstyle\u003e\n  * { box-sizing: border-box; }\n  html, body, md-content, .nr-dashboard-dashboard { overflow-x: hidden; }\n  .nr-dashboard-cardcontainer { padding: 4px; }\n  md-card { width: 100%; max-width: calc(100% - 8px); }\n\n  .mobile-only { display: none !important; }\n  .desktop-only { display: block !important; }\n\n  @media (max-width: 600px) {\n    .desktop-only { display: none !important; }\n    .mobile-only { display: block !important; }\n    md-card { margin: 2px !important; }\n    .nr-dashboard-cardcontainer { padding: 2px !important; }\n  }\n\n  /* QR cards */\n  .qr-card {\n    background: #ffffff;\n    padding: 16px 18px;\n    border-radius: 12px;\n    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);\n    text-align: center;\n    width: 100%;\n  }\n  .qr-title {\n    font-weight: 700;\n    margin-bottom: 8px;\n    color: #111111;\n  }\n  .qr-card img {\n    width: 200px;\n    height: 200px;\n    display: block;\n    margin: 0 auto;\n  }\n  .qr-hint {\n    margin-top: 8px;\n    font-size: 13px;\n    color: #333333;\n  }\n  @media (max-width: 600px) {\n    .qr-card { padding: 12px 14px; }\n    .qr-card img { width: 170px; height: 170px; }\n    .qr-hint { font-size: 12px; }\n  }\n\n\u003c/style\u003e",
+        "storeOutMessages":  false,
+        "fwdInMessages":  true,
+        "resendOnRefresh":  true,
+        "templateScope":  "global",
+        "x":  140,
+        "y":  50,
+        "wires":  [
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "7e3a8a709a4fb946",
+        "type":  "ui_template",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "1b4dd4e879ccb455",
+        "name":  "Willkommensanzeige (zentriert)",
+        "order":  3,
+        "width":  14,
+        "height":  7,
+        "format":  "\u003cdiv\u003e\u003c/div\u003e",
+        "storeOutMessages":  false,
+        "fwdInMessages":  true,
+        "resendOnRefresh":  true,
+        "templateScope":  "local",
+        "x":  1820,
+        "y":  100,
+        "wires":  [
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "5fedbca111dace7e",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Sensoren lesen \\(Mobil\\)",
+        "group":  "939aa8523e70cefb",
+        "order":  1,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Sensoren aktualisieren",
+        "tooltip":  "READ Kommando senden",
+        "icon":  "refresh",
+        "payload":  "READ",
+        "payloadType":  "str",
+        "topic":  "",
+        "x":  380,
+        "y":  520,
+        "wires":  [
+                      [
+                          "4ac1b66aca6f1626"
+                      ]
+                  ]
+    },
+    {
+        "id":  "9baf027087ee53a2",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  4,
+        "width":  10,
+        "height":  1,
+        "name":  "Uptime Anzeige \\(Mobil\\)",
+        "label":  "Uptime (HH:MM:SS)",
+        "format":  "{{msg.payload.uptime_hms}}",
+        "layout":  "row-spread",
+        "x":  610,
+        "y":  640,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "f2c4a6e1bd3e4a70",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  6,
+        "width":  10,
+        "height":  1,
+        "name":  "HC-SR04 Distanz Anzeige \\(Mobil\\)",
+        "label":  "HC-SR04 Distanz korrigiert (cm)",
+        "format":  "{{msg.payload.hcsr04_distance_display_cm}}",
+        "layout":  "row-spread",
+        "x":  670,
+        "y":  680,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "d0fcb2a91e984e6a",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  7,
+        "width":  10,
+        "height":  1,
+        "name":  "HC-SR04 Status Anzeige \\(Mobil\\)",
+        "label":  "HC-SR04 Status",
+        "format":  "{{msg.payload.hcsr04_status}}",
+        "layout":  "row-spread",
+        "x":  670,
+        "y":  720,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_droplet_value_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  9,
+        "width":  10,
+        "height":  1,
+        "name":  "Tropfensensor Wert Anzeige \\(Mobil\\)",
+        "label":  "Tropfensensor Rohwert korrigiert",
+        "format":  "{{msg.payload.droplet_display_raw}}",
+        "layout":  "row-spread",
+        "x":  700,
+        "y":  800,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_droplet_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  10,
+        "width":  10,
+        "height":  1,
+        "name":  "Tropfensensor Status Anzeige \\(Mobil\\)",
+        "label":  "Tropfensensor Status",
+        "format":  "{{msg.payload.droplet_status}}",
+        "layout":  "row-spread",
+        "x":  700,
+        "y":  840,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_turbidity_value_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  15,
+        "width":  10,
+        "height":  1,
+        "name":  "Truebungssensor Wert Anzeige \\(Mobil\\)",
+        "label":  "Truebungssensor Rohwert korrigiert",
+        "format":  "{{msg.payload.turbidity_display_raw}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  880,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_turbidity_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  16,
+        "width":  10,
+        "height":  1,
+        "name":  "Truebungssensor Status Anzeige \\(Mobil\\)",
+        "label":  "Truebungssensor Status",
+        "format":  "{{msg.payload.turbidity_status}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  920,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_tds_value_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  17,
+        "width":  10,
+        "height":  1,
+        "name":  "TDS-Sensor Wert Anzeige \\(Mobil\\)",
+        "label":  "TDS-Sensor Rohwert korrigiert",
+        "format":  "{{msg.payload.tds_display_raw}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  960,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_tds_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  18,
+        "width":  10,
+        "height":  1,
+        "name":  "TDS-Sensor Status Anzeige \\(Mobil\\)",
+        "label":  "TDS-Sensor Status",
+        "format":  "{{msg.payload.tds_status}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  1000,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_stepper_pos_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  19,
+        "width":  10,
+        "height":  1,
+        "name":  "Schrittmotor Position Anzeige \\(Mobil\\)",
+        "label":  "Schrittmotor Position (Grad)",
+        "format":  "{{msg.payload.stepper_position_deg}}",
+        "layout":  "row-spread",
+        "x":  740,
+        "y":  1040,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "92797bc31e9565c2",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  4,
+        "width":  7,
+        "height":  1,
+        "name":  "Uptime Anzeige",
+        "label":  "Uptime (HH:MM:SS)",
+        "format":  "{{msg.payload.uptime_hms}}",
+        "layout":  "row-spread",
+        "x":  610,
+        "y":  640,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "8a9df2e34f274275",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  6,
+        "width":  7,
+        "height":  1,
+        "name":  "HC-SR04 Distanz Anzeige",
+        "label":  "HC-SR04 Distanz korrigiert (cm)",
+        "format":  "{{msg.payload.hcsr04_distance_display_cm}}",
+        "layout":  "row-spread",
+        "x":  680,
+        "y":  680,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "4bc78086c6c84e1e",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  7,
+        "width":  7,
+        "height":  1,
+        "name":  "HC-SR04 Status Anzeige",
+        "label":  "HC-SR04 Status",
+        "format":  "{{msg.payload.hcsr04_status}}",
+        "layout":  "row-spread",
+        "x":  670,
+        "y":  720,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_droplet_value_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  9,
+        "width":  7,
+        "height":  1,
+        "name":  "Tropfensensor Wert Anzeige",
+        "label":  "Tropfensensor Rohwert korrigiert",
+        "format":  "{{msg.payload.droplet_display_raw}}",
+        "layout":  "row-spread",
+        "x":  700,
+        "y":  800,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_droplet_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  10,
+        "width":  7,
+        "height":  1,
+        "name":  "Tropfensensor Status Anzeige",
+        "label":  "Tropfensensor Status",
+        "format":  "{{msg.payload.droplet_status}}",
+        "layout":  "row-spread",
+        "x":  700,
+        "y":  840,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_turbidity_value_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  15,
+        "width":  7,
+        "height":  1,
+        "name":  "Truebungssensor Wert Anzeige",
+        "label":  "Truebungssensor Rohwert korrigiert",
+        "format":  "{{msg.payload.turbidity_display_raw}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  880,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_turbidity_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  16,
+        "width":  7,
+        "height":  1,
+        "name":  "Truebungssensor Status Anzeige",
+        "label":  "Truebungssensor Status",
+        "format":  "{{msg.payload.turbidity_status}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  920,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_tds_value_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  17,
+        "width":  7,
+        "height":  1,
+        "name":  "TDS-Sensor Wert Anzeige",
+        "label":  "TDS-Sensor Rohwert korrigiert",
+        "format":  "{{msg.payload.tds_display_raw}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  960,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_tds_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  18,
+        "width":  7,
+        "height":  1,
+        "name":  "TDS-Sensor Status Anzeige",
+        "label":  "TDS-Sensor Status",
+        "format":  "{{msg.payload.tds_status}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  1000,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_stepper_pos_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  19,
+        "width":  7,
+        "height":  1,
+        "name":  "Schrittmotor Position Anzeige",
+        "label":  "Schrittmotor Position (Grad)",
+        "format":  "{{msg.payload.stepper_position_deg}}",
+        "layout":  "row-spread",
+        "x":  740,
+        "y":  1040,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "f5c0bddf87cbb257",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Sensoren lesen",
+        "group":  "3584a9c30b6db556",
+        "order":  1,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Sensoren aktualisieren",
+        "tooltip":  "READ Kommando senden",
+        "icon":  "refresh",
+        "payload":  "READ",
+        "payloadType":  "str",
+        "topic":  "",
+        "x":  380,
+        "y":  540,
+        "wires":  [
+                      [
+                          "4ac1b66aca6f1626"
+                      ]
+                  ]
+    },
+    {
+        "id":  "4ac1b66aca6f1626",
+        "type":  "link out",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "zu Arduino \\(vom Dashboard\\)",
+        "links":  [
+                      "link_in_from_dashboard"
+                  ],
+        "x":  720,
+        "y":  560,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "2a616d8b76b4fe2c",
+        "type":  "link in",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Sensoren aus Parameter-Flow",
+        "links":  [
+                      "link_out_parameters_to_dashboard"
+                  ],
+        "x":  460,
+        "y":  600,
+        "wires":  [
+                      [
+                          "92797bc31e9565c2",
+                          "8a9df2e34f274275",
+                          "4bc78086c6c84e1e",
+                          "ui_txt_droplet_value_d",
+                          "ui_txt_droplet_status_d",
+                          "ui_txt_turbidity_value_d",
+                          "ui_txt_turbidity_status_d",
+                          "ui_txt_tds_value_d",
+                          "ui_txt_tds_status_d",
+                          "ui_txt_stepper_pos_d",
+                          "9baf027087ee53a2",
+                          "f2c4a6e1bd3e4a70",
+                          "d0fcb2a91e984e6a",
+                          "ui_txt_droplet_value_m",
+                          "ui_txt_droplet_status_m",
+                          "ui_txt_turbidity_value_m",
+                          "ui_txt_turbidity_status_m",
+                          "ui_txt_tds_value_m",
+                          "ui_txt_tds_status_m",
+                          "ui_txt_stepper_pos_m"
+                      ]
+                  ]
+    },
+    {
+        "id":  "152d67ddd441a63e",
+        "type":  "global-config",
+        "env":  [
+
+                ],
+        "modules":  {
+                        "node-red-dashboard":  "3.6.6"
+                    }
+    },
+    {
+        "id":  "b8c0e9d3f4a15412",
+        "type":  "link out",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "zum Parameter-Flow",
+        "links":  [
+                      "link_in_from_dashboard_parameters"
+                  ],
+        "x":  520,
+        "y":  860,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "8f6abcf84d0f4e29",
+        "type":  "link in",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Parameterstatus aus Funktions-Flow",
+        "links":  [
+                      "link_out_parameters_state"
+                  ],
+        "x":  220,
+        "y":  900,
+        "wires":  [
+                      [
+                          "991894f4120470bc",
+                          "0c15c9bcd2a45e71",
+                          "ui_txt_droplet_offset_d",
+                          "ui_txt_droplet_offset_m",
+                          "ui_txt_turbidity_offset_d",
+                          "ui_txt_turbidity_offset_m",
+                          "ui_txt_tds_offset_d",
+                          "ui_txt_tds_offset_m"
+                      ]
+                  ]
+    },
+    {
+        "id":  "991894f4120470bc",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  1,
+        "width":  14,
+        "height":  1,
+        "name":  "HC-SR04 Korrektur Anzeige",
+        "label":  "HC-SR04 Korrektur (cm)",
+        "format":  "{{msg.payload.hcsr04_offset_cm}}",
+        "layout":  "row-spread",
+        "x":  860,
+        "y":  860,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "b1cb83e0c4557d80",
+        "type":  "ui_slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "HC-SR04 Korrektur Slider",
+        "label":  "Korrektur einstellen",
+        "tooltip":  "Offset fuer Distanzanzeige in cm (-5 bis +5)",
+        "group":  "0ef8bd821a032b93",
+        "order":  2,
+        "width":  14,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "hcsr04_offset_cm",
+        "min":  -5,
+        "max":  5,
+        "step":  1,
+        "x":  240,
+        "y":  860,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "0c15c9bcd2a45e71",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "cd3e28787d1292e1",
+        "order":  1,
+        "width":  10,
+        "height":  1,
+        "name":  "HC-SR04 Korrektur Anzeige \\(Mobil\\)",
+        "label":  "HC-SR04 Korrektur (cm)",
+        "format":  "{{msg.payload.hcsr04_offset_cm}}",
+        "layout":  "row-spread",
+        "x":  870,
+        "y":  900,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "e2a62b330b7ec71f",
+        "type":  "ui_slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "HC-SR04 Korrektur Slider \\(Mobil\\)",
+        "label":  "Korrektur einstellen",
+        "tooltip":  "Offset fuer Distanzanzeige in cm (-5 bis +5)",
+        "group":  "cd3e28787d1292e1",
+        "order":  2,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "hcsr04_offset_cm",
+        "min":  -5,
+        "max":  5,
+        "step":  1,
+        "x":  240,
+        "y":  900,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_txt_droplet_offset_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  3,
+        "width":  14,
+        "height":  1,
+        "name":  "Tropfensensor Offset Anzeige",
+        "label":  "Tropfensensor Offset (raw)",
+        "format":  "{{msg.payload.droplet_offset_raw}}",
+        "layout":  "row-spread",
+        "x":  860,
+        "y":  940,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_sld_droplet_offset_d",
+        "type":  "ui_slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Tropfensensor Offset Slider",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer Tropfensensor Rohwert (-300 bis +300)",
+        "group":  "0ef8bd821a032b93",
+        "order":  4,
+        "width":  14,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "droplet_offset_raw",
+        "min":  -300,
+        "max":  300,
+        "step":  10,
+        "x":  240,
+        "y":  940,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_txt_droplet_offset_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "cd3e28787d1292e1",
+        "order":  3,
+        "width":  10,
+        "height":  1,
+        "name":  "Tropfensensor Offset Anzeige \\(Mobil\\)",
+        "label":  "Tropfensensor Offset (raw)",
+        "format":  "{{msg.payload.droplet_offset_raw}}",
+        "layout":  "row-spread",
+        "x":  870,
+        "y":  980,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_sld_droplet_offset_m",
+        "type":  "ui_slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Tropfensensor Offset Slider \\(Mobil\\)",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer Tropfensensor Rohwert (-300 bis +300)",
+        "group":  "cd3e28787d1292e1",
+        "order":  4,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "droplet_offset_raw",
+        "min":  -300,
+        "max":  300,
+        "step":  10,
+        "x":  240,
+        "y":  980,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_txt_turbidity_offset_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  9,
+        "width":  14,
+        "height":  1,
+        "name":  "Truebungssensor Offset Anzeige",
+        "label":  "Truebungssensor Offset (raw)",
+        "format":  "{{msg.payload.turbidity_offset_raw}}",
+        "layout":  "row-spread",
+        "x":  870,
+        "y":  1020,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_sld_turbidity_offset_d",
+        "type":  "ui_slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Truebungssensor Offset Slider",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer Truebungssensor Rohwert (-200 bis +200)",
+        "group":  "0ef8bd821a032b93",
+        "order":  10,
+        "width":  14,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "turbidity_offset_raw",
+        "min":  -200,
+        "max":  200,
+        "step":  10,
+        "x":  250,
+        "y":  1020,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_txt_tds_offset_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  11,
+        "width":  14,
+        "height":  1,
+        "name":  "TDS-Sensor Offset Anzeige",
+        "label":  "TDS-Sensor Offset (raw)",
+        "format":  "{{msg.payload.tds_offset_raw}}",
+        "layout":  "row-spread",
+        "x":  870,
+        "y":  1100,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_sld_tds_offset_d",
+        "type":  "ui_slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "TDS-Sensor Offset Slider",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer TDS-Sensor Rohwert (-300 bis +300)",
+        "group":  "0ef8bd821a032b93",
+        "order":  12,
+        "width":  14,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "tds_offset_raw",
+        "min":  -300,
+        "max":  300,
+        "step":  10,
+        "x":  250,
+        "y":  1100,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_txt_turbidity_offset_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "cd3e28787d1292e1",
+        "order":  9,
+        "width":  10,
+        "height":  1,
+        "name":  "Truebungssensor Offset Anzeige \\(Mobil\\)",
+        "label":  "Truebungssensor Offset (raw)",
+        "format":  "{{msg.payload.turbidity_offset_raw}}",
+        "layout":  "row-spread",
+        "x":  880,
+        "y":  1060,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_sld_turbidity_offset_m",
+        "type":  "ui_slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Truebungssensor Offset Slider \\(Mobil\\)",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer Truebungssensor Rohwert (-200 bis +200)",
+        "group":  "cd3e28787d1292e1",
+        "order":  10,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "turbidity_offset_raw",
+        "min":  -200,
+        "max":  200,
+        "step":  10,
+        "x":  250,
+        "y":  1060,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_txt_tds_offset_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "cd3e28787d1292e1",
+        "order":  11,
+        "width":  10,
+        "height":  1,
+        "name":  "TDS-Sensor Offset Anzeige \\(Mobil\\)",
+        "label":  "TDS-Sensor Offset (raw)",
+        "format":  "{{msg.payload.tds_offset_raw}}",
+        "layout":  "row-spread",
+        "x":  880,
+        "y":  1140,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_sld_tds_offset_m",
+        "type":  "ui_slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "TDS-Sensor Offset Slider \\(Mobil\\)",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer TDS-Sensor Rohwert (-300 bis +300)",
+        "group":  "cd3e28787d1292e1",
+        "order":  12,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "tds_offset_raw",
+        "min":  -300,
+        "max":  300,
+        "step":  10,
+        "x":  250,
+        "y":  1140,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_stepper_5s_d",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Schrittmotor 5s drehen",
+        "group":  "0ef8bd821a032b93",
+        "order":  13,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Schrittmotor 5s",
+        "tooltip":  "Startet den Schrittmotor fuer 5 Sekunden",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "autorenew",
+        "payload":  "run_5s",
+        "payloadType":  "str",
+        "topic":  "stepper_action",
+        "x":  270,
+        "y":  1200,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_stepper_120_d",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Schrittmotor 120 Grad drehen",
+        "group":  "0ef8bd821a032b93",
+        "order":  14,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Schrittmotor +120 Grad",
+        "tooltip":  "Dreht den Schrittmotor um ca. 120 Grad",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "rotate_right",
+        "payload":  "rotate_120",
+        "payloadType":  "str",
+        "topic":  "stepper_action",
+        "x":  280,
+        "y":  1240,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_stepper_5s_m",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Schrittmotor 5s drehen \\(Mobil\\)",
+        "group":  "cd3e28787d1292e1",
+        "order":  13,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Schrittmotor 5s",
+        "tooltip":  "Startet den Schrittmotor fuer 5 Sekunden",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "autorenew",
+        "payload":  "run_5s",
+        "payloadType":  "str",
+        "topic":  "stepper_action",
+        "x":  300,
+        "y":  1360,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_stepper_120_m",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Schrittmotor 120 Grad drehen \\(Mobil\\)",
+        "group":  "cd3e28787d1292e1",
+        "order":  14,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Schrittmotor +120 Grad",
+        "tooltip":  "Dreht den Schrittmotor um ca. 120 Grad",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "rotate_right",
+        "payload":  "rotate_120",
+        "payloadType":  "str",
+        "topic":  "stepper_action",
+        "x":  310,
+        "y":  1400,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_relay1_d",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 1 (Pumpe) schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  5,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 1 (Pumpe)",
+        "tooltip":  "Relais 1 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "22",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  260,
+        "y":  1040,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_relay2_d",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 2 schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  6,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 2 (Reserve)",
+        "tooltip":  "Relais 2 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "23",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  260,
+        "y":  1080,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_relay3_d",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 3 schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  7,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 3 (Reserve)",
+        "tooltip":  "Relais 3 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "24",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  260,
+        "y":  1120,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_relay4_d",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 4 schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  8,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 4 (Reserve)",
+        "tooltip":  "Relais 4 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "25",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  260,
+        "y":  1160,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_relay1_m",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 1 (Pumpe) schalten \\(Mobil\\)",
+        "group":  "cd3e28787d1292e1",
+        "order":  5,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 1 (Pumpe)",
+        "tooltip":  "Relais 1 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "22",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  290,
+        "y":  1200,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_relay2_m",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 2 schalten \\(Mobil\\)",
+        "group":  "cd3e28787d1292e1",
+        "order":  6,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 2 (Reserve)",
+        "tooltip":  "Relais 2 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "23",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  290,
+        "y":  1240,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_relay3_m",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 3 schalten \\(Mobil\\)",
+        "group":  "cd3e28787d1292e1",
+        "order":  7,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 3 (Reserve)",
+        "tooltip":  "Relais 3 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "24",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  290,
+        "y":  1280,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_btn_relay4_m",
+        "type":  "ui_button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 4 schalten \\(Mobil\\)",
+        "group":  "cd3e28787d1292e1",
+        "order":  8,
+        "width":  10,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 4 (Reserve)",
+        "tooltip":  "Relais 4 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "25",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  290,
+        "y":  1320,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "link_in_relays_from_parameters",
+        "type":  "link in",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relaisstatus aus Parameter-Flow",
+        "links":  [
+                      "link_out_relays_to_dashboard"
+                  ],
+        "x":  230,
+        "y":  760,
+        "wires":  [
+                      [
+                          "ui_txt_relay1_status_d",
+                          "ui_txt_relay2_status_d",
+                          "ui_txt_relay3_status_d",
+                          "ui_txt_relay4_status_d",
+                          "ui_txt_relay1_status_m",
+                          "ui_txt_relay2_status_m",
+                          "ui_txt_relay3_status_m",
+                          "ui_txt_relay4_status_m"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay1_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  11,
+        "width":  7,
+        "height":  1,
+        "name":  "Relais 1 Status Anzeige",
+        "label":  "Relais 1 (Pumpe)",
+        "format":  "{{msg.payload.relay1_state_text}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  900,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay2_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  12,
+        "width":  7,
+        "height":  1,
+        "name":  "Relais 2 Status Anzeige",
+        "label":  "Relais 2 (Reserve)",
+        "format":  "{{msg.payload.relay2_state_text}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  940,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay3_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  13,
+        "width":  7,
+        "height":  1,
+        "name":  "Relais 3 Status Anzeige",
+        "label":  "Relais 3 (Reserve)",
+        "format":  "{{msg.payload.relay3_state_text}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  980,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay4_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  14,
+        "width":  7,
+        "height":  1,
+        "name":  "Relais 4 Status Anzeige",
+        "label":  "Relais 4 (Reserve)",
+        "format":  "{{msg.payload.relay4_state_text}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  1020,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay1_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  11,
+        "width":  10,
+        "height":  1,
+        "name":  "Relais 1 Status Anzeige \\(Mobil\\)",
+        "label":  "Relais 1 (Pumpe)",
+        "format":  "{{msg.payload.relay1_state_text}}",
+        "layout":  "row-spread",
+        "x":  720,
+        "y":  1060,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay2_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  12,
+        "width":  10,
+        "height":  1,
+        "name":  "Relais 2 Status Anzeige \\(Mobil\\)",
+        "label":  "Relais 2 (Reserve)",
+        "format":  "{{msg.payload.relay2_state_text}}",
+        "layout":  "row-spread",
+        "x":  720,
+        "y":  1100,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay3_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  13,
+        "width":  10,
+        "height":  1,
+        "name":  "Relais 3 Status Anzeige \\(Mobil\\)",
+        "label":  "Relais 3 (Reserve)",
+        "format":  "{{msg.payload.relay3_state_text}}",
+        "layout":  "row-spread",
+        "x":  720,
+        "y":  1140,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay4_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  14,
+        "width":  10,
+        "height":  1,
+        "name":  "Relais 4 Status Anzeige \\(Mobil\\)",
+        "label":  "Relais 4 (Reserve)",
+        "format":  "{{msg.payload.relay4_state_text}}",
+        "layout":  "row-spread",
+        "x":  720,
+        "y":  1180,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_tab_profile",
+        "name":  "Profile",
+        "icon":  "badge",
+        "type":  "ui_tab",
+        "hidden":  false,
+        "order":  2,
+        "disabled":  false
+    },
+    {
+        "width":  14,
+        "id":  "ui_grp_profile_main",
+        "type":  "ui_group",
+        "order":  1,
+        "disp":  true,
+        "collapse":  false,
+        "name":  "RFID-Profile",
+        "className":  "desktop-only",
+        "tab":  "ui_tab_profile"
+    },
+    {
+        "width":  10,
+        "id":  "ui_grp_profile_mobile",
+        "type":  "ui_group",
+        "order":  2,
+        "disp":  true,
+        "collapse":  false,
+        "name":  "RFID-Profile",
+        "className":  "mobile-only",
+        "tab":  "ui_tab_profile"
+    },
+    {
+        "id":  "link_out_dashboard_to_profiles",
+        "y":  1040,
+        "name":  "zum Profil-Flow",
+        "type":  "link out",
+        "z":  "4985bdfbcf200fe6",
+        "x":  680,
+        "wires":  [
+
+                  ],
+        "links":  [
+                      "link_in_from_dashboard_profiles"
+                  ]
+    },
+    {
+        "id":  "link_in_profiles_from_fn",
+        "y":  1100,
+        "name":  "Profilstatus aus Funktions-Flow",
+        "type":  "link in",
+        "z":  "4985bdfbcf200fe6",
+        "x":  220,
+        "wires":  [
+                      [
+                          "ui_txt_profile_status_d",
+                          "ui_txt_profile_learning_d",
+                          "ui_txt_profile_chip1_uid_d",
+                          "ui_txt_profile_chip1_profile_d",
+                          "ui_txt_profile_chip2_uid_d",
+                          "ui_txt_profile_chip2_profile_d",
+                          "ui_txt_profile_last_uid_d",
+                          "ui_txt_profile_active_d",
+                          "ui_txt_profile_hw_status_d",
+                          "ui_txt_profile_status_m",
+                          "ui_txt_profile_learning_m",
+                          "ui_txt_profile_chip1_uid_m",
+                          "ui_txt_profile_chip1_profile_m",
+                          "ui_txt_profile_chip2_uid_m",
+                          "ui_txt_profile_chip2_profile_m",
+                          "ui_txt_profile_last_uid_m",
+                          "ui_txt_profile_active_m",
+                          "ui_txt_profile_hw_status_m",
+                          "ui_txt_rfid_status_d",
+                          "ui_txt_rfid_status_m"
+                      ]
+                  ],
+        "links":  [
+                      "link_out_profiles_to_dashboard"
+                  ]
+    },
+    {
+        "tooltip":  "RFID lesen",
+        "id":  "ui_btn_profile_read_d",
+        "payloadType":  "str",
+        "type":  "ui_button",
+        "passthru":  false,
+        "label":  "Lesen",
+        "height":  1,
+        "x":  290,
+        "wires":  [
+                      [
+                          "link_out_dashboard_to_profiles"
+                      ]
+                  ],
+        "group":  "ui_grp_profile_main",
+        "topic":  "",
+        "order":  1,
+        "payload":  "RFID_READ",
+        "icon":  "visibility",
+        "y":  980,
+        "name":  "RFID Lesen",
+        "z":  "4985bdfbcf200fe6",
+        "width":  4
+    },
+    {
+        "tooltip":  "RFID lesen",
+        "id":  "ui_btn_profile_read_m",
+        "payloadType":  "str",
+        "type":  "ui_button",
+        "passthru":  false,
+        "label":  "Lesen",
+        "height":  1,
+        "x":  300,
+        "wires":  [
+                      [
+                          "link_out_dashboard_to_profiles"
+                      ]
+                  ],
+        "group":  "ui_grp_profile_mobile",
+        "topic":  "",
+        "order":  1,
+        "payload":  "RFID_READ",
+        "icon":  "visibility",
+        "y":  1240,
+        "name":  "RFID Lesen \\(Mobil\\)",
+        "z":  "4985bdfbcf200fe6",
+        "width":  10
+    },
+    {
+        "id":  "ui_txt_profile_status_d",
+        "y":  1000,
+        "format":  "{{msg.payload.profile_status_text}}",
+        "width":  14,
+        "group":  "ui_grp_profile_main",
+        "name":  "Profilstatus",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  8,
+        "label":  "Profilstatus",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_learning_d",
+        "y":  1040,
+        "format":  "{{msg.payload.rfid_learning_text}}",
+        "width":  14,
+        "group":  "ui_grp_profile_main",
+        "name":  "Anlernmodus",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  9,
+        "label":  "Anlernmodus",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_chip1_uid_d",
+        "y":  1080,
+        "format":  "{{msg.payload.rfid_chip1_uid}}",
+        "width":  14,
+        "group":  "ui_grp_profile_main",
+        "name":  "Chip 1 UID",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  10,
+        "label":  "Chip 1 UID",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_chip1_profile_d",
+        "y":  1120,
+        "format":  "{{msg.payload.rfid_chip1_profile}}",
+        "width":  14,
+        "group":  "ui_grp_profile_main",
+        "name":  "Chip 1 Profil",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  11,
+        "label":  "Chip 1 Profil",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_chip2_uid_d",
+        "y":  1160,
+        "format":  "{{msg.payload.rfid_chip2_uid}}",
+        "width":  14,
+        "group":  "ui_grp_profile_main",
+        "name":  "Chip 2 UID",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  12,
+        "label":  "Chip 2 UID",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_chip2_profile_d",
+        "y":  1200,
+        "format":  "{{msg.payload.rfid_chip2_profile}}",
+        "width":  14,
+        "group":  "ui_grp_profile_main",
+        "name":  "Chip 2 Profil",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  13,
+        "label":  "Chip 2 Profil",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_last_uid_d",
+        "y":  1240,
+        "format":  "{{msg.payload.rfid_last_uid}}",
+        "width":  14,
+        "group":  "ui_grp_profile_main",
+        "name":  "Letzte UID",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  14,
+        "label":  "Letzte UID",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_active_d",
+        "y":  1280,
+        "format":  "{{msg.payload.rfid_active_profile}}",
+        "width":  14,
+        "group":  "ui_grp_profile_main",
+        "name":  "Aktives Profil",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  15,
+        "label":  "Aktives Profil",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_status_m",
+        "y":  1320,
+        "format":  "{{msg.payload.profile_status_text}}",
+        "width":  10,
+        "group":  "ui_grp_profile_mobile",
+        "name":  "Profilstatus",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  8,
+        "label":  "Profilstatus",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_learning_m",
+        "y":  1360,
+        "format":  "{{msg.payload.rfid_learning_text}}",
+        "width":  10,
+        "group":  "ui_grp_profile_mobile",
+        "name":  "Anlernmodus",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  9,
+        "label":  "Anlernmodus",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_chip1_uid_m",
+        "y":  1400,
+        "format":  "{{msg.payload.rfid_chip1_uid}}",
+        "width":  10,
+        "group":  "ui_grp_profile_mobile",
+        "name":  "Chip 1 UID",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  10,
+        "label":  "Chip 1 UID",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_chip1_profile_m",
+        "y":  1440,
+        "format":  "{{msg.payload.rfid_chip1_profile}}",
+        "width":  10,
+        "group":  "ui_grp_profile_mobile",
+        "name":  "Chip 1 Profil",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  11,
+        "label":  "Chip 1 Profil",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_chip2_uid_m",
+        "y":  1480,
+        "format":  "{{msg.payload.rfid_chip2_uid}}",
+        "width":  10,
+        "group":  "ui_grp_profile_mobile",
+        "name":  "Chip 2 UID",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  12,
+        "label":  "Chip 2 UID",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_chip2_profile_m",
+        "y":  1520,
+        "format":  "{{msg.payload.rfid_chip2_profile}}",
+        "width":  10,
+        "group":  "ui_grp_profile_mobile",
+        "name":  "Chip 2 Profil",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  13,
+        "label":  "Chip 2 Profil",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_last_uid_m",
+        "y":  1560,
+        "format":  "{{msg.payload.rfid_last_uid}}",
+        "width":  10,
+        "group":  "ui_grp_profile_mobile",
+        "name":  "Letzte UID",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  14,
+        "label":  "Letzte UID",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_active_m",
+        "y":  1600,
+        "format":  "{{msg.payload.rfid_active_profile}}",
+        "width":  10,
+        "group":  "ui_grp_profile_mobile",
+        "name":  "Aktives Profil",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  15,
+        "label":  "Aktives Profil",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread"
+    },
+    {
+        "id":  "ui_txt_profile_hw_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "ui_grp_profile_main",
+        "order":  16,
+        "width":  14,
+        "height":  1,
+        "name":  "RFID Modulstatus",
+        "label":  "RFID Modulstatus",
+        "format":  "{{msg.payload.rfid_hw_status_text}}",
+        "layout":  "row-spread",
+        "x":  960,
+        "y":  1300,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_profile_hw_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "ui_grp_profile_mobile",
+        "order":  16,
+        "width":  10,
+        "height":  1,
+        "name":  "RFID Modulstatus",
+        "label":  "RFID Modulstatus",
+        "format":  "{{msg.payload.rfid_hw_status_text}}",
+        "layout":  "row-spread",
+        "x":  960,
+        "y":  1620,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "tooltip":  "Wenn Profil 1 frei: anlernen. Wenn belegt: Bindung loeschen.",
+        "id":  "ui_btn_profile_learn_p1_d",
+        "payloadType":  "str",
+        "type":  "ui_button",
+        "passthru":  false,
+        "label":  "Profil 1 anlernen/loeschen",
+        "height":  1,
+        "x":  310,
+        "wires":  [
+                      [
+                          "link_out_dashboard_to_profiles"
+                      ]
+                  ],
+        "group":  "ui_grp_profile_main",
+        "topic":  "",
+        "order":  2,
+        "payload":  "RFID_LEARN_P1",
+        "icon":  "school",
+        "y":  1020,
+        "name":  "Profil 1 anlernen/loeschen",
+        "z":  "4985bdfbcf200fe6",
+        "width":  4
+    },
+    {
+        "tooltip":  "Wenn Profil 2 frei: anlernen. Wenn belegt: Bindung loeschen.",
+        "id":  "ui_btn_profile_learn_p2_d",
+        "payloadType":  "str",
+        "type":  "ui_button",
+        "passthru":  false,
+        "label":  "Profil 2 anlernen/loeschen",
+        "height":  1,
+        "x":  310,
+        "wires":  [
+                      [
+                          "link_out_dashboard_to_profiles"
+                      ]
+                  ],
+        "group":  "ui_grp_profile_main",
+        "topic":  "",
+        "order":  3,
+        "payload":  "RFID_LEARN_P2",
+        "icon":  "school",
+        "y":  1060,
+        "name":  "Profil 2 anlernen/loeschen",
+        "z":  "4985bdfbcf200fe6",
+        "width":  4
+    },
+    {
+        "tooltip":  "Wenn Profil 1 frei: anlernen. Wenn belegt: Bindung loeschen.",
+        "id":  "ui_btn_profile_learn_p1_m",
+        "payloadType":  "str",
+        "type":  "ui_button",
+        "passthru":  false,
+        "label":  "Profil 1 anlernen/loeschen",
+        "height":  1,
+        "x":  320,
+        "wires":  [
+                      [
+                          "link_out_dashboard_to_profiles"
+                      ]
+                  ],
+        "group":  "ui_grp_profile_mobile",
+        "topic":  "",
+        "order":  2,
+        "payload":  "RFID_LEARN_P1",
+        "icon":  "school",
+        "y":  1280,
+        "name":  "Profil 1 anlernen/loeschen \\(Mobil\\)",
+        "z":  "4985bdfbcf200fe6",
+        "width":  10
+    },
+    {
+        "tooltip":  "Wenn Profil 2 frei: anlernen. Wenn belegt: Bindung loeschen.",
+        "id":  "ui_btn_profile_learn_p2_m",
+        "payloadType":  "str",
+        "type":  "ui_button",
+        "passthru":  false,
+        "label":  "Profil 2 anlernen/loeschen",
+        "height":  1,
+        "x":  320,
+        "wires":  [
+                      [
+                          "link_out_dashboard_to_profiles"
+                      ]
+                  ],
+        "group":  "ui_grp_profile_mobile",
+        "topic":  "",
+        "order":  3,
+        "payload":  "RFID_LEARN_P2",
+        "icon":  "school",
+        "y":  1320,
+        "name":  "Profil 2 anlernen/loeschen \\(Mobil\\)",
+        "z":  "4985bdfbcf200fe6",
+        "width":  10
+    },
+    {
+        "id":  "ui_txt_rfid_status_d",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  8,
+        "width":  7,
+        "height":  1,
+        "name":  "RFID Status Anzeige",
+        "label":  "RFID RC522 Status",
+        "format":  "{{msg.payload.rfid_hw_status_text}}",
+        "layout":  "row-spread",
+        "x":  680,
+        "y":  760,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "ui_txt_rfid_status_m",
+        "type":  "ui_text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "939aa8523e70cefb",
+        "order":  8,
+        "width":  10,
+        "height":  1,
+        "name":  "RFID Status Anzeige \\(Mobil\\)",
+        "label":  "RFID RC522 Status",
+        "format":  "{{msg.payload.rfid_hw_status_text}}",
+        "layout":  "row-spread",
+        "x":  690,
+        "y":  760,
+        "wires":  [
+
+                  ]
+    }
+]
+

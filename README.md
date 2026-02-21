@@ -1,0 +1,230 @@
+# Arduino Mega 2560 + Node-RED (Raspberry Pi)
+
+Dieses Repository enthaelt das Grundgeruest fuer die serielle Kommunikation
+zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
+
+## Verdrahtung (Serial1)
+- **Arduino Mega 2560** Serial1:
+  - TX1 (Pin 18, 5V) -> Pegelwandler 5V->3.3V -> Raspberry Pi RX
+  - RX1 (Pin 19) <- Raspberry Pi TX (3.3V)
+  - GND -> GND
+
+> WICHTIG: Zwischen Mega TX1 (5V) und Raspberry Pi RX muss ein Pegelwandler
+> (oder mindestens ein geeigneter Spannungsteiler) verwendet werden.
+> Raspberry Pi GPIO ist nicht 5V-tolerant.
+
+> Der USB-Port (Serial RX0/TX0) bleibt fuer Programmierung und Debug frei.
+
+## Verdrahtung (HC-SR04)
+- HC-SR04 VCC -> 5V
+- HC-SR04 GND -> GND
+- HC-SR04 TRIG -> D26
+- HC-SR04 ECHO -> D27
+
+## Verdrahtung (RFID RC522)
+- RC522 SDA/SS -> D53 (SS)
+- RC522 SCK -> D52
+- RC522 MOSI -> D51
+- RC522 MISO -> D50
+- RC522 RST -> D49
+- RC522 3.3V -> 3.3V
+- RC522 GND -> GND
+
+> Hinweis: RC522 muss mit 3.3V betrieben werden.
+
+## Verdrahtung (Funduino Tropfensensor)
+- Tropfensensor +5V -> 5V
+- Tropfensensor -GND -> GND
+- Tropfensensor S (Analog) -> A0
+
+## Verdrahtung (Wassertruebungssensor)
+- Wassertruebungssensor +5V -> 5V
+- Wassertruebungssensor -GND -> GND
+- Wassertruebungssensor S (Analog) -> A1
+
+## Verdrahtung (Ocean-TDS-Meter-Sensor)
+- TDS-Sensor +5V -> 5V
+- TDS-Sensor -GND -> GND
+- TDS-Sensor S (Analog) -> A2
+
+## Verdrahtung (4-Kanal Relaismodul)
+- Relaismodul VCC -> 5V
+- Relaismodul GND -> GND
+- Relaismodul IN1 -> D22 (Relais 1: Wasserpumpe)
+- Relaismodul IN2 -> D23 (Relais 2: Reserve)
+- Relaismodul IN3 -> D24 (Relais 3: Reserve)
+- Relaismodul IN4 -> D25 (Relais 4: Reserve)
+
+> Hinweis: Das eingesetzte Relaismodul ist active-low (gegen GND schaltend):
+> `ACT,...,1` = Relais EIN = IN-Pin auf `LOW` (0V),
+> `ACT,...,0` = Relais AUS = IN-Pin auf `HIGH` (5V).
+
+## Verdrahtung (TB6600 Schrittmotor-Treiber)
+- TB6600 PUL+/STEP+ -> D28
+- TB6600 DIR+ -> D29
+- TB6600 ENA+ -> D30
+- TB6600 PUL-/DIR-/ENA- -> GND
+- TB6600 GND (Logik) -> GND
+- TB6600 Motorversorgung (VMOT) -> externes 12V Netzteil (Treiber-Versorgung)
+- Schrittmotor-Phasen -> A+/A-/B+/B- am TB6600
+- Geplanter Motor: voraussichtlich `42HSC8402-15B11` (Nennspannung `3.3V` pro Phase)
+- Motor-Nennstrom laut Datenblatt: `1.5A` (rated current, pro Phase)
+- Motorleistung bei 2 aktiven Phasen: `2 * 3.3V * 1.5A = 9.9W`
+- 12V-Versorgungszweig (TB6600) abgeschaetzt: ca. `12W` max
+- Netzteil-Empfehlung: mindestens `12V / 2A` (24W)
+- NEMA17-Referenz (allgemein): https://reprap.org/wiki/NEMA_17_Stepper_motor
+
+> Wichtig: Die 3.3V sind Motor-Nennwerte der Spule. Der TB6600 wird separat
+> mit z. B. 12V versorgt und regelt den Phasenstrom.
+> GND von Arduino und TB6600/Netzteil muss gemeinsam verbunden sein.
+
+## Protokoll (Serial1, newline-terminiert)
+- `READ` -> Arduino sendet JSON Sensor-Snapshot
+- `ACT,<pin>,<state>` -> Aktor schalten, JSON-ACK
+- `RFID` -> RFID Snapshot lesen (UID + Status inkl. Modulzustand)
+- `STEPPER_5S` -> Schrittmotor fuer 5 Sekunden drehen (JSON-ACK)
+- `STEPPER_120` -> Schrittmotor um ca. 120 Grad drehen (JSON-ACK)
+
+JSON-Formate (Beispiele):
+- Sensor: `{"type":"sensor","hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","tds_raw":430,"tds_status":"ok","stepper_position_deg":120,"stepper_status":"idle","uptime_ms":7890}`
+- Aktor: `{"type":"act","ok":1,"pin":22,"state":1,"hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","tds_raw":430,"tds_status":"ok","stepper_position_deg":120,"stepper_status":"idle","uptime_ms":7890}`
+- Fehler: `{"type":"error","code":"unknown_command","hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","droplet_raw":-1,"droplet_status":"error_range","turbidity_raw":-1,"turbidity_status":"error_not_connected","tds_raw":-1,"tds_status":"error_not_connected","stepper_position_deg":120,"stepper_status":"idle","uptime_ms":7890}`
+- RFID: `{"type":"rfid","rfid_uid":"DE:AD:BE:EF","rfid_status":"ok","rfid_hw_status":"ok","rfid_probe_status":"STATUS_OK","rfid_version_reg":"0x92","uptime_ms":7890}`
+- Stepper ACK: `{"type":"stepper","ok":1,"cmd":"rotate_120","stepper_position_deg":240,"stepper_status":"ok","uptime_ms":7890}`
+
+HC-SR04 Statuswerte:
+- `ok` gemessene Distanz ist gueltig
+- `error_timeout` kein Echo innerhalb Timeout
+- `error_range` gemessene Distanz ausserhalb 2..400 cm
+
+Tropfensensor Statuswerte:
+- `ok` analoger Rohwert ist gueltig (0..1023)
+- `error_range` analoger Rohwert ausserhalb des gueltigen ADC-Bereichs
+- `error_not_connected` Sensorleitung ist vermutlich abgezogen/floating
+
+Truebungssensor Statuswerte:
+- `ok` analoger Rohwert ist gueltig (0..1023)
+- `error_range` analoger Rohwert ausserhalb des gueltigen ADC-Bereichs
+- `error_not_connected` Sensorleitung ist vermutlich abgezogen/floating
+
+TDS-Sensor Statuswerte:
+- `ok` analoger Rohwert ist gueltig (0..1023)
+- `error_range` analoger Rohwert ausserhalb des gueltigen ADC-Bereichs
+- `error_not_connected` Sensorleitung ist vermutlich abgezogen/floating
+
+RFID Statuswerte:
+- `ok` gueltige UID gelesen
+- `no_card` kein RFID Chip praesent
+- `probe_error` Reader-Probe fehlgeschlagen (z. B. Signal-/SPI-Problem)
+- `read_error` Lesen fehlgeschlagen
+- `uid_truncated` UID zu lang fuer Payload-Buffer
+
+RFID Hardwarestatus (`rfid_hw_status`):
+- `ok` RC522 Modul antwortet
+- `error_not_detected` RC522 Modul nicht erkannt
+- `error_not_initialized` RC522 noch nicht initialisiert
+
+RFID Diagnose:
+- `rfid_probe_status` letzte REQA/WUPA Probe (`STATUS_OK`, `STATUS_TIMEOUT`, ...)
+- `rfid_version_reg` Inhalt von `VersionReg` (typisch `0x91` oder `0x92`)
+
+Schrittmotor Statuswerte:
+- `idle` aktuell kein Bewegungsauftrag aktiv
+- `running` Bewegungsauftrag laeuft
+- Command-ACK Status (type=stepper): z. B. `ok`, `busy`, `invalid_duration`, `invalid_degree`
+
+## Projektstruktur (wichtige Dateien)
+- `arduino/mega/`
+  - `mega.ino` Sketch-Root mit `setup()`/`loop()`
+  - `mega_gemeinsam.h` gemeinsame Typen/Prototypen
+  - `mega_gemeinsam.cpp` gemeinsame Definitionen
+  - `daten.cpp` Implementierung Serial1-Protokoll
+  - `aktoren.cpp` Implementierung Aktoren
+  - `sensoren.cpp` Sensor-Fassade/Orchestrierung
+  - `sensor_hcsr04.cpp` HC-SR04 Modul
+  - `sensor_tropfen.cpp` Tropfensensor Modul
+  - `sensor_truebung.cpp` Truebungssensor Modul
+  - `sensor_tds.cpp` TDS-Sensor Modul
+  - `sensor_rfid.cpp` RFID RC522 Modul
+  - `schrittmotor.cpp` TB6600 Schrittmotor Modul
+  - `PINOUT.md` Quelle der Wahrheit fuer Pins
+- `nodered/flows/`
+  - `dashboard_flow.json` UI + Sensoranzeigen + Parametrierung
+  - `Network.json` Netzwerk-Tab
+  - `data_exchange_flow.json` Datenaustausch mit Arduino
+  - `fn_parameters_flow.json` Parameter-Logik (HC-SR04 + Tropfensensor + Truebungssensor + TDS-Sensor Offset + Relaissteuerung + Stepper-Befehle)
+  - `fn_profiles_flow.json` RFID-Profillogik (Anlernen + Profilzuweisung)
+  - `components.yaml` logische Komponentenreferenzen
+  - `deploy_flows.sh` Skript zur Flow-Bereitstellung (POST /flows)
+  - `DEPLOYMENT_GUIDE.md` Bereitstellungsdokumentation
+- `scripts/arduino_build.sh` lokaler Build via Arduino CLI
+- `.github/instructions/Anweisungen.instructions.md` Arbeitsregeln
+- `LOGBOOK.md` Arbeitslog (nur nach expliziter Aufforderung aktualisieren)
+
+## Arduino IDE
+- Oeffne `arduino/mega/mega.ino`.
+- Die `.cpp/.h` Dateien werden automatisch mitgebaut.
+
+## Arduino-Bibliotheken
+- Fuer RFID RC522 wird die Bibliothek `MFRC522` benoetigt (Library Manager oder Arduino CLI).
+
+## Build (Arduino CLI)
+- Kompilieren (Mega 2560):
+  - `bin/arduino-cli compile --fqbn arduino:avr:mega arduino/mega`
+  - oder: `./scripts/arduino_build.sh` (installiert den Core automatisch, falls noetig)
+
+## Auto-Upload bei Dateiaenderung (Pi -> USB)
+- Fuer "Speichern -> direkt flashen" nutze:
+  - `./scripts/arduino_watch_upload.sh`
+- Optional mit festem Port:
+  - `ARDUINO_PORT=/dev/ttyACM0 ./scripts/arduino_watch_upload.sh`
+- Nur einmal bauen + flashen (ohne Watch):
+  - `./scripts/arduino_watch_upload.sh --once`
+
+Hinweise:
+- Das Skript beobachtet `arduino/mega` auf `*.ino`, `*.cpp`, `*.c`, `*.h`, `*.hpp`.
+- Bei jeder Aenderung: Kompilieren via `scripts/arduino_build.sh`, danach Upload via `arduino-cli upload`.
+- Falls `arduino-cli` fehlt, wird es automatisch lokal nach `./bin/arduino-cli` installiert.
+- Mit `inotifywait` reagiert es sofort, sonst nutzt es Polling als Fallback.
+
+## Bereitstellung (Node-RED auf dem Pi)
+- Fuer ein Komplett-Update auf der Pi reicht im Projektverzeichnis der Befehl:
+  - `update`
+- Manuell alternativ:
+  1. `cd ~/.node-red` (falls das deine Projektwurzel ist), dann `git pull`
+  2. `./scripts/arduino_watch_upload.sh --once`
+  3. `./nodered/flows/deploy_flows.sh`
+
+## Parametrierung (Dashboard)
+- Im Tab `Projekt-Parametrierung` gibt es einen Slider `HC-SR04 Korrektur (cm)` mit Bereich `-5 .. +5`.
+- Es gibt zusaetzlich einen Slider `Tropfensensor Offset (raw)` mit Bereich `-300 .. +300`.
+- Es gibt zusaetzlich einen Slider `Truebungssensor Offset (raw)` mit Bereich `-200 .. +200`.
+- Es gibt zusaetzlich einen Slider `TDS-Sensor Offset (raw)` mit Bereich `-300 .. +300`.
+- Im Tab `Projekt-Parametrierung` gibt es zusaetzlich 4 Relais-Buttons:
+  - `Relais 1 (Pumpe)` schaltet D22
+  - `Relais 2 (Reserve)` schaltet D23
+  - `Relais 3 (Reserve)` schaltet D24
+  - `Relais 4 (Reserve)` schaltet D25
+- Zusaetzlich gibt es zwei Schrittmotor-Buttons:
+  - `Schrittmotor 5s` sendet `STEPPER_5S`
+  - `Schrittmotor +120 Grad` sendet `STEPPER_120`
+- Die Offsets werden in `fn_parameters_flow.json` gespeichert (`global.hcsr04_offset_cm`, `global.droplet_offset_raw`, `global.turbidity_offset_raw`, `global.tds_offset_raw`).
+- Die Anzeigen nutzen die korrigierten Werte `hcsr04_distance_display_cm`, `droplet_display_raw`, `turbidity_display_raw` und `tds_display_raw`.
+
+## Profilsteuerung (Dashboard-Tab `Profile`)
+- Im Tab `Profile` gibt es drei Schaltflaechen:
+  - `Lesen` (sendet `RFID_READ`)
+  - `Profil 1 anlernen/loeschen` (sendet `RFID_LEARN_P1`)
+  - `Profil 2 anlernen/loeschen` (sendet `RFID_LEARN_P2`)
+- Es werden genau zwei UID-Slots gepflegt:
+  - UID in Slot 1 -> `Profil 1`
+  - UID in Slot 2 -> `Profil 2`
+- Wenn ein Profil bereits belegt ist, loescht der jeweilige Profil-Button die Bindung.
+- Bereits bekannte Chips aktivieren direkt ihr hinterlegtes Profil.
+- Die erkannte UID, das aktive Profil und der RFID Modulstatus werden live angezeigt.
+- Im Tab `Projekt-info` unter `Status / Sensoren` werden zusaetzlich `RFID RC522 Status`, `Tropfensensor Status`, `Truebungssensor Status`, `TDS-Sensor Status`, `Schrittmotor Position (Grad)` und die 4 Relais-Zustaende (`ON`/`OFF`) angezeigt.
+
+## Naechste Schritte (wenn Sensoren/Aktoren bekannt sind)
+- Weitere Sensoren als eigenes `sensor_<name>.cpp` ergaenzen und in `sensoren.cpp` anbinden.
+- `AKTOR_PINS` und UI-Buttons bei Bedarf erweitern.
+- Baudrate ggf. anpassen.

@@ -1,0 +1,239 @@
+[
+    {
+        "id":  "flow_fn_parameters",
+        "type":  "tab",
+        "label":  "Funktion - Parameter",
+        "disabled":  false,
+        "info":  "Verwaltet Dashboard-Parameter und berechnet abgeleitete Sensorwerte"
+    },
+    {
+        "id":  "inject_param_offset_init",
+        "type":  "inject",
+        "z":  "flow_fn_parameters",
+        "name":  "Offset initialisieren (Boot)",
+        "props":  [
+                      {
+                          "p":  "payload"
+                      }
+                  ],
+        "repeat":  "",
+        "crontab":  "",
+        "once":  true,
+        "onceDelay":  "1",
+        "topic":  "",
+        "payload":  "INIT_OFFSET",
+        "payloadType":  "str",
+        "x":  220,
+        "y":  80,
+        "wires":  [
+                      [
+                          "fn_param_default_offset",
+                          "fn_relay_controller"
+                      ]
+                  ]
+    },
+    {
+        "id":  "fn_param_default_offset",
+        "type":  "function",
+        "z":  "flow_fn_parameters",
+        "name":  "Standard-Offset setzen",
+        "func":  "const clampInt = (value, min, max) =\u003e Math.max(min, Math.min(max, Math.round(value)));\n\nconst currentHcsr04 = Number(global.get(\"hcsr04_offset_cm\"));\nconst currentDroplet = Number(global.get(\"droplet_offset_raw\"));\nconst currentTurbidity = Number(global.get(\"turbidity_offset_raw\"));\nconst currentTds = Number(global.get(\"tds_offset_raw\"));\n\nconst hcsr04Offset = clampInt(Number.isFinite(currentHcsr04) ? currentHcsr04 : 0, -5, 5);\nconst dropletOffset = clampInt(Number.isFinite(currentDroplet) ? currentDroplet : 0, -300, 300);\nconst turbidityOffset = clampInt(Number.isFinite(currentTurbidity) ? currentTurbidity : 0, -200, 200);\nconst tdsOffset = clampInt(Number.isFinite(currentTds) ? currentTds : 0, -300, 300);\n\nglobal.set(\"hcsr04_offset_cm\", hcsr04Offset);\nglobal.set(\"droplet_offset_raw\", dropletOffset);\nglobal.set(\"turbidity_offset_raw\", turbidityOffset);\nglobal.set(\"tds_offset_raw\", tdsOffset);\n\nmsg.payload = {\n  hcsr04_offset_cm: hcsr04Offset,\n  droplet_offset_raw: dropletOffset,\n  turbidity_offset_raw: turbidityOffset,\n  tds_offset_raw: tdsOffset\n};\nreturn msg;",
+        "outputs":  1,
+        "noerr":  0,
+        "initialize":  "",
+        "finalize":  "",
+        "libs":  [
+
+                 ],
+        "x":  480,
+        "y":  80,
+        "wires":  [
+                      [
+                          "link_out_parameters_state"
+                      ]
+                  ]
+    },
+    {
+        "id":  "link_in_from_dashboard_parameters",
+        "type":  "link in",
+        "z":  "flow_fn_parameters",
+        "name":  "vom Dashboard \\(Parameter\\)",
+        "links":  [
+                      "b8c0e9d3f4a15412"
+                  ],
+        "x":  220,
+        "y":  160,
+        "wires":  [
+                      [
+                          "fn_parameters_set_offset",
+                          "fn_relay_controller",
+                          "fn_stepper_controller"
+                      ]
+                  ]
+    },
+    {
+        "id":  "fn_parameters_set_offset",
+        "type":  "function",
+        "z":  "flow_fn_parameters",
+        "name":  "Offset speichern",
+        "func":  "const clampInt = (value, min, max) =\u003e Math.max(min, Math.min(max, Math.round(value)));\n\nconst key = String(msg.topic || \"hcsr04_offset_cm\");\nconst raw = Number(msg.payload);\nif (!Number.isFinite(raw)) {\n  return null;\n}\n\nif (key === \"hcsr04_offset_cm\") {\n  global.set(\"hcsr04_offset_cm\", clampInt(raw, -5, 5));\n} else if (key === \"droplet_offset_raw\") {\n  global.set(\"droplet_offset_raw\", clampInt(raw, -300, 300));\n} else if (key === \"turbidity_offset_raw\") {\n  global.set(\"turbidity_offset_raw\", clampInt(raw, -200, 200));\n} else if (key === \"tds_offset_raw\") {\n  global.set(\"tds_offset_raw\", clampInt(raw, -300, 300));\n} else {\n  return null;\n}\n\nconst currentHcsr04 = Number(global.get(\"hcsr04_offset_cm\"));\nconst currentDroplet = Number(global.get(\"droplet_offset_raw\"));\nconst currentTurbidity = Number(global.get(\"turbidity_offset_raw\"));\nconst currentTds = Number(global.get(\"tds_offset_raw\"));\n\nconst hcsr04Offset = clampInt(Number.isFinite(currentHcsr04) ? currentHcsr04 : 0, -5, 5);\nconst dropletOffset = clampInt(Number.isFinite(currentDroplet) ? currentDroplet : 0, -300, 300);\nconst turbidityOffset = clampInt(Number.isFinite(currentTurbidity) ? currentTurbidity : 0, -200, 200);\nconst tdsOffset = clampInt(Number.isFinite(currentTds) ? currentTds : 0, -300, 300);\n\nglobal.set(\"hcsr04_offset_cm\", hcsr04Offset);\nglobal.set(\"droplet_offset_raw\", dropletOffset);\nglobal.set(\"turbidity_offset_raw\", turbidityOffset);\nglobal.set(\"tds_offset_raw\", tdsOffset);\n\nmsg.payload = {\n  hcsr04_offset_cm: hcsr04Offset,\n  droplet_offset_raw: dropletOffset,\n  turbidity_offset_raw: turbidityOffset,\n  tds_offset_raw: tdsOffset\n};\nreturn msg;",
+        "outputs":  1,
+        "noerr":  0,
+        "initialize":  "",
+        "finalize":  "",
+        "libs":  [
+
+                 ],
+        "x":  470,
+        "y":  160,
+        "wires":  [
+                      [
+                          "link_out_parameters_state"
+                      ]
+                  ]
+    },
+    {
+        "id":  "link_out_parameters_state",
+        "type":  "link out",
+        "z":  "flow_fn_parameters",
+        "name":  "zum Dashboard (Parameterstatus)",
+        "mode":  "link",
+        "links":  [
+                      "8f6abcf84d0f4e29"
+                  ],
+        "x":  740,
+        "y":  120,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "link_in_from_data_parameters",
+        "type":  "link in",
+        "z":  "flow_fn_parameters",
+        "name":  "aus Datenaustausch (sensors)",
+        "links":  [
+                      "link_out_from_data"
+                  ],
+        "x":  220,
+        "y":  260,
+        "wires":  [
+                      [
+                          "fn_parameters_apply_offset",
+                          "fn_relay_controller"
+                      ]
+                  ]
+    },
+    {
+        "id":  "fn_parameters_apply_offset",
+        "type":  "function",
+        "z":  "flow_fn_parameters",
+        "name":  "Offset auf Distanz anwenden",
+        "func":  "const p = msg.payload || {};\nif (String(p.type || \"\") !== \"sensor\") {\n  return null;\n}\n\nconst clampInt = (value, min, max) =\u003e Math.max(min, Math.min(max, Math.round(value)));\n\nlet hcsr04Offset = Number(global.get(\"hcsr04_offset_cm\"));\nif (!Number.isFinite(hcsr04Offset)) {\n  hcsr04Offset = 0;\n}\nhcsr04Offset = clampInt(hcsr04Offset, -5, 5);\np.hcsr04_offset_cm = hcsr04Offset;\n\nlet dropletOffset = Number(global.get(\"droplet_offset_raw\"));\nif (!Number.isFinite(dropletOffset)) {\n  dropletOffset = 0;\n}\ndropletOffset = clampInt(dropletOffset, -300, 300);\np.droplet_offset_raw = dropletOffset;\n\nlet turbidityOffset = Number(global.get(\"turbidity_offset_raw\"));\nif (!Number.isFinite(turbidityOffset)) {\n  turbidityOffset = 0;\n}\nturbidityOffset = clampInt(turbidityOffset, -200, 200);\np.turbidity_offset_raw = turbidityOffset;\n\nlet tdsOffset = Number(global.get(\"tds_offset_raw\"));\nif (!Number.isFinite(tdsOffset)) {\n  tdsOffset = 0;\n}\ntdsOffset = clampInt(tdsOffset, -300, 300);\np.tds_offset_raw = tdsOffset;\n\nconst hcsr04Raw = Number(p.hcsr04_distance_cm);\nconst hcsr04Status = String(p.hcsr04_status || \"missing\");\nif (hcsr04Status === \"ok\" \u0026\u0026 Number.isFinite(hcsr04Raw)) {\n  p.hcsr04_distance_display_cm = hcsr04Raw + hcsr04Offset;\n} else {\n  p.hcsr04_distance_display_cm = p.hcsr04_distance_cm;\n}\n\nconst dropletRaw = Number(p.droplet_raw);\nconst dropletStatus = String(p.droplet_status || \"missing\");\nif (dropletStatus === \"ok\" \u0026\u0026 Number.isFinite(dropletRaw)) {\n  p.droplet_display_raw = clampInt(dropletRaw + dropletOffset, 0, 1023);\n} else {\n  p.droplet_display_raw = p.droplet_raw;\n}\n\nconst turbidityRaw = Number(p.turbidity_raw);\nconst turbidityStatus = String(p.turbidity_status || \"missing\");\nif (turbidityStatus === \"ok\" \u0026\u0026 Number.isFinite(turbidityRaw)) {\n  p.turbidity_display_raw = clampInt(turbidityRaw + turbidityOffset, 0, 1023);\n} else {\n  p.turbidity_display_raw = p.turbidity_raw;\n}\n\nconst tdsRaw = Number(p.tds_raw);\nconst tdsStatus = String(p.tds_status || \"missing\");\nif (tdsStatus === \"ok\" \u0026\u0026 Number.isFinite(tdsRaw)) {\n  p.tds_display_raw = clampInt(tdsRaw + tdsOffset, 0, 1023);\n} else {\n  p.tds_display_raw = p.tds_raw;\n}\n\nmsg.payload = p;\nreturn msg;",
+        "outputs":  1,
+        "noerr":  0,
+        "initialize":  "",
+        "finalize":  "",
+        "libs":  [
+
+                 ],
+        "x":  500,
+        "y":  260,
+        "wires":  [
+                      [
+                          "link_out_parameters_to_dashboard"
+                      ]
+                  ]
+    },
+    {
+        "id":  "link_out_parameters_to_dashboard",
+        "type":  "link out",
+        "z":  "flow_fn_parameters",
+        "name":  "zum Dashboard (Sensorwerte)",
+        "mode":  "link",
+        "links":  [
+                      "2a616d8b76b4fe2c"
+                  ],
+        "x":  760,
+        "y":  260,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "fn_relay_controller",
+        "type":  "function",
+        "z":  "flow_fn_parameters",
+        "name":  "Relaissteuerung",
+        "func":  "const RELAY_PINS = [22, 23, 24, 25];\n\nconst ensureRelayState = () =\u003e {\n  const current = flow.get(\"relay_state\") || {};\n  const normalized = {};\n  for (const pin of RELAY_PINS) {\n    normalized[String(pin)] = Number(current[String(pin)]) === 1 ? 1 : 0;\n  }\n  flow.set(\"relay_state\", normalized);\n  return normalized;\n};\n\nconst buildUiPayload = (state) =\u003e ({\n  relay1_state_text: state[\"22\"] ? \"ON\" : \"OFF\",\n  relay2_state_text: state[\"23\"] ? \"ON\" : \"OFF\",\n  relay3_state_text: state[\"24\"] ? \"ON\" : \"OFF\",\n  relay4_state_text: state[\"25\"] ? \"ON\" : \"OFF\"\n});\n\nconst state = ensureRelayState();\n\nif (String(msg.payload || \"\") === \"INIT_OFFSET\") {\n  return [null, { payload: buildUiPayload(state) }];\n}\n\nif (String(msg.topic || \"\") === \"relay_toggle\") {\n  const pin = Number(msg.payload);\n  if (!RELAY_PINS.includes(pin)) {\n    return null;\n  }\n\n  const key = String(pin);\n  const nextState = state[key] === 1 ? 0 : 1;\n  msg.payload = `ACT,${pin},${nextState}`;\n  msg.topic = \"\";\n  return [msg, null];\n}\n\nconst p = msg.payload || {};\nif (String(p.type || \"\") !== \"act\") {\n  return null;\n}\n\nconst pin = Number(p.pin);\nif (!RELAY_PINS.includes(pin)) {\n  return null;\n}\n\nif (Number(p.ok) === 1) {\n  state[String(pin)] = Number(p.state) === 1 ? 1 : 0;\n  flow.set(\"relay_state\", state);\n}\n\nreturn [null, { payload: buildUiPayload(state) }];",
+        "outputs":  2,
+        "noerr":  0,
+        "initialize":  "",
+        "finalize":  "",
+        "libs":  [
+
+                 ],
+        "x":  490,
+        "y":  360,
+        "wires":  [
+                      [
+                          "link_out_parameters_to_data"
+                      ],
+                      [
+                          "link_out_relays_to_dashboard"
+                      ]
+                  ]
+    },
+    {
+        "id":  "fn_stepper_controller",
+        "type":  "function",
+        "z":  "flow_fn_parameters",
+        "name":  "Schrittmotorsteuerung",
+        "func":  "if (String(msg.topic || \"\") !== \"stepper_action\") {\n  return null;\n}\n\nconst action = String(msg.payload || \"\");\nif (action === \"run_5s\") {\n  msg.payload = \"STEPPER_5S\";\n} else if (action === \"rotate_120\") {\n  msg.payload = \"STEPPER_120\";\n} else {\n  return null;\n}\n\nmsg.topic = \"\";\nreturn msg;",
+        "outputs":  1,
+        "noerr":  0,
+        "initialize":  "",
+        "finalize":  "",
+        "libs":  [
+
+                 ],
+        "x":  490,
+        "y":  420,
+        "wires":  [
+                      [
+                          "link_out_parameters_to_data"
+                      ]
+                  ]
+    },
+    {
+        "id":  "link_out_parameters_to_data",
+        "type":  "link out",
+        "z":  "flow_fn_parameters",
+        "name":  "zu Datenaustausch (act/stepper cmd)",
+        "mode":  "link",
+        "links":  [
+                      "link_in_from_dashboard"
+                  ],
+        "x":  760,
+        "y":  340,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "link_out_relays_to_dashboard",
+        "type":  "link out",
+        "z":  "flow_fn_parameters",
+        "name":  "zum Dashboard (Relaiszustaende)",
+        "mode":  "link",
+        "links":  [
+                      "link_in_relays_from_parameters"
+                  ],
+        "x":  770,
+        "y":  380,
+        "wires":  [
+
+                  ]
+    }
+]
+

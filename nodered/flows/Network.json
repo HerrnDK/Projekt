@@ -1,0 +1,1016 @@
+[
+    {
+        "id":  "1b074246b0334c05",
+        "type":  "tab",
+        "label":  "Netzwerkverbindung",
+        "disabled":  false,
+        "info":  "WLAN Verbindung + StatusprÃ¼fung (ausgelagert)"
+    },
+    {
+        "id":  "080faa24e0dac224",
+        "type":  "ui_template",
+        "z":  "1b074246b0334c05",
+        "group":  "1b4dd4e879ccb455",
+        "name":  "QR Anmeldung - Alt \\(ausgeblendet\\)",
+        "order":  2,
+        "width":  0,
+        "height":  0,
+        "format":  "\u003cdiv\u003e\u003c/div\u003e",
+        "storeOutMessages":  false,
+        "fwdInMessages":  true,
+        "resendOnRefresh":  true,
+        "templateScope":  "local",
+        "x":  1280,
+        "y":  210,
+        "wires":  [
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "72b27a8d1b2172ad",
+        "type":  "ui_ui_control",
+        "z":  "1b074246b0334c05",
+        "name":  "UI Navigation",
+        "events":  "none",
+        "x":  2060,
+        "y":  450,
+        "wires":  [
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "58697ef08e1da41e",
+        "type":  "ui_toast",
+        "z":  "1b074246b0334c05",
+        "position":  "top right",
+        "displayTime":  "12",
+        "topic":  "Hinweis",
+        "name":  "Hinweis/Fehler",
+        "x":  2060,
+        "y":  520,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "981f5b53b03dea16",
+        "type":  "inject",
+        "z":  "1b074246b0334c05",
+        "name":  "Netzstatus-Abfrage (1 s)",
+        "props":  [
+
+                  ],
+        "repeat":  "1",
+        "once":  true,
+        "onceDelay":  "0.5",
+        "topic":  "",
+        "x":  120,
+        "y":  80,
+        "wires":  [
+                      [
+                          "b52f203bb0efcdaf"
+                      ]
+                  ]
+    },
+    {
+        "id":  "b52f203bb0efcdaf",
+        "type":  "exec",
+        "z":  "1b074246b0334c05",
+        "command":  "nmcli -t -f DEVICE,TYPE,STATE,CONNECTION device status",
+        "name":  "nmcli device status",
+        "x":  330,
+        "y":  80,
+        "wires":  [
+                      [
+                          "67b0ccf7efcdf30a"
+                      ],
+                      [
+
+                      ],
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "67b0ccf7efcdf30a",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "Netzstatus auswerten + QR Ziel bestimmen",
+        "func":  "const txt = (msg.payload || \"\").toString();\nconst lines = txt.split(/\\r?\\n/).filter(l =\u003e l.trim().length);\nlet wlanState = \"unknown\"; let wlanConn = \"\";\nfor (const l of lines) {\n  const parts = l.split(\":\");\n  const dev = parts[0];\n  const state = parts[2];\n  const con = parts.slice(3).join(\":\");\n  if (dev === \"wlan0\") { wlanState = state; wlanConn = con; }\n}\nconst isConnected = (s) =\u003e {\n  if (!s) return false;\n  return s === \"connected\" || s === \"verbunden\" || s.startsWith(\"connected\") || s.startsWith(\"verbunden\");\n};\nconst apActive = (isConnected(wlanState) \u0026\u0026 wlanConn === \"projekt-ap\");\nconst wifiConnected = (isConnected(wlanState) \u0026\u0026 wlanConn \u0026\u0026 wlanConn !== \"projekt-ap\");\nflow.set(\"apActive\", apActive);\nflow.set(\"wifiConnected\", wifiConnected);\nflow.set(\"wlanConn\", wlanConn);\nlet statusText;\nif (wifiConnected) statusText = `WLAN verbunden (${wlanConn}). Projekt Dashboard aktiv.`;\nelse if (apActive) statusText = \"Access Point aktiv (Projekt-Setup). Bitte WLAN einrichten. Passwort: 1234568\";\nelse statusText = \"Kein WLAN verbunden.\";\nreturn [ { payload: statusText }, { payload: true } ];",
+        "outputs":  2,
+        "x":  580,
+        "y":  80,
+        "wires":  [
+                      [
+                          "7e3a8a709a4fb946",
+                          "f3e0d2d5b9e3fe7e"
+                      ],
+                      [
+                          "76498935c821c2c8",
+                          "a4d7f6e3c8b91234",
+                          "e1f2a3b4c5d60718"
+                      ]
+                  ]
+    },
+    {
+        "id":  "8520ceb726888ed7",
+        "type":  "exec",
+        "z":  "1b074246b0334c05",
+        "command":  "/usr/bin/qrencode",
+        "addpay":  true,
+        "append":  "-t SVG -o -",
+        "name":  "QR erzeugen (Anmeldung)",
+        "x":  820,
+        "y":  200,
+        "wires":  [
+                      [
+                          "8dab6698f54beec2"
+                      ],
+                      [
+                          "8dab6698f54beec2"
+                      ],
+                      [
+
+                      ]
+                  ],
+        "useSpawn":  "true"
+    },
+    {
+        "id":  "8dab6698f54beec2",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "SVG -\u003e DataURL + Willkommensmodell",
+        "func":  "const topic = (msg.topic || \u0027\u0027).toString();\nconst hint = (msg.qrHint || \u0027\u0027).toString();\nconst out = (msg.payload || \u0027\u0027).toString();\nconst idx = out.indexOf(\u0027\u003csvg\u0027);\nlet dataUrl = \u0027\u0027;\nif (idx \u003e= 0) {\n  const svg = out.slice(idx).trim();\n  const enc = encodeURIComponent(svg).replace(/\u0027/g, \u0027%27\u0027).replace(/\\\"/g, \u0027%22\u0027);\n  dataUrl = `data:image/svg+xml;charset=utf-8,${enc}`;\n}\nconst store = flow.get(\u0027qrStore\u0027) || {};\nif (topic) {\n  store[topic] = { qrDataUrl: dataUrl, qrHint: hint };\n  flow.set(\u0027qrStore\u0027, store);\n}\nconst host = (flow.get(\u0027dashboardHost\u0027) || \u002710.42.0.1\u0027).toString().trim() || \u002710.42.0.1\u0027;\nconst dashboardUrl = `http://${host}:1880/ui/#!/1`;\nconst wifiConnected = flow.get(\u0027wifiConnected\u0027) === true;\nif (wifiConnected) {\n  const dash = store.dashboard || { qrDataUrl: dataUrl, qrHint: `Dashboard: ${dashboardUrl}` };\n  msg.payload = {\n    mode: \u0027dashboard\u0027,\n    cards: [\n      {\n        title: \u0027Dashboard Zugriff\u0027,\n        qrDataUrl: dash.qrDataUrl,\n        qrHint: dash.qrHint || `Dashboard: ${dashboardUrl}`\n      }\n    ]\n  };\n  return msg;\n}\nconst ap = store.ap || { qrDataUrl: \u0027\u0027, qrHint: \u0027WLAN: projekt-ap\u0027 };\nconst login = store.login || { qrDataUrl: \u0027\u0027, qrHint: \u0027Anmeldemaske\u0027 };\nmsg.payload = {\n  mode: \u0027setup\u0027,\n  cards: [\n    { title: \u0027AP verbinden\u0027, qrDataUrl: ap.qrDataUrl, qrHint: ap.qrHint || \u0027WLAN: projekt-ap\u0027 },\n    { title: \u0027Anmeldemaske\u0027, qrDataUrl: login.qrDataUrl, qrHint: login.qrHint || \u0027Anmeldemaske\u0027 }\n  ]\n};\nreturn msg;",
+        "outputs":  1,
+        "x":  1050,
+        "y":  175,
+        "wires":  [
+                      [
+                          "d7e8f9a0b1c2d3e4"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ecf0a293a33345bb",
+        "type":  "ui_dropdown",
+        "z":  "1b074246b0334c05",
+        "name":  "SSID Auswahl",
+        "label":  "WLAN Netzwerk",
+        "place":  "WLAN auswÃ¤hlen",
+        "group":  "6888e5abb8efb54d",
+        "order":  1,
+        "width":  14,
+        "height":  1,
+        "passthru":  true,
+        "multiple":  false,
+        "options":  [
+
+                    ],
+        "payload":  "",
+        "topic":  "ssid",
+        "topicType":  "str",
+        "x":  820,
+        "y":  280,
+        "wires":  [
+                      [
+                          "8cad023f93c60c7b"
+                      ]
+                  ]
+    },
+    {
+        "id":  "8cad023f93c60c7b",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "SSID merken",
+        "func":  "flow.set(\"selectedSsid\", msg.payload);\nreturn null;",
+        "outputs":  0,
+        "x":  1040,
+        "y":  300,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "3f09ba48c578bbfb",
+        "type":  "ui_text_input",
+        "z":  "1b074246b0334c05",
+        "name":  "WLAN Passwort",
+        "label":  "Passwort",
+        "group":  "6888e5abb8efb54d",
+        "order":  2,
+        "width":  14,
+        "height":  1,
+        "passthru":  true,
+        "mode":  "password",
+        "delay":  "0.3",
+        "topic":  "wifipw",
+        "topicType":  "str",
+        "x":  120,
+        "y":  380,
+        "wires":  [
+                      [
+                          "76d1a22c4e1fa5f9"
+                      ]
+                  ]
+    },
+    {
+        "id":  "76d1a22c4e1fa5f9",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "Passwort merken",
+        "func":  "const pw = (msg.payload || \"\").toString();\n// WPA2-PSK requires at least 8 characters; ignore empty/short updates\nif (pw \u0026\u0026 pw.length \u003e= 8) {\n  flow.set(\"wifiPassword\", pw);\n}\nreturn null;",
+        "outputs":  0,
+        "x":  330,
+        "y":  400,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "8dd601ce12051b76",
+        "type":  "ui_button",
+        "z":  "1b074246b0334c05",
+        "name":  "Netzwerke neu laden",
+        "group":  "6888e5abb8efb54d",
+        "order":  6,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Netzwerke neu laden",
+        "icon":  "refresh",
+        "payload":  "scan",
+        "payloadType":  "str",
+        "topic":  "cmd",
+        "topicType":  "str",
+        "x":  120,
+        "y":  280,
+        "wires":  [
+                      [
+                          "75dc3322e85fa3e0"
+                      ]
+                  ]
+    },
+    {
+        "id":  "75dc3322e85fa3e0",
+        "type":  "exec",
+        "z":  "1b074246b0334c05",
+        "command":  "nmcli -t -f SSID device wifi list ifname wlan0 --rescan yes",
+        "addpay":  false,
+        "append":  "",
+        "useSpawn":  "false",
+        "timer":  "",
+        "winHide":  true,
+        "name":  "WLAN Suche (SSID Liste)",
+        "x":  330,
+        "y":  300,
+        "wires":  [
+                      [
+                          "05522df437e8813a"
+                      ],
+                      [
+                          "5f5553a269048ff7"
+                      ],
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "05522df437e8813a",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "SSID Liste -\u003e Dropdown (Strings)",
+        "func":  "const txt = (msg.payload || \"\").toString();\nconst lines = txt.split(/\\r?\\n/).map(l =\u003e l.trim()).filter(Boolean);\nlet ssids = [];\nlet seen = new Set();\nfor (const ssid of lines) { if (!ssid) continue; if (seen.has(ssid)) continue; seen.add(ssid); ssids.push(ssid); }\nssids.sort((a,b) =\u003e a.localeCompare(b, \"de\"));\nmsg.options = ssids; msg.payload = ssids.length ? ssids[0] : \"\"; if (msg.payload) flow.set(\"selectedSsid\", msg.payload); return msg;",
+        "outputs":  1,
+        "x":  580,
+        "y":  300,
+        "wires":  [
+                      [
+                          "ecf0a293a33345bb"
+                      ]
+                  ]
+    },
+    {
+        "id":  "8bf2e73bf1f7f8ea",
+        "type":  "ui_button",
+        "z":  "1b074246b0334c05",
+        "name":  "Verbinden",
+        "group":  "6888e5abb8efb54d",
+        "order":  4,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Verbinden",
+        "icon":  "check",
+        "payload":  "connect",
+        "payloadType":  "str",
+        "topic":  "cmd",
+        "topicType":  "str",
+        "x":  120,
+        "y":  470,
+        "wires":  [
+                      [
+                          "cf92ad487706a01f"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ea0e7a991cc04ba3",
+        "type":  "ui_dropdown",
+        "z":  "1b074246b0334c05",
+        "name":  "SSID Auswahl \\(Mobil\\)",
+        "label":  "WLAN Netzwerk",
+        "place":  "WLAN auswÃ¤hlen",
+        "group":  "18e42aa468913fd1",
+        "order":  1,
+        "width":  10,
+        "height":  1,
+        "passthru":  true,
+        "multiple":  false,
+        "options":  [
+
+                    ],
+        "payload":  "",
+        "topic":  "ssid",
+        "topicType":  "str",
+        "x":  820,
+        "y":  320,
+        "wires":  [
+                      [
+                          "8cad023f93c60c7b"
+                      ]
+                  ]
+    },
+    {
+        "id":  "949192b053b434ab",
+        "type":  "ui_text_input",
+        "z":  "1b074246b0334c05",
+        "name":  "WLAN Passwort \\(Mobil\\)",
+        "label":  "Passwort",
+        "group":  "18e42aa468913fd1",
+        "order":  2,
+        "width":  10,
+        "height":  1,
+        "passthru":  true,
+        "mode":  "password",
+        "delay":  "0.3",
+        "topic":  "wifipw",
+        "topicType":  "str",
+        "x":  120,
+        "y":  420,
+        "wires":  [
+                      [
+                          "76d1a22c4e1fa5f9"
+                      ]
+                  ]
+    },
+    {
+        "id":  "19747b1e4d1db4db",
+        "type":  "ui_button",
+        "z":  "1b074246b0334c05",
+        "name":  "Netzwerke neu laden \\(Mobil\\)",
+        "group":  "18e42aa468913fd1",
+        "order":  6,
+        "width":  5,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Netzwerke neu laden",
+        "icon":  "refresh",
+        "payload":  "scan",
+        "payloadType":  "str",
+        "topic":  "cmd",
+        "topicType":  "str",
+        "x":  120,
+        "y":  320,
+        "wires":  [
+                      [
+                          "75dc3322e85fa3e0"
+                      ]
+                  ]
+    },
+    {
+        "id":  "6803eebdffe6afe1",
+        "type":  "ui_button",
+        "z":  "1b074246b0334c05",
+        "name":  "Verbinden \\(Mobil\\)",
+        "group":  "18e42aa468913fd1",
+        "order":  4,
+        "width":  5,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Verbinden",
+        "icon":  "check",
+        "payload":  "connect",
+        "payloadType":  "str",
+        "topic":  "cmd",
+        "topicType":  "str",
+        "x":  120,
+        "y":  510,
+        "wires":  [
+                      [
+                          "cf92ad487706a01f"
+                      ]
+                  ]
+    },
+    {
+        "id":  "bfb23c18fc3e1340",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "Verbinden Kommando (nmcli)",
+        "func":  "const ssid = (flow.get(\"selectedSsid\") || \"\").toString();\nconst pw = (flow.get(\"wifiPassword\") || \"\").toString();\nif (!ssid) return [null, { payload: \"FEHLER: Bitte zuerst ein WLAN auswÃ¤hlen.\" }];\nif (!pw) return [null, { payload: \"FEHLER: Bitte ein WLAN Passwort eingeben.\" }];\nconst esc = (s) =\u003e s.replace(/[\"\\\\$`]/g, \"\\\\$\u0026\");\nconst s = esc(ssid);\nconst p = esc(pw);\nmsg.apDownCmd = `con down \"projekt-ap\"`;\nmsg.deleteCmd = `connection delete \"${s}\"`;\nmsg.connectCmd = `-w 20 dev wifi connect \"${s}\" password \"${p}\" ifname wlan0`;\nmsg.payload = msg.apDownCmd;\nreturn [ msg, null ];",
+        "outputs":  2,
+        "x":  520,
+        "y":  490,
+        "wires":  [
+                      [
+                          "ddb3f276b2321119"
+                      ],
+                      [
+                          "58697ef08e1da41e"
+                      ]
+                  ]
+    },
+    {
+        "id":  "982af834e8a01a70",
+        "type":  "exec",
+        "z":  "1b074246b0334c05",
+        "command":  "nmcli",
+        "addpay":  true,
+        "append":  "",
+        "useSpawn":  "false",
+        "timer":  "",
+        "winHide":  true,
+        "name":  "WLAN Verbinden",
+        "x":  1680,
+        "y":  470,
+        "wires":  [
+                      [
+                          "1e7ec73c81bb6611"
+                      ],
+                      [
+                          "6b2c54c623bc8715"
+                      ],
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "1e7ec73c81bb6611",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "Verbinden OK -\u003e Toast + Nav",
+        "func":  "return [ { payload: \"WLAN-Verbindung angestoÃŸen.\" }, { payload: { tab: \"Projekt-info\" } } ];",
+        "outputs":  2,
+        "x":  1860,
+        "y":  450,
+        "wires":  [
+                      [
+                          "58697ef08e1da41e"
+                      ],
+                      [
+                          "72b27a8d1b2172ad"
+                      ]
+                  ]
+    },
+    {
+        "id":  "6b2c54c623bc8715",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "Verbinden ERR -\u003e Toast",
+        "func":  "return { payload: `FEHLER bei WLAN-Verbindung: ${(msg.payload||\"\").toString()}` };",
+        "outputs":  1,
+        "x":  1860,
+        "y":  490,
+        "wires":  [
+                      [
+                          "58697ef08e1da41e"
+                      ]
+                  ]
+    },
+    {
+        "id":  "5f5553a269048ff7",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "Suche ERR -\u003e Toast",
+        "func":  "return { payload: `FEHLER beim WLAN-Scan: ${(msg.payload||\"\").toString()}` };",
+        "outputs":  1,
+        "x":  1860,
+        "y":  300,
+        "wires":  [
+                      [
+                          "58697ef08e1da41e"
+                      ]
+                  ]
+    },
+    {
+        "id":  "f3e0d2d5b9e3fe7e",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "WLAN-Status -\u003e UI",
+        "func":  "const connected = flow.get(\"wifiConnected\") === true;\nconst ssid = (flow.get(\"wlanConn\") || \"\").toString();\nconst dashboardHost = (flow.get(\"dashboardHost\") || \"10.42.0.1\").toString().trim() || \"10.42.0.1\";\nconst debugHost = (flow.get(\"debugHost\") || \"\").toString().trim();\nconst debugUrl = debugHost ? `http://${debugHost}:1880/ui/#!/1` : \"\";\nconst wifiUrl = `http://${dashboardHost}:1880/ui/#!/1`;\nmsg.payload = {\n  connected,\n  text: connected ? \"Verbunden\" : \"Verbindung getrennt\",\n  ssid: connected ? ssid : \"\",\n  host: dashboardHost,\n  debugHost,\n  debugUrl,\n  wifiUrl\n};\nreturn msg;",
+        "outputs":  1,
+        "x":  820,
+        "y":  80,
+        "wires":  [
+                      [
+                          "1539acc33b962b98",
+                          "f43b9729d95dd412"
+                      ]
+                  ]
+    },
+    {
+        "id":  "1539acc33b962b98",
+        "type":  "ui_template",
+        "z":  "1b074246b0334c05",
+        "group":  "6888e5abb8efb54d",
+        "name":  "WLAN Status Anzeige",
+        "order":  3,
+        "width":  7,
+        "height":  3,
+        "format":  "\u003cstyle\u003e\n  .wifi-status { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }\n  .wifi-dot { width: 12px; height: 12px; border-radius: 50%; background: #e74c3c; }\n  .wifi-dot.wifi-on { background: #2ecc71; }\n  .wifi-dot.wifi-off { background: #e74c3c; }\n  .wifi-text { font-weight: 600; }\n  .wifi-ssid { font-size: 12px; color: #666666; }\n  .wifi-links { width: 100%; margin-top: 6px; font-size: 12px; line-height: 1.45; }\n  .wifi-link-line { margin-top: 2px; }\n  .wifi-link-label { font-weight: 600; margin-right: 6px; color: #555555; }\n  .wifi-link-line a { color: #1565c0; text-decoration: none; word-break: break-all; }\n  .wifi-link-line a:hover { text-decoration: underline; }\n\u003c/style\u003e\n\u003cdiv class=\"wifi-status\"\u003e\n  \u003cspan class=\"wifi-dot\" ng-class=\"(msg.payload \u0026\u0026 msg.payload.connected) ? \u0027wifi-on\u0027 : \u0027wifi-off\u0027\"\u003e\u003c/span\u003e\n  \u003cspan class=\"wifi-text\"\u003e{{msg.payload \u0026\u0026 msg.payload.text ? msg.payload.text : \u0027\u0027}}\u003c/span\u003e\n  \u003cspan class=\"wifi-ssid\" ng-if=\"msg.payload \u0026\u0026 msg.payload.ssid\"\u003e({{msg.payload.ssid}})\u003c/span\u003e\n  \u003cdiv class=\"wifi-links\" ng-if=\"msg.payload\"\u003e\n    \u003cdiv class=\"wifi-link-line\"\u003e\u003cspan class=\"wifi-link-label\"\u003eDebug:\u003c/span\u003e\u003ca ng-if=\"msg.payload.debugUrl\" ng-href=\"{{msg.payload.debugUrl}}\" target=\"_blank\"\u003e{{msg.payload.debugUrl}}\u003c/a\u003e\u003cspan ng-if=\"!msg.payload.debugUrl\"\u003eLAN IP nicht verfuegbar\u003c/span\u003e\u003c/div\u003e\n    \u003cdiv class=\"wifi-link-line\"\u003e\u003cspan class=\"wifi-link-label\"\u003eWLAN:\u003c/span\u003e\u003ca ng-href=\"{{msg.payload.wifiUrl}}\" target=\"_blank\"\u003e{{msg.payload.wifiUrl}}\u003c/a\u003e\u003c/div\u003e\n  \u003c/div\u003e\n\u003c/div\u003e",
+        "storeOutMessages":  false,
+        "fwdInMessages":  true,
+        "resendOnRefresh":  true,
+        "templateScope":  "local",
+        "x":  1080,
+        "y":  60,
+        "wires":  [
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "f43b9729d95dd412",
+        "type":  "ui_template",
+        "z":  "1b074246b0334c05",
+        "group":  "18e42aa468913fd1",
+        "name":  "WLAN Status Anzeige \\(Mobil\\)",
+        "order":  3,
+        "width":  5,
+        "height":  4,
+        "format":  "\u003cstyle\u003e\n  .wifi-status { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }\n  .wifi-dot { width: 12px; height: 12px; border-radius: 50%; background: #e74c3c; }\n  .wifi-dot.wifi-on { background: #2ecc71; }\n  .wifi-dot.wifi-off { background: #e74c3c; }\n  .wifi-text { font-weight: 600; }\n  .wifi-ssid { font-size: 12px; color: #666666; }\n  .wifi-links { width: 100%; margin-top: 6px; font-size: 12px; line-height: 1.45; }\n  .wifi-link-line { margin-top: 2px; }\n  .wifi-link-label { font-weight: 600; margin-right: 6px; color: #555555; }\n  .wifi-link-line a { color: #1565c0; text-decoration: none; word-break: break-all; }\n  .wifi-link-line a:hover { text-decoration: underline; }\n\u003c/style\u003e\n\u003cdiv class=\"wifi-status\"\u003e\n  \u003cspan class=\"wifi-dot\" ng-class=\"(msg.payload \u0026\u0026 msg.payload.connected) ? \u0027wifi-on\u0027 : \u0027wifi-off\u0027\"\u003e\u003c/span\u003e\n  \u003cspan class=\"wifi-text\"\u003e{{msg.payload \u0026\u0026 msg.payload.text ? msg.payload.text : \u0027\u0027}}\u003c/span\u003e\n  \u003cspan class=\"wifi-ssid\" ng-if=\"msg.payload \u0026\u0026 msg.payload.ssid\"\u003e({{msg.payload.ssid}})\u003c/span\u003e\n  \u003cdiv class=\"wifi-links\" ng-if=\"msg.payload\"\u003e\n    \u003cdiv class=\"wifi-link-line\"\u003e\u003cspan class=\"wifi-link-label\"\u003eDebug:\u003c/span\u003e\u003ca ng-if=\"msg.payload.debugUrl\" ng-href=\"{{msg.payload.debugUrl}}\" target=\"_blank\"\u003e{{msg.payload.debugUrl}}\u003c/a\u003e\u003cspan ng-if=\"!msg.payload.debugUrl\"\u003eLAN IP nicht verfuegbar\u003c/span\u003e\u003c/div\u003e\n    \u003cdiv class=\"wifi-link-line\"\u003e\u003cspan class=\"wifi-link-label\"\u003eWLAN:\u003c/span\u003e\u003ca ng-href=\"{{msg.payload.wifiUrl}}\" target=\"_blank\"\u003e{{msg.payload.wifiUrl}}\u003c/a\u003e\u003c/div\u003e\n  \u003c/div\u003e\n\u003c/div\u003e",
+        "storeOutMessages":  false,
+        "fwdInMessages":  true,
+        "resendOnRefresh":  true,
+        "templateScope":  "local",
+        "x":  1080,
+        "y":  100,
+        "wires":  [
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "25be634fd05b99f5",
+        "type":  "ui_button",
+        "z":  "1b074246b0334c05",
+        "name":  "Verbindung trennen",
+        "group":  "6888e5abb8efb54d",
+        "order":  5,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Verbindung trennen",
+        "icon":  "close",
+        "payload":  "disconnect",
+        "payloadType":  "str",
+        "topic":  "cmd",
+        "topicType":  "str",
+        "x":  520,
+        "y":  560,
+        "wires":  [
+                      [
+                          "096abd417f75e29f"
+                      ]
+                  ]
+    },
+    {
+        "id":  "04814f9af8e7454b",
+        "type":  "ui_button",
+        "z":  "1b074246b0334c05",
+        "name":  "Verbindung trennen \\(Mobil\\)",
+        "group":  "18e42aa468913fd1",
+        "order":  5,
+        "width":  5,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Verbindung trennen",
+        "icon":  "close",
+        "payload":  "disconnect",
+        "payloadType":  "str",
+        "topic":  "cmd",
+        "topicType":  "str",
+        "x":  520,
+        "y":  600,
+        "wires":  [
+                      [
+                          "096abd417f75e29f"
+                      ]
+                  ]
+    },
+    {
+        "id":  "096abd417f75e29f",
+        "type":  "exec",
+        "z":  "1b074246b0334c05",
+        "command":  "nmcli device disconnect wlan0",
+        "addpay":  false,
+        "append":  "",
+        "useSpawn":  "false",
+        "timer":  "",
+        "winHide":  true,
+        "name":  "WLAN trennen",
+        "x":  720,
+        "y":  580,
+        "wires":  [
+                      [
+                          "9f39708044d8448c"
+                      ],
+                      [
+                          "347ff2895eeb5aa2"
+                      ],
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "9f39708044d8448c",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "Trennen OK -\u003e Toast",
+        "func":  "return { payload: \"WLAN-Verbindung getrennt.\" };",
+        "outputs":  1,
+        "x":  1860,
+        "y":  560,
+        "wires":  [
+                      [
+                          "58697ef08e1da41e"
+                      ]
+                  ]
+    },
+    {
+        "id":  "347ff2895eeb5aa2",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "Trennen ERR -\u003e Toast",
+        "func":  "return { payload: `FEHLER beim Trennen: ${(msg.payload||\"\").toString()}` };",
+        "outputs":  1,
+        "x":  1860,
+        "y":  600,
+        "wires":  [
+                      [
+                          "58697ef08e1da41e"
+                      ]
+                  ]
+    },
+    {
+        "id":  "dcc1a684b8ee9cfc",
+        "type":  "exec",
+        "z":  "1b074246b0334c05",
+        "command":  "nmcli",
+        "addpay":  true,
+        "append":  "",
+        "useSpawn":  "false",
+        "timer":  "",
+        "winHide":  true,
+        "name":  "WLAN Profil lÃ¶schen",
+        "x":  1200,
+        "y":  470,
+        "wires":  [
+                      [
+                          "c6e8bbf0ccfccdf3"
+                      ],
+                      [
+                          "c6e8bbf0ccfccdf3"
+                      ],
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "1314fa9599b0730c",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "Verbinden cmd -\u003e nmcli",
+        "func":  "msg.payload = msg.connectCmd || \"\";\nreturn msg;",
+        "outputs":  1,
+        "x":  1520,
+        "y":  470,
+        "wires":  [
+                      [
+                          "982af834e8a01a70"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ddb3f276b2321119",
+        "type":  "exec",
+        "z":  "1b074246b0334c05",
+        "command":  "nmcli",
+        "addpay":  true,
+        "append":  "",
+        "useSpawn":  "false",
+        "timer":  "",
+        "winHide":  true,
+        "name":  "AP stoppen",
+        "x":  720,
+        "y":  470,
+        "wires":  [
+                      [
+                          "f13d6a3f4b2f5cdc"
+                      ],
+                      [
+                          "f13d6a3f4b2f5cdc"
+                      ],
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "a27b14ebfa3642fd",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "AP down -\u003e delete",
+        "func":  "msg.payload = msg.deleteCmd || \"\";\nreturn msg;",
+        "outputs":  1,
+        "x":  1040,
+        "y":  470,
+        "wires":  [
+                      [
+                          "dcc1a684b8ee9cfc"
+                      ]
+                  ]
+    },
+    {
+        "id":  "76498935c821c2c8",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "QR Targets (Setup + Dashboard)",
+        "func":  "const apSsid = \u0027projekt-ap\u0027;\nconst apPass = \u00271234568\u0027;\nconst apQr = `WIFI:T:WPA;S:${apSsid};P:${apPass};;`;\nconst wifiConnected = flow.get(\u0027wifiConnected\u0027) === true;\nconst host = (flow.get(\u0027dashboardHost\u0027) || \u002710.42.0.1\u0027).toString().trim() || \u002710.42.0.1\u0027;\nconst dashboardUrl = `http://${host}:1880/ui/#!/1`;\nconst msgAp = { payload: apQr, topic: \u0027ap\u0027, qrHint: `WLAN: ${apSsid}` };\nconst msgLogin = { payload: dashboardUrl, topic: \u0027login\u0027, qrHint: \u0027Anmeldemaske\u0027 };\nconst msgDashboard = { payload: dashboardUrl, topic: \u0027dashboard\u0027, qrHint: `Dashboard: ${dashboardUrl}` };\nif (wifiConnected) return [null, null, msgDashboard];\nreturn [msgAp, msgLogin, null];",
+        "outputs":  3,
+        "x":  580,
+        "y":  160,
+        "wires":  [
+                      [
+                          "f247a2fd5fb6c30d"
+                      ],
+                      [
+                          "8520ceb726888ed7"
+                      ],
+                      [
+                          "c6d7e8f9a0b1c2d3"
+                      ]
+                  ]
+    },
+    {
+        "id":  "f247a2fd5fb6c30d",
+        "type":  "exec",
+        "z":  "1b074246b0334c05",
+        "command":  "/usr/bin/qrencode",
+        "addpay":  true,
+        "append":  "-t SVG -o -",
+        "useSpawn":  "true",
+        "timer":  "",
+        "winHide":  true,
+        "name":  "QR erzeugen (AP)",
+        "x":  820,
+        "y":  150,
+        "wires":  [
+                      [
+                          "8dab6698f54beec2"
+                      ],
+                      [
+                          "8dab6698f54beec2"
+                      ],
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "84995d6e205b39cf",
+        "type":  "ui_template",
+        "z":  "1b074246b0334c05",
+        "group":  "1b4dd4e879ccb455",
+        "name":  "QR AP - Alt \\(ausgeblendet\\)",
+        "order":  1,
+        "width":  0,
+        "height":  0,
+        "format":  "\u003cdiv\u003e\u003c/div\u003e",
+        "storeOutMessages":  false,
+        "fwdInMessages":  true,
+        "resendOnRefresh":  true,
+        "templateScope":  "local",
+        "x":  1280,
+        "y":  150,
+        "wires":  [
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "f13d6a3f4b2f5cdc",
+        "type":  "delay",
+        "z":  "1b074246b0334c05",
+        "name":  "Warte AP Stop",
+        "pauseType":  "delay",
+        "timeout":  "1.5",
+        "timeoutUnits":  "seconds",
+        "rate":  "1",
+        "nbRateUnits":  "1",
+        "rateUnits":  "second",
+        "randomFirst":  "1",
+        "randomLast":  "5",
+        "randomUnits":  "seconds",
+        "drop":  false,
+        "allowrate":  false,
+        "x":  880,
+        "y":  470,
+        "wires":  [
+                      [
+                          "a27b14ebfa3642fd"
+                      ]
+                  ]
+    },
+    {
+        "id":  "c6e8bbf0ccfccdf3",
+        "type":  "delay",
+        "z":  "1b074246b0334c05",
+        "name":  "Warte Profil LÃ¶schen",
+        "pauseType":  "delay",
+        "timeout":  "1",
+        "timeoutUnits":  "seconds",
+        "rate":  "1",
+        "nbRateUnits":  "1",
+        "rateUnits":  "second",
+        "randomFirst":  "1",
+        "randomLast":  "5",
+        "randomUnits":  "seconds",
+        "drop":  false,
+        "allowrate":  false,
+        "x":  1360,
+        "y":  470,
+        "wires":  [
+                      [
+                          "1314fa9599b0730c"
+                      ]
+                  ]
+    },
+    {
+        "id":  "cf92ad487706a01f",
+        "type":  "delay",
+        "z":  "1b074246b0334c05",
+        "name":  "Warte Passwort-Update",
+        "pauseType":  "delay",
+        "timeout":  "0.4",
+        "timeoutUnits":  "seconds",
+        "rate":  "1",
+        "nbRateUnits":  "1",
+        "rateUnits":  "second",
+        "randomFirst":  "1",
+        "randomLast":  "5",
+        "randomUnits":  "seconds",
+        "drop":  false,
+        "allowrate":  false,
+        "x":  320,
+        "y":  490,
+        "wires":  [
+                      [
+                          "bfb23c18fc3e1340"
+                      ]
+                  ]
+    },
+    {
+        "id":  "a4d7f6e3c8b91234",
+        "type":  "exec",
+        "z":  "1b074246b0334c05",
+        "command":  "nmcli -t -f IP4.ADDRESS device show wlan0",
+        "addpay":  false,
+        "append":  "",
+        "useSpawn":  "false",
+        "timer":  "",
+        "winHide":  true,
+        "name":  "nmcli wlan0 ip",
+        "x":  330,
+        "y":  120,
+        "wires":  [
+                      [
+                          "b5c8d9e1f2a30456"
+                      ],
+                      [
+
+                      ],
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "b5c8d9e1f2a30456",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "wlan0 IP merken",
+        "func":  "const txt = (msg.payload || \u0027\u0027).toString();\nconst m = txt.match(/(\\d{1,3}(?:\\.\\d{1,3}){3})/);\nconst ip = (m \u0026\u0026 m[1]) ? m[1] : \u002710.42.0.1\u0027;\nflow.set(\u0027dashboardHost\u0027, ip);\nreturn null;",
+        "outputs":  0,
+        "x":  560,
+        "y":  120,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "c6d7e8f9a0b1c2d3",
+        "type":  "exec",
+        "z":  "1b074246b0334c05",
+        "command":  "/usr/bin/qrencode",
+        "addpay":  true,
+        "append":  "-t SVG -o -",
+        "name":  "QR erzeugen (Dashboard)",
+        "x":  840,
+        "y":  250,
+        "wires":  [
+                      [
+                          "8dab6698f54beec2"
+                      ],
+                      [
+                          "8dab6698f54beec2"
+                      ],
+                      [
+
+                      ]
+                  ],
+        "useSpawn":  "true"
+    },
+    {
+        "id":  "d7e8f9a0b1c2d3e4",
+        "type":  "ui_template",
+        "z":  "1b074246b0334c05",
+        "group":  "1b4dd4e879ccb455",
+        "name":  "QR Willkommen (dynamisch)",
+        "order":  1,
+        "width":  14,
+        "height":  6,
+        "format":  "\u003cstyle\u003e\n  .welcome-qr-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }\n  .welcome-qr-grid.single { grid-template-columns: 1fr; max-width: 320px; margin: 0 auto; }\n\u003c/style\u003e\n\u003cdiv class=\"welcome-qr-grid\" ng-class=\"(msg.payload \u0026\u0026 msg.payload.mode === \u0027dashboard\u0027) ? \u0027single\u0027 : \u0027\u0027\"\u003e\n  \u003cdiv class=\"qr-card\" ng-repeat=\"card in (msg.payload \u0026\u0026 msg.payload.cards ? msg.payload.cards : []) track by $index\"\u003e\n    \u003cdiv class=\"qr-title\"\u003e{{card.title}}\u003c/div\u003e\n    \u003cimg ng-src=\"{{card.qrDataUrl}}\" alt=\"QR Code\" /\u003e\n    \u003cdiv class=\"qr-hint\"\u003e{{card.qrHint}}\u003c/div\u003e\n  \u003c/div\u003e\n\u003c/div\u003e",
+        "storeOutMessages":  false,
+        "fwdInMessages":  true,
+        "resendOnRefresh":  true,
+        "templateScope":  "local",
+        "x":  1320,
+        "y":  180,
+        "wires":  [
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "e1f2a3b4c5d60718",
+        "type":  "exec",
+        "z":  "1b074246b0334c05",
+        "command":  "ip -4 -o addr show dev end0 scope global",
+        "addpay":  false,
+        "append":  "",
+        "useSpawn":  "false",
+        "timer":  "",
+        "winHide":  true,
+        "name":  "ip -4 end0 addr",
+        "x":  330,
+        "y":  160,
+        "wires":  [
+                      [
+                          "f1e2d3c4b5a60718"
+                      ],
+                      [
+
+                      ],
+                      [
+
+                      ]
+                  ]
+    },
+    {
+        "id":  "f1e2d3c4b5a60718",
+        "type":  "function",
+        "z":  "1b074246b0334c05",
+        "name":  "end0 IP merken",
+        "func":  "const txt = (msg.payload || \u0027\u0027).toString();\nconst m = txt.match(/inet\\s+(\\d{1,3}(?:\\.\\d{1,3}){3})\\//);\nconst ip = (m \u0026\u0026 m[1]) ? m[1] : \u0027\u0027;\nflow.set(\u0027debugHost\u0027, ip);\nreturn null;",
+        "outputs":  0,
+        "x":  560,
+        "y":  160,
+        "wires":  [
+
+                  ]
+    }
+]
+

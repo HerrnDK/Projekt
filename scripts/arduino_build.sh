@@ -1,0 +1,70 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+REPO_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+CLI=""
+
+retry() {
+  local max_attempts="$1"
+  local sleep_seconds="$2"
+  shift 2
+
+  local attempt=1
+  while true; do
+    if "$@"; then
+      return 0
+    fi
+
+    if (( attempt >= max_attempts )); then
+      return 1
+    fi
+
+    echo "WARN: Versuch ${attempt}/${max_attempts} fehlgeschlagen. Neuer Versuch in ${sleep_seconds}s ..."
+    sleep "$sleep_seconds"
+    attempt=$((attempt + 1))
+  done
+}
+
+resolve_cli() {
+  if [[ -n "${ARDUINO_CLI:-}" && -x "${ARDUINO_CLI}" ]]; then
+    CLI="${ARDUINO_CLI}"
+    return 0
+  fi
+
+  if [[ -x "$REPO_ROOT/bin/arduino-cli" ]]; then
+    CLI="$REPO_ROOT/bin/arduino-cli"
+    return 0
+  fi
+
+  if command -v arduino-cli >/dev/null 2>&1; then
+    CLI="$(command -v arduino-cli)"
+    return 0
+  fi
+
+  if ! command -v curl >/dev/null 2>&1; then
+    echo "FEHLER: arduino-cli fehlt und curl ist nicht installiert." >&2
+    echo "Installiere curl oder setze ARDUINO_CLI auf ein vorhandenes Binary." >&2
+    exit 1
+  fi
+
+  echo "arduino-cli nicht gefunden. Installiere lokal nach $REPO_ROOT/bin ..."
+  (cd "$REPO_ROOT" && curl -fsSL https://raw.githubusercontent.com/arduino/arduino-cli/master/install.sh | sh)
+
+  if [[ ! -x "$REPO_ROOT/bin/arduino-cli" ]]; then
+    echo "FEHLER: lokale arduino-cli Installation fehlgeschlagen." >&2
+    exit 1
+  fi
+
+  CLI="$REPO_ROOT/bin/arduino-cli"
+}
+
+resolve_cli
+"$CLI" version >/dev/null 2>&1
+
+if ! "$CLI" core list | grep -q "^arduino:avr"; then
+  retry 3 4 "$CLI" core update-index
+  retry 5 6 "$CLI" core install arduino:avr
+fi
+
+"$CLI" compile --fqbn arduino:avr:mega "$REPO_ROOT/arduino/mega"
