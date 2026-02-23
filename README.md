@@ -1,5 +1,6 @@
 # Arduino Mega 2560 + Node-RED (Raspberry Pi)
 
+
 Dieses Repository enthaelt das Grundgeruest fuer die serielle Kommunikation
 zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 
