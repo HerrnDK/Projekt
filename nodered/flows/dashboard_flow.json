@@ -292,28 +292,6 @@
         "ui":  "3430d891af8fa1f6"
     },
     {
-        "id":  "7e3a8a709a4fb946",
-        "type":  "ui-template",
-        "z":  "4985bdfbcf200fe6",
-        "group":  "1b4dd4e879ccb455",
-        "name":  "Willkommensanzeige (zentriert)",
-        "order":  3,
-        "width":  12,
-        "height":  7,
-        "format":  "\u003cdiv\u003e\u003c/div\u003e",
-        "storeOutMessages":  false,
-        "resendOnRefresh":  true,
-        "templateScope":  "local",
-        "x":  1820,
-        "y":  100,
-        "wires":  [
-                      [
-
-                      ]
-                  ],
-        "passthru":  true
-    },
-    {
         "id":  "92797bc31e9565c2",
         "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",

@@ -1,4 +1,4 @@
-[
+﻿[
     {
         "id":  "flow_fn_startup_test",
         "type":  "tab",
@@ -74,7 +74,6 @@
         "wires":  [
                       [
                           "ui_text_startup_status_desktop",
-                          "ui_text_startup_status_mobile",
                           "debug_startup_test_result"
                       ]
                   ]
@@ -153,14 +152,13 @@
         "wires":  [
                       [
                           "ui_text_startup_status_desktop",
-                          "ui_text_startup_status_mobile",
                           "debug_startup_test_result"
                       ]
                   ]
     },
     {
         "id":  "ui_text_startup_status_desktop",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "flow_fn_startup_test",
         "group":  "3584a9c30b6db556",
         "order":  5,
@@ -168,33 +166,17 @@
         "height":  1,
         "name":  "Startstatus (Hauptansicht)",
         "label":  "Anlagenstatus",
-        "format":  "\u003cspan style=\"font-weight:700\"\u003e{{msg.payload}}\u003c/span\u003e",
         "layout":  "row-spread",
         "className":  "",
         "x":  1080,
         "y":  180,
         "wires":  [
 
-                  ]
-    },
-    {
-        "id":  "ui_text_startup_status_mobile",
-        "type":  "ui_text",
-        "z":  "flow_fn_startup_test",
-        "group":  "939aa8523e70cefb",
-        "order":  5,
-        "width":  10,
-        "height":  1,
-        "name":  "Startstatus \\(Mobil\\)",
-        "label":  "Anlagenstatus",
-        "format":  "\u003cspan style=\"font-weight:700\"\u003e{{msg.payload}}\u003c/span\u003e",
-        "layout":  "row-spread",
-        "className":  "",
-        "x":  1070,
-        "y":  240,
-        "wires":  [
-
-                  ]
+                  ],
+        "value":  "payload",
+        "valueType":  "msg",
+        "style":  false,
+        "wrapText":  false
     },
     {
         "id":  "debug_startup_test_result",
@@ -213,4 +195,3 @@
                   ]
     }
 ]
-
