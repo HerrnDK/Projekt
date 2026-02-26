@@ -80,7 +80,7 @@ Gehe zu: `http://192.168.0.250:1880/ui`
 
 Responsive-Pruefung:
 - 800x480 Display: Inhalte duerfen nicht horizontal abschneiden.
-- Smartphone: mobile Gruppen muessen sichtbar sein, Desktop-Gruppen ausgeblendet.
+- Smartphone: dieselben Widgets muessen als gemeinsame responsive Ansicht sauber umbrechen (ohne doppelte Zeilen).
 
 Projekt-Parametrierung:
 - 4 Relais-Buttons (`Relais 1 (Pumpe)`, `Relais 2-4 (Reserve)`) zum Umschalten ON/OFF

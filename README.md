@@ -10,7 +10,7 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 - Layout ist auf zwei Zielgeraete abgestimmt:
   - 800x480 Touch-Display (eigener Breakpoint bei 800px)
   - Smartphone (kompakter Breakpoint)
-- Desktop/Mobil-Anzeigen werden weiterhin ueber CSS-Klassen `desktop-only` und `mobile-only` gesteuert.
+- Das Layout ist als gemeinsame responsive Ansicht aufgebaut (keine getrennten Desktop/Mobil-Duplikate).
 
 ## Verdrahtung (Serial1)
 - **Arduino Mega 2560** Serial1:
