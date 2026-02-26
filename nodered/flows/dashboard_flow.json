@@ -1,0 +1,1677 @@
+﻿[
+    {
+        "id":  "4985bdfbcf200fe6",
+        "type":  "tab",
+        "label":  "Projekt Automatisierung - FINAL (800x480 + QR offline)",
+        "disabled":  false,
+        "info":  ""
+    },
+    {
+        "id":  "0318f4604525f4f7",
+        "type":  "ui-page",
+        "name":  "Willkommen",
+        "icon":  "dashboard",
+        "order":  1,
+        "ui":  "3430d891af8fa1f6",
+        "theme":  "ui_theme_projekt_default",
+        "layout":  "grid",
+        "visible":  true,
+        "disabled":  false,
+        "path":  "/willkommen",
+        "breakpoints":  [
+                            {
+                                "name":  "Telefon",
+                                "px":  "0",
+                                "cols":  "3"
+                            },
+                            {
+                                "name":  "Tablet",
+                                "px":  "600",
+                                "cols":  "6"
+                            },
+                            {
+                                "name":  "Display800",
+                                "px":  "800",
+                                "cols":  "10"
+                            },
+                            {
+                                "name":  "Desktop",
+                                "px":  "1100",
+                                "cols":  "12"
+                            }
+                        ]
+    },
+    {
+        "id":  "1a87758382986ddf",
+        "type":  "ui-page",
+        "name":  "WLAN",
+        "icon":  "wifi",
+        "order":  6,
+        "ui":  "3430d891af8fa1f6",
+        "theme":  "ui_theme_projekt_default",
+        "layout":  "grid",
+        "visible":  true,
+        "disabled":  false,
+        "path":  "/wlan",
+        "breakpoints":  [
+                            {
+                                "name":  "Telefon",
+                                "px":  "0",
+                                "cols":  "3"
+                            },
+                            {
+                                "name":  "Tablet",
+                                "px":  "600",
+                                "cols":  "6"
+                            },
+                            {
+                                "name":  "Display800",
+                                "px":  "800",
+                                "cols":  "10"
+                            },
+                            {
+                                "name":  "Desktop",
+                                "px":  "1100",
+                                "cols":  "12"
+                            }
+                        ]
+    },
+    {
+        "id":  "b482803534c81cb7",
+        "type":  "ui-page",
+        "name":  "Projekt-info",
+        "icon":  "info",
+        "order":  3,
+        "ui":  "3430d891af8fa1f6",
+        "theme":  "ui_theme_projekt_default",
+        "layout":  "grid",
+        "visible":  true,
+        "disabled":  false,
+        "path":  "/projekt-info",
+        "breakpoints":  [
+                            {
+                                "name":  "Telefon",
+                                "px":  "0",
+                                "cols":  "3"
+                            },
+                            {
+                                "name":  "Tablet",
+                                "px":  "600",
+                                "cols":  "6"
+                            },
+                            {
+                                "name":  "Display800",
+                                "px":  "800",
+                                "cols":  "10"
+                            },
+                            {
+                                "name":  "Desktop",
+                                "px":  "1100",
+                                "cols":  "12"
+                            }
+                        ]
+    },
+    {
+        "id":  "9db2c967c1a488ee",
+        "type":  "ui-page",
+        "name":  "Projekt-Parametrierung",
+        "icon":  "tune",
+        "order":  4,
+        "ui":  "3430d891af8fa1f6",
+        "theme":  "ui_theme_projekt_default",
+        "layout":  "grid",
+        "visible":  true,
+        "disabled":  false,
+        "path":  "/projekt-parametrierung",
+        "breakpoints":  [
+                            {
+                                "name":  "Telefon",
+                                "px":  "0",
+                                "cols":  "3"
+                            },
+                            {
+                                "name":  "Tablet",
+                                "px":  "600",
+                                "cols":  "6"
+                            },
+                            {
+                                "name":  "Display800",
+                                "px":  "800",
+                                "cols":  "10"
+                            },
+                            {
+                                "name":  "Desktop",
+                                "px":  "1100",
+                                "cols":  "12"
+                            }
+                        ]
+    },
+    {
+        "id":  "3fe8602f3f429631",
+        "type":  "ui-page",
+        "name":  "Projekt-Datenlog",
+        "icon":  "list",
+        "order":  5,
+        "ui":  "3430d891af8fa1f6",
+        "theme":  "ui_theme_projekt_default",
+        "layout":  "grid",
+        "visible":  true,
+        "disabled":  false,
+        "path":  "/projekt-datenlog",
+        "breakpoints":  [
+                            {
+                                "name":  "Telefon",
+                                "px":  "0",
+                                "cols":  "3"
+                            },
+                            {
+                                "name":  "Tablet",
+                                "px":  "600",
+                                "cols":  "6"
+                            },
+                            {
+                                "name":  "Display800",
+                                "px":  "800",
+                                "cols":  "10"
+                            },
+                            {
+                                "name":  "Desktop",
+                                "px":  "1100",
+                                "cols":  "12"
+                            }
+                        ]
+    },
+    {
+        "id":  "1b4dd4e879ccb455",
+        "type":  "ui-group",
+        "name":  "Willkommen auf dem Projekt-Dashboard",
+        "order":  1,
+        "width":  12,
+        "collapse":  false,
+        "className":  "",
+        "page":  "0318f4604525f4f7",
+        "showTitle":  true,
+        "visible":  true,
+        "disabled":  false,
+        "groupType":  "default"
+    },
+    {
+        "id":  "6888e5abb8efb54d",
+        "type":  "ui-group",
+        "name":  "WLAN Anmeldung",
+        "order":  1,
+        "width":  12,
+        "collapse":  false,
+        "className":  "",
+        "page":  "1a87758382986ddf",
+        "showTitle":  true,
+        "visible":  true,
+        "disabled":  false,
+        "groupType":  "default"
+    },
+    {
+        "id":  "3584a9c30b6db556",
+        "type":  "ui-group",
+        "name":  "Status / Sensoren",
+        "order":  1,
+        "width":  12,
+        "collapse":  false,
+        "className":  "",
+        "page":  "b482803534c81cb7",
+        "showTitle":  true,
+        "visible":  true,
+        "disabled":  false,
+        "groupType":  "default"
+    },
+    {
+        "id":  "0ef8bd821a032b93",
+        "type":  "ui-group",
+        "name":  "Parametrierung",
+        "order":  1,
+        "width":  12,
+        "collapse":  false,
+        "className":  "",
+        "page":  "9db2c967c1a488ee",
+        "showTitle":  true,
+        "visible":  true,
+        "disabled":  false,
+        "groupType":  "default"
+    },
+    {
+        "id":  "bdc119e647f71c57",
+        "type":  "ui-group",
+        "name":  "Datenlog",
+        "order":  1,
+        "width":  12,
+        "collapse":  false,
+        "page":  "3fe8602f3f429631",
+        "showTitle":  true,
+        "visible":  true,
+        "disabled":  false,
+        "groupType":  "default"
+    },
+    {
+        "id":  "3430d891af8fa1f6",
+        "type":  "ui-base",
+        "name":  "Projekt Dashboard",
+        "path":  "/ui",
+        "appIcon":  "",
+        "includeClientData":  true,
+        "acceptsClientConfig":  [
+                                    "ui-notification",
+                                    "ui-control"
+                                ],
+        "showPathInSidebar":  false,
+        "headerContent":  "page",
+        "navigationStyle":  "default",
+        "titleBarStyle":  "default",
+        "showReconnectNotification":  true,
+        "notificationDisplayTime":  1,
+        "showDisconnectNotification":  true
+    },
+    {
+        "id":  "4e62a4011a9a2d00",
+        "type":  "ui-template",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Responsive CSS Global",
+        "order":  -1,
+        "width":  0,
+        "height":  0,
+        "format":  "* { box-sizing: border-box; }\n\n.qr-card {\n  background: #ffffff;\n  padding: 14px 16px;\n  border-radius: 12px;\n  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);\n  text-align: center;\n  width: 100%;\n}\n\n.qr-title {\n  font-weight: 700;\n  margin-bottom: 8px;\n  color: #111111;\n}\n\n.qr-card img {\n  width: 180px;\n  height: 180px;\n  display: block;\n  margin: 0 auto;\n}\n\n.qr-hint {\n  margin-top: 8px;\n  font-size: 13px;\n  color: #333333;\n}\n\n@media (max-width: 480px) {\n  .qr-card { padding: 10px 12px; }\n  .qr-card img { width: 150px; height: 150px; }\n  .qr-hint { font-size: 12px; }\n}",
+        "storeOutMessages":  false,
+        "resendOnRefresh":  true,
+        "templateScope":  "ui:style",
+        "x":  140,
+        "y":  50,
+        "wires":  [
+                      [
+
+                      ]
+                  ],
+        "passthru":  true,
+        "ui":  "3430d891af8fa1f6"
+    },
+    {
+        "id":  "92797bc31e9565c2",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  4,
+        "width":  7,
+        "height":  1,
+        "name":  "Uptime Anzeige",
+        "label":  "Uptime (HH:MM:SS)",
+        "format":  "{{msg.payload.uptime_hms}}",
+        "layout":  "row-spread",
+        "x":  610,
+        "y":  640,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.uptime_hms",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "8a9df2e34f274275",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  6,
+        "width":  7,
+        "height":  1,
+        "name":  "HC-SR04 Distanz Anzeige",
+        "label":  "HC-SR04 Distanz korrigiert (cm)",
+        "format":  "{{msg.payload.hcsr04_distance_display_cm}}",
+        "layout":  "row-spread",
+        "x":  680,
+        "y":  680,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.hcsr04_distance_display_cm",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "4bc78086c6c84e1e",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  7,
+        "width":  7,
+        "height":  1,
+        "name":  "HC-SR04 Status Anzeige",
+        "label":  "HC-SR04 Status",
+        "format":  "{{msg.payload.hcsr04_status}}",
+        "layout":  "row-spread",
+        "x":  670,
+        "y":  720,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.hcsr04_status",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_droplet_value_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  9,
+        "width":  7,
+        "height":  1,
+        "name":  "Tropfensensor Wert Anzeige",
+        "label":  "Tropfensensor Rohwert korrigiert",
+        "format":  "{{msg.payload.droplet_display_raw}}",
+        "layout":  "row-spread",
+        "x":  700,
+        "y":  800,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.droplet_display_raw",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_droplet_status_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  10,
+        "width":  7,
+        "height":  1,
+        "name":  "Tropfensensor Status Anzeige",
+        "label":  "Tropfensensor Status",
+        "format":  "{{msg.payload.droplet_status}}",
+        "layout":  "row-spread",
+        "x":  700,
+        "y":  840,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.droplet_status",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_turbidity_value_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  15,
+        "width":  7,
+        "height":  1,
+        "name":  "Truebungssensor Wert Anzeige",
+        "label":  "Truebungssensor Rohwert korrigiert",
+        "format":  "{{msg.payload.turbidity_display_raw}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  880,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.turbidity_display_raw",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_turbidity_status_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  16,
+        "width":  7,
+        "height":  1,
+        "name":  "Truebungssensor Status Anzeige",
+        "label":  "Truebungssensor Status",
+        "format":  "{{msg.payload.turbidity_status}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  920,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.turbidity_status",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_tds_value_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  17,
+        "width":  7,
+        "height":  1,
+        "name":  "TDS-Sensor Wert Anzeige",
+        "label":  "TDS-Sensor Rohwert korrigiert",
+        "format":  "{{msg.payload.tds_display_raw}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  960,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.tds_display_raw",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_tds_status_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  18,
+        "width":  7,
+        "height":  1,
+        "name":  "TDS-Sensor Status Anzeige",
+        "label":  "TDS-Sensor Status",
+        "format":  "{{msg.payload.tds_status}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  1000,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.tds_status",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_stepper_pos_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  19,
+        "width":  7,
+        "height":  1,
+        "name":  "Schrittmotor Position Anzeige",
+        "label":  "Schrittmotor Position (Grad)",
+        "format":  "{{msg.payload.stepper_position_deg}}",
+        "layout":  "row-spread",
+        "x":  740,
+        "y":  1040,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.stepper_position_deg",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_dht11_temp_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  20,
+        "width":  7,
+        "height":  1,
+        "name":  "DHT11 Temperatur Anzeige",
+        "label":  "DHT11 Temperatur korrigiert (C)",
+        "format":  "{{msg.payload.dht11_temp_display_c}}",
+        "layout":  "row-spread",
+        "x":  760,
+        "y":  1080,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.dht11_temp_display_c",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_dht11_humidity_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  21,
+        "width":  7,
+        "height":  1,
+        "name":  "DHT11 Luftfeuchte Anzeige",
+        "label":  "DHT11 Luftfeuchte korrigiert (%)",
+        "format":  "{{msg.payload.dht11_humidity_display_pct}}",
+        "layout":  "row-spread",
+        "x":  770,
+        "y":  1120,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.dht11_humidity_display_pct",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_dht11_status_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  22,
+        "width":  7,
+        "height":  1,
+        "name":  "DHT11 Status Anzeige",
+        "label":  "DHT11 Status",
+        "format":  "{{msg.payload.dht11_status}}",
+        "layout":  "row-spread",
+        "x":  740,
+        "y":  1160,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.dht11_status",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "f5c0bddf87cbb257",
+        "type":  "ui-button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Sensoren lesen",
+        "group":  "3584a9c30b6db556",
+        "order":  1,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Sensoren aktualisieren",
+        "tooltip":  "READ Kommando senden",
+        "icon":  "refresh",
+        "payload":  "READ",
+        "payloadType":  "str",
+        "topic":  "",
+        "x":  380,
+        "y":  540,
+        "wires":  [
+                      [
+                          "4ac1b66aca6f1626"
+                      ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "id":  "4ac1b66aca6f1626",
+        "type":  "link out",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "zu Arduino \\(vom Dashboard\\)",
+        "links":  [
+
+                  ],
+        "x":  720,
+        "y":  560,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "2a616d8b76b4fe2c",
+        "type":  "link in",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Sensoren aus Parameter-Flow",
+        "links":  [
+
+                  ],
+        "x":  460,
+        "y":  600,
+        "wires":  [
+                      [
+                          "92797bc31e9565c2",
+                          "8a9df2e34f274275",
+                          "4bc78086c6c84e1e",
+                          "ui_txt_droplet_value_d",
+                          "ui_txt_droplet_status_d",
+                          "ui_txt_turbidity_value_d",
+                          "ui_txt_turbidity_status_d",
+                          "ui_txt_tds_value_d",
+                          "ui_txt_tds_status_d",
+                          "ui_txt_stepper_pos_d",
+                          "ui_txt_dht11_temp_d",
+                          "ui_txt_dht11_humidity_d",
+                          "ui_txt_dht11_status_d"
+                      ]
+                  ]
+    },
+    {
+        "id":  "152d67ddd441a63e",
+        "type":  "global-config",
+        "env":  [
+
+                ],
+        "modules":  {
+                        "@flowfuse/node-red-dashboard":  "1.x"
+                    }
+    },
+    {
+        "id":  "b8c0e9d3f4a15412",
+        "type":  "link out",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "zum Parameter-Flow",
+        "links":  [
+
+                  ],
+        "x":  520,
+        "y":  860,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "8f6abcf84d0f4e29",
+        "type":  "link in",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Parameterstatus aus Funktions-Flow",
+        "links":  [
+
+                  ],
+        "x":  220,
+        "y":  900,
+        "wires":  [
+                      [
+                          "991894f4120470bc",
+                          "ui_txt_droplet_offset_d",
+                          "ui_txt_turbidity_offset_d",
+                          "ui_txt_tds_offset_d",
+                          "ui_txt_dht11_temp_offset_d",
+                          "ui_txt_dht11_humidity_offset_d"
+                      ]
+                  ]
+    },
+    {
+        "id":  "991894f4120470bc",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  1,
+        "width":  12,
+        "height":  1,
+        "name":  "HC-SR04 Korrektur Anzeige",
+        "label":  "HC-SR04 Korrektur (cm)",
+        "format":  "{{msg.payload.hcsr04_offset_cm}}",
+        "layout":  "row-spread",
+        "x":  860,
+        "y":  860,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.hcsr04_offset_cm",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "b1cb83e0c4557d80",
+        "type":  "ui-slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "HC-SR04 Korrektur Slider",
+        "label":  "Korrektur einstellen",
+        "tooltip":  "Offset fuer Distanzanzeige in cm (-5 bis +5)",
+        "group":  "0ef8bd821a032b93",
+        "order":  2,
+        "width":  12,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "hcsr04_offset_cm",
+        "min":  -5,
+        "max":  5,
+        "step":  1,
+        "x":  240,
+        "y":  860,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
+    },
+    {
+        "id":  "ui_txt_droplet_offset_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  3,
+        "width":  12,
+        "height":  1,
+        "name":  "Tropfensensor Offset Anzeige",
+        "label":  "Tropfensensor Offset (raw)",
+        "format":  "{{msg.payload.droplet_offset_raw}}",
+        "layout":  "row-spread",
+        "x":  860,
+        "y":  940,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.droplet_offset_raw",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_sld_droplet_offset_d",
+        "type":  "ui-slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Tropfensensor Offset Slider",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer Tropfensensor Rohwert (-300 bis +300)",
+        "group":  "0ef8bd821a032b93",
+        "order":  4,
+        "width":  12,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "droplet_offset_raw",
+        "min":  -300,
+        "max":  300,
+        "step":  10,
+        "x":  240,
+        "y":  940,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
+    },
+    {
+        "id":  "ui_txt_turbidity_offset_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  9,
+        "width":  12,
+        "height":  1,
+        "name":  "Truebungssensor Offset Anzeige",
+        "label":  "Truebungssensor Offset (raw)",
+        "format":  "{{msg.payload.turbidity_offset_raw}}",
+        "layout":  "row-spread",
+        "x":  870,
+        "y":  1020,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.turbidity_offset_raw",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_sld_turbidity_offset_d",
+        "type":  "ui-slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Truebungssensor Offset Slider",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer Truebungssensor Rohwert (-200 bis +200)",
+        "group":  "0ef8bd821a032b93",
+        "order":  10,
+        "width":  12,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "turbidity_offset_raw",
+        "min":  -200,
+        "max":  200,
+        "step":  10,
+        "x":  250,
+        "y":  1020,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
+    },
+    {
+        "id":  "ui_txt_tds_offset_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  11,
+        "width":  12,
+        "height":  1,
+        "name":  "TDS-Sensor Offset Anzeige",
+        "label":  "TDS-Sensor Offset (raw)",
+        "format":  "{{msg.payload.tds_offset_raw}}",
+        "layout":  "row-spread",
+        "x":  870,
+        "y":  1100,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.tds_offset_raw",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_sld_tds_offset_d",
+        "type":  "ui-slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "TDS-Sensor Offset Slider",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer TDS-Sensor Rohwert (-300 bis +300)",
+        "group":  "0ef8bd821a032b93",
+        "order":  12,
+        "width":  12,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "tds_offset_raw",
+        "min":  -300,
+        "max":  300,
+        "step":  10,
+        "x":  250,
+        "y":  1100,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
+    },
+    {
+        "id":  "ui_txt_dht11_temp_offset_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  15,
+        "width":  12,
+        "height":  1,
+        "name":  "DHT11 Temperatur Offset Anzeige",
+        "label":  "DHT11 Temperatur Offset (C)",
+        "format":  "{{msg.payload.dht11_temp_offset_c}}",
+        "layout":  "row-spread",
+        "x":  880,
+        "y":  1180,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.dht11_temp_offset_c",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_sld_dht11_temp_offset_d",
+        "type":  "ui-slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "DHT11 Temperatur Offset Slider",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer DHT11 Temperatur (-10 bis +10 C)",
+        "group":  "0ef8bd821a032b93",
+        "order":  16,
+        "width":  12,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "dht11_temp_offset_c",
+        "min":  -10,
+        "max":  10,
+        "step":  1,
+        "x":  260,
+        "y":  1180,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
+    },
+    {
+        "id":  "ui_txt_dht11_humidity_offset_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  17,
+        "width":  12,
+        "height":  1,
+        "name":  "DHT11 Luftfeuchte Offset Anzeige",
+        "label":  "DHT11 Luftfeuchte Offset (%)",
+        "format":  "{{msg.payload.dht11_humidity_offset_pct}}",
+        "layout":  "row-spread",
+        "x":  890,
+        "y":  1220,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.dht11_humidity_offset_pct",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_sld_dht11_humidity_offset_d",
+        "type":  "ui-slider",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "DHT11 Luftfeuchte Offset Slider",
+        "label":  "Offset einstellen",
+        "tooltip":  "Offset fuer DHT11 Luftfeuchte (-20 bis +20 %)",
+        "group":  "0ef8bd821a032b93",
+        "order":  18,
+        "width":  12,
+        "height":  1,
+        "passthru":  false,
+        "outs":  "end",
+        "topic":  "dht11_humidity_offset_pct",
+        "min":  -20,
+        "max":  20,
+        "step":  1,
+        "x":  270,
+        "y":  1220,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
+    },
+    {
+        "id":  "ui_btn_stepper_5s_d",
+        "type":  "ui-button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Schrittmotor 5s drehen",
+        "group":  "0ef8bd821a032b93",
+        "order":  13,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Schrittmotor 5s",
+        "tooltip":  "Startet den Schrittmotor fuer 5 Sekunden",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "autorenew",
+        "payload":  "run_5s",
+        "payloadType":  "str",
+        "topic":  "stepper_action",
+        "x":  270,
+        "y":  1200,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "id":  "ui_btn_stepper_120_d",
+        "type":  "ui-button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Schrittmotor 120 Grad drehen",
+        "group":  "0ef8bd821a032b93",
+        "order":  14,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Schrittmotor +120 Grad",
+        "tooltip":  "Dreht den Schrittmotor um ca. 120 Grad",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "rotate_right",
+        "payload":  "rotate_120",
+        "payloadType":  "str",
+        "topic":  "stepper_action",
+        "x":  280,
+        "y":  1240,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "id":  "ui_btn_relay1_d",
+        "type":  "ui-button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 1 (Pumpe) schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  5,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 1 (Pumpe)",
+        "tooltip":  "Relais 1 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "22",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  260,
+        "y":  1040,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "id":  "ui_btn_relay2_d",
+        "type":  "ui-button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 2 schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  6,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 2 (Reserve)",
+        "tooltip":  "Relais 2 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "23",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  260,
+        "y":  1080,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "id":  "ui_btn_relay3_d",
+        "type":  "ui-button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 3 schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  7,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 3 (Reserve)",
+        "tooltip":  "Relais 3 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "24",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  260,
+        "y":  1120,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "id":  "ui_btn_relay4_d",
+        "type":  "ui-button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relais 4 schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  8,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Relais 4 (Reserve)",
+        "tooltip":  "Relais 4 umschalten (ON/OFF)",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "power_settings_new",
+        "payload":  "25",
+        "payloadType":  "str",
+        "topic":  "relay_toggle",
+        "x":  260,
+        "y":  1160,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "id":  "link_in_relays_from_parameters",
+        "type":  "link in",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Relaisstatus aus Parameter-Flow",
+        "links":  [
+
+                  ],
+        "x":  230,
+        "y":  760,
+        "wires":  [
+                      [
+                          "ui_txt_relay1_status_d",
+                          "ui_txt_relay2_status_d",
+                          "ui_txt_relay3_status_d",
+                          "ui_txt_relay4_status_d"
+                      ]
+                  ]
+    },
+    {
+        "id":  "ui_txt_relay1_status_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  11,
+        "width":  7,
+        "height":  1,
+        "name":  "Relais 1 Status Anzeige",
+        "label":  "Relais 1 (Pumpe)",
+        "format":  "{{msg.payload.relay1_state_text}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  900,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.relay1_state_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_relay2_status_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  12,
+        "width":  7,
+        "height":  1,
+        "name":  "Relais 2 Status Anzeige",
+        "label":  "Relais 2 (Reserve)",
+        "format":  "{{msg.payload.relay2_state_text}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  940,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.relay2_state_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_relay3_status_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  13,
+        "width":  7,
+        "height":  1,
+        "name":  "Relais 3 Status Anzeige",
+        "label":  "Relais 3 (Reserve)",
+        "format":  "{{msg.payload.relay3_state_text}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  980,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.relay3_state_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_relay4_status_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  14,
+        "width":  7,
+        "height":  1,
+        "name":  "Relais 4 Status Anzeige",
+        "label":  "Relais 4 (Reserve)",
+        "format":  "{{msg.payload.relay4_state_text}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  1020,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.relay4_state_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_tab_profile",
+        "name":  "Profile",
+        "icon":  "badge",
+        "type":  "ui-page",
+        "order":  2,
+        "ui":  "3430d891af8fa1f6",
+        "theme":  "ui_theme_projekt_default",
+        "layout":  "grid",
+        "visible":  true,
+        "disabled":  false,
+        "path":  "/profile",
+        "breakpoints":  [
+                            {
+                                "name":  "Telefon",
+                                "px":  "0",
+                                "cols":  "3"
+                            },
+                            {
+                                "name":  "Tablet",
+                                "px":  "600",
+                                "cols":  "6"
+                            },
+                            {
+                                "name":  "Display800",
+                                "px":  "800",
+                                "cols":  "10"
+                            },
+                            {
+                                "name":  "Desktop",
+                                "px":  "1100",
+                                "cols":  "12"
+                            }
+                        ]
+    },
+    {
+        "width":  12,
+        "id":  "ui_grp_profile_main",
+        "type":  "ui-group",
+        "order":  1,
+        "collapse":  false,
+        "name":  "RFID-Profile",
+        "className":  "",
+        "page":  "ui_tab_profile",
+        "showTitle":  true,
+        "visible":  true,
+        "disabled":  false,
+        "groupType":  "default"
+    },
+    {
+        "id":  "link_out_dashboard_to_profiles",
+        "y":  1040,
+        "name":  "zum Profil-Flow",
+        "type":  "link out",
+        "z":  "4985bdfbcf200fe6",
+        "x":  680,
+        "wires":  [
+
+                  ],
+        "links":  [
+
+                  ]
+    },
+    {
+        "id":  "link_in_profiles_from_fn",
+        "y":  1100,
+        "name":  "Profilstatus aus Funktions-Flow",
+        "type":  "link in",
+        "z":  "4985bdfbcf200fe6",
+        "x":  220,
+        "wires":  [
+                      [
+                          "ui_txt_profile_status_d",
+                          "ui_txt_profile_learning_d",
+                          "ui_txt_profile_chip1_uid_d",
+                          "ui_txt_profile_chip1_profile_d",
+                          "ui_txt_profile_chip2_uid_d",
+                          "ui_txt_profile_chip2_profile_d",
+                          "ui_txt_profile_last_uid_d",
+                          "ui_txt_profile_active_d",
+                          "ui_txt_profile_hw_status_d",
+                          "ui_txt_rfid_status_d"
+                      ]
+                  ],
+        "links":  [
+
+                  ]
+    },
+    {
+        "tooltip":  "RFID lesen",
+        "id":  "ui_btn_profile_read_d",
+        "payloadType":  "str",
+        "type":  "ui-button",
+        "passthru":  false,
+        "label":  "Lesen",
+        "height":  1,
+        "x":  290,
+        "wires":  [
+                      [
+                          "link_out_dashboard_to_profiles"
+                      ]
+                  ],
+        "group":  "ui_grp_profile_main",
+        "topic":  "",
+        "order":  1,
+        "payload":  "RFID_READ",
+        "icon":  "visibility",
+        "y":  980,
+        "name":  "RFID Lesen",
+        "z":  "4985bdfbcf200fe6",
+        "width":  4,
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "id":  "ui_txt_profile_status_d",
+        "y":  1000,
+        "format":  "{{msg.payload.profile_status_text}}",
+        "width":  12,
+        "group":  "ui_grp_profile_main",
+        "name":  "Profilstatus",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  8,
+        "label":  "Profilstatus",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread",
+        "style":  false,
+        "value":  "payload.profile_status_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_profile_learning_d",
+        "y":  1040,
+        "format":  "{{msg.payload.rfid_learning_text}}",
+        "width":  12,
+        "group":  "ui_grp_profile_main",
+        "name":  "Anlernmodus",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  9,
+        "label":  "Anlernmodus",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread",
+        "style":  false,
+        "value":  "payload.rfid_learning_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_profile_chip1_uid_d",
+        "y":  1080,
+        "format":  "{{msg.payload.rfid_chip1_uid}}",
+        "width":  12,
+        "group":  "ui_grp_profile_main",
+        "name":  "Chip 1 UID",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  10,
+        "label":  "Chip 1 UID",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread",
+        "style":  false,
+        "value":  "payload.rfid_chip1_uid",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_profile_chip1_profile_d",
+        "y":  1120,
+        "format":  "{{msg.payload.rfid_chip1_profile}}",
+        "width":  12,
+        "group":  "ui_grp_profile_main",
+        "name":  "Chip 1 Profil",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  11,
+        "label":  "Chip 1 Profil",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread",
+        "style":  false,
+        "value":  "payload.rfid_chip1_profile",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_profile_chip2_uid_d",
+        "y":  1160,
+        "format":  "{{msg.payload.rfid_chip2_uid}}",
+        "width":  12,
+        "group":  "ui_grp_profile_main",
+        "name":  "Chip 2 UID",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  12,
+        "label":  "Chip 2 UID",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread",
+        "style":  false,
+        "value":  "payload.rfid_chip2_uid",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_profile_chip2_profile_d",
+        "y":  1200,
+        "format":  "{{msg.payload.rfid_chip2_profile}}",
+        "width":  12,
+        "group":  "ui_grp_profile_main",
+        "name":  "Chip 2 Profil",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  13,
+        "label":  "Chip 2 Profil",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread",
+        "style":  false,
+        "value":  "payload.rfid_chip2_profile",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_profile_last_uid_d",
+        "y":  1240,
+        "format":  "{{msg.payload.rfid_last_uid}}",
+        "width":  12,
+        "group":  "ui_grp_profile_main",
+        "name":  "Letzte UID",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  14,
+        "label":  "Letzte UID",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread",
+        "style":  false,
+        "value":  "payload.rfid_last_uid",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_profile_active_d",
+        "y":  1280,
+        "format":  "{{msg.payload.rfid_active_profile}}",
+        "width":  12,
+        "group":  "ui_grp_profile_main",
+        "name":  "Aktives Profil",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "x":  960,
+        "order":  15,
+        "label":  "Aktives Profil",
+        "height":  1,
+        "wires":  [
+
+                  ],
+        "layout":  "row-spread",
+        "style":  false,
+        "value":  "payload.rfid_active_profile",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_profile_hw_status_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "ui_grp_profile_main",
+        "order":  16,
+        "width":  12,
+        "height":  1,
+        "name":  "RFID Modulstatus",
+        "label":  "RFID Modulstatus",
+        "format":  "{{msg.payload.rfid_hw_status_text}}",
+        "layout":  "row-spread",
+        "x":  960,
+        "y":  1300,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.rfid_hw_status_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "tooltip":  "Wenn Profil 1 frei: anlernen. Wenn belegt: Bindung loeschen.",
+        "id":  "ui_btn_profile_learn_p1_d",
+        "payloadType":  "str",
+        "type":  "ui-button",
+        "passthru":  false,
+        "label":  "Profil 1 anlernen/loeschen",
+        "height":  1,
+        "x":  310,
+        "wires":  [
+                      [
+                          "link_out_dashboard_to_profiles"
+                      ]
+                  ],
+        "group":  "ui_grp_profile_main",
+        "topic":  "",
+        "order":  2,
+        "payload":  "RFID_LEARN_P1",
+        "icon":  "school",
+        "y":  1020,
+        "name":  "Profil 1 anlernen/loeschen",
+        "z":  "4985bdfbcf200fe6",
+        "width":  4,
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "tooltip":  "Wenn Profil 2 frei: anlernen. Wenn belegt: Bindung loeschen.",
+        "id":  "ui_btn_profile_learn_p2_d",
+        "payloadType":  "str",
+        "type":  "ui-button",
+        "passthru":  false,
+        "label":  "Profil 2 anlernen/loeschen",
+        "height":  1,
+        "x":  310,
+        "wires":  [
+                      [
+                          "link_out_dashboard_to_profiles"
+                      ]
+                  ],
+        "group":  "ui_grp_profile_main",
+        "topic":  "",
+        "order":  3,
+        "payload":  "RFID_LEARN_P2",
+        "icon":  "school",
+        "y":  1060,
+        "name":  "Profil 2 anlernen/loeschen",
+        "z":  "4985bdfbcf200fe6",
+        "width":  4,
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "id":  "ui_txt_rfid_status_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  8,
+        "width":  7,
+        "height":  1,
+        "name":  "RFID Status Anzeige",
+        "label":  "RFID RC522 Status",
+        "format":  "{{msg.payload.rfid_hw_status_text}}",
+        "layout":  "row-spread",
+        "x":  680,
+        "y":  760,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.rfid_hw_status_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_theme_projekt_default",
+        "type":  "ui-theme",
+        "name":  "Projekt Theme",
+        "colors":  {
+                       "surface":  "#ffffff",
+                       "primary":  "#0094CE",
+                       "bgPage":  "#f4f6f8",
+                       "groupBg":  "#ffffff",
+                       "groupOutline":  "#d7dde5"
+                   },
+        "sizes":  {
+                      "density":  "compact",
+                      "pagePadding":  "8px",
+                      "groupGap":  "8px",
+                      "groupBorderRadius":  "10px",
+                      "widgetGap":  "6px"
+                  }
+    }
+]
