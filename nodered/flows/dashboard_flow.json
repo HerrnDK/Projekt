@@ -1,4 +1,4 @@
-[
+﻿[
     {
         "id":  "4985bdfbcf200fe6",
         "type":  "tab",
@@ -8,229 +8,320 @@
     },
     {
         "id":  "0318f4604525f4f7",
-        "type":  "ui_tab",
+        "type":  "ui-page",
         "name":  "Willkommen",
         "icon":  "dashboard",
         "order":  1,
+        "ui":  "3430d891af8fa1f6",
+        "theme":  "ui_theme_projekt_default",
+        "layout":  "grid",
+        "visible":  true,
         "disabled":  false,
-        "hidden":  false
+        "path":  "/willkommen",
+        "breakpoints":  [
+                            {
+                                "name":  "Telefon",
+                                "px":  "0",
+                                "cols":  "3"
+                            },
+                            {
+                                "name":  "Tablet",
+                                "px":  "600",
+                                "cols":  "6"
+                            },
+                            {
+                                "name":  "Display800",
+                                "px":  "800",
+                                "cols":  "10"
+                            },
+                            {
+                                "name":  "Desktop",
+                                "px":  "1100",
+                                "cols":  "12"
+                            }
+                        ]
     },
     {
         "id":  "1a87758382986ddf",
-        "type":  "ui_tab",
+        "type":  "ui-page",
         "name":  "WLAN",
         "icon":  "wifi",
         "order":  6,
+        "ui":  "3430d891af8fa1f6",
+        "theme":  "ui_theme_projekt_default",
+        "layout":  "grid",
+        "visible":  true,
         "disabled":  false,
-        "hidden":  false
+        "path":  "/wlan",
+        "breakpoints":  [
+                            {
+                                "name":  "Telefon",
+                                "px":  "0",
+                                "cols":  "3"
+                            },
+                            {
+                                "name":  "Tablet",
+                                "px":  "600",
+                                "cols":  "6"
+                            },
+                            {
+                                "name":  "Display800",
+                                "px":  "800",
+                                "cols":  "10"
+                            },
+                            {
+                                "name":  "Desktop",
+                                "px":  "1100",
+                                "cols":  "12"
+                            }
+                        ]
     },
     {
         "id":  "b482803534c81cb7",
-        "type":  "ui_tab",
+        "type":  "ui-page",
         "name":  "Projekt-info",
         "icon":  "info",
         "order":  3,
+        "ui":  "3430d891af8fa1f6",
+        "theme":  "ui_theme_projekt_default",
+        "layout":  "grid",
+        "visible":  true,
         "disabled":  false,
-        "hidden":  false
+        "path":  "/projekt-info",
+        "breakpoints":  [
+                            {
+                                "name":  "Telefon",
+                                "px":  "0",
+                                "cols":  "3"
+                            },
+                            {
+                                "name":  "Tablet",
+                                "px":  "600",
+                                "cols":  "6"
+                            },
+                            {
+                                "name":  "Display800",
+                                "px":  "800",
+                                "cols":  "10"
+                            },
+                            {
+                                "name":  "Desktop",
+                                "px":  "1100",
+                                "cols":  "12"
+                            }
+                        ]
     },
     {
         "id":  "9db2c967c1a488ee",
-        "type":  "ui_tab",
+        "type":  "ui-page",
         "name":  "Projekt-Parametrierung",
         "icon":  "tune",
         "order":  4,
+        "ui":  "3430d891af8fa1f6",
+        "theme":  "ui_theme_projekt_default",
+        "layout":  "grid",
+        "visible":  true,
         "disabled":  false,
-        "hidden":  false
+        "path":  "/projekt-parametrierung",
+        "breakpoints":  [
+                            {
+                                "name":  "Telefon",
+                                "px":  "0",
+                                "cols":  "3"
+                            },
+                            {
+                                "name":  "Tablet",
+                                "px":  "600",
+                                "cols":  "6"
+                            },
+                            {
+                                "name":  "Display800",
+                                "px":  "800",
+                                "cols":  "10"
+                            },
+                            {
+                                "name":  "Desktop",
+                                "px":  "1100",
+                                "cols":  "12"
+                            }
+                        ]
     },
     {
         "id":  "3fe8602f3f429631",
-        "type":  "ui_tab",
+        "type":  "ui-page",
         "name":  "Projekt-Datenlog",
         "icon":  "list",
         "order":  5,
+        "ui":  "3430d891af8fa1f6",
+        "theme":  "ui_theme_projekt_default",
+        "layout":  "grid",
+        "visible":  true,
         "disabled":  false,
-        "hidden":  false
+        "path":  "/projekt-datenlog",
+        "breakpoints":  [
+                            {
+                                "name":  "Telefon",
+                                "px":  "0",
+                                "cols":  "3"
+                            },
+                            {
+                                "name":  "Tablet",
+                                "px":  "600",
+                                "cols":  "6"
+                            },
+                            {
+                                "name":  "Display800",
+                                "px":  "800",
+                                "cols":  "10"
+                            },
+                            {
+                                "name":  "Desktop",
+                                "px":  "1100",
+                                "cols":  "12"
+                            }
+                        ]
     },
     {
         "id":  "1b4dd4e879ccb455",
-        "type":  "ui_group",
+        "type":  "ui-group",
         "name":  "Willkommen auf dem Projekt-Dashboard",
-        "tab":  "0318f4604525f4f7",
         "order":  1,
-        "disp":  true,
-        "width":  "14",
+        "width":  12,
         "collapse":  false,
-        "className":  ""
+        "className":  "",
+        "page":  "0318f4604525f4f7",
+        "showTitle":  true,
+        "visible":  true,
+        "disabled":  false,
+        "groupType":  "default"
     },
     {
         "id":  "6888e5abb8efb54d",
-        "type":  "ui_group",
+        "type":  "ui-group",
         "name":  "WLAN Anmeldung",
-        "tab":  "1a87758382986ddf",
         "order":  1,
-        "disp":  true,
-        "width":  14,
+        "width":  12,
         "collapse":  false,
-        "className":  "desktop-only"
+        "className":  "desktop-only",
+        "page":  "1a87758382986ddf",
+        "showTitle":  true,
+        "visible":  true,
+        "disabled":  false,
+        "groupType":  "default"
     },
     {
         "id":  "18e42aa468913fd1",
-        "type":  "ui_group",
+        "type":  "ui-group",
         "name":  "WLAN Anmeldung",
-        "tab":  "1a87758382986ddf",
         "order":  2,
-        "disp":  true,
         "width":  10,
         "collapse":  false,
-        "className":  "mobile-only"
+        "className":  "mobile-only",
+        "page":  "1a87758382986ddf",
+        "showTitle":  true,
+        "visible":  true,
+        "disabled":  false,
+        "groupType":  "default"
     },
     {
         "id":  "939aa8523e70cefb",
-        "type":  "ui_group",
+        "type":  "ui-group",
         "name":  "Status / Sensoren",
-        "tab":  "b482803534c81cb7",
         "order":  2,
-        "disp":  true,
         "width":  10,
         "collapse":  false,
-        "className":  "mobile-only"
+        "className":  "mobile-only",
+        "page":  "b482803534c81cb7",
+        "showTitle":  true,
+        "visible":  true,
+        "disabled":  false,
+        "groupType":  "default"
     },
     {
         "id":  "3584a9c30b6db556",
-        "type":  "ui_group",
+        "type":  "ui-group",
         "name":  "Status / Sensoren",
-        "tab":  "b482803534c81cb7",
         "order":  1,
-        "disp":  true,
-        "width":  14,
+        "width":  12,
         "collapse":  false,
-        "className":  "desktop-only"
+        "className":  "desktop-only",
+        "page":  "b482803534c81cb7",
+        "showTitle":  true,
+        "visible":  true,
+        "disabled":  false,
+        "groupType":  "default"
     },
     {
         "id":  "0ef8bd821a032b93",
-        "type":  "ui_group",
+        "type":  "ui-group",
         "name":  "Parametrierung",
-        "tab":  "9db2c967c1a488ee",
         "order":  1,
-        "disp":  true,
-        "width":  14,
+        "width":  12,
         "collapse":  false,
-        "className":  "desktop-only"
+        "className":  "desktop-only",
+        "page":  "9db2c967c1a488ee",
+        "showTitle":  true,
+        "visible":  true,
+        "disabled":  false,
+        "groupType":  "default"
     },
     {
         "id":  "cd3e28787d1292e1",
-        "type":  "ui_group",
+        "type":  "ui-group",
         "name":  "Parametrierung",
-        "tab":  "9db2c967c1a488ee",
         "order":  2,
-        "disp":  true,
         "width":  10,
         "collapse":  false,
-        "className":  "mobile-only"
+        "className":  "mobile-only",
+        "page":  "9db2c967c1a488ee",
+        "showTitle":  true,
+        "visible":  true,
+        "disabled":  false,
+        "groupType":  "default"
     },
     {
         "id":  "bdc119e647f71c57",
-        "type":  "ui_group",
+        "type":  "ui-group",
         "name":  "Datenlog",
-        "tab":  "3fe8602f3f429631",
         "order":  1,
-        "disp":  true,
-        "width":  14,
-        "collapse":  false
+        "width":  12,
+        "collapse":  false,
+        "page":  "3fe8602f3f429631",
+        "showTitle":  true,
+        "visible":  true,
+        "disabled":  false,
+        "groupType":  "default"
     },
     {
         "id":  "3430d891af8fa1f6",
-        "type":  "ui_base",
-        "theme":  {
-                      "name":  "theme-light",
-                      "lightTheme":  {
-                                         "default":  "#0094CE",
-                                         "baseColor":  "#0094CE",
-                                         "baseFont":  "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
-                                         "edited":  true,
-                                         "reset":  false
-                                     },
-                      "darkTheme":  {
-                                        "default":  "#097479",
-                                        "baseColor":  "#097479",
-                                        "baseFont":  "-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Oxygen-Sans,Ubuntu,Cantarell,Helvetica Neue,sans-serif",
-                                        "edited":  false
-                                    },
-                      "themeState":  {
-                                         "base-color":  {
-                                                            "default":  "#0094CE",
-                                                            "value":  "#0094CE",
-                                                            "edited":  false
-                                                        },
-                                         "page-titlebar-backgroundColor":  {
-                                                                               "value":  "#0094CE",
-                                                                               "edited":  false
-                                                                           },
-                                         "page-backgroundColor":  {
-                                                                      "value":  "#fafafa",
-                                                                      "edited":  false
-                                                                  },
-                                         "page-sidebar-backgroundColor":  {
-                                                                              "value":  "#ffffff",
-                                                                              "edited":  false
-                                                                          },
-                                         "group-textColor":  {
-                                                                 "value":  "#1bbfff",
-                                                                 "edited":  false
-                                                             },
-                                         "group-borderColor":  {
-                                                                   "value":  "#ffffff",
-                                                                   "edited":  false
-                                                               },
-                                         "group-backgroundColor":  {
-                                                                       "value":  "#ffffff",
-                                                                       "edited":  false
-                                                                   },
-                                         "widget-textColor":  {
-                                                                  "value":  "#111111",
-                                                                  "edited":  false
-                                                              },
-                                         "widget-backgroundColor":  {
-                                                                        "value":  "#0094ce",
-                                                                        "edited":  false
-                                                                    },
-                                         "widget-borderColor":  {
-                                                                    "value":  "#ffffff",
-                                                                    "edited":  false
-                                                                }
-                                     }
-                  },
-        "site":  {
-                     "name":  "Node-RED Dashboard",
-                     "hideToolbar":  "false",
-                     "allowSwipe":  "false",
-                     "lockMenu":  "false",
-                     "allowTempTheme":  "true",
-                     "dateFormat":  "DD.MM.YYYY",
-                     "sizes":  {
-                                   "sx":  48,
-                                   "sy":  48,
-                                   "gx":  6,
-                                   "gy":  6,
-                                   "cx":  6,
-                                   "cy":  6,
-                                   "px":  0,
-                                   "py":  0
-                               }
-                 }
+        "type":  "ui-base",
+        "name":  "Projekt Dashboard",
+        "path":  "/ui",
+        "appIcon":  "",
+        "includeClientData":  true,
+        "acceptsClientConfig":  [
+                                    "ui-notification",
+                                    "ui-control"
+                                ],
+        "showPathInSidebar":  false,
+        "headerContent":  "page",
+        "navigationStyle":  "default",
+        "titleBarStyle":  "default",
+        "showReconnectNotification":  true,
+        "notificationDisplayTime":  1,
+        "showDisconnectNotification":  true
     },
     {
         "id":  "4e62a4011a9a2d00",
-        "type":  "ui_template",
+        "type":  "ui-template",
         "z":  "4985bdfbcf200fe6",
         "group":  "1b4dd4e879ccb455",
         "name":  "Responsive CSS Global",
         "order":  -1,
         "width":  0,
         "height":  0,
-        "format":  "\u003cstyle\u003e\n  * { box-sizing: border-box; }\n  html, body, md-content, .nr-dashboard-dashboard { overflow-x: hidden; }\n  .nr-dashboard-cardcontainer { padding: 4px; }\n  md-card { width: 100%; max-width: calc(100% - 8px); }\n\n  .mobile-only { display: none !important; }\n  .desktop-only { display: block !important; }\n\n  @media (max-width: 600px) {\n    .desktop-only { display: none !important; }\n    .mobile-only { display: block !important; }\n    md-card { margin: 2px !important; }\n    .nr-dashboard-cardcontainer { padding: 2px !important; }\n  }\n\n  /* QR cards */\n  .qr-card {\n    background: #ffffff;\n    padding: 16px 18px;\n    border-radius: 12px;\n    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);\n    text-align: center;\n    width: 100%;\n  }\n  .qr-title {\n    font-weight: 700;\n    margin-bottom: 8px;\n    color: #111111;\n  }\n  .qr-card img {\n    width: 200px;\n    height: 200px;\n    display: block;\n    margin: 0 auto;\n  }\n  .qr-hint {\n    margin-top: 8px;\n    font-size: 13px;\n    color: #333333;\n  }\n  @media (max-width: 600px) {\n    .qr-card { padding: 12px 14px; }\n    .qr-card img { width: 170px; height: 170px; }\n    .qr-hint { font-size: 12px; }\n  }\n\n\u003c/style\u003e",
+        "format":  "\u003cstyle\u003e\n  * { box-sizing: border-box; }\n\n  .mobile-only { display: none !important; }\n  .desktop-only { display: block !important; }\n\n  @media (max-width: 820px) {\n    .desktop-only { display: none !important; }\n    .mobile-only { display: block !important; }\n  }\n\n  .qr-card {\n    background: #ffffff;\n    padding: 14px 16px;\n    border-radius: 12px;\n    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);\n    text-align: center;\n    width: 100%;\n  }\n\n  .qr-title {\n    font-weight: 700;\n    margin-bottom: 8px;\n    color: #111111;\n  }\n\n  .qr-card img {\n    width: 180px;\n    height: 180px;\n    display: block;\n    margin: 0 auto;\n  }\n\n  .qr-hint {\n    margin-top: 8px;\n    font-size: 13px;\n    color: #333333;\n  }\n\n  @media (max-width: 480px) {\n    .qr-card { padding: 10px 12px; }\n    .qr-card img { width: 150px; height: 150px; }\n    .qr-hint { font-size: 12px; }\n  }\n\u003c/style\u003e",
         "storeOutMessages":  false,
-        "fwdInMessages":  true,
         "resendOnRefresh":  true,
         "templateScope":  "global",
         "x":  140,
@@ -239,20 +330,21 @@
                       [
 
                       ]
-                  ]
+                  ],
+        "passthru":  true,
+        "ui":  "3430d891af8fa1f6"
     },
     {
         "id":  "7e3a8a709a4fb946",
-        "type":  "ui_template",
+        "type":  "ui-template",
         "z":  "4985bdfbcf200fe6",
         "group":  "1b4dd4e879ccb455",
         "name":  "Willkommensanzeige (zentriert)",
         "order":  3,
-        "width":  14,
+        "width":  12,
         "height":  7,
         "format":  "\u003cdiv\u003e\u003c/div\u003e",
         "storeOutMessages":  false,
-        "fwdInMessages":  true,
         "resendOnRefresh":  true,
         "templateScope":  "local",
         "x":  1820,
@@ -261,11 +353,12 @@
                       [
 
                       ]
-                  ]
+                  ],
+        "passthru":  true
     },
     {
         "id":  "5fedbca111dace7e",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "z":  "4985bdfbcf200fe6",
         "name":  "Sensoren lesen \\(Mobil\\)",
         "group":  "939aa8523e70cefb",
@@ -285,11 +378,14 @@
                       [
                           "4ac1b66aca6f1626"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "id":  "9baf027087ee53a2",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  4,
@@ -303,11 +399,12 @@
         "y":  640,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "f2c4a6e1bd3e4a70",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  6,
@@ -321,11 +418,12 @@
         "y":  680,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "d0fcb2a91e984e6a",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  7,
@@ -339,11 +437,12 @@
         "y":  720,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_droplet_value_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  9,
@@ -357,11 +456,12 @@
         "y":  800,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_droplet_status_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  10,
@@ -375,11 +475,12 @@
         "y":  840,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_turbidity_value_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  15,
@@ -393,11 +494,12 @@
         "y":  880,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_turbidity_status_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  16,
@@ -411,11 +513,12 @@
         "y":  920,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_tds_value_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  17,
@@ -429,11 +532,12 @@
         "y":  960,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_tds_status_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  18,
@@ -447,11 +551,12 @@
         "y":  1000,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_stepper_pos_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  19,
@@ -465,11 +570,12 @@
         "y":  1040,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_dht11_temp_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  20,
@@ -483,11 +589,12 @@
         "y":  1080,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_dht11_humidity_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  21,
@@ -501,11 +608,12 @@
         "y":  1120,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_dht11_status_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  22,
@@ -519,11 +627,12 @@
         "y":  1160,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "92797bc31e9565c2",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  4,
@@ -537,11 +646,12 @@
         "y":  640,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "8a9df2e34f274275",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  6,
@@ -555,11 +665,12 @@
         "y":  680,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "4bc78086c6c84e1e",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  7,
@@ -573,11 +684,12 @@
         "y":  720,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_droplet_value_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  9,
@@ -591,11 +703,12 @@
         "y":  800,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_droplet_status_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  10,
@@ -609,11 +722,12 @@
         "y":  840,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_turbidity_value_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  15,
@@ -627,11 +741,12 @@
         "y":  880,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_turbidity_status_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  16,
@@ -645,11 +760,12 @@
         "y":  920,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_tds_value_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  17,
@@ -663,11 +779,12 @@
         "y":  960,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_tds_status_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  18,
@@ -681,11 +798,12 @@
         "y":  1000,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_stepper_pos_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  19,
@@ -699,11 +817,12 @@
         "y":  1040,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_dht11_temp_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  20,
@@ -717,11 +836,12 @@
         "y":  1080,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_dht11_humidity_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  21,
@@ -735,11 +855,12 @@
         "y":  1120,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_dht11_status_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  22,
@@ -753,11 +874,12 @@
         "y":  1160,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "f5c0bddf87cbb257",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "z":  "4985bdfbcf200fe6",
         "name":  "Sensoren lesen",
         "group":  "3584a9c30b6db556",
@@ -777,7 +899,10 @@
                       [
                           "4ac1b66aca6f1626"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "id":  "4ac1b66aca6f1626",
@@ -841,7 +966,7 @@
 
                 ],
         "modules":  {
-                        "node-red-dashboard":  "3.6.6"
+                        "@flowfuse/node-red-dashboard":  "1.x"
                     }
     },
     {
@@ -887,11 +1012,11 @@
     },
     {
         "id":  "991894f4120470bc",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "0ef8bd821a032b93",
         "order":  1,
-        "width":  14,
+        "width":  12,
         "height":  1,
         "name":  "HC-SR04 Korrektur Anzeige",
         "label":  "HC-SR04 Korrektur (cm)",
@@ -901,18 +1026,19 @@
         "y":  860,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "b1cb83e0c4557d80",
-        "type":  "ui_slider",
+        "type":  "ui-slider",
         "z":  "4985bdfbcf200fe6",
         "name":  "HC-SR04 Korrektur Slider",
         "label":  "Korrektur einstellen",
         "tooltip":  "Offset fuer Distanzanzeige in cm (-5 bis +5)",
         "group":  "0ef8bd821a032b93",
         "order":  2,
-        "width":  14,
+        "width":  12,
         "height":  1,
         "passthru":  false,
         "outs":  "end",
@@ -926,11 +1052,13 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
     },
     {
         "id":  "0c15c9bcd2a45e71",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "cd3e28787d1292e1",
         "order":  1,
@@ -944,11 +1072,12 @@
         "y":  900,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "e2a62b330b7ec71f",
-        "type":  "ui_slider",
+        "type":  "ui-slider",
         "z":  "4985bdfbcf200fe6",
         "name":  "HC-SR04 Korrektur Slider \\(Mobil\\)",
         "label":  "Korrektur einstellen",
@@ -969,15 +1098,17 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
     },
     {
         "id":  "ui_txt_droplet_offset_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "0ef8bd821a032b93",
         "order":  3,
-        "width":  14,
+        "width":  12,
         "height":  1,
         "name":  "Tropfensensor Offset Anzeige",
         "label":  "Tropfensensor Offset (raw)",
@@ -987,18 +1118,19 @@
         "y":  940,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_sld_droplet_offset_d",
-        "type":  "ui_slider",
+        "type":  "ui-slider",
         "z":  "4985bdfbcf200fe6",
         "name":  "Tropfensensor Offset Slider",
         "label":  "Offset einstellen",
         "tooltip":  "Offset fuer Tropfensensor Rohwert (-300 bis +300)",
         "group":  "0ef8bd821a032b93",
         "order":  4,
-        "width":  14,
+        "width":  12,
         "height":  1,
         "passthru":  false,
         "outs":  "end",
@@ -1012,11 +1144,13 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
     },
     {
         "id":  "ui_txt_droplet_offset_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "cd3e28787d1292e1",
         "order":  3,
@@ -1030,11 +1164,12 @@
         "y":  980,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_sld_droplet_offset_m",
-        "type":  "ui_slider",
+        "type":  "ui-slider",
         "z":  "4985bdfbcf200fe6",
         "name":  "Tropfensensor Offset Slider \\(Mobil\\)",
         "label":  "Offset einstellen",
@@ -1055,15 +1190,17 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
     },
     {
         "id":  "ui_txt_turbidity_offset_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "0ef8bd821a032b93",
         "order":  9,
-        "width":  14,
+        "width":  12,
         "height":  1,
         "name":  "Truebungssensor Offset Anzeige",
         "label":  "Truebungssensor Offset (raw)",
@@ -1073,18 +1210,19 @@
         "y":  1020,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_sld_turbidity_offset_d",
-        "type":  "ui_slider",
+        "type":  "ui-slider",
         "z":  "4985bdfbcf200fe6",
         "name":  "Truebungssensor Offset Slider",
         "label":  "Offset einstellen",
         "tooltip":  "Offset fuer Truebungssensor Rohwert (-200 bis +200)",
         "group":  "0ef8bd821a032b93",
         "order":  10,
-        "width":  14,
+        "width":  12,
         "height":  1,
         "passthru":  false,
         "outs":  "end",
@@ -1098,15 +1236,17 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
     },
     {
         "id":  "ui_txt_tds_offset_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "0ef8bd821a032b93",
         "order":  11,
-        "width":  14,
+        "width":  12,
         "height":  1,
         "name":  "TDS-Sensor Offset Anzeige",
         "label":  "TDS-Sensor Offset (raw)",
@@ -1116,18 +1256,19 @@
         "y":  1100,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_sld_tds_offset_d",
-        "type":  "ui_slider",
+        "type":  "ui-slider",
         "z":  "4985bdfbcf200fe6",
         "name":  "TDS-Sensor Offset Slider",
         "label":  "Offset einstellen",
         "tooltip":  "Offset fuer TDS-Sensor Rohwert (-300 bis +300)",
         "group":  "0ef8bd821a032b93",
         "order":  12,
-        "width":  14,
+        "width":  12,
         "height":  1,
         "passthru":  false,
         "outs":  "end",
@@ -1141,11 +1282,13 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
     },
     {
         "id":  "ui_txt_turbidity_offset_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "cd3e28787d1292e1",
         "order":  9,
@@ -1159,11 +1302,12 @@
         "y":  1060,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_sld_turbidity_offset_m",
-        "type":  "ui_slider",
+        "type":  "ui-slider",
         "z":  "4985bdfbcf200fe6",
         "name":  "Truebungssensor Offset Slider \\(Mobil\\)",
         "label":  "Offset einstellen",
@@ -1184,11 +1328,13 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
     },
     {
         "id":  "ui_txt_tds_offset_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "cd3e28787d1292e1",
         "order":  11,
@@ -1202,11 +1348,12 @@
         "y":  1140,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_sld_tds_offset_m",
-        "type":  "ui_slider",
+        "type":  "ui-slider",
         "z":  "4985bdfbcf200fe6",
         "name":  "TDS-Sensor Offset Slider \\(Mobil\\)",
         "label":  "Offset einstellen",
@@ -1227,15 +1374,17 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
     },
     {
         "id":  "ui_txt_dht11_temp_offset_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "0ef8bd821a032b93",
         "order":  15,
-        "width":  14,
+        "width":  12,
         "height":  1,
         "name":  "DHT11 Temperatur Offset Anzeige",
         "label":  "DHT11 Temperatur Offset (C)",
@@ -1245,18 +1394,19 @@
         "y":  1180,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_sld_dht11_temp_offset_d",
-        "type":  "ui_slider",
+        "type":  "ui-slider",
         "z":  "4985bdfbcf200fe6",
         "name":  "DHT11 Temperatur Offset Slider",
         "label":  "Offset einstellen",
         "tooltip":  "Offset fuer DHT11 Temperatur (-10 bis +10 C)",
         "group":  "0ef8bd821a032b93",
         "order":  16,
-        "width":  14,
+        "width":  12,
         "height":  1,
         "passthru":  false,
         "outs":  "end",
@@ -1270,15 +1420,17 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
     },
     {
         "id":  "ui_txt_dht11_humidity_offset_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "0ef8bd821a032b93",
         "order":  17,
-        "width":  14,
+        "width":  12,
         "height":  1,
         "name":  "DHT11 Luftfeuchte Offset Anzeige",
         "label":  "DHT11 Luftfeuchte Offset (%)",
@@ -1288,18 +1440,19 @@
         "y":  1220,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_sld_dht11_humidity_offset_d",
-        "type":  "ui_slider",
+        "type":  "ui-slider",
         "z":  "4985bdfbcf200fe6",
         "name":  "DHT11 Luftfeuchte Offset Slider",
         "label":  "Offset einstellen",
         "tooltip":  "Offset fuer DHT11 Luftfeuchte (-20 bis +20 %)",
         "group":  "0ef8bd821a032b93",
         "order":  18,
-        "width":  14,
+        "width":  12,
         "height":  1,
         "passthru":  false,
         "outs":  "end",
@@ -1313,11 +1466,13 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
     },
     {
         "id":  "ui_txt_dht11_temp_offset_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "cd3e28787d1292e1",
         "order":  15,
@@ -1331,11 +1486,12 @@
         "y":  1260,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_sld_dht11_temp_offset_m",
-        "type":  "ui_slider",
+        "type":  "ui-slider",
         "z":  "4985bdfbcf200fe6",
         "name":  "DHT11 Temperatur Offset Slider \\(Mobil\\)",
         "label":  "Offset einstellen",
@@ -1356,11 +1512,13 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
     },
     {
         "id":  "ui_txt_dht11_humidity_offset_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "cd3e28787d1292e1",
         "order":  17,
@@ -1374,11 +1532,12 @@
         "y":  1300,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_sld_dht11_humidity_offset_m",
-        "type":  "ui_slider",
+        "type":  "ui-slider",
         "z":  "4985bdfbcf200fe6",
         "name":  "DHT11 Luftfeuchte Offset Slider \\(Mobil\\)",
         "label":  "Offset einstellen",
@@ -1399,11 +1558,13 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "className":  ""
     },
     {
         "id":  "ui_btn_stepper_5s_d",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "z":  "4985bdfbcf200fe6",
         "name":  "Schrittmotor 5s drehen",
         "group":  "0ef8bd821a032b93",
@@ -1425,11 +1586,14 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "id":  "ui_btn_stepper_120_d",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "z":  "4985bdfbcf200fe6",
         "name":  "Schrittmotor 120 Grad drehen",
         "group":  "0ef8bd821a032b93",
@@ -1451,11 +1615,14 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "id":  "ui_btn_stepper_5s_m",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "z":  "4985bdfbcf200fe6",
         "name":  "Schrittmotor 5s drehen \\(Mobil\\)",
         "group":  "cd3e28787d1292e1",
@@ -1477,11 +1644,14 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "id":  "ui_btn_stepper_120_m",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "z":  "4985bdfbcf200fe6",
         "name":  "Schrittmotor 120 Grad drehen \\(Mobil\\)",
         "group":  "cd3e28787d1292e1",
@@ -1503,11 +1673,14 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "id":  "ui_btn_relay1_d",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "z":  "4985bdfbcf200fe6",
         "name":  "Relais 1 (Pumpe) schalten",
         "group":  "0ef8bd821a032b93",
@@ -1529,11 +1702,14 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "id":  "ui_btn_relay2_d",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "z":  "4985bdfbcf200fe6",
         "name":  "Relais 2 schalten",
         "group":  "0ef8bd821a032b93",
@@ -1555,11 +1731,14 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "id":  "ui_btn_relay3_d",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "z":  "4985bdfbcf200fe6",
         "name":  "Relais 3 schalten",
         "group":  "0ef8bd821a032b93",
@@ -1581,11 +1760,14 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "id":  "ui_btn_relay4_d",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "z":  "4985bdfbcf200fe6",
         "name":  "Relais 4 schalten",
         "group":  "0ef8bd821a032b93",
@@ -1607,11 +1789,14 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "id":  "ui_btn_relay1_m",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "z":  "4985bdfbcf200fe6",
         "name":  "Relais 1 (Pumpe) schalten \\(Mobil\\)",
         "group":  "cd3e28787d1292e1",
@@ -1633,11 +1818,14 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "id":  "ui_btn_relay2_m",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "z":  "4985bdfbcf200fe6",
         "name":  "Relais 2 schalten \\(Mobil\\)",
         "group":  "cd3e28787d1292e1",
@@ -1659,11 +1847,14 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "id":  "ui_btn_relay3_m",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "z":  "4985bdfbcf200fe6",
         "name":  "Relais 3 schalten \\(Mobil\\)",
         "group":  "cd3e28787d1292e1",
@@ -1685,11 +1876,14 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "id":  "ui_btn_relay4_m",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "z":  "4985bdfbcf200fe6",
         "name":  "Relais 4 schalten \\(Mobil\\)",
         "group":  "cd3e28787d1292e1",
@@ -1711,7 +1905,10 @@
                       [
                           "b8c0e9d3f4a15412"
                       ]
-                  ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "id":  "link_in_relays_from_parameters",
@@ -1738,7 +1935,7 @@
     },
     {
         "id":  "ui_txt_relay1_status_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  11,
@@ -1752,11 +1949,12 @@
         "y":  900,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_relay2_status_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  12,
@@ -1770,11 +1968,12 @@
         "y":  940,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_relay3_status_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  13,
@@ -1788,11 +1987,12 @@
         "y":  980,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_relay4_status_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  14,
@@ -1806,11 +2006,12 @@
         "y":  1020,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_relay1_status_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  11,
@@ -1824,11 +2025,12 @@
         "y":  1060,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_relay2_status_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  12,
@@ -1842,11 +2044,12 @@
         "y":  1100,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_relay3_status_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  13,
@@ -1860,11 +2063,12 @@
         "y":  1140,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_relay4_status_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  14,
@@ -1878,38 +2082,71 @@
         "y":  1180,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_tab_profile",
         "name":  "Profile",
         "icon":  "badge",
-        "type":  "ui_tab",
-        "hidden":  false,
+        "type":  "ui-page",
         "order":  2,
-        "disabled":  false
+        "ui":  "3430d891af8fa1f6",
+        "theme":  "ui_theme_projekt_default",
+        "layout":  "grid",
+        "visible":  true,
+        "disabled":  false,
+        "path":  "/profile",
+        "breakpoints":  [
+                            {
+                                "name":  "Telefon",
+                                "px":  "0",
+                                "cols":  "3"
+                            },
+                            {
+                                "name":  "Tablet",
+                                "px":  "600",
+                                "cols":  "6"
+                            },
+                            {
+                                "name":  "Display800",
+                                "px":  "800",
+                                "cols":  "10"
+                            },
+                            {
+                                "name":  "Desktop",
+                                "px":  "1100",
+                                "cols":  "12"
+                            }
+                        ]
     },
     {
-        "width":  14,
+        "width":  12,
         "id":  "ui_grp_profile_main",
-        "type":  "ui_group",
+        "type":  "ui-group",
         "order":  1,
-        "disp":  true,
         "collapse":  false,
         "name":  "RFID-Profile",
         "className":  "desktop-only",
-        "tab":  "ui_tab_profile"
+        "page":  "ui_tab_profile",
+        "showTitle":  true,
+        "visible":  true,
+        "disabled":  false,
+        "groupType":  "default"
     },
     {
         "width":  10,
         "id":  "ui_grp_profile_mobile",
-        "type":  "ui_group",
+        "type":  "ui-group",
         "order":  2,
-        "disp":  true,
         "collapse":  false,
         "name":  "RFID-Profile",
         "className":  "mobile-only",
-        "tab":  "ui_tab_profile"
+        "page":  "ui_tab_profile",
+        "showTitle":  true,
+        "visible":  true,
+        "disabled":  false,
+        "groupType":  "default"
     },
     {
         "id":  "link_out_dashboard_to_profiles",
@@ -1964,7 +2201,7 @@
         "tooltip":  "RFID lesen",
         "id":  "ui_btn_profile_read_d",
         "payloadType":  "str",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "passthru":  false,
         "label":  "Lesen",
         "height":  1,
@@ -1982,13 +2219,16 @@
         "y":  980,
         "name":  "RFID Lesen",
         "z":  "4985bdfbcf200fe6",
-        "width":  4
+        "width":  4,
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "tooltip":  "RFID lesen",
         "id":  "ui_btn_profile_read_m",
         "payloadType":  "str",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "passthru":  false,
         "label":  "Lesen",
         "height":  1,
@@ -2006,16 +2246,19 @@
         "y":  1240,
         "name":  "RFID Lesen \\(Mobil\\)",
         "z":  "4985bdfbcf200fe6",
-        "width":  10
+        "width":  10,
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "id":  "ui_txt_profile_status_d",
         "y":  1000,
         "format":  "{{msg.payload.profile_status_text}}",
-        "width":  14,
+        "width":  12,
         "group":  "ui_grp_profile_main",
         "name":  "Profilstatus",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "x":  960,
         "order":  8,
@@ -2024,16 +2267,17 @@
         "wires":  [
 
                   ],
-        "layout":  "row-spread"
+        "layout":  "row-spread",
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_learning_d",
         "y":  1040,
         "format":  "{{msg.payload.rfid_learning_text}}",
-        "width":  14,
+        "width":  12,
         "group":  "ui_grp_profile_main",
         "name":  "Anlernmodus",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "x":  960,
         "order":  9,
@@ -2042,16 +2286,17 @@
         "wires":  [
 
                   ],
-        "layout":  "row-spread"
+        "layout":  "row-spread",
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_chip1_uid_d",
         "y":  1080,
         "format":  "{{msg.payload.rfid_chip1_uid}}",
-        "width":  14,
+        "width":  12,
         "group":  "ui_grp_profile_main",
         "name":  "Chip 1 UID",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "x":  960,
         "order":  10,
@@ -2060,16 +2305,17 @@
         "wires":  [
 
                   ],
-        "layout":  "row-spread"
+        "layout":  "row-spread",
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_chip1_profile_d",
         "y":  1120,
         "format":  "{{msg.payload.rfid_chip1_profile}}",
-        "width":  14,
+        "width":  12,
         "group":  "ui_grp_profile_main",
         "name":  "Chip 1 Profil",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "x":  960,
         "order":  11,
@@ -2078,16 +2324,17 @@
         "wires":  [
 
                   ],
-        "layout":  "row-spread"
+        "layout":  "row-spread",
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_chip2_uid_d",
         "y":  1160,
         "format":  "{{msg.payload.rfid_chip2_uid}}",
-        "width":  14,
+        "width":  12,
         "group":  "ui_grp_profile_main",
         "name":  "Chip 2 UID",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "x":  960,
         "order":  12,
@@ -2096,16 +2343,17 @@
         "wires":  [
 
                   ],
-        "layout":  "row-spread"
+        "layout":  "row-spread",
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_chip2_profile_d",
         "y":  1200,
         "format":  "{{msg.payload.rfid_chip2_profile}}",
-        "width":  14,
+        "width":  12,
         "group":  "ui_grp_profile_main",
         "name":  "Chip 2 Profil",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "x":  960,
         "order":  13,
@@ -2114,16 +2362,17 @@
         "wires":  [
 
                   ],
-        "layout":  "row-spread"
+        "layout":  "row-spread",
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_last_uid_d",
         "y":  1240,
         "format":  "{{msg.payload.rfid_last_uid}}",
-        "width":  14,
+        "width":  12,
         "group":  "ui_grp_profile_main",
         "name":  "Letzte UID",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "x":  960,
         "order":  14,
@@ -2132,16 +2381,17 @@
         "wires":  [
 
                   ],
-        "layout":  "row-spread"
+        "layout":  "row-spread",
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_active_d",
         "y":  1280,
         "format":  "{{msg.payload.rfid_active_profile}}",
-        "width":  14,
+        "width":  12,
         "group":  "ui_grp_profile_main",
         "name":  "Aktives Profil",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "x":  960,
         "order":  15,
@@ -2150,7 +2400,8 @@
         "wires":  [
 
                   ],
-        "layout":  "row-spread"
+        "layout":  "row-spread",
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_status_m",
@@ -2159,7 +2410,7 @@
         "width":  10,
         "group":  "ui_grp_profile_mobile",
         "name":  "Profilstatus",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "x":  960,
         "order":  8,
@@ -2168,7 +2419,8 @@
         "wires":  [
 
                   ],
-        "layout":  "row-spread"
+        "layout":  "row-spread",
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_learning_m",
@@ -2177,7 +2429,7 @@
         "width":  10,
         "group":  "ui_grp_profile_mobile",
         "name":  "Anlernmodus",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "x":  960,
         "order":  9,
@@ -2186,7 +2438,8 @@
         "wires":  [
 
                   ],
-        "layout":  "row-spread"
+        "layout":  "row-spread",
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_chip1_uid_m",
@@ -2195,7 +2448,7 @@
         "width":  10,
         "group":  "ui_grp_profile_mobile",
         "name":  "Chip 1 UID",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "x":  960,
         "order":  10,
@@ -2204,7 +2457,8 @@
         "wires":  [
 
                   ],
-        "layout":  "row-spread"
+        "layout":  "row-spread",
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_chip1_profile_m",
@@ -2213,7 +2467,7 @@
         "width":  10,
         "group":  "ui_grp_profile_mobile",
         "name":  "Chip 1 Profil",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "x":  960,
         "order":  11,
@@ -2222,7 +2476,8 @@
         "wires":  [
 
                   ],
-        "layout":  "row-spread"
+        "layout":  "row-spread",
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_chip2_uid_m",
@@ -2231,7 +2486,7 @@
         "width":  10,
         "group":  "ui_grp_profile_mobile",
         "name":  "Chip 2 UID",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "x":  960,
         "order":  12,
@@ -2240,7 +2495,8 @@
         "wires":  [
 
                   ],
-        "layout":  "row-spread"
+        "layout":  "row-spread",
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_chip2_profile_m",
@@ -2249,7 +2505,7 @@
         "width":  10,
         "group":  "ui_grp_profile_mobile",
         "name":  "Chip 2 Profil",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "x":  960,
         "order":  13,
@@ -2258,7 +2514,8 @@
         "wires":  [
 
                   ],
-        "layout":  "row-spread"
+        "layout":  "row-spread",
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_last_uid_m",
@@ -2267,7 +2524,7 @@
         "width":  10,
         "group":  "ui_grp_profile_mobile",
         "name":  "Letzte UID",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "x":  960,
         "order":  14,
@@ -2276,7 +2533,8 @@
         "wires":  [
 
                   ],
-        "layout":  "row-spread"
+        "layout":  "row-spread",
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_active_m",
@@ -2285,7 +2543,7 @@
         "width":  10,
         "group":  "ui_grp_profile_mobile",
         "name":  "Aktives Profil",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "x":  960,
         "order":  15,
@@ -2294,15 +2552,16 @@
         "wires":  [
 
                   ],
-        "layout":  "row-spread"
+        "layout":  "row-spread",
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_hw_status_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "ui_grp_profile_main",
         "order":  16,
-        "width":  14,
+        "width":  12,
         "height":  1,
         "name":  "RFID Modulstatus",
         "label":  "RFID Modulstatus",
@@ -2312,11 +2571,12 @@
         "y":  1300,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_profile_hw_status_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "ui_grp_profile_mobile",
         "order":  16,
@@ -2330,13 +2590,14 @@
         "y":  1620,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "tooltip":  "Wenn Profil 1 frei: anlernen. Wenn belegt: Bindung loeschen.",
         "id":  "ui_btn_profile_learn_p1_d",
         "payloadType":  "str",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "passthru":  false,
         "label":  "Profil 1 anlernen/loeschen",
         "height":  1,
@@ -2354,13 +2615,16 @@
         "y":  1020,
         "name":  "Profil 1 anlernen/loeschen",
         "z":  "4985bdfbcf200fe6",
-        "width":  4
+        "width":  4,
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "tooltip":  "Wenn Profil 2 frei: anlernen. Wenn belegt: Bindung loeschen.",
         "id":  "ui_btn_profile_learn_p2_d",
         "payloadType":  "str",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "passthru":  false,
         "label":  "Profil 2 anlernen/loeschen",
         "height":  1,
@@ -2378,13 +2642,16 @@
         "y":  1060,
         "name":  "Profil 2 anlernen/loeschen",
         "z":  "4985bdfbcf200fe6",
-        "width":  4
+        "width":  4,
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "tooltip":  "Wenn Profil 1 frei: anlernen. Wenn belegt: Bindung loeschen.",
         "id":  "ui_btn_profile_learn_p1_m",
         "payloadType":  "str",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "passthru":  false,
         "label":  "Profil 1 anlernen/loeschen",
         "height":  1,
@@ -2402,13 +2669,16 @@
         "y":  1280,
         "name":  "Profil 1 anlernen/loeschen \\(Mobil\\)",
         "z":  "4985bdfbcf200fe6",
-        "width":  10
+        "width":  10,
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "tooltip":  "Wenn Profil 2 frei: anlernen. Wenn belegt: Bindung loeschen.",
         "id":  "ui_btn_profile_learn_p2_m",
         "payloadType":  "str",
-        "type":  "ui_button",
+        "type":  "ui-button",
         "passthru":  false,
         "label":  "Profil 2 anlernen/loeschen",
         "height":  1,
@@ -2426,11 +2696,14 @@
         "y":  1320,
         "name":  "Profil 2 anlernen/loeschen \\(Mobil\\)",
         "z":  "4985bdfbcf200fe6",
-        "width":  10
+        "width":  10,
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
     },
     {
         "id":  "ui_txt_rfid_status_d",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "3584a9c30b6db556",
         "order":  8,
@@ -2444,11 +2717,12 @@
         "y":  760,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
     },
     {
         "id":  "ui_txt_rfid_status_m",
-        "type":  "ui_text",
+        "type":  "ui-text",
         "z":  "4985bdfbcf200fe6",
         "group":  "939aa8523e70cefb",
         "order":  8,
@@ -2462,7 +2736,26 @@
         "y":  760,
         "wires":  [
 
-                  ]
+                  ],
+        "style":  false
+    },
+    {
+        "id":  "ui_theme_projekt_default",
+        "type":  "ui-theme",
+        "name":  "Projekt Theme",
+        "colors":  {
+                       "surface":  "#ffffff",
+                       "primary":  "#0094CE",
+                       "bgPage":  "#f4f6f8",
+                       "groupBg":  "#ffffff",
+                       "groupOutline":  "#d7dde5"
+                   },
+        "sizes":  {
+                      "density":  "compact",
+                      "pagePadding":  "8px",
+                      "groupGap":  "8px",
+                      "groupBorderRadius":  "10px",
+                      "widgetGap":  "6px"
+                  }
     }
 ]
-

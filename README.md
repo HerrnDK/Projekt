@@ -1,8 +1,16 @@
-# Arduino Mega 2560 + Node-RED (Raspberry Pi)
+# Arduino Mega 2560 + Node-RED + FlowFuse Dashboard 2.0 (Raspberry Pi)
 
 
 Dieses Repository enthaelt das Grundgeruest fuer die serielle Kommunikation
 zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
+
+## Dashboard-Stack (FlowFuse)
+- UI basiert auf `@flowfuse/node-red-dashboard` (Dashboard 2.0).
+- Dashboard-Pfad: `http://<pi-ip>:1880/ui`
+- Layout ist auf zwei Zielgeraete abgestimmt:
+  - 800x480 Touch-Display (eigener Breakpoint bei 800px)
+  - Smartphone (kompakter Breakpoint)
+- Desktop/Mobil-Anzeigen werden weiterhin ueber CSS-Klassen `desktop-only` und `mobile-only` gesteuert.
 
 ## Verdrahtung (Serial1)
 - **Arduino Mega 2560** Serial1:
@@ -208,6 +216,13 @@ Hinweise:
   1. `cd ~/.node-red` (falls das deine Projektwurzel ist), dann `git pull`
   2. `./scripts/arduino_watch_upload.sh --once`
   3. `./nodered/flows/deploy_flows.sh`
+
+## Dashboard-Abhaengigkeit installieren (einmalig auf der Pi)
+```bash
+cd ~/.node-red
+npm install @flowfuse/node-red-dashboard
+sudo systemctl restart nodered || sudo systemctl restart node-red
+```
 
 ## Parametrierung (Dashboard)
 - Im Tab `Projekt-Parametrierung` gibt es einen Slider `HC-SR04 Korrektur (cm)` mit Bereich `-5 .. +5`.

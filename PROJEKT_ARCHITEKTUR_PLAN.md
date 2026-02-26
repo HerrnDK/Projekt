@@ -3,6 +3,7 @@
 ## Ziel
 - Einheitliche Architektur- und Ablaufdokumentation fuer Node-RED und Arduino.
 - Klare Trennung zwischen Node-RED-Flows und Arduino-Funktionslogik.
+- UI-Schicht basiert auf FlowFuse Dashboard 2.0 (responsive fuer 800x480 und Smartphone).
 
 ## 1) Node-RED Flussdiagramme (durchnummeriert)
 
@@ -10,7 +11,7 @@
 ```mermaid
 flowchart TD
   S([Start]) --> B["Touch-Browser"]
-  B --> D["dashboard_flow.json"]
+  B --> D["dashboard_flow.json (FlowFuse Dashboard 2.0)"]
 
   D --> F1["fn_startup_test_flow.json"]
   D --> F2["fn_parameters_flow.json"]

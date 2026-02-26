@@ -4,6 +4,10 @@
 
 Die Flows werden direkt auf der Raspberry Pi aktualisiert.
 
+Dashboard-Engine:
+- Das Projekt nutzt `@flowfuse/node-red-dashboard` (Dashboard 2.0).
+- Ziel-Darstellung ist auf 800x480 Touch und Smartphone ausgelegt.
+
 Empfohlen:
 1. `update` im Projektverzeichnis ausfuehren
 
@@ -38,6 +42,14 @@ cd ~/.node-red
 update
 ```
 
+### Schritt 2a: FlowFuse Dashboard installieren (einmalig)
+
+```bash
+cd ~/.node-red
+npm install @flowfuse/node-red-dashboard
+sudo systemctl restart nodered || sudo systemctl restart node-red
+```
+
 ### Schritt 3: Manuelle Bereitstellung (optional)
 
 ```bash
@@ -65,6 +77,10 @@ Du solltest u. a. Tabs sehen:
 ### 2. Dashboard pruefen
 
 Gehe zu: `http://192.168.0.250:1880/ui`
+
+Responsive-Pruefung:
+- 800x480 Display: Inhalte duerfen nicht horizontal abschneiden.
+- Smartphone: mobile Gruppen muessen sichtbar sein, Desktop-Gruppen ausgeblendet.
 
 Projekt-Parametrierung:
 - 4 Relais-Buttons (`Relais 1 (Pumpe)`, `Relais 2-4 (Reserve)`) zum Umschalten ON/OFF
