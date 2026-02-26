@@ -1,4 +1,4 @@
-version: 14
+version: 15
 registry: components
 conventions:
   id_style: "snake_case, stable logical id (not Node-RED node id)"
@@ -150,9 +150,9 @@ components:
     type: function
     flow: nodered/flows/fn_startup_test_flow.json
     node_label: "Startup-Test validieren"
-    description: "Validiert HC-SR04 + Tropfensensor + Truebungssensor + TDS-Sensor Status inkl. Uptime; setzt Anlagenstatus inkl. Fehlertext"
-    tags: [startup, status, validation, hcsr04, droplet, turbidity, tds]
-    version: 4
+    description: "Validiert HC-SR04 + Tropfensensor + Truebungssensor + TDS-Sensor + DHT11 Status inkl. Uptime; setzt Anlagenstatus inkl. Fehlertext"
+    tags: [startup, status, validation, hcsr04, droplet, turbidity, tds, dht11]
+    version: 5
   startup_status_indicator_desktop:
     id: startup_status_indicator_desktop
     type: ui_text
@@ -289,6 +289,54 @@ components:
       payload: -20
     tags: [ui, parameter, tds, offset, mobile]
     version: 1
+  parameter_dht11_temp_offset_slider_desktop:
+    id: parameter_dht11_temp_offset_slider_desktop
+    type: ui_slider
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "DHT11 Temperatur Offset Slider"
+    group: ui_grp_parameter_main
+    description: "Slider fuer DHT11 Temperatur-Offset (Desktop, -10..+10, topic=dht11_temp_offset_c)"
+    example_msg:
+      topic: "dht11_temp_offset_c"
+      payload: 2
+    tags: [ui, parameter, dht11, temperature, offset, desktop]
+    version: 1
+  parameter_dht11_temp_offset_slider_mobile:
+    id: parameter_dht11_temp_offset_slider_mobile
+    type: ui_slider
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "DHT11 Temperatur Offset Slider (Mobil)"
+    group: ui_grp_parameter_mobile
+    description: "Slider fuer DHT11 Temperatur-Offset (Mobil, -10..+10, topic=dht11_temp_offset_c)"
+    example_msg:
+      topic: "dht11_temp_offset_c"
+      payload: -1
+    tags: [ui, parameter, dht11, temperature, offset, mobile]
+    version: 1
+  parameter_dht11_humidity_offset_slider_desktop:
+    id: parameter_dht11_humidity_offset_slider_desktop
+    type: ui_slider
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "DHT11 Luftfeuchte Offset Slider"
+    group: ui_grp_parameter_main
+    description: "Slider fuer DHT11 Luftfeuchte-Offset (Desktop, -20..+20, topic=dht11_humidity_offset_pct)"
+    example_msg:
+      topic: "dht11_humidity_offset_pct"
+      payload: 5
+    tags: [ui, parameter, dht11, humidity, offset, desktop]
+    version: 1
+  parameter_dht11_humidity_offset_slider_mobile:
+    id: parameter_dht11_humidity_offset_slider_mobile
+    type: ui_slider
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "DHT11 Luftfeuchte Offset Slider (Mobil)"
+    group: ui_grp_parameter_mobile
+    description: "Slider fuer DHT11 Luftfeuchte-Offset (Mobil, -20..+20, topic=dht11_humidity_offset_pct)"
+    example_msg:
+      topic: "dht11_humidity_offset_pct"
+      payload: -5
+    tags: [ui, parameter, dht11, humidity, offset, mobile]
+    version: 1
   parameter_relay1_button_desktop:
     id: parameter_relay1_button_desktop
     type: ui_button
@@ -390,17 +438,17 @@ components:
     type: function
     flow: nodered/flows/fn_parameters_flow.json
     node_label: "Offset speichern"
-    description: "Validiert und speichert HC-SR04/Tropfensensor/Truebungssensor/TDS-Sensor Offsets anhand msg.topic"
-    tags: [parameter, function, hcsr04, droplet, turbidity, tds, offset]
-    version: 3
+    description: "Validiert und speichert HC-SR04/Tropfensensor/Truebungssensor/TDS-Sensor/DHT11 Offsets anhand msg.topic"
+    tags: [parameter, function, hcsr04, droplet, turbidity, tds, dht11, offset]
+    version: 4
   parameter_offset_apply:
     id: parameter_offset_apply
     type: function
     flow: nodered/flows/fn_parameters_flow.json
     node_label: "Offset auf Distanz anwenden"
-    description: "Erweitert Sensorpayload um hcsr04_distance_display_cm, droplet_display_raw, turbidity_display_raw, tds_display_raw und alle Offsets"
-    tags: [parameter, function, sensor, hcsr04, droplet, turbidity, tds, offset]
-    version: 3
+    description: "Erweitert Sensorpayload um hcsr04/droplet/turbidity/tds/dht11 Displaywerte und alle Offsets"
+    tags: [parameter, function, sensor, hcsr04, droplet, turbidity, tds, dht11, offset]
+    version: 4
   parameter_relay_controller:
     id: parameter_relay_controller
     type: function
@@ -715,6 +763,84 @@ components:
       payload:
         tds_status: "ok"
     tags: [ui, tds, status, mobile]
+    version: 1
+  status_dht11_temp_display_desktop:
+    id: status_dht11_temp_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "DHT11 Temperaturanzeige"
+    group: ui_grp_info_main
+    description: "DHT11 Temperatur inkl. Offset im Status/Sensoren-Tab (Desktop)."
+    example_msg:
+      topic: ""
+      payload:
+        dht11_temp_display_c: 24
+    tags: [ui, dht11, temperature, status, desktop]
+    version: 1
+  status_dht11_temp_display_mobile:
+    id: status_dht11_temp_display_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "DHT11 Temperaturanzeige (Mobil)"
+    group: ui_grp_info_mobile
+    description: "DHT11 Temperatur inkl. Offset im Status/Sensoren-Tab (Mobil)."
+    example_msg:
+      topic: ""
+      payload:
+        dht11_temp_display_c: 24
+    tags: [ui, dht11, temperature, status, mobile]
+    version: 1
+  status_dht11_humidity_display_desktop:
+    id: status_dht11_humidity_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "DHT11 Luftfeuchteanzeige"
+    group: ui_grp_info_main
+    description: "DHT11 Luftfeuchte inkl. Offset im Status/Sensoren-Tab (Desktop)."
+    example_msg:
+      topic: ""
+      payload:
+        dht11_humidity_display_pct: 55
+    tags: [ui, dht11, humidity, status, desktop]
+    version: 1
+  status_dht11_humidity_display_mobile:
+    id: status_dht11_humidity_display_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "DHT11 Luftfeuchteanzeige (Mobil)"
+    group: ui_grp_info_mobile
+    description: "DHT11 Luftfeuchte inkl. Offset im Status/Sensoren-Tab (Mobil)."
+    example_msg:
+      topic: ""
+      payload:
+        dht11_humidity_display_pct: 55
+    tags: [ui, dht11, humidity, status, mobile]
+    version: 1
+  status_dht11_state_display_desktop:
+    id: status_dht11_state_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "DHT11 Statusanzeige"
+    group: ui_grp_info_main
+    description: "DHT11 Status im Status/Sensoren-Tab (Desktop)."
+    example_msg:
+      topic: ""
+      payload:
+        dht11_status: "ok"
+    tags: [ui, dht11, status, desktop]
+    version: 1
+  status_dht11_state_display_mobile:
+    id: status_dht11_state_display_mobile
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "DHT11 Statusanzeige (Mobil)"
+    group: ui_grp_info_mobile
+    description: "DHT11 Status im Status/Sensoren-Tab (Mobil)."
+    example_msg:
+      topic: ""
+      payload:
+        dht11_status: "ok"
+    tags: [ui, dht11, status, mobile]
     version: 1
   status_stepper_position_display_desktop:
     id: status_stepper_position_display_desktop

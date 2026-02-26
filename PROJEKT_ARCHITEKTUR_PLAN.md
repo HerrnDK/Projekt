@@ -55,7 +55,7 @@ flowchart TD
   C0 --> D0["Sensorpayload empfangen"]
   D0 --> P{"payload.type == sensor?"}
   P -- Nein --> C0
-  P -- Ja --> V["Uptime + Sensorstatus validieren"]
+  P -- Ja --> V["Uptime + Sensorstatus validieren (inkl. DHT11)"]
   V --> O{"Alle Pruefungen ok?"}
   O -- Ja --> A0["Anlagenstatus: bereit"]
   O -- Nein --> A1["Anlagenstatus: stoerung"]
@@ -63,7 +63,7 @@ flowchart TD
   A1 --> C0
 ```
 
-### 1.4 `fn_parameters_flow.json` (Offsets + Relais + Schrittmotor)
+### 1.4 `fn_parameters_flow.json` (Offsets inkl. DHT11 + Relais + Schrittmotor)
 ```mermaid
 flowchart TD
   S([Start]) --> I0["INIT_OFFSET verarbeiten"]
@@ -159,9 +159,11 @@ flowchart TD
   P2 -- Nein --> F
   P2 -- Ja --> P3{"tds_status == ok?"}
   P3 -- Nein --> F
-  P3 -- Ja --> P4{"uptime gueltig?"}
+  P3 -- Ja --> P4{"dht11_status == ok?"}
   P4 -- Nein --> F
-  P4 -- Ja --> OK["Anlage bereit"]
+  P4 -- Ja --> P5{"uptime gueltig?"}
+  P5 -- Nein --> F
+  P5 -- Ja --> OK["Anlage bereit"]
   F --> E([Ende])
   OK --> E
 ```
@@ -242,14 +244,16 @@ flowchart TD
   A1 --> A2["Tropfen_starten()"]
   A2 --> A3["Truebung_starten()"]
   A3 --> A4["Tds_starten()"]
-  A4 --> A5["Rfid_starten()"]
-  A5 --> B0["Sensoren_lesenMomentaufnahme()"]
+  A4 --> A5["Dht11_starten()"]
+  A5 --> A6["Rfid_starten()"]
+  A6 --> B0["Sensoren_lesenMomentaufnahme()"]
   B0 --> B1["Hcsr04_leseDistanzCm()"]
   B1 --> B2["Tropfen_leseRohwert()"]
   B2 --> B3["Truebung_leseRohwert()"]
   B3 --> B4["Tds_leseRohwert()"]
-  B4 --> B5["laufzeit_ms = millis()"]
-  B5 --> E([Ende])
+  B4 --> B5["Dht11_lesen()"]
+  B5 --> B6["laufzeit_ms = millis()"]
+  B6 --> E([Ende])
 ```
 
 ### 2.6 `Hcsr04_leseDistanzCm()`
@@ -357,6 +361,24 @@ flowchart TD
   X0 --> E([Ende])
 ```
 
+### 2.13 `Dht11_lesen()`
+```mermaid
+flowchart TD
+  S([Start]) --> T0{"Mindestintervall erreicht?"}
+  T0 -- Nein --> C0["Letzten Messwert cachen"]
+  T0 -- Ja --> H0["DHT11 Handshake starten"]
+  H0 --> H1{"Antwortsignal empfangen?"}
+  H1 -- Nein --> E0["status=error_not_connected/error_timeout"] --> E([Ende])
+  H1 -- Ja --> B0["40 Bit einlesen"]
+  B0 --> P0{"Checksumme gueltig?"}
+  P0 -- Nein --> E1["status=error_checksum"] --> E
+  P0 -- Ja --> R0{"Werte im Bereich?"}
+  R0 -- Nein --> E2["status=error_range"] --> E
+  R0 -- Ja --> O0["status=ok, Temperatur/Luftfeuchte setzen"]
+  C0 --> E
+  O0 --> E
+```
+
 ## 3) Gesamtflussdiagramm (End-to-End)
 ```mermaid
 flowchart TD
@@ -399,6 +421,7 @@ flowchart TD
     SFAS --> ST["Tropfen_leseRohwert()"]
     SFAS --> SU["Truebung_leseRohwert()"]
     SFAS --> STDS["Tds_leseRohwert()"]
+    SFAS --> SDHT["Dht11_lesen()"]
     DRFID --> SR["Rfid_lesenUid()"]
   end
 

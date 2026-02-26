@@ -48,6 +48,11 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 - TDS-Sensor -GND -> GND
 - TDS-Sensor S (Analog) -> A2
 
+## Verdrahtung (DHT11 Temperatur/Luftfeuchte)
+- DHT11 VCC -> 5V
+- DHT11 GND -> GND
+- DHT11 DATA -> D31
+
 ## Verdrahtung (4-Kanal Relaismodul)
 - Relaismodul VCC -> 5V
 - Relaismodul GND -> GND
@@ -87,9 +92,9 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 - `STEPPER_120` -> Schrittmotor um ca. 120 Grad drehen (JSON-ACK)
 
 JSON-Formate (Beispiele):
-- Sensor: `{"type":"sensor","hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","tds_raw":430,"tds_status":"ok","stepper_position_deg":120,"stepper_status":"idle","uptime_ms":7890}`
-- Aktor: `{"type":"act","ok":1,"pin":22,"state":1,"hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","tds_raw":430,"tds_status":"ok","stepper_position_deg":120,"stepper_status":"idle","uptime_ms":7890}`
-- Fehler: `{"type":"error","code":"unknown_command","hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","droplet_raw":-1,"droplet_status":"error_range","turbidity_raw":-1,"turbidity_status":"error_not_connected","tds_raw":-1,"tds_status":"error_not_connected","stepper_position_deg":120,"stepper_status":"idle","uptime_ms":7890}`
+- Sensor: `{"type":"sensor","hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","tds_raw":430,"tds_status":"ok","dht11_temp_c":24,"dht11_humidity_pct":55,"dht11_status":"ok","stepper_position_deg":120,"stepper_status":"idle","uptime_ms":7890}`
+- Aktor: `{"type":"act","ok":1,"pin":22,"state":1,"hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","tds_raw":430,"tds_status":"ok","dht11_temp_c":24,"dht11_humidity_pct":55,"dht11_status":"ok","stepper_position_deg":120,"stepper_status":"idle","uptime_ms":7890}`
+- Fehler: `{"type":"error","code":"unknown_command","hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","droplet_raw":-1,"droplet_status":"error_range","turbidity_raw":-1,"turbidity_status":"error_not_connected","tds_raw":-1,"tds_status":"error_not_connected","dht11_temp_c":-1,"dht11_humidity_pct":-1,"dht11_status":"error_not_connected","stepper_position_deg":120,"stepper_status":"idle","uptime_ms":7890}`
 - RFID: `{"type":"rfid","rfid_uid":"DE:AD:BE:EF","rfid_status":"ok","rfid_hw_status":"ok","rfid_probe_status":"STATUS_OK","rfid_version_reg":"0x92","uptime_ms":7890}`
 - Stepper ACK: `{"type":"stepper","ok":1,"cmd":"rotate_120","stepper_position_deg":240,"stepper_status":"ok","uptime_ms":7890}`
 
@@ -112,6 +117,13 @@ TDS-Sensor Statuswerte:
 - `ok` analoger Rohwert ist gueltig (0..1023)
 - `error_range` analoger Rohwert ausserhalb des gueltigen ADC-Bereichs
 - `error_not_connected` Sensorleitung ist vermutlich abgezogen/floating
+
+DHT11 Statuswerte:
+- `ok` Temperatur/Luftfeuchte sind gueltig
+- `error_not_connected` kein gueltiges Antwortsignal vom Sensor
+- `error_timeout` zeitkritische DHT11 Uebertragung unvollstaendig
+- `error_checksum` empfangene Daten fehlgeschlagen (Checksumme ungueltig)
+- `error_range` Messwerte ausserhalb gueltiger Grenzen
 
 RFID Statuswerte:
 - `ok` gueltige UID gelesen
@@ -146,6 +158,7 @@ Schrittmotor Statuswerte:
   - `sensor_tropfen.cpp` Tropfensensor Modul
   - `sensor_truebung.cpp` Truebungssensor Modul
   - `sensor_tds.cpp` TDS-Sensor Modul
+  - `sensor_dht11.cpp` DHT11 Modul
   - `sensor_rfid.cpp` RFID RC522 Modul
   - `schrittmotor.cpp` TB6600 Schrittmotor Modul
   - `PINOUT.md` Quelle der Wahrheit fuer Pins
@@ -153,7 +166,7 @@ Schrittmotor Statuswerte:
   - `dashboard_flow.json` UI + Sensoranzeigen + Parametrierung
   - `Network.json` Netzwerk-Tab
   - `data_exchange_flow.json` Datenaustausch mit Arduino
-  - `fn_parameters_flow.json` Parameter-Logik (HC-SR04 + Tropfensensor + Truebungssensor + TDS-Sensor Offset + Relaissteuerung + Stepper-Befehle)
+  - `fn_parameters_flow.json` Parameter-Logik (HC-SR04 + Tropfensensor + Truebungssensor + TDS-Sensor + DHT11 Offsets + Relaissteuerung + Stepper-Befehle)
   - `fn_profiles_flow.json` RFID-Profillogik (Anlernen + Profilzuweisung)
   - `components.yaml` logische Komponentenreferenzen
   - `deploy_flows.sh` Skript zur Flow-Bereitstellung (POST /flows)
@@ -201,6 +214,8 @@ Hinweise:
 - Es gibt zusaetzlich einen Slider `Tropfensensor Offset (raw)` mit Bereich `-300 .. +300`.
 - Es gibt zusaetzlich einen Slider `Truebungssensor Offset (raw)` mit Bereich `-200 .. +200`.
 - Es gibt zusaetzlich einen Slider `TDS-Sensor Offset (raw)` mit Bereich `-300 .. +300`.
+- Es gibt zusaetzlich einen Slider `DHT11 Temperatur Offset (C)` mit Bereich `-10 .. +10`.
+- Es gibt zusaetzlich einen Slider `DHT11 Luftfeuchte Offset (%)` mit Bereich `-20 .. +20`.
 - Im Tab `Projekt-Parametrierung` gibt es zusaetzlich 4 Relais-Buttons:
   - `Relais 1 (Pumpe)` schaltet D22
   - `Relais 2 (Reserve)` schaltet D23
@@ -209,8 +224,8 @@ Hinweise:
 - Zusaetzlich gibt es zwei Schrittmotor-Buttons:
   - `Schrittmotor 5s` sendet `STEPPER_5S`
   - `Schrittmotor +120 Grad` sendet `STEPPER_120`
-- Die Offsets werden in `fn_parameters_flow.json` gespeichert (`global.hcsr04_offset_cm`, `global.droplet_offset_raw`, `global.turbidity_offset_raw`, `global.tds_offset_raw`).
-- Die Anzeigen nutzen die korrigierten Werte `hcsr04_distance_display_cm`, `droplet_display_raw`, `turbidity_display_raw` und `tds_display_raw`.
+- Die Offsets werden in `fn_parameters_flow.json` gespeichert (`global.hcsr04_offset_cm`, `global.droplet_offset_raw`, `global.turbidity_offset_raw`, `global.tds_offset_raw`, `global.dht11_temp_offset_c`, `global.dht11_humidity_offset_pct`).
+- Die Anzeigen nutzen die korrigierten Werte `hcsr04_distance_display_cm`, `droplet_display_raw`, `turbidity_display_raw`, `tds_display_raw`, `dht11_temp_display_c` und `dht11_humidity_display_pct`.
 
 ## Profilsteuerung (Dashboard-Tab `Profile`)
 - Im Tab `Profile` gibt es drei Schaltflaechen:
@@ -223,7 +238,7 @@ Hinweise:
 - Wenn ein Profil bereits belegt ist, loescht der jeweilige Profil-Button die Bindung.
 - Bereits bekannte Chips aktivieren direkt ihr hinterlegtes Profil.
 - Die erkannte UID, das aktive Profil und der RFID Modulstatus werden live angezeigt.
-- Im Tab `Projekt-info` unter `Status / Sensoren` werden zusaetzlich `RFID RC522 Status`, `Tropfensensor Status`, `Truebungssensor Status`, `TDS-Sensor Status`, `Schrittmotor Position (Grad)` und die 4 Relais-Zustaende (`ON`/`OFF`) angezeigt.
+- Im Tab `Projekt-info` unter `Status / Sensoren` werden zusaetzlich `RFID RC522 Status`, `Tropfensensor Status`, `Truebungssensor Status`, `TDS-Sensor Status`, `DHT11 Temperatur`, `DHT11 Luftfeuchte`, `DHT11 Status`, `Schrittmotor Position (Grad)` und die 4 Relais-Zustaende (`ON`/`OFF`) angezeigt.
 
 ## Naechste Schritte (wenn Sensoren/Aktoren bekannt sind)
 - Weitere Sensoren als eigenes `sensor_<name>.cpp` ergaenzen und in `sensoren.cpp` anbinden.

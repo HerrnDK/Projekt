@@ -22,6 +22,7 @@ void Sensoren_starten() {
   Tropfen_starten();
   Truebung_starten();
   Tds_starten();
+  Dht11_starten();
   Rfid_starten();
 }
 
@@ -50,6 +51,10 @@ void Sensoren_lesenMomentaufnahme(SensorMomentaufnahme &ausgabe) {
   const char *tdsStatus = "error_unknown";
   ausgabe.tds_roh = Tds_leseRohwert(tdsStatus);
   ausgabe.tds_status = tdsStatus;
+
+  const char *dht11Status = "error_unknown";
+  Dht11_lesen(ausgabe.dht11_temperatur_c, ausgabe.dht11_luftfeuchte_prozent, dht11Status);
+  ausgabe.dht11_status = dht11Status;
 
   ausgabe.schrittmotor_position_grad = Schrittmotor_holePositionGrad();
   ausgabe.schrittmotor_status = Schrittmotor_holeStatus();

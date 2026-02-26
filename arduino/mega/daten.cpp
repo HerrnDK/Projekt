@@ -28,6 +28,7 @@ namespace {
     -1, "error_init",
     -1, "error_init",
     -1, "error_init",
+    -1, -1, "error_init",
     0, "idle",
     0
   };
@@ -116,6 +117,13 @@ void Daten_sendenSensorMomentaufnahme() {
   PORT_DATEN.print(momentaufnahme.tds_roh);
   PORT_DATEN.print(",\"tds_status\":\"");
   PORT_DATEN.print(momentaufnahme.tds_status);
+  PORT_DATEN.print("\"");
+  PORT_DATEN.print(",\"dht11_temp_c\":");
+  PORT_DATEN.print(momentaufnahme.dht11_temperatur_c);
+  PORT_DATEN.print(",\"dht11_humidity_pct\":");
+  PORT_DATEN.print(momentaufnahme.dht11_luftfeuchte_prozent);
+  PORT_DATEN.print(",\"dht11_status\":\"");
+  PORT_DATEN.print(momentaufnahme.dht11_status);
   PORT_DATEN.print("\"");
   PORT_DATEN.print(",\"stepper_position_deg\":");
   PORT_DATEN.print(momentaufnahme.schrittmotor_position_grad);
@@ -289,6 +297,13 @@ namespace {
     PORT_DATEN.print(",\"tds_status\":\"");
     PORT_DATEN.print(letzterSnapshot.tds_status);
     PORT_DATEN.print("\"");
+    PORT_DATEN.print(",\"dht11_temp_c\":");
+    PORT_DATEN.print(letzterSnapshot.dht11_temperatur_c);
+    PORT_DATEN.print(",\"dht11_humidity_pct\":");
+    PORT_DATEN.print(letzterSnapshot.dht11_luftfeuchte_prozent);
+    PORT_DATEN.print(",\"dht11_status\":\"");
+    PORT_DATEN.print(letzterSnapshot.dht11_status);
+    PORT_DATEN.print("\"");
     PORT_DATEN.print(",\"stepper_position_deg\":");
     PORT_DATEN.print(letzterSnapshot.schrittmotor_position_grad);
     PORT_DATEN.print(",\"stepper_status\":\"");
@@ -351,6 +366,13 @@ namespace {
     PORT_DATEN.print(letzterSnapshot.tds_roh);
     PORT_DATEN.print(",\"tds_status\":\"");
     PORT_DATEN.print(letzterSnapshot.tds_status);
+    PORT_DATEN.print("\"");
+    PORT_DATEN.print(",\"dht11_temp_c\":");
+    PORT_DATEN.print(letzterSnapshot.dht11_temperatur_c);
+    PORT_DATEN.print(",\"dht11_humidity_pct\":");
+    PORT_DATEN.print(letzterSnapshot.dht11_luftfeuchte_prozent);
+    PORT_DATEN.print(",\"dht11_status\":\"");
+    PORT_DATEN.print(letzterSnapshot.dht11_status);
     PORT_DATEN.print("\"");
     PORT_DATEN.print(",\"stepper_position_deg\":");
     PORT_DATEN.print(letzterSnapshot.schrittmotor_position_grad);

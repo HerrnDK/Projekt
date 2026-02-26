@@ -32,6 +32,9 @@ struct SensorMomentaufnahme {
   const char *truebung_status;
   long tds_roh;
   const char *tds_status;
+  long dht11_temperatur_c;
+  long dht11_luftfeuchte_prozent;
+  const char *dht11_status;
   long schrittmotor_position_grad;
   const char *schrittmotor_status;
   unsigned long laufzeit_ms;
@@ -46,6 +49,8 @@ constexpr uint8_t TROPFEN_SENSOR_PIN = A0;
 constexpr uint8_t TRUEBUNG_SENSOR_PIN = A1;
 // Ocean TDS Meter Sensor (Analog)
 constexpr uint8_t TDS_SENSOR_PIN = A2;
+// DHT11 Temperatur/Luftfeuchte (Digital)
+constexpr uint8_t DHT11_SENSOR_PIN = 31;
 // TB6600 Schrittmotor-Treiber (Digital)
 constexpr uint8_t SCHRITTMOTOR_STEP_PIN = 28;
 constexpr uint8_t SCHRITTMOTOR_DIR_PIN = 29;
@@ -73,6 +78,9 @@ long Truebung_leseRohwert(const char *&statusAusgabe);
 
 void Tds_starten();
 long Tds_leseRohwert(const char *&statusAusgabe);
+
+void Dht11_starten();
+void Dht11_lesen(long &temperaturCAusgabe, long &luftfeuchteProzentAusgabe, const char *&statusAusgabe);
 
 void Rfid_starten();
 void Rfid_lesenUid(char *uidAusgabe, size_t uidAusgabeLaenge, const char *&statusAusgabe);

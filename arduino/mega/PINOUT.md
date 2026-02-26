@@ -51,6 +51,7 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Akt
 | Pin | Funktion | Sensortyp | Bus | Notizen |
 |-----|----------|-----------|-----|---------|
 | 27 | HC-SR04 ECHO | Ultraschall-Sensor | Digital | Echo-Eingang (5V TTL) |
+| 31 | DHT11 DATA | DHT11 Temperatur/Luftfeuchte | Single-Wire | Digitaler Datenpin (mit Pullup) |
 | 50 | RC522 MISO | RFID-RC522 | SPI | Master In Slave Out |
 
 ---
@@ -91,7 +92,7 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Akt
 
 | Quelle | GND | 5V | 3.3V | Komponenten |
 |--------|-----|----|------|-------------|
-| Mega 5V | x | x | | HC-SR04, Funduino Tropfensensor, Wassertruebungssensor, Ocean-TDS-Sensor, Power Board, TB6600 Logik |
+| Mega 5V | x | x | | HC-SR04, Funduino Tropfensensor, Wassertruebungssensor, Ocean-TDS-Sensor, DHT11, Power Board, TB6600 Logik |
 | Mega 3.3V | x | | x | RC522 |
 | Extern 12V | x | | | TB6600 Motorversorgung (VMOT), Schrittmotor 42HSC8402-15B11 (Nennspannung 3.3V/Phase, rated current 1.5A), Netzteil mindestens 12V/2A |
 
@@ -166,6 +167,15 @@ Ocean-TDS-Meter-Sensor   <->    Arduino Mega
 +5V                      <->    5V
 -GND                     <->    GND
 S (Analog Out)           <->    A2
+```
+
+### DHT11 <-> Arduino Verbindung
+
+```
+DHT11                    <->    Arduino Mega
+VCC                      <->    5V
+GND                      <->    GND
+DATA                     <->    D31
 ```
 
 ### 4-Kanal Relaismodul <-> Arduino Verbindung

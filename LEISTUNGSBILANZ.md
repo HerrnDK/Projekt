@@ -27,6 +27,7 @@ Hinweis:
 | Funduino Tropfensensor | 5.0 | 0.010* | 0.015* | 0.050 | 0.075 | Klonabhaengig |
 | Truebungssensor (SEN0189) | 5.0 | 0.040 | 0.040 | 0.200 | 0.200 | 40mA |
 | TDS-Sensor (SEN0244) | 5.0 | 0.003 | 0.006 | 0.015 | 0.030 | 3..6mA |
+| DHT11 | 5.0 | 0.0005* | 0.0025* | 0.0025 | 0.0125 | Typisch Standby/Messbetrieb |
 | Relaismodul 4-Kanal (Spulen) | 5.0 | 0.000 | 0.2856 | 0.000 | 1.428 | min: alle AUS, max: alle 4 EIN |
 | RFID RC522 | 3.3 | 0.026* | 0.050* | 0.0858 | 0.165 | 3.3V-Pin am Mega beachten |
 | Pegelwandler 5V<->3.3V | 3.3 | 0.001* | 0.006* | 0.0033 | 0.0198 | Lastabhaengig |
@@ -39,10 +40,10 @@ Hinweis:
 
 5V-Zweig:
 
-- `I_5V_min = 0.070 + 0.015 + 0.010 + 0.040 + 0.003 + 0.000 = 0.138 A`
-- `P_5V_min = 5.0 * 0.138 = 0.690 W`
-- `I_5V_max = 0.200 + 0.020 + 0.015 + 0.040 + 0.006 + 0.2856 = 0.5666 A`
-- `P_5V_max = 5.0 * 0.5666 = 2.833 W`
+- `I_5V_min = 0.070 + 0.015 + 0.010 + 0.040 + 0.003 + 0.0005 + 0.000 = 0.1385 A`
+- `P_5V_min = 5.0 * 0.1385 = 0.6925 W`
+- `I_5V_max = 0.200 + 0.020 + 0.015 + 0.040 + 0.006 + 0.0025 + 0.2856 = 0.5691 A`
+- `P_5V_max = 5.0 * 0.5691 = 2.8455 W`
 
 3.3V-Zweig:
 
@@ -53,8 +54,8 @@ Hinweis:
 
 Arduino gesamt:
 
-- `P_ARDUINO_min = 0.690 + 0.0891 = 0.7791 W`
-- `P_ARDUINO_max = 2.833 + 0.1848 = 3.0178 W`
+- `P_ARDUINO_min = 0.6925 + 0.0891 = 0.7816 W`
+- `P_ARDUINO_max = 2.8455 + 0.1848 = 3.0303 W`
 
 ### 2) Raspberry-Pi-Teil (getrennt)
 
@@ -89,18 +90,18 @@ Hinweis:
 
 | Teilsystem | P_min (W) | P_max (W) |
 |---|---:|---:|
-| Arduino (ohne Pumpe) | 0.7791 | 3.0178 |
+| Arduino (ohne Pumpe) | 0.7816 | 3.0303 |
 | Raspberry Pi | 3.0000 | 15.0000 |
-| Gesamt (ohne Pumpe) | 3.7791 | 18.0178 |
+| Gesamt (ohne Pumpe) | 3.7816 | 18.0303 |
 | Externer 12V TB6600/Schrittmotor-Zweig | 0.0000 | 12.0000 |
-| Gesamt inkl. TB6600/Schrittmotor-Zweig | 3.7791 | 30.0178 |
+| Gesamt inkl. TB6600/Schrittmotor-Zweig | 3.7816 | 30.0303 |
 
 ## Netzteil-Empfehlung (ohne Pumpe)
 
 - Raspberry Pi separat: 5V / 3A (offizielle Empfehlung).
 - Arduino-Zweig separat:
-  - max 5V-Strom: `0.5666 A`
-  - mit 30% Reserve: `0.5666 * 1.3 = 0.7366 A`
+  - max 5V-Strom: `0.5691 A`
+  - mit 30% Reserve: `0.5691 * 1.3 = 0.7398 A`
   - Empfehlung: mindestens 5V / 1A nur fuer Arduino+Sensorik+Relais.
 
 ## Netzteil-Empfehlung (12V Schrittmotor-Zweig)
@@ -126,6 +127,8 @@ Hinweis:
   https://wiki.dfrobot.com/Turbidity_sensor_SKU__SEN0189
 - DFRobot SEN0244 (TDS):  
   https://wiki.dfrobot.com/Gravity__Analog_TDS_Sensor___Meter_For_Arduino_SKU__SEN0244
+- DHT11 Datenblatt (Typreferenz):  
+  https://components101.com/sites/default/files/component_datasheet/DHT11-Temperature-Sensor.pdf
 - NXP MFRC522 Datenblatt:  
   https://www.nxp.com/docs/en/data-sheet/MFRC522.pdf
 - Songle SRD-05VDC-SL-C:  
