@@ -35,8 +35,20 @@ struct SensorMomentaufnahme {
   long dht11_temperatur_c;
   long dht11_luftfeuchte_prozent;
   const char *dht11_status;
+  uint8_t taster_blau_pumpe;
+  uint8_t taster_gelb_stepper1;
+  uint8_t taster_gelb_stepper2;
+  uint8_t taster_rot_stopp;
+  uint8_t taster_gruen_start_quit;
+  uint8_t led_blau_pumpe;
+  uint8_t led_gelb_stepper1;
+  uint8_t led_gelb_stepper2;
+  uint8_t led_rot_stopp;
+  uint8_t led_gruen_start_quit;
   long schrittmotor_position_grad;
   const char *schrittmotor_status;
+  long schrittmotor2_position_grad;
+  const char *schrittmotor2_status;
   unsigned long laufzeit_ms;
 };
 
@@ -51,10 +63,32 @@ constexpr uint8_t TRUEBUNG_SENSOR_PIN = A1;
 constexpr uint8_t TDS_SENSOR_PIN = A2;
 // DHT11 Temperatur/Luftfeuchte (Digital)
 constexpr uint8_t DHT11_SENSOR_PIN = 31;
-// TB6600 Schrittmotor-Treiber (Digital)
-constexpr uint8_t SCHRITTMOTOR_STEP_PIN = 28;
-constexpr uint8_t SCHRITTMOTOR_DIR_PIN = 29;
-constexpr uint8_t SCHRITTMOTOR_ENA_PIN = 30;
+// Taster (Digital, INPUT_PULLUP, aktiv bei LOW)
+constexpr uint8_t TASTER_BLAU_PUMPE_PIN = 32;
+constexpr uint8_t TASTER_GELB_STEPPER1_PIN = 33;
+constexpr uint8_t TASTER_GELB_STEPPER2_PIN = 34;
+constexpr uint8_t TASTER_ROT_STOPP_PIN = 35;
+constexpr uint8_t TASTER_GRUEN_START_QUIT_PIN = 36;
+// Taster-LEDs (Digital, HIGH = ein)
+constexpr uint8_t LED_BLAU_PUMPE_PIN = 37;
+constexpr uint8_t LED_GELB_STEPPER1_PIN = 38;
+constexpr uint8_t LED_GELB_STEPPER2_PIN = 39;
+constexpr uint8_t LED_ROT_STOPP_PIN = 40;
+constexpr uint8_t LED_GRUEN_START_QUIT_PIN = 41;
+// TB6600 Schrittmotor-Treiber 1 (Digital)
+constexpr uint8_t SCHRITTMOTOR1_STEP_PIN = 28;
+constexpr uint8_t SCHRITTMOTOR1_DIR_PIN = 29;
+constexpr uint8_t SCHRITTMOTOR1_ENA_PIN = 30;
+// TB6600 Schrittmotor-Treiber 2 (Digital)
+constexpr uint8_t SCHRITTMOTOR2_STEP_PIN = 42;
+constexpr uint8_t SCHRITTMOTOR2_DIR_PIN = 43;
+constexpr uint8_t SCHRITTMOTOR2_ENA_PIN = 44;
+// Legacy-Aliase fuer bestehenden Code (Schrittmotor 1)
+constexpr uint8_t SCHRITTMOTOR_STEP_PIN = SCHRITTMOTOR1_STEP_PIN;
+constexpr uint8_t SCHRITTMOTOR_DIR_PIN = SCHRITTMOTOR1_DIR_PIN;
+constexpr uint8_t SCHRITTMOTOR_ENA_PIN = SCHRITTMOTOR1_ENA_PIN;
+constexpr uint8_t SCHRITTMOTOR_ANZAHL = 2;
+constexpr uint8_t BEDIENELEMENTE_ANZAHL = 5;
 constexpr long SCHRITTMOTOR_SCHRITTE_PRO_UMDREHUNG = 200;
 
 // RFID RC522 (SPI)
@@ -88,6 +122,11 @@ const char *Rfid_holeHardwareStatus();
 const char *Rfid_holeProbeStatus();
 uint8_t Rfid_holeVersionsRegister();
 
+void Bedienelemente_starten();
+void Bedienelemente_leseTaster(uint8_t ausgabe[BEDIENELEMENTE_ANZAHL]);
+void Bedienelemente_leseLeds(uint8_t ausgabe[BEDIENELEMENTE_ANZAHL]);
+bool Bedienelemente_setzeLed(uint8_t index1Bis5, bool ein);
+
 void Sensoren_starten();
 void Sensoren_lesenMomentaufnahme(SensorMomentaufnahme &ausgabe);
 void Sensoren_lesenRfid(char *uidAusgabe, size_t uidAusgabeLaenge, const char *&statusAusgabe);
@@ -101,6 +140,10 @@ bool Schrittmotor_startDrehenZeitMs(unsigned long dauerMs, const char *&statusAu
 bool Schrittmotor_startDrehenGrad(long grad, const char *&statusAusgabe);
 long Schrittmotor_holePositionGrad();
 const char *Schrittmotor_holeStatus();
+bool Schrittmotor_startDrehenZeitMsIndex(uint8_t index1Bis2, unsigned long dauerMs, const char *&statusAusgabe);
+bool Schrittmotor_startDrehenGradIndex(uint8_t index1Bis2, long grad, const char *&statusAusgabe);
+long Schrittmotor_holePositionGradIndex(uint8_t index1Bis2);
+const char *Schrittmotor_holeStatusIndex(uint8_t index1Bis2);
 
 void Daten_starten();
 void Daten_tick();

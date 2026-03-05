@@ -64,7 +64,7 @@ flowchart TD
   A1 --> C0
 ```
 
-### 1.4 `fn_parameters_flow.json` (Offsets inkl. DHT11 + Relais + Schrittmotor)
+### 1.4 `fn_parameters_flow.json` (Offsets inkl. DHT11 + Relais + LED + Schrittmotor 1/2)
 ```mermaid
 flowchart TD
   S([Start]) --> I0["INIT_OFFSET verarbeiten"]
@@ -82,7 +82,13 @@ flowchart TD
   R2 --> R3["Relaisstatus ON/OFF publizieren"]
   R3 --> W
 
-  T -- Schrittmotor --> M0["STEPPER_5S / STEPPER_120 bilden"]
+  T -- LED --> L0["LED,index,state bilden"]
+  L0 --> L1["An data_exchange senden"]
+  L1 --> L2["ACK auswerten"]
+  L2 --> L3["LED-Status ON/OFF publizieren"]
+  L3 --> W
+
+  T -- Schrittmotor --> M0["STEPPER_5S/120 + STEPPER2_5S/120 bilden"]
   M0 --> M1["An data_exchange senden"]
   M1 --> M2["ACK auswerten"]
   M2 --> W
@@ -178,11 +184,14 @@ flowchart TD
   A0 --> A1["PORT_DEBUG.begin"]
   A1 --> A2["PORT_DATEN.begin"]
   A2 --> A3["Aktoren_starten()"]
-  A3 --> A4["Sensoren_starten()"]
-  A4 --> A5["Daten_starten()"]
+  A3 --> A35["Bedienelemente_starten()"]
+  A35 --> A4["Schrittmotor_starten()"]
+  A4 --> A45["Sensoren_starten()"]
+  A45 --> A5["Daten_starten()"]
   A5 --> L0["loop()"]
   L0 --> L1["Daten_tick()"]
-  L1 --> L0
+  L1 --> L2["Schrittmotor_tick()"]
+  L2 --> L0
 ```
 
 ### 2.2 `Daten_tick()`
@@ -216,8 +225,10 @@ flowchart TD
   A1 -- Ja --> A2["Aktoren_setzen(pin,state)"]
   A2 --> A3["Daten_sendeActBestaetigung(...)"]
   A3 --> E
-  D2 -- Nein --> D3{"STEPPER_5S / STEPPER_120?"}
-  D3 -- Ja --> S0["Schrittmotor starten + ACK senden"] --> E
+  D2 -- Nein --> D25{"LED,<index>,<state>?"}
+  D25 -- Ja --> L0["LED parsen + Bedienelemente_setzeLed() + LED-ACK"] --> E
+  D25 -- Nein --> D3{"STEPPER_5S/120 oder STEPPER2_5S/120?"}
+  D3 -- Ja --> S1["Schrittmotor 1/2 starten + ACK senden"] --> E
   D3 -- Nein --> F1["Daten_sendeFehler(unknown_command)"] --> E
 ```
 
@@ -253,7 +264,9 @@ flowchart TD
   B2 --> B3["Truebung_leseRohwert()"]
   B3 --> B4["Tds_leseRohwert()"]
   B4 --> B5["Dht11_lesen()"]
-  B5 --> B6["laufzeit_ms = millis()"]
+  B5 --> B55["Bedienelemente_leseTaster()/Bedienelemente_leseLeds()"]
+  B55 --> B56["Schrittmotor_holePosition/Status (Motor 1 + 2)"]
+  B56 --> B6["laufzeit_ms = millis()"]
   B6 --> E([Ende])
 ```
 
@@ -350,15 +363,15 @@ flowchart TD
 ```mermaid
 flowchart TD
   S([Start]) --> C0{"Kommando"}
-  C0 -- STEPPER_5S --> A0["Schrittmotor_startDrehenZeitMs(5000)"]
-  C0 -- STEPPER_120 --> A1["Schrittmotor_startDrehenGrad(120)"]
+  C0 -- STEPPER_5S/120 --> A0["Motor 1 starten"]
+  C0 -- STEPPER2_5S/120 --> A1["Motor 2 starten"]
   A0 --> T0["Schrittmotor_tick() zyklisch"]
   A1 --> T0
-  T0 --> P0["STEP Impuls ausgeben"]
-  P0 --> U0["Positionsschritte aktualisieren"]
-  U0 --> E0{"Zeit/Schritte fertig?"}
+  T0 --> P0["Je Motor: STEP Impuls ausgeben"]
+  P0 --> U0["Je Motor: Positionsschritte aktualisieren"]
+  U0 --> E0{"Je Motor: Zeit/Schritte fertig?"}
   E0 -- Nein --> T0
-  E0 -- Ja --> X0["Treiber deaktivieren, status=idle"]
+  E0 -- Ja --> X0["Je Motor: Treiber deaktivieren, status=idle"]
   X0 --> E([Ende])
 ```
 
@@ -389,7 +402,8 @@ flowchart TD
   UI --> EVT{"Ereignis"}
   EVT -- Sensor aktualisieren --> CMD1["READ"]
   EVT -- Relais schalten --> CMD2["ACT,<pin>,<state>"]
-  EVT -- Schrittmotor --> CMD4["STEPPER_5S / STEPPER_120"]
+  EVT -- LED schalten --> CMD5["LED,<index>,<state>"]
+  EVT -- Schrittmotor --> CMD4["STEPPER_5S/120 + STEPPER2_5S/120"]
   EVT -- RFID lesen/anlernen --> CMD3["RFID"]
   EVT -- WLAN verwalten --> NET0["Network.json Aktion"]
 
@@ -403,6 +417,7 @@ flowchart TD
     F_PROF --> DX
     CMD1 --> DX
     CMD2 --> DX
+    CMD5 --> DX
     CMD4 --> DX
     CMD3 --> DX
   end
@@ -414,7 +429,8 @@ flowchart TD
     DTICK --> PARSE{"Kommando?"}
     PARSE -- READ --> DSENS["Daten_sendenSensorMomentaufnahme()"]
     PARSE -- ACT --> DACT["Aktoren_setzen() + Daten_sendeActBestaetigung()"]
-    PARSE -- STEPPER --> DSTEP["Schrittmotor_start...() + Stepper-ACK"]
+    PARSE -- LED --> DLED["Bedienelemente_setzeLed() + LED-ACK"]
+    PARSE -- STEPPER --> DSTEP["Schrittmotor 1/2 start...() + Stepper-ACK"]
     PARSE -- RFID --> DRFID["Daten_sendenRfidMomentaufnahme()"]
 
     DSENS --> SFAS["Sensoren_lesenMomentaufnahme()"]
@@ -423,17 +439,21 @@ flowchart TD
     SFAS --> SU["Truebung_leseRohwert()"]
     SFAS --> STDS["Tds_leseRohwert()"]
     SFAS --> SDHT["Dht11_lesen()"]
+    SFAS --> SBTN["Bedienelemente_leseTaster()/Leds"]
+    SFAS --> SSTEP["Schrittmotor 1/2 Position+Status"]
     DRFID --> SR["Rfid_lesenUid()"]
   end
 
   DSENS --> RESP_S["JSON type=sensor"]
   DACT --> RESP_A["JSON type=act"]
+  DLED --> RESP_L["JSON type=led"]
   DSTEP --> RESP_ST["JSON type=stepper"]
   DRFID --> RESP_R["JSON type=rfid"]
   PARSE --> RESP_E["JSON type=error"]
 
   RESP_S --> SER_R["Serial Rueckkanal"]
   RESP_A --> SER_R
+  RESP_L --> SER_R
   RESP_ST --> SER_R
   RESP_R --> SER_R
   RESP_E --> SER_R

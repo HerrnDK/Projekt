@@ -1,6 +1,6 @@
 ```instructions
 ---
-applyTo: 'nodered/flows/*.json, components.yaml, deploy_flows.sh, DEPLOYMENT_GUIDE.md, README.md'
+applyTo: 'nodered/flows/*.json, components.yaml, deploy_flows.sh, DEPLOYMENT_GUIDE.md, README.md, LOGBOOK.md, PROJEKT_ARCHITEKTUR_PLAN.md, LEISTUNGSBILANZ.md'
 allowed: ["add_node","update_node","edit_file","create_file","replace_file"]
 forbidden: ["add_secrets","remote_execute","exfiltrate"]
 formatChecks:
@@ -96,6 +96,14 @@ DOKU
 ----
 - Aenderungen an Flow-Struktur in `DEPLOYMENT_GUIDE.md` und `README.md` nachziehen.
 - Bei Hardware-/Komponenten-Aenderungen `Hardware.md` mitpflegen.
+- Bei Aenderungen an Arduino-Sensorik/Aktorik/Protokoll auch `PROJEKT_ARCHITEKTUR_PLAN.md` aktualisieren (Flow-/Ablaufdiagramme auf neuen Stand bringen).
+- Bei stromrelevanten Hardware-Aenderungen (z. B. neue Sensoren, LEDs, Treiber, Motoren, Relaislasten) auch `LEISTUNGSBILANZ.md` aktualisieren (Einzelwerte + Min/Max + Netzteil-Empfehlung).
+
+LOGBOOK.MD
+----------
+- Neue Logbuch-Eintraege immer am Dateiende anhaengen.
+- Keine neuen Eintraege zwischen bestehende Eintraege einfuegen.
+- Falls ein Eintrag versehentlich dazwischen steht: entfernen und unveraendert ans Ende verschieben.
 
 SENSOR-MUSTER (ANALOG)
 ----------------------
@@ -126,5 +134,7 @@ Ich halte diese Dateien konsistent:
 - `arduino/mega/*.ino`
 - `arduino/mega/PINOUT.md`
 - `Hardware.md`
+- `PROJEKT_ARCHITEKTUR_PLAN.md`
+- `LEISTUNGSBILANZ.md`
 ```
 

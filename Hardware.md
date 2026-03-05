@@ -13,6 +13,13 @@
 - 1x DHT11 Temperatur/Luftfeuchte-Sensor (D31, +5V, GND)
 - 1x RFID-RC522 Modul (SPI: SS D53, SCK D52, MOSI D51, MISO D50, RST D49, 3.3V)
 - 1x TB6600 Schrittmotor-Treiber (STEP D28, DIR D29, ENA D30)
+- 1x TB6600 Schrittmotor-Treiber #2 (STEP D42, DIR D43, ENA D44)
 - 1x Schrittmotor (voraussichtlich Modell 42HSC8402-15B11, Nennspannung 3.3V pro Phase, rated current 1.5A)
+- 5x Taster mit jeweiliger LED:
+  - Taster Blau (Pumpe aktivieren): D32, LED D37
+  - Taster Gelb 1 (Stepper Motor 1): D33, LED D38
+  - Taster Gelb 2 (Stepper Motor 2): D34, LED D39
+  - Taster Rot (Stopp): D35, LED D40
+  - Taster Gruen (Starten/Quitieren): D36, LED D41
 - 1x externes 12V Netzteil fuer TB6600/Schrittmotorzweig (mindestens 12V/2A empfohlen)
 

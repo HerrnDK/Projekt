@@ -41,6 +41,14 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Akt
 | 28 | TB6600 STEP | Schrittmotor-Treiber | aktiv | Schrittimpuls |
 | 29 | TB6600 DIR | Schrittmotor-Treiber | aktiv | Richtung |
 | 30 | TB6600 ENA | Schrittmotor-Treiber | aktiv | Enable (active-low in Software) |
+| 37 | LED Blau | Taster-LED Pumpe | aktiv | HIGH = LED ein |
+| 38 | LED Gelb 1 | Taster-LED Stepper 1 | aktiv | HIGH = LED ein |
+| 39 | LED Gelb 2 | Taster-LED Stepper 2 | aktiv | HIGH = LED ein |
+| 40 | LED Rot | Taster-LED Stopp | aktiv | HIGH = LED ein |
+| 41 | LED Gruen | Taster-LED Start/Quitierung | aktiv | HIGH = LED ein |
+| 42 | TB6600 #2 STEP | Schrittmotor-Treiber 2 | aktiv | Schrittimpuls |
+| 43 | TB6600 #2 DIR | Schrittmotor-Treiber 2 | aktiv | Richtung |
+| 44 | TB6600 #2 ENA | Schrittmotor-Treiber 2 | aktiv | Enable (active-low in Software) |
 | 49 | RC522 RST | RFID-RC522 | aktiv | Reset-Leitung |
 | 53 | RC522 SS/SDA | RFID-RC522 | aktiv | SPI Chip Select |
 
@@ -52,6 +60,11 @@ Dokumentation aller digitalen und analogen Pin-Zuweisungen fuer Sensoren und Akt
 |-----|----------|-----------|-----|---------|
 | 27 | HC-SR04 ECHO | Ultraschall-Sensor | Digital | Echo-Eingang (5V TTL) |
 | 31 | DHT11 DATA | DHT11 Temperatur/Luftfeuchte | Single-Wire | Digitaler Datenpin (mit Pullup) |
+| 32 | Taster Blau | Pumpe aktivieren | Digital | INPUT_PULLUP (LOW = gedrueckt) |
+| 33 | Taster Gelb 1 | Stepper Motor 1 | Digital | INPUT_PULLUP (LOW = gedrueckt) |
+| 34 | Taster Gelb 2 | Stepper Motor 2 | Digital | INPUT_PULLUP (LOW = gedrueckt) |
+| 35 | Taster Rot | Stopp | Digital | INPUT_PULLUP (LOW = gedrueckt) |
+| 36 | Taster Gruen | Starten/Quitieren | Digital | INPUT_PULLUP (LOW = gedrueckt) |
 | 50 | RC522 MISO | RFID-RC522 | SPI | Master In Slave Out |
 
 ---
@@ -199,6 +212,28 @@ DIR+                    <->    D29
 ENA+                    <->    D30
 PUL- / DIR- / ENA-      <->    GND
 GND (Logik)             <->    GND
+```
+
+### TB6600 #2 <-> Arduino Verbindung
+
+```
+TB6600 #2               <->    Arduino Mega
+PUL+ / STEP+            <->    D42
+DIR+                    <->    D43
+ENA+                    <->    D44
+PUL- / DIR- / ENA-      <->    GND
+GND (Logik)             <->    GND
+```
+
+### 5x Taster + LED <-> Arduino Verbindung
+
+```
+Taster 1 Blau (Pumpe)         Tasterkontakt -> D32, LED -> D37
+Taster 2 Gelb (Stepper 1)     Tasterkontakt -> D33, LED -> D38
+Taster 3 Gelb (Stepper 2)     Tasterkontakt -> D34, LED -> D39
+Taster 4 Rot (Stopp)          Tasterkontakt -> D35, LED -> D40
+Taster 5 Gruen (Start/Quit)   Tasterkontakt -> D36, LED -> D41
+Gemeinsam: Taster gegen GND (INPUT_PULLUP), LED-GND gegen GND
 ```
 
 ### Schrittmotor 12V <-> TB6600 Verbindung

@@ -13,7 +13,8 @@
   Zweck:
   - Einmalige Initialisierung aller Module beim Boot.
   Verhalten:
-  - Startet Debug- und Daten-UART, initialisiert Aktoren, Sensoren und Datenlogik.
+  - Startet Debug- und Daten-UART, initialisiert Aktoren, Bedienelemente,
+    Schrittmotoren, Sensoren und Datenlogik.
   Rueckgabe:
   - Keine.
 */
@@ -22,6 +23,7 @@ void setup() {
   PORT_DATEN.begin(BAUDRATE_DATEN);  // UART zu Node-RED (Serial1)
 
   Aktoren_starten();
+  Bedienelemente_starten();
   Schrittmotor_starten();
   Sensoren_starten();
   Daten_starten();

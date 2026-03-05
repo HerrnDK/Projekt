@@ -578,6 +578,160 @@
         "wrapText":  false
     },
     {
+        "id":  "ui_txt_stepper2_pos_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  23,
+        "width":  7,
+        "height":  1,
+        "name":  "Schrittmotor 2 Position Anzeige",
+        "label":  "Schrittmotor 2 Position (Grad)",
+        "format":  "{{msg.payload.stepper2_position_deg}}",
+        "layout":  "row-spread",
+        "x":  760,
+        "y":  1200,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.stepper2_position_deg",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_stepper2_status_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  24,
+        "width":  7,
+        "height":  1,
+        "name":  "Schrittmotor 2 Status Anzeige",
+        "label":  "Schrittmotor 2 Status",
+        "format":  "{{msg.payload.stepper2_status}}",
+        "layout":  "row-spread",
+        "x":  740,
+        "y":  1240,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.stepper2_status",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_btn_blue_pump_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  25,
+        "width":  7,
+        "height":  1,
+        "name":  "Taster Blau Status",
+        "label":  "Taster Blau (Pumpe aktivieren)",
+        "format":  "{{msg.payload.btn_blue_pump_text}}",
+        "layout":  "row-spread",
+        "x":  710,
+        "y":  1280,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.btn_blue_pump_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_btn_yellow_stepper1_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  26,
+        "width":  7,
+        "height":  1,
+        "name":  "Taster Gelb Stepper1 Status",
+        "label":  "Taster Gelb (Stepper Motor 1)",
+        "format":  "{{msg.payload.btn_yellow_stepper1_text}}",
+        "layout":  "row-spread",
+        "x":  730,
+        "y":  1320,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.btn_yellow_stepper1_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_btn_yellow_stepper2_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  27,
+        "width":  7,
+        "height":  1,
+        "name":  "Taster Gelb Stepper2 Status",
+        "label":  "Taster Gelb (Stepper Motor 2)",
+        "format":  "{{msg.payload.btn_yellow_stepper2_text}}",
+        "layout":  "row-spread",
+        "x":  730,
+        "y":  1360,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.btn_yellow_stepper2_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_btn_red_stop_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  28,
+        "width":  7,
+        "height":  1,
+        "name":  "Taster Rot Status",
+        "label":  "Taster Rot (Stopp)",
+        "format":  "{{msg.payload.btn_red_stop_text}}",
+        "layout":  "row-spread",
+        "x":  680,
+        "y":  1400,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.btn_red_stop_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_btn_green_start_ack_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "3584a9c30b6db556",
+        "order":  29,
+        "width":  7,
+        "height":  1,
+        "name":  "Taster Gruen Status",
+        "label":  "Taster Gruen (Starten/Quittieren)",
+        "format":  "{{msg.payload.btn_green_start_ack_text}}",
+        "layout":  "row-spread",
+        "x":  740,
+        "y":  1440,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.btn_green_start_ack_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
         "id":  "f5c0bddf87cbb257",
         "type":  "ui-button",
         "z":  "4985bdfbcf200fe6",
@@ -640,9 +794,16 @@
                           "ui_txt_tds_value_d",
                           "ui_txt_tds_status_d",
                           "ui_txt_stepper_pos_d",
+                          "ui_txt_stepper2_pos_d",
+                          "ui_txt_stepper2_status_d",
                           "ui_txt_dht11_temp_d",
                           "ui_txt_dht11_humidity_d",
-                          "ui_txt_dht11_status_d"
+                          "ui_txt_dht11_status_d",
+                          "ui_txt_btn_blue_pump_d",
+                          "ui_txt_btn_yellow_stepper1_d",
+                          "ui_txt_btn_yellow_stepper2_d",
+                          "ui_txt_btn_red_stop_d",
+                          "ui_txt_btn_green_start_ack_d"
                       ]
                   ]
     },
@@ -1160,6 +1321,319 @@
         "emulateClick":  false
     },
     {
+        "id":  "ui_btn_stepper2_5s_d",
+        "type":  "ui-button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Schrittmotor 2 - 5s drehen",
+        "group":  "0ef8bd821a032b93",
+        "order":  19,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Schrittmotor 2 - 5s",
+        "tooltip":  "Startet Schrittmotor 2 fuer 5 Sekunden",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "autorenew",
+        "payload":  "run_5s_m2",
+        "payloadType":  "str",
+        "topic":  "stepper_action",
+        "x":  290,
+        "y":  1280,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "id":  "ui_btn_stepper2_120_d",
+        "type":  "ui-button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "Schrittmotor 2 - 120 Grad drehen",
+        "group":  "0ef8bd821a032b93",
+        "order":  20,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "Schrittmotor 2 +120 Grad",
+        "tooltip":  "Dreht Schrittmotor 2 um ca. 120 Grad",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "rotate_right",
+        "payload":  "rotate_120_m2",
+        "payloadType":  "str",
+        "topic":  "stepper_action",
+        "x":  300,
+        "y":  1320,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "id":  "ui_btn_led_blue_pump_d",
+        "type":  "ui-button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "LED Blau schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  30,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "LED Blau (Pumpe)",
+        "tooltip":  "LED Blau ein/aus schalten",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "lightbulb",
+        "payload":  "1",
+        "payloadType":  "str",
+        "topic":  "led_toggle",
+        "x":  250,
+        "y":  1380,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "id":  "ui_btn_led_yellow_stepper1_d",
+        "type":  "ui-button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "LED Gelb Stepper1 schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  31,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "LED Gelb (Stepper 1)",
+        "tooltip":  "LED Gelb fuer Stepper Motor 1 ein/aus schalten",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "lightbulb",
+        "payload":  "2",
+        "payloadType":  "str",
+        "topic":  "led_toggle",
+        "x":  280,
+        "y":  1420,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "id":  "ui_btn_led_yellow_stepper2_d",
+        "type":  "ui-button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "LED Gelb Stepper2 schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  32,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "LED Gelb (Stepper 2)",
+        "tooltip":  "LED Gelb fuer Stepper Motor 2 ein/aus schalten",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "lightbulb",
+        "payload":  "3",
+        "payloadType":  "str",
+        "topic":  "led_toggle",
+        "x":  280,
+        "y":  1460,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "id":  "ui_btn_led_red_stop_d",
+        "type":  "ui-button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "LED Rot schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  33,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "LED Rot (Stopp)",
+        "tooltip":  "LED Rot ein/aus schalten",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "lightbulb",
+        "payload":  "4",
+        "payloadType":  "str",
+        "topic":  "led_toggle",
+        "x":  250,
+        "y":  1500,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "id":  "ui_btn_led_green_start_ack_d",
+        "type":  "ui-button",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "LED Gruen schalten",
+        "group":  "0ef8bd821a032b93",
+        "order":  34,
+        "width":  7,
+        "height":  1,
+        "passthru":  false,
+        "label":  "LED Gruen (Start/Quit)",
+        "tooltip":  "LED Gruen ein/aus schalten",
+        "color":  "",
+        "bgcolor":  "",
+        "icon":  "lightbulb",
+        "payload":  "5",
+        "payloadType":  "str",
+        "topic":  "led_toggle",
+        "x":  280,
+        "y":  1540,
+        "wires":  [
+                      [
+                          "b8c0e9d3f4a15412"
+                      ]
+                  ],
+        "topicType":  "str",
+        "enableClick":  true,
+        "emulateClick":  false
+    },
+    {
+        "id":  "ui_txt_led_blue_pump_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  35,
+        "width":  12,
+        "height":  1,
+        "name":  "LED Blau Status Anzeige",
+        "label":  "Status LED Blau (Pumpe)",
+        "format":  "{{msg.payload.led_blue_pump_text}}",
+        "layout":  "row-spread",
+        "x":  900,
+        "y":  1380,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.led_blue_pump_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_led_yellow_stepper1_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  36,
+        "width":  12,
+        "height":  1,
+        "name":  "LED Gelb Stepper1 Status Anzeige",
+        "label":  "Status LED Gelb (Stepper 1)",
+        "format":  "{{msg.payload.led_yellow_stepper1_text}}",
+        "layout":  "row-spread",
+        "x":  920,
+        "y":  1420,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.led_yellow_stepper1_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_led_yellow_stepper2_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  37,
+        "width":  12,
+        "height":  1,
+        "name":  "LED Gelb Stepper2 Status Anzeige",
+        "label":  "Status LED Gelb (Stepper 2)",
+        "format":  "{{msg.payload.led_yellow_stepper2_text}}",
+        "layout":  "row-spread",
+        "x":  920,
+        "y":  1460,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.led_yellow_stepper2_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_led_red_stop_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  38,
+        "width":  12,
+        "height":  1,
+        "name":  "LED Rot Status Anzeige",
+        "label":  "Status LED Rot (Stopp)",
+        "format":  "{{msg.payload.led_red_stop_text}}",
+        "layout":  "row-spread",
+        "x":  890,
+        "y":  1500,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.led_red_stop_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
+        "id":  "ui_txt_led_green_start_ack_d",
+        "type":  "ui-text",
+        "z":  "4985bdfbcf200fe6",
+        "group":  "0ef8bd821a032b93",
+        "order":  39,
+        "width":  12,
+        "height":  1,
+        "name":  "LED Gruen Status Anzeige",
+        "label":  "Status LED Gruen (Start/Quit)",
+        "format":  "{{msg.payload.led_green_start_ack_text}}",
+        "layout":  "row-spread",
+        "x":  920,
+        "y":  1540,
+        "wires":  [
+
+                  ],
+        "style":  false,
+        "value":  "payload.led_green_start_ack_text",
+        "valueType":  "msg",
+        "wrapText":  false
+    },
+    {
         "id":  "link_in_relays_from_parameters",
         "type":  "link in",
         "z":  "4985bdfbcf200fe6",
@@ -1175,6 +1649,26 @@
                           "ui_txt_relay2_status_d",
                           "ui_txt_relay3_status_d",
                           "ui_txt_relay4_status_d"
+                      ]
+                  ]
+    },
+    {
+        "id":  "link_in_leds_from_parameters",
+        "type":  "link in",
+        "z":  "4985bdfbcf200fe6",
+        "name":  "LED-Status aus Parameter-Flow",
+        "links":  [
+
+                  ],
+        "x":  240,
+        "y":  820,
+        "wires":  [
+                      [
+                          "ui_txt_led_blue_pump_d",
+                          "ui_txt_led_yellow_stepper1_d",
+                          "ui_txt_led_yellow_stepper2_d",
+                          "ui_txt_led_red_stop_d",
+                          "ui_txt_led_green_start_ack_d"
                       ]
                   ]
     },

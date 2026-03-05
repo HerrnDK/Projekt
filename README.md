@@ -92,19 +92,38 @@ zwischen einem Arduino Mega 2560 R3 und einem Raspberry Pi mit Node-RED.
 > mit z. B. 12V versorgt und regelt den Phasenstrom.
 > GND von Arduino und TB6600/Netzteil muss gemeinsam verbunden sein.
 
+## Verdrahtung (TB6600 Schrittmotor-Treiber #2)
+- TB6600 #2 PUL+/STEP+ -> D42
+- TB6600 #2 DIR+ -> D43
+- TB6600 #2 ENA+ -> D44
+- TB6600 #2 PUL-/DIR-/ENA- -> GND
+- TB6600 #2 GND (Logik) -> GND
+
+## Verdrahtung (5 Taster mit LED)
+- Taster 1 Blau (Pumpe): Tasterkontakt -> D32, LED -> D37
+- Taster 2 Gelb (Stepper 1): Tasterkontakt -> D33, LED -> D38
+- Taster 3 Gelb (Stepper 2): Tasterkontakt -> D34, LED -> D39
+- Taster 4 Rot (Stopp): Tasterkontakt -> D35, LED -> D40
+- Taster 5 Gruen (Starten/Quitieren): Tasterkontakt -> D36, LED -> D41
+- Taster werden mit `INPUT_PULLUP` ausgewertet (`LOW = gedrueckt`), daher gegen GND verdrahten.
+
 ## Protokoll (Serial1, newline-terminiert)
 - `READ` -> Arduino sendet JSON Sensor-Snapshot
 - `ACT,<pin>,<state>` -> Aktor schalten, JSON-ACK
+- `LED,<index>,<state>` -> Taster-LED schalten (`index=1..5`), JSON-ACK
 - `RFID` -> RFID Snapshot lesen (UID + Status inkl. Modulzustand)
 - `STEPPER_5S` -> Schrittmotor fuer 5 Sekunden drehen (JSON-ACK)
 - `STEPPER_120` -> Schrittmotor um ca. 120 Grad drehen (JSON-ACK)
+- `STEPPER2_5S` -> Schrittmotor 2 fuer 5 Sekunden drehen (JSON-ACK)
+- `STEPPER2_120` -> Schrittmotor 2 um ca. 120 Grad drehen (JSON-ACK)
 
 JSON-Formate (Beispiele):
-- Sensor: `{"type":"sensor","hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","tds_raw":430,"tds_status":"ok","dht11_temp_c":24,"dht11_humidity_pct":55,"dht11_status":"ok","stepper_position_deg":120,"stepper_status":"idle","uptime_ms":7890}`
+- Sensor: `{"type":"sensor","hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","tds_raw":430,"tds_status":"ok","dht11_temp_c":24,"dht11_humidity_pct":55,"dht11_status":"ok","btn_blue_pump":0,"btn_yellow_stepper1":0,"btn_yellow_stepper2":0,"btn_red_stop":0,"btn_green_start_ack":0,"led_blue_pump":1,"led_yellow_stepper1":0,"led_yellow_stepper2":0,"led_red_stop":0,"led_green_start_ack":0,"stepper_position_deg":120,"stepper_status":"idle","stepper2_position_deg":0,"stepper2_status":"idle","uptime_ms":7890}`
 - Aktor: `{"type":"act","ok":1,"pin":22,"state":1,"hcsr04_distance_cm":42,"hcsr04_status":"ok","droplet_raw":512,"droplet_status":"ok","turbidity_raw":610,"turbidity_status":"ok","tds_raw":430,"tds_status":"ok","dht11_temp_c":24,"dht11_humidity_pct":55,"dht11_status":"ok","stepper_position_deg":120,"stepper_status":"idle","uptime_ms":7890}`
 - Fehler: `{"type":"error","code":"unknown_command","hcsr04_distance_cm":-1,"hcsr04_status":"error_timeout","droplet_raw":-1,"droplet_status":"error_range","turbidity_raw":-1,"turbidity_status":"error_not_connected","tds_raw":-1,"tds_status":"error_not_connected","dht11_temp_c":-1,"dht11_humidity_pct":-1,"dht11_status":"error_not_connected","stepper_position_deg":120,"stepper_status":"idle","uptime_ms":7890}`
 - RFID: `{"type":"rfid","rfid_uid":"DE:AD:BE:EF","rfid_status":"ok","rfid_hw_status":"ok","rfid_probe_status":"STATUS_OK","rfid_version_reg":"0x92","uptime_ms":7890}`
 - Stepper ACK: `{"type":"stepper","ok":1,"cmd":"rotate_120","stepper_position_deg":240,"stepper_status":"ok","uptime_ms":7890}`
+- LED ACK: `{"type":"led","ok":1,"index":3,"state":1,"uptime_ms":7890}`
 
 HC-SR04 Statuswerte:
 - `ok` gemessene Distanz ist gueltig
@@ -168,6 +187,7 @@ Schrittmotor Statuswerte:
   - `sensor_tds.cpp` TDS-Sensor Modul
   - `sensor_dht11.cpp` DHT11 Modul
   - `sensor_rfid.cpp` RFID RC522 Modul
+  - `bedienelemente.cpp` 5 Taster + 5 LED Modul
   - `schrittmotor.cpp` TB6600 Schrittmotor Modul
   - `PINOUT.md` Quelle der Wahrheit fuer Pins
 - `nodered/flows/`
@@ -239,6 +259,15 @@ sudo systemctl restart nodered || sudo systemctl restart node-red
 - Zusaetzlich gibt es zwei Schrittmotor-Buttons:
   - `Schrittmotor 5s` sendet `STEPPER_5S`
   - `Schrittmotor +120 Grad` sendet `STEPPER_120`
+- Zusaetzlich gibt es zwei Schrittmotor-2-Buttons:
+  - `Schrittmotor 2 - 5s` sendet `STEPPER2_5S`
+  - `Schrittmotor 2 +120 Grad` sendet `STEPPER2_120`
+- Fuer die 5 Taster-LEDs gibt es zusaetzliche Buttons:
+  - `LED Blau (Pumpe)` -> `LED,1,<state>`
+  - `LED Gelb (Stepper 1)` -> `LED,2,<state>`
+  - `LED Gelb (Stepper 2)` -> `LED,3,<state>`
+  - `LED Rot (Stopp)` -> `LED,4,<state>`
+  - `LED Gruen (Start/Quit)` -> `LED,5,<state>`
 - Die Offsets werden in `fn_parameters_flow.json` gespeichert (`global.hcsr04_offset_cm`, `global.droplet_offset_raw`, `global.turbidity_offset_raw`, `global.tds_offset_raw`, `global.dht11_temp_offset_c`, `global.dht11_humidity_offset_pct`).
 - Die Anzeigen nutzen die korrigierten Werte `hcsr04_distance_display_cm`, `droplet_display_raw`, `turbidity_display_raw`, `tds_display_raw`, `dht11_temp_display_c` und `dht11_humidity_display_pct`.
 
@@ -253,7 +282,7 @@ sudo systemctl restart nodered || sudo systemctl restart node-red
 - Wenn ein Profil bereits belegt ist, loescht der jeweilige Profil-Button die Bindung.
 - Bereits bekannte Chips aktivieren direkt ihr hinterlegtes Profil.
 - Die erkannte UID, das aktive Profil und der RFID Modulstatus werden live angezeigt.
-- Im Tab `Projekt-info` unter `Status / Sensoren` werden zusaetzlich `RFID RC522 Status`, `Tropfensensor Status`, `Truebungssensor Status`, `TDS-Sensor Status`, `DHT11 Temperatur`, `DHT11 Luftfeuchte`, `DHT11 Status`, `Schrittmotor Position (Grad)` und die 4 Relais-Zustaende (`ON`/`OFF`) angezeigt.
+- Im Tab `Projekt-info` unter `Status / Sensoren` werden zusaetzlich `RFID RC522 Status`, `Tropfensensor Status`, `Truebungssensor Status`, `TDS-Sensor Status`, `DHT11 Temperatur`, `DHT11 Luftfeuchte`, `DHT11 Status`, `Schrittmotor 1/2 Position und Status`, die 5 Taster-Eingaenge sowie die 4 Relais-Zustaende (`ON`/`OFF`) angezeigt.
 
 ## Naechste Schritte (wenn Sensoren/Aktoren bekannt sind)
 - Weitere Sensoren als eigenes `sensor_<name>.cpp` ergaenzen und in `sensoren.cpp` anbinden.

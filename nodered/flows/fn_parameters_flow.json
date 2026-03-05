@@ -28,7 +28,8 @@
         "wires":  [
                       [
                           "fn_param_default_offset",
-                          "fn_relay_controller"
+                          "fn_relay_controller",
+                          "fn_led_controller"
                       ]
                   ]
     },
@@ -67,7 +68,8 @@
                       [
                           "fn_parameters_set_offset",
                           "fn_relay_controller",
-                          "fn_stepper_controller"
+                          "fn_stepper_controller",
+                          "fn_led_controller"
                       ]
                   ]
     },
@@ -120,7 +122,8 @@
         "wires":  [
                       [
                           "fn_parameters_apply_offset",
-                          "fn_relay_controller"
+                          "fn_relay_controller",
+                          "fn_led_controller"
                       ]
                   ]
     },
@@ -129,7 +132,7 @@
         "type":  "function",
         "z":  "flow_fn_parameters",
         "name":  "Offset auf Distanz anwenden",
-        "func":  "const p = msg.payload || {};\nif (String(p.type || \"\") !== \"sensor\") {\n  return null;\n}\n\nconst clampInt = (value, min, max) =\u003e Math.max(min, Math.min(max, Math.round(value)));\n\nlet hcsr04Offset = Number(global.get(\"hcsr04_offset_cm\"));\nif (!Number.isFinite(hcsr04Offset)) {\n  hcsr04Offset = 0;\n}\nhcsr04Offset = clampInt(hcsr04Offset, -5, 5);\np.hcsr04_offset_cm = hcsr04Offset;\n\nlet dropletOffset = Number(global.get(\"droplet_offset_raw\"));\nif (!Number.isFinite(dropletOffset)) {\n  dropletOffset = 0;\n}\ndropletOffset = clampInt(dropletOffset, -300, 300);\np.droplet_offset_raw = dropletOffset;\n\nlet turbidityOffset = Number(global.get(\"turbidity_offset_raw\"));\nif (!Number.isFinite(turbidityOffset)) {\n  turbidityOffset = 0;\n}\nturbidityOffset = clampInt(turbidityOffset, -200, 200);\np.turbidity_offset_raw = turbidityOffset;\n\nlet tdsOffset = Number(global.get(\"tds_offset_raw\"));\nif (!Number.isFinite(tdsOffset)) {\n  tdsOffset = 0;\n}\ntdsOffset = clampInt(tdsOffset, -300, 300);\np.tds_offset_raw = tdsOffset;\n\nlet dht11TempOffset = Number(global.get(\"dht11_temp_offset_c\"));\nif (!Number.isFinite(dht11TempOffset)) {\n  dht11TempOffset = 0;\n}\ndht11TempOffset = clampInt(dht11TempOffset, -10, 10);\np.dht11_temp_offset_c = dht11TempOffset;\n\nlet dht11HumidityOffset = Number(global.get(\"dht11_humidity_offset_pct\"));\nif (!Number.isFinite(dht11HumidityOffset)) {\n  dht11HumidityOffset = 0;\n}\ndht11HumidityOffset = clampInt(dht11HumidityOffset, -20, 20);\np.dht11_humidity_offset_pct = dht11HumidityOffset;\n\nconst hcsr04Raw = Number(p.hcsr04_distance_cm);\nconst hcsr04Status = String(p.hcsr04_status || \"missing\");\nif (hcsr04Status === \"ok\" \u0026\u0026 Number.isFinite(hcsr04Raw)) {\n  p.hcsr04_distance_display_cm = hcsr04Raw + hcsr04Offset;\n} else {\n  p.hcsr04_distance_display_cm = p.hcsr04_distance_cm;\n}\n\nconst dropletRaw = Number(p.droplet_raw);\nconst dropletStatus = String(p.droplet_status || \"missing\");\nif (dropletStatus === \"ok\" \u0026\u0026 Number.isFinite(dropletRaw)) {\n  p.droplet_display_raw = clampInt(dropletRaw + dropletOffset, 0, 1023);\n} else {\n  p.droplet_display_raw = p.droplet_raw;\n}\n\nconst turbidityRaw = Number(p.turbidity_raw);\nconst turbidityStatus = String(p.turbidity_status || \"missing\");\nif (turbidityStatus === \"ok\" \u0026\u0026 Number.isFinite(turbidityRaw)) {\n  p.turbidity_display_raw = clampInt(turbidityRaw + turbidityOffset, 0, 1023);\n} else {\n  p.turbidity_display_raw = p.turbidity_raw;\n}\n\nconst tdsRaw = Number(p.tds_raw);\nconst tdsStatus = String(p.tds_status || \"missing\");\nif (tdsStatus === \"ok\" \u0026\u0026 Number.isFinite(tdsRaw)) {\n  p.tds_display_raw = clampInt(tdsRaw + tdsOffset, 0, 1023);\n} else {\n  p.tds_display_raw = p.tds_raw;\n}\n\nconst dht11TempRaw = Number(p.dht11_temp_c);\nconst dht11HumidityRaw = Number(p.dht11_humidity_pct);\nconst dht11Status = String(p.dht11_status || \"missing\");\nif (dht11Status === \"ok\" \u0026\u0026 Number.isFinite(dht11TempRaw)) {\n  p.dht11_temp_display_c = clampInt(dht11TempRaw + dht11TempOffset, -20, 80);\n} else {\n  p.dht11_temp_display_c = p.dht11_temp_c;\n}\nif (dht11Status === \"ok\" \u0026\u0026 Number.isFinite(dht11HumidityRaw)) {\n  p.dht11_humidity_display_pct = clampInt(dht11HumidityRaw + dht11HumidityOffset, 0, 100);\n} else {\n  p.dht11_humidity_display_pct = p.dht11_humidity_pct;\n}\n\nmsg.payload = p;\nreturn msg;",
+        "func":  "const p = msg.payload || {};\nif (String(p.type || \"\") !== \"sensor\") {\n  return null;\n}\n\nconst clampInt = (value, min, max) =\u003e Math.max(min, Math.min(max, Math.round(value)));\nconst toPressedText = (value) =\u003e Number(value) === 1 ? \"GEDRUECKT\" : \"frei\";\nconst toOnOffText = (value) =\u003e Number(value) === 1 ? \"ON\" : \"OFF\";\n\nlet hcsr04Offset = Number(global.get(\"hcsr04_offset_cm\"));\nif (!Number.isFinite(hcsr04Offset)) {\n  hcsr04Offset = 0;\n}\nhcsr04Offset = clampInt(hcsr04Offset, -5, 5);\np.hcsr04_offset_cm = hcsr04Offset;\n\nlet dropletOffset = Number(global.get(\"droplet_offset_raw\"));\nif (!Number.isFinite(dropletOffset)) {\n  dropletOffset = 0;\n}\ndropletOffset = clampInt(dropletOffset, -300, 300);\np.droplet_offset_raw = dropletOffset;\n\nlet turbidityOffset = Number(global.get(\"turbidity_offset_raw\"));\nif (!Number.isFinite(turbidityOffset)) {\n  turbidityOffset = 0;\n}\nturbidityOffset = clampInt(turbidityOffset, -200, 200);\np.turbidity_offset_raw = turbidityOffset;\n\nlet tdsOffset = Number(global.get(\"tds_offset_raw\"));\nif (!Number.isFinite(tdsOffset)) {\n  tdsOffset = 0;\n}\ntdsOffset = clampInt(tdsOffset, -300, 300);\np.tds_offset_raw = tdsOffset;\n\nlet dht11TempOffset = Number(global.get(\"dht11_temp_offset_c\"));\nif (!Number.isFinite(dht11TempOffset)) {\n  dht11TempOffset = 0;\n}\ndht11TempOffset = clampInt(dht11TempOffset, -10, 10);\np.dht11_temp_offset_c = dht11TempOffset;\n\nlet dht11HumidityOffset = Number(global.get(\"dht11_humidity_offset_pct\"));\nif (!Number.isFinite(dht11HumidityOffset)) {\n  dht11HumidityOffset = 0;\n}\ndht11HumidityOffset = clampInt(dht11HumidityOffset, -20, 20);\np.dht11_humidity_offset_pct = dht11HumidityOffset;\n\nconst hcsr04Raw = Number(p.hcsr04_distance_cm);\nconst hcsr04Status = String(p.hcsr04_status || \"missing\");\nif (hcsr04Status === \"ok\" \u0026\u0026 Number.isFinite(hcsr04Raw)) {\n  p.hcsr04_distance_display_cm = hcsr04Raw + hcsr04Offset;\n} else {\n  p.hcsr04_distance_display_cm = p.hcsr04_distance_cm;\n}\n\nconst dropletRaw = Number(p.droplet_raw);\nconst dropletStatus = String(p.droplet_status || \"missing\");\nif (dropletStatus === \"ok\" \u0026\u0026 Number.isFinite(dropletRaw)) {\n  p.droplet_display_raw = clampInt(dropletRaw + dropletOffset, 0, 1023);\n} else {\n  p.droplet_display_raw = p.droplet_raw;\n}\n\nconst turbidityRaw = Number(p.turbidity_raw);\nconst turbidityStatus = String(p.turbidity_status || \"missing\");\nif (turbidityStatus === \"ok\" \u0026\u0026 Number.isFinite(turbidityRaw)) {\n  p.turbidity_display_raw = clampInt(turbidityRaw + turbidityOffset, 0, 1023);\n} else {\n  p.turbidity_display_raw = p.turbidity_raw;\n}\n\nconst tdsRaw = Number(p.tds_raw);\nconst tdsStatus = String(p.tds_status || \"missing\");\nif (tdsStatus === \"ok\" \u0026\u0026 Number.isFinite(tdsRaw)) {\n  p.tds_display_raw = clampInt(tdsRaw + tdsOffset, 0, 1023);\n} else {\n  p.tds_display_raw = p.tds_raw;\n}\n\nconst dht11TempRaw = Number(p.dht11_temp_c);\nconst dht11HumidityRaw = Number(p.dht11_humidity_pct);\nconst dht11Status = String(p.dht11_status || \"missing\");\nif (dht11Status === \"ok\" \u0026\u0026 Number.isFinite(dht11TempRaw)) {\n  p.dht11_temp_display_c = clampInt(dht11TempRaw + dht11TempOffset, -20, 80);\n} else {\n  p.dht11_temp_display_c = p.dht11_temp_c;\n}\nif (dht11Status === \"ok\" \u0026\u0026 Number.isFinite(dht11HumidityRaw)) {\n  p.dht11_humidity_display_pct = clampInt(dht11HumidityRaw + dht11HumidityOffset, 0, 100);\n} else {\n  p.dht11_humidity_display_pct = p.dht11_humidity_pct;\n}\n\np.btn_blue_pump_text = toPressedText(p.btn_blue_pump);\np.btn_yellow_stepper1_text = toPressedText(p.btn_yellow_stepper1);\np.btn_yellow_stepper2_text = toPressedText(p.btn_yellow_stepper2);\np.btn_red_stop_text = toPressedText(p.btn_red_stop);\np.btn_green_start_ack_text = toPressedText(p.btn_green_start_ack);\n\np.led_blue_pump_text = toOnOffText(p.led_blue_pump);\np.led_yellow_stepper1_text = toOnOffText(p.led_yellow_stepper1);\np.led_yellow_stepper2_text = toOnOffText(p.led_yellow_stepper2);\np.led_red_stop_text = toOnOffText(p.led_red_stop);\np.led_green_start_ack_text = toOnOffText(p.led_green_start_ack);\n\nmsg.payload = p;\nreturn msg;",
         "outputs":  1,
         "noerr":  0,
         "initialize":  "",
@@ -189,7 +192,7 @@
         "type":  "function",
         "z":  "flow_fn_parameters",
         "name":  "Schrittmotorsteuerung",
-        "func":  "if (String(msg.topic || \"\") !== \"stepper_action\") {\n  return null;\n}\n\nconst action = String(msg.payload || \"\");\nif (action === \"run_5s\") {\n  msg.payload = \"STEPPER_5S\";\n} else if (action === \"rotate_120\") {\n  msg.payload = \"STEPPER_120\";\n} else {\n  return null;\n}\n\nmsg.topic = \"\";\nreturn msg;",
+        "func":  "if (String(msg.topic || \"\") !== \"stepper_action\") {\n  return null;\n}\n\nconst action = String(msg.payload || \"\");\nif (action === \"run_5s\") {\n  msg.payload = \"STEPPER_5S\";\n} else if (action === \"rotate_120\") {\n  msg.payload = \"STEPPER_120\";\n} else if (action === \"run_5s_m2\") {\n  msg.payload = \"STEPPER2_5S\";\n} else if (action === \"rotate_120_m2\") {\n  msg.payload = \"STEPPER2_120\";\n} else {\n  return null;\n}\n\nmsg.topic = \"\";\nreturn msg;",
         "outputs":  1,
         "noerr":  0,
         "initialize":  "",
@@ -209,7 +212,7 @@
         "id":  "link_out_parameters_to_data",
         "type":  "link out",
         "z":  "flow_fn_parameters",
-        "name":  "zu Datenaustausch (act/stepper cmd)",
+        "name":  "zu Datenaustausch (act/led/stepper cmd)",
         "mode":  "link",
         "links":  [
                       "link_in_from_dashboard"
@@ -218,6 +221,30 @@
         "y":  340,
         "wires":  [
 
+                  ]
+    },
+    {
+        "id":  "fn_led_controller",
+        "type":  "function",
+        "z":  "flow_fn_parameters",
+        "name":  "Taster-LED Steuerung",
+        "func":  "const LED_KEYS = [\"1\", \"2\", \"3\", \"4\", \"5\"];\n\nconst ensureLedState = () =\u003e {\n  const current = flow.get(\"led_state\") || {};\n  const normalized = {};\n  for (const key of LED_KEYS) {\n    normalized[key] = Number(current[key]) === 1 ? 1 : 0;\n  }\n  flow.set(\"led_state\", normalized);\n  return normalized;\n};\n\nconst buildUiPayload = (state) =\u003e ({\n  led_blue_pump_text: state[\"1\"] ? \"ON\" : \"OFF\",\n  led_yellow_stepper1_text: state[\"2\"] ? \"ON\" : \"OFF\",\n  led_yellow_stepper2_text: state[\"3\"] ? \"ON\" : \"OFF\",\n  led_red_stop_text: state[\"4\"] ? \"ON\" : \"OFF\",\n  led_green_start_ack_text: state[\"5\"] ? \"ON\" : \"OFF\"\n});\n\nconst state = ensureLedState();\n\nif (String(msg.payload || \"\") === \"INIT_OFFSET\") {\n  return [null, { payload: buildUiPayload(state) }];\n}\n\nif (String(msg.topic || \"\") === \"led_toggle\") {\n  const index = Number(msg.payload);\n  if (!Number.isFinite(index) || index < 1 || index > 5) {\n    return null;\n  }\n\n  const key = String(index);\n  const nextState = state[key] === 1 ? 0 : 1;\n  msg.payload = `LED,${index},${nextState}`;\n  msg.topic = \"\";\n  return [msg, null];\n}\n\nconst p = msg.payload || {};\nif (String(p.type || \"\") === \"sensor\") {\n  const sensorMap = {\n    \"1\": Number(p.led_blue_pump),\n    \"2\": Number(p.led_yellow_stepper1),\n    \"3\": Number(p.led_yellow_stepper2),\n    \"4\": Number(p.led_red_stop),\n    \"5\": Number(p.led_green_start_ack)\n  };\n  for (const key of LED_KEYS) {\n    if (sensorMap[key] === 1 || sensorMap[key] === 0) {\n      state[key] = sensorMap[key];\n    }\n  }\n  flow.set(\"led_state\", state);\n  return [null, { payload: buildUiPayload(state) }];\n}\n\nif (String(p.type || \"\") !== \"led\") {\n  return null;\n}\n\nconst index = Number(p.index);\nif (!Number.isFinite(index) || index < 1 || index > 5) {\n  return null;\n}\nif (Number(p.ok) === 1) {\n  state[String(index)] = Number(p.state) === 1 ? 1 : 0;\n  flow.set(\"led_state\", state);\n}\n\nreturn [null, { payload: buildUiPayload(state) }];",
+        "outputs":  2,
+        "noerr":  0,
+        "initialize":  "",
+        "finalize":  "",
+        "libs":  [
+
+                 ],
+        "x":  500,
+        "y":  500,
+        "wires":  [
+                      [
+                          "link_out_parameters_to_data"
+                      ],
+                      [
+                          "link_out_leds_to_dashboard"
+                      ]
                   ]
     },
     {
@@ -231,6 +258,21 @@
                   ],
         "x":  770,
         "y":  380,
+        "wires":  [
+
+                  ]
+    },
+    {
+        "id":  "link_out_leds_to_dashboard",
+        "type":  "link out",
+        "z":  "flow_fn_parameters",
+        "name":  "zum Dashboard (LED-Zustaende)",
+        "mode":  "link",
+        "links":  [
+                      "link_in_leds_from_parameters"
+                  ],
+        "x":  770,
+        "y":  500,
         "wires":  [
 
                   ]

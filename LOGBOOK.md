@@ -233,3 +233,44 @@ Bestehende Probleme:
 - Node-RED von der Entwicklungsumgebung aus nicht erreichbar (Deploy hier nicht moeglich).
 - `yaml-lint` ist in der aktuellen Umgebung nicht installiert (YAML-Formatcheck nur eingeschraenkt moeglich).
 - On-Screen-Tastatur im Kioskmodus weiterhin nicht verfuegbar.
+
+## 2026-03-05
+
+Erreicht:
+- Code-Aufraeumung fortgefuehrt:
+  - Doppelte JSON-Ausgabe in `arduino/mega/daten.cpp` in gemeinsame Hilfsfunktionen zusammengefuehrt.
+  - Wiederholte Sensor-Status-Leselogik in `arduino/mega/sensoren.cpp` reduziert.
+- 5 Taster mit jeweils eigener LED in Arduino integriert:
+  - Neues Modul `arduino/mega/bedienelemente.cpp` (Init, Taster lesen, LEDs schalten).
+  - Pins und Snapshot-Struktur in `arduino/mega/mega_gemeinsam.h` erweitert.
+  - Aufnahme der neuen Taster-/LED-Werte in Sensor-Snapshot und JSON-Protokoll umgesetzt.
+- Serial-Protokoll erweitert:
+  - Neuer Befehl `LED,<index>,<state>` (1..5) mit ACK `type=led`.
+  - Erweiterte Sensor-JSON Felder fuer Taster-/LED-Zustaende.
+- Zweiten Schrittmotor (TB6600 #2) integriert:
+  - `arduino/mega/schrittmotor.cpp` auf 2-Motor-Logik erweitert (Index-API + Legacy-Kompatibilitaet fuer Motor 1).
+  - Neue Kommandos `STEPPER2_5S` und `STEPPER2_120` implementiert.
+  - Snapshot/JSON um `stepper2_position_deg` und `stepper2_status` erweitert.
+- Node-RED Dashboard und Funktionsflows erweitert:
+  - Sensoren-Tab zeigt Tasterzustaende und Stepper-2-Status/Position.
+  - Parameter-Tab enthaelt 5 LED-Toggle-Buttons plus LED-Statusanzeigen.
+  - Parameter-Flow um `fn_led_controller` erweitert.
+  - Stepper-Controller auf Motor-2-Kommandos erweitert.
+- Dokumentation aktualisiert:
+  - `arduino/mega/PINOUT.md`, `README.md`, `Hardware.md` und `nodered/flows/components.yaml` angepasst.
+- Konsistenzpruefungen durchgefuehrt:
+  - Flow-JSON Parse OK (`dashboard_flow.json`, `fn_parameters_flow.json`).
+  - Keine doppelten Node-IDs in den zentralen Flow-Dateien.
+
+Naechstes Ziel:
+- End-to-End Hardwaretest auf der Pi mit `update`:
+  - LED-Buttons (1..5) -> Arduino ACK `type=led` -> Statusanzeige im Dashboard.
+  - Taster-Eingaenge im Sensor-Tab bei Druck/Loslassen pruefen.
+  - Stepper 2 Befehle (`5s`, `+120 Grad`) mit Rueckmeldung pruefen.
+- Optional: Taster-Events zusaetzlich als aktive Kommandos nutzbar machen (z. B. Taster Blau startet Pumpe).
+- Optional: Noch offene Duplikate in Dokumenten und Components-Registry weiter bereinigen.
+
+Bestehende Probleme:
+- Node-RED von der Entwicklungsumgebung aus nicht erreichbar (Deploy hier nicht moeglich).
+- `yaml-lint` ist in der aktuellen Umgebung nicht installiert (YAML-Formatcheck nur eingeschraenkt moeglich).
+- On-Screen-Tastatur im Kioskmodus weiterhin nicht verfuegbar.

@@ -1,13 +1,13 @@
 # Leistungsbilanz (ohne Wasserpumpe)
 
-Stand: 2026-02-21
+Stand: 2026-03-05
 
 ## Zweck
 Diese Datei berechnet die Leistungsaufnahme der verbauten Komponenten.
 Die Wasserpumpe ist explizit aus der Rechnung entfernt.
 Der Schrittmotor-Zweig ist getrennt betrachtet:
 - Motor-Nennwerte (Spule): 3.3V, 1.5A pro Phase
-- Treiber-Versorgung (TB6600): extern 12V
+- Treiber-Versorgung (2x TB6600): extern 12V
 
 Formel:
 
@@ -28,11 +28,14 @@ Hinweis:
 | Truebungssensor (SEN0189) | 5.0 | 0.040 | 0.040 | 0.200 | 0.200 | 40mA |
 | TDS-Sensor (SEN0244) | 5.0 | 0.003 | 0.006 | 0.015 | 0.030 | 3..6mA |
 | DHT11 | 5.0 | 0.0005* | 0.0025* | 0.0025 | 0.0125 | Typisch Standby/Messbetrieb |
+| Taster (5x, INPUT_PULLUP) | 5.0 | 0.0000 | 0.00125* | 0.0000 | 0.00625 | max bei 5x gleichzeitig gedrueckt (ca. 0.25mA je Taster) |
+| Taster-LEDs (5x) | 5.0 | 0.0000 | 0.1000* | 0.0000 | 0.5000 | Annahme max 20mA je LED mit Vorwiderstand |
 | Relaismodul 4-Kanal (Spulen) | 5.0 | 0.000 | 0.2856 | 0.000 | 1.428 | min: alle AUS, max: alle 4 EIN |
 | RFID RC522 | 3.3 | 0.026* | 0.050* | 0.0858 | 0.165 | 3.3V-Pin am Mega beachten |
 | Pegelwandler 5V<->3.3V | 3.3 | 0.001* | 0.006* | 0.0033 | 0.0198 | Lastabhaengig |
-| Schrittmotor 42HSC8402-15B11 (voraussichtlich, pro Phase) | 3.3 | 0.000 | 1.500 | 0.000 | 4.950 | Motor-Nennwert pro Phase (`rated current`) |
-| TB6600 + Schrittmotor am 12V-Netzteil (Eingangsseite) | 12.0 | 0.000 | 1.000* | 0.000 | 12.000* | Aus Motorleistung (2 Phasen) plus Treiberverlusten abgeschaetzt |
+| Schrittmotor 42HSC8402-15B11 (pro Motor, pro Phase) | 3.3 | 0.000 | 1.500 | 0.000 | 4.950 | Motor-Nennwert pro Phase (`rated current`) |
+| TB6600 #1 + Schrittmotor #1 am 12V-Netzteil | 12.0 | 0.000 | 1.000* | 0.000 | 12.000* | abgeschaetzt aus Motorleistung (2 Phasen) + Treiberverlust |
+| TB6600 #2 + Schrittmotor #2 am 12V-Netzteil | 12.0 | 0.000 | 1.000* | 0.000 | 12.000* | identische Annahme wie fuer Motor 1 |
 
 ## Getrennte Rechnung
 
@@ -40,10 +43,10 @@ Hinweis:
 
 5V-Zweig:
 
-- `I_5V_min = 0.070 + 0.015 + 0.010 + 0.040 + 0.003 + 0.0005 + 0.000 = 0.1385 A`
+- `I_5V_min = 0.070 + 0.015 + 0.010 + 0.040 + 0.003 + 0.0005 + 0.0000 + 0.0000 + 0.0000 = 0.1385 A`
 - `P_5V_min = 5.0 * 0.1385 = 0.6925 W`
-- `I_5V_max = 0.200 + 0.020 + 0.015 + 0.040 + 0.006 + 0.0025 + 0.2856 = 0.5691 A`
-- `P_5V_max = 5.0 * 0.5691 = 2.8455 W`
+- `I_5V_max = 0.200 + 0.020 + 0.015 + 0.040 + 0.006 + 0.0025 + 0.00125 + 0.1000 + 0.2856 = 0.67035 A`
+- `P_5V_max = 5.0 * 0.67035 = 3.35175 W`
 
 3.3V-Zweig:
 
@@ -55,20 +58,20 @@ Hinweis:
 Arduino gesamt:
 
 - `P_ARDUINO_min = 0.6925 + 0.0891 = 0.7816 W`
-- `P_ARDUINO_max = 2.8455 + 0.1848 = 3.0303 W`
+- `P_ARDUINO_max = 3.35175 + 0.1848 = 3.53655 W`
 
 ### 2) Raspberry-Pi-Teil (getrennt)
 
 - `P_PI_min = 5.0 * 0.600 = 3.000 W`
 - `P_PI_max = 5.0 * 3.000 = 15.000 W`
 
-### 3) Schrittmotor/TB6600-Zweig (getrennt)
+### 3) Schrittmotor/TB6600-Zweig (getrennt, 2 Motoren)
 
 - Geplantes Modell: `42HSC8402-15B11` (noch zu verifizieren)
 - Treiber: TB6600
 - Versorgung: externes `12V` Netzteil
 
-Berechnungsschema:
+Berechnungsschema je Motor:
 
 - Motor pro Phase:
   - `U_phase = 3.3V`
@@ -81,6 +84,11 @@ Berechnungsschema:
   - `I_12V_max_annahme = 1.0A`
   - `P_12V_max = 12.0 * 1.0 = 12.0W`
 
+Gesamt fuer 2 Motoren/Treiber:
+
+- `I_12V_max_annahme_gesamt = 2 * 1.0 = 2.0A`
+- `P_12V_max_gesamt = 12.0 * 2.0 = 24.0W`
+
 Hinweis:
 - `rated current` ist Phasenstrom (nicht direkt der 12V-Netzteilstrom).
 - Der TB6600 ist ein Chopper-Treiber; die Motor-Nennspannung ist nicht gleich
@@ -90,30 +98,30 @@ Hinweis:
 
 | Teilsystem | P_min (W) | P_max (W) |
 |---|---:|---:|
-| Arduino (ohne Pumpe) | 0.7816 | 3.0303 |
+| Arduino (ohne Pumpe) | 0.7816 | 3.5366 |
 | Raspberry Pi | 3.0000 | 15.0000 |
-| Gesamt (ohne Pumpe) | 3.7816 | 18.0303 |
-| Externer 12V TB6600/Schrittmotor-Zweig | 0.0000 | 12.0000 |
-| Gesamt inkl. TB6600/Schrittmotor-Zweig | 3.7816 | 30.0303 |
+| Gesamt (ohne Pumpe) | 3.7816 | 18.5366 |
+| Externer 12V TB6600/Schrittmotor-Zweig (2x) | 0.0000 | 24.0000 |
+| Gesamt inkl. TB6600/Schrittmotor-Zweig | 3.7816 | 42.5366 |
 
 ## Netzteil-Empfehlung (ohne Pumpe)
 
 - Raspberry Pi separat: 5V / 3A (offizielle Empfehlung).
 - Arduino-Zweig separat:
-  - max 5V-Strom: `0.5691 A`
-  - mit 30% Reserve: `0.5691 * 1.3 = 0.7398 A`
-  - Empfehlung: mindestens 5V / 1A nur fuer Arduino+Sensorik+Relais.
+  - max 5V-Strom: `0.67035 A`
+  - mit 30% Reserve: `0.67035 * 1.3 = 0.8715 A`
+  - Empfehlung: mindestens 5V / 1A nur fuer Arduino+Sensorik+Relais+Taster/LEDs.
 
 ## Netzteil-Empfehlung (12V Schrittmotor-Zweig)
 
-- Basis: `I_12V_max_annahme = 1.0 A`
+- Basis: `I_12V_max_annahme_gesamt = 2.0 A` (2x TB6600 + 2x Schrittmotor)
 - Nennleistung ohne Reserve:
-  - `P_12V_netzteil_nenn = 12.0 * 1.0 = 12.0 W`
+  - `P_12V_netzteil_nenn = 12.0 * 2.0 = 24.0 W`
 - Mit 30% Reserve:
-  - `P_12V_netzteil_min = 12.0 * 1.3 = 15.6 W`
+  - `P_12V_netzteil_min = 24.0 * 1.3 = 31.2 W`
 - Empfehlung:
-  - mindestens `12V / 2A` (24W)
-  - bei hoher Dynamik/Last optional `12V / 3A` fuer mehr Reserve
+  - mindestens `12V / 3A` (36W)
+  - empfohlen `12V / 4A` (48W) fuer ausreichende Dynamikreserve
 
 ## Quellen
 

@@ -1,4 +1,4 @@
-version: 15
+version: 16
 registry: components
 conventions:
   id_style: "snake_case, stable logical id (not Node-RED node id)"
@@ -979,6 +979,87 @@ components:
     node_label: "RFID-Profilsteuerung"
     description: "Verwaltet RFID_READ, RFID_LEARN_P1, RFID_LEARN_P2 inkl. Toggle: belegt -> loeschen, frei -> anlernen."
     tags: [function, rfid, profile, mapping]
+    version: 1
+  parameter_led_controller:
+    id: parameter_led_controller
+    type: function
+    flow: nodered/flows/fn_parameters_flow.json
+    node_label: "Taster-LED Steuerung"
+    description: "Verarbeitet led_toggle, LED-ACKs und Sensor-LED-Zustaende; sendet LED-Befehle und publiziert ON/OFF fuer 5 LEDs."
+    tags: [parameter, function, led, button, actuator]
+    version: 1
+  parameter_led_blue_button_desktop:
+    id: parameter_led_blue_button_desktop
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "LED Blau schalten"
+    group: ui_grp_parameter_main
+    description: "Toggle fuer LED Blau (Taster Pumpe), topic=led_toggle payload=1."
+    example_msg:
+      topic: "led_toggle"
+      payload: "1"
+    tags: [ui, parameter, led, button, desktop]
+    version: 1
+  parameter_led_yellow_stepper1_button_desktop:
+    id: parameter_led_yellow_stepper1_button_desktop
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "LED Gelb Stepper1 schalten"
+    group: ui_grp_parameter_main
+    description: "Toggle fuer LED Gelb (Stepper 1), topic=led_toggle payload=2."
+    example_msg:
+      topic: "led_toggle"
+      payload: "2"
+    tags: [ui, parameter, led, stepper, desktop]
+    version: 1
+  parameter_led_yellow_stepper2_button_desktop:
+    id: parameter_led_yellow_stepper2_button_desktop
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "LED Gelb Stepper2 schalten"
+    group: ui_grp_parameter_main
+    description: "Toggle fuer LED Gelb (Stepper 2), topic=led_toggle payload=3."
+    example_msg:
+      topic: "led_toggle"
+      payload: "3"
+    tags: [ui, parameter, led, stepper, desktop]
+    version: 1
+  parameter_led_red_button_desktop:
+    id: parameter_led_red_button_desktop
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "LED Rot schalten"
+    group: ui_grp_parameter_main
+    description: "Toggle fuer LED Rot (Stopp), topic=led_toggle payload=4."
+    example_msg:
+      topic: "led_toggle"
+      payload: "4"
+    tags: [ui, parameter, led, stop, desktop]
+    version: 1
+  parameter_led_green_button_desktop:
+    id: parameter_led_green_button_desktop
+    type: ui_button
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "LED Gruen schalten"
+    group: ui_grp_parameter_main
+    description: "Toggle fuer LED Gruen (Start/Quit), topic=led_toggle payload=5."
+    example_msg:
+      topic: "led_toggle"
+      payload: "5"
+    tags: [ui, parameter, led, start, desktop]
+    version: 1
+  status_stepper2_position_display_desktop:
+    id: status_stepper2_position_display_desktop
+    type: ui_text
+    flow: nodered/flows/dashboard_flow.json
+    node_label: "Schrittmotor 2 Position Anzeige"
+    group: ui_grp_info_main
+    description: "Aktuelle Schrittmotor-2-Position in Grad im Status/Sensoren-Tab (Desktop)."
+    example_msg:
+      topic: ""
+      payload:
+        stepper2_position_deg: 240
+    tags: [ui, stepper, position, desktop]
     version: 1
 
 
